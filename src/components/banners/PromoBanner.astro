@@ -1,0 +1,25 @@
+---
+export type PromoBannerProps = {
+  heading: string;
+  description: string;
+  imageSrc: ImageMetadata;
+  imageAlt: string;
+  backgroundColor?: string;
+  textColor?: string;
+  type?: 'promo';
+};
+
+const { heading, description, backgroundColor, textColor } = Astro.props;
+---
+
+<div class={`w-full p-8 mb-8 overflow-hidden rounded-xl ${backgroundColor}`} style={`color: ${textColor};`}>
+  <div class='container flex flex-col items-center justify-between md:flex-row'>
+    <div class='flex-1 text-center md:text-left'>
+      <h2 class='text-[2.8rem] font-black m-0 leading-tight'>{heading}</h2>
+      <p class='text-xl mt-4 opacity-90 md:max-w-[400px]'>{description}</p>
+    </div>
+    <div class='flex justify-center flex-1 mt-6 md:justify-end md:mt-0'>
+      <slot />
+    </div>
+  </div>
+</div>

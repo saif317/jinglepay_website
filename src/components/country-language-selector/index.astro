@@ -1,0 +1,92 @@
+---
+import { COUNTRIES, DEFAULT_LOCALE } from '@constants';
+import { Image } from 'astro:assets';
+
+// With manual routing, we need to extract locale from URL
+const url = Astro.url.pathname;
+const pathSegments = url.split('/').filter(Boolean);
+
+// Extract country and language from path segments
+let currentCountryPath = pathSegments[0] || '';
+let currentLangCode = pathSegments[1] || '';
+
+// Fallback to defaults if not found
+if (!currentCountryPath || !currentLangCode) {
+  const [defaultCountry, defaultLang] = DEFAULT_LOCALE.split('-');
+  currentCountryPath = currentCountryPath || defaultCountry;
+  currentLangCode = currentLangCode || defaultLang;
+}
+
+// Find current country and language objects
+const currentCountry = COUNTRIES.find((c) => c.path === currentCountryPath) || COUNTRIES[0];
+const currentLanguage = currentCountry.languages.find((l) => l.code === currentLangCode) || currentCountry.languages[0];
+---
+
+<div class='flex items-center px-4 py-2 bg-gray-100 rounded-full country-language-selector'>
+  <div class='relative country-selector'>
+    <button id='country-button' class='flex items-center gap-2'>
+      <div class='flex items-center justify-center w-8 h-8 flag'>
+        {currentCountry.flag && <Image src={currentCountry.flag} alt={currentCountry.name} class='w-auto h-6' />}
+      </div>
+      <span class='font-medium text-gray-500'>{currentCountry.code}</span>
+    </button>
+    <div id='country-dropdown' class='absolute left-0 hidden w-48 p-2 mt-2 bg-white rounded-md shadow-md top-full'>
+      {
+        COUNTRIES.map((country) => (
+          <a
+            href={`/${country.path}/${currentLanguage.code}`}
+            class='flex items-center gap-2 px-4 py-2 rounded-md hover:bg-gray-100'
+          >
+            {country.flag && <Image src={country.flag} alt={country.name} class='w-auto h-6 rounded-sm shadow-sm' />}
+            <span>{country.code}</span>
+          </a>
+        ))
+      }
+    </div>
+  </div>
+  <div class='w-px h-6 mx-3 bg-gray-300 divider'></div>
+  <div class='relative language-selector'>
+    <button id='language-button' class='font-medium text-gray-500 language-button'>
+      {currentLanguage.name}
+    </button>
+    <div id='language-dropdown' class='absolute right-0 hidden p-2 mt-2 bg-white rounded-md shadow-md top-full w-36'>
+      {
+        currentCountry.languages.map((language) => (
+          <a href={`/${currentCountry.path}/${language.code}`} class='block px-4 py-2 rounded-md hover:bg-gray-100'>
+            {language.name}
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</div>
+
+<script>
+  // Toggle country dropdown visibility
+  const countryButton = document.getElementById('country-button');
+  const countryDropdown = document.getElementById('country-dropdown');
+
+  countryButton?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    countryDropdown?.classList.toggle('hidden');
+    // Hide language dropdown when showing country dropdown
+    languageDropdown?.classList.add('hidden');
+  });
+
+  // Toggle language dropdown visibility
+  const languageButton = document.getElementById('language-button');
+  const languageDropdown = document.getElementById('language-dropdown');
+
+  languageButton?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    languageDropdown?.classList.toggle('hidden');
+    // Hide country dropdown when showing language dropdown
+    countryDropdown?.classList.add('hidden');
+  });
+
+  // Close dropdowns when clicking outside
+  document.addEventListener('click', () => {
+    countryDropdown?.classList.add('hidden');
+    languageDropdown?.classList.add('hidden');
+  });
+</script>

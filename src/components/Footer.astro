@@ -1,0 +1,163 @@
+---
+// src/components/Footer.astro
+---
+
+<footer class='bg-gray-50 py-16 pb-8'>
+  <div class='container'>
+    <div class='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12'>
+      <div>
+        <h3 class='text-xl mb-6 text-gray-900 font-semibold'>Features</h3>
+        <ul class='list-none'>
+          <li class='mb-3'>
+            <a
+              href='/features/transfers'
+              class='no-underline text-gray-600 transition-colors duration-300 hover:text-[#794eff]'>Transfers</a>
+          </li>
+          <li class='mb-3'>
+            <a
+              href='/features/accounts'
+              class='no-underline text-gray-600 transition-colors duration-300 hover:text-[#794eff]'>Accounts</a>
+          </li>
+          <li class='mb-3'>
+            <a
+              href='/features/payments'
+              class='no-underline text-gray-600 transition-colors duration-300 hover:text-[#794eff]'>Payments</a>
+          </li>
+          <li>
+            <a
+              href='/features/security'
+              class='no-underline text-gray-600 transition-colors duration-300 hover:text-[#794eff]'>Security</a>
+          </li>
+        </ul>
+      </div>
+
+      <div>
+        <h3 class='text-xl mb-6 text-gray-900 font-semibold'>Products</h3>
+        <ul class='list-none'>
+          <li class='mb-3'>
+            <a
+              href='/products/mobile-app'
+              class='no-underline text-gray-600 transition-colors duration-300 hover:text-[#794eff]'>Mobile App</a>
+          </li>
+          <li class='mb-3'>
+            <a
+              href='/products/digital-wallet'
+              class='no-underline text-gray-600 transition-colors duration-300 hover:text-[#794eff]'>Digital Wallet</a>
+          </li>
+          <li class='mb-3'>
+            <a
+              href='/products/business'
+              class='no-underline text-gray-600 transition-colors duration-300 hover:text-[#794eff]'>Business</a>
+          </li>
+          <li>
+            <a
+              href='/products/api'
+              class='no-underline text-gray-600 transition-colors duration-300 hover:text-[#794eff]'>API</a>
+          </li>
+        </ul>
+      </div>
+
+      <div>
+        <h3 class='text-xl mb-6 text-gray-900 font-semibold'>Resources</h3>
+        <ul class='list-none'>
+          <li class='mb-3'>
+            <a
+              href='/resources/help-center'
+              class='no-underline text-gray-600 transition-colors duration-300 hover:text-[#794eff]'>Help Center</a>
+          </li>
+          <li class='mb-3'>
+            <a
+              href='/resources/blog'
+              class='no-underline text-gray-600 transition-colors duration-300 hover:text-[#794eff]'>Blog</a>
+          </li>
+          <li class='mb-3'>
+            <a
+              href='/resources/developers'
+              class='no-underline text-gray-600 transition-colors duration-300 hover:text-[#794eff]'>Developers</a>
+          </li>
+          <li>
+            <a
+              href='/resources/media'
+              class='no-underline text-gray-600 transition-colors duration-300 hover:text-[#794eff]'>Media Kit</a>
+          </li>
+        </ul>
+      </div>
+
+      <div>
+        <h3 class='text-xl mb-6 text-gray-900 font-semibold'>Company</h3>
+        <ul class='list-none'>
+          <li class='mb-3'>
+            <a
+              href='/company/about'
+              class='no-underline text-gray-600 transition-colors duration-300 hover:text-[#794eff]'>About Us</a>
+          </li>
+          <li class='mb-3'>
+            <a
+              href='/company/careers'
+              class='no-underline text-gray-600 transition-colors duration-300 hover:text-[#794eff]'>Careers</a>
+          </li>
+          <li class='mb-3'>
+            <a
+              href='/company/press'
+              class='no-underline text-gray-600 transition-colors duration-300 hover:text-[#794eff]'>Press</a>
+          </li>
+          <li>
+            <a
+              href='/company/contact'
+              class='no-underline text-gray-600 transition-colors duration-300 hover:text-[#794eff]'>Contact</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class='flex flex-col md:flex-row justify-between items-center py-8 border-t border-gray-200 mb-8'>
+      <div class='footer-logo mb-6 md:mb-0'>
+        <img src='/JinglePay-logo.svg' alt='Jingle Pay' class='h-[30px]' />
+      </div>
+
+      <div class='flex gap-4'>
+        <a
+          href='#'
+          class='flex items-center justify-center w-10 h-10 rounded-full bg-white text-gray-600 transition-all duration-300 hover:bg-[#794eff] hover:text-white hover:-translate-y-[3px]'
+        >
+          <i class='fab fa-twitter'></i>
+        </a>
+        <a
+          href='#'
+          class='flex items-center justify-center w-10 h-10 rounded-full bg-white text-gray-600 transition-all duration-300 hover:bg-[#794eff] hover:text-white hover:-translate-y-[3px]'
+        >
+          <i class='fab fa-facebook-f'></i>
+        </a>
+        <a
+          href='#'
+          class='flex items-center justify-center w-10 h-10 rounded-full bg-white text-gray-600 transition-all duration-300 hover:bg-[#794eff] hover:text-white hover:-translate-y-[3px]'
+        >
+          <i class='fab fa-instagram'></i>
+        </a>
+        <a
+          href='#'
+          class='flex items-center justify-center w-10 h-10 rounded-full bg-white text-gray-600 transition-all duration-300 hover:bg-[#794eff] hover:text-white hover:-translate-y-[3px]'
+        >
+          <i class='fab fa-linkedin-in'></i>
+        </a>
+      </div>
+    </div>
+
+    <div class='flex flex-col md:flex-row justify-between items-center text-sm text-gray-600'>
+      <div class='mb-4 md:mb-0'>
+        © {new Date().getFullYear()} Jingle Pay. All rights reserved.
+      </div>
+
+      <div class='flex gap-6'>
+        <a href='/privacy' class='text-gray-600 no-underline transition-colors duration-300 hover:text-[#794eff]'
+          >Privacy Policy</a
+        >
+        <a href='/terms' class='text-gray-600 no-underline transition-colors duration-300 hover:text-[#794eff]'
+          >Terms of Service</a
+        >
+        <a href='/legal' class='text-gray-600 no-underline transition-colors duration-300 hover:text-[#794eff]'>Legal</a
+        >
+      </div>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,62 @@
+---
+// src/components/Header.astro
+import CountryLanguageSelector from '@components/country-language-selector/index.astro';
+---
+
+<header class='sticky top-0 flex justify-center py-6 bg-white shadow-sm z-100'>
+  <div class='container'>
+    <div class='flex items-center justify-between'>
+      <a href='/' class='block'>
+        <img src='/JinglePay-logo.svg' alt='Jingle Pay' class='h-[35px] w-auto' />
+      </a>
+
+      <nav class='bg-[#ececec] rounded-[10px] px-8 py-2'>
+        <ul class='flex items-center gap-12 list-none'>
+          <li>
+            <a
+              href='/'
+              class='no-underline text-[#1c1c1c] text-base font-semibold transition-colors duration-300 hover:text-[#794eff] py-2'
+              >Jingle Pay</a
+            >
+          </li>
+          <li>
+            <a
+              href='/benefits'
+              class='no-underline text-[#1c1c1c] text-base font-semibold transition-colors duration-300 hover:text-[#794eff] py-2'
+              >Benefits</a
+            >
+          </li>
+          <li>
+            <a
+              href='/contact'
+              class='no-underline text-[#1c1c1c] text-base font-semibold transition-colors duration-300 hover:text-[#794eff] py-2'
+              >Contact</a
+            >
+          </li>
+        </ul>
+      </nav>
+
+      <div class='flex items-center gap-2'>
+        <div>
+          <a
+            href='#download'
+            class='inline-block bg-[#794eff] text-white rounded-xl px-6 py-2 text-sm font-medium hover:bg-[#6a3ad9] transition-colors duration-300'
+            >Download App</a
+          >
+        </div>
+        <CountryLanguageSelector />
+      </div>
+    </div>
+  </div>
+</header>
+
+<script>
+  // Mobile menu functionality
+  const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+  const mainNav = document.querySelector('nav');
+
+  mobileMenuToggle?.addEventListener('click', () => {
+    mainNav?.classList.toggle('active');
+    mobileMenuToggle.classList.toggle('active');
+  });
+</script>

@@ -1,11 +1,209 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+// src/pages/index.astro
+import { COUNTRIES } from '@constants';
 ---
 
-<Layout>
-	<Welcome />
-</Layout>
+<script define:vars={{ COUNTRIES, isDev: import.meta.env.MODE === 'development' }}>
+  // In development mode, always redirect to Pakistan/English
+  if (isDev) {
+    window.location.href = '/pak/en';
+    return;
+  }
+
+  // Tiered location detection strategy from fastest to slowest
+  async function detectUserCountry() {
+    try {
+      // TIER 1: Check localStorage (fastest)
+      const cached = localStorage.getItem('preferred-locale');
+      if (cached) {
+        window.location.href = cached;
+        return;
+      }
+
+      // TIER 2: URL parameters (e.g., /?country=pak&lang=en)
+      const urlParams = new URLSearchParams(window.location.search);
+      const urlCountry = urlParams.get('country');
+      const urlLang = urlParams.get('lang');
+      if (urlCountry) {
+        const country = COUNTRIES.find((c) => c.path === urlCountry);
+        if (country) {
+          const lang =
+            urlLang && country.languages.find((l) => l.code === urlLang) ? urlLang : country.languages[0].code;
+          redirectToLocale(country.path, lang);
+          return;
+        }
+      }
+
+      // TIER 3: Browser language settings
+      const browserLang = navigator.language || navigator.userLanguage;
+      const langParts = browserLang.toLowerCase().split(/[-_]/);
+
+      // Try to match browser language to a country
+      let detectedCountry = null;
+
+      // Look for country code in browser language
+      if (langParts[1]) {
+        if (langParts[1] === 'ae' || langParts[1] === 'sa') {
+          detectedCountry = COUNTRIES.find((c) => c.path === 'uae');
+        } else if (langParts[1] === 'pk') {
+          detectedCountry = COUNTRIES.find((c) => c.path === 'pak');
+        }
+      }
+
+      // If no country match, try language match
+      if (!detectedCountry) {
+        if (langParts[0] === 'ar') {
+          detectedCountry = COUNTRIES.find((c) => c.path === 'uae');
+        } else if (langParts[0] === 'ur') {
+          detectedCountry = COUNTRIES.find((c) => c.path === 'pak');
+        }
+      }
+
+      // TIER 4: Try timezone detection
+      if (!detectedCountry) {
+        try {
+          const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+          if (timezone.includes('Asia/Karachi')) {
+            detectedCountry = COUNTRIES.find((c) => c.path === 'pak');
+          } else if (timezone.includes('Asia/Dubai') || timezone.includes('Asia/Riyadh')) {
+            detectedCountry = COUNTRIES.find((c) => c.path === 'uae');
+          }
+        } catch (e) {
+          console.log('Timezone detection failed');
+        }
+      }
+
+      // TIER 5: IP geolocation (slowest but most accurate)
+      if (!detectedCountry) {
+        try {
+          const geoResponse = await fetch('https://ipapi.co/json/');
+          if (geoResponse.ok) {
+            const geoData = await geoResponse.json();
+            if (geoData.country_code === 'AE' || geoData.country_code === 'SA') {
+              detectedCountry = COUNTRIES.find((c) => c.path === 'uae');
+            } else if (geoData.country_code === 'PK') {
+              detectedCountry = COUNTRIES.find((c) => c.path === 'pak');
+            }
+          }
+        } catch (e) {
+          console.log('Geolocation API failed');
+        }
+      }
+
+      // Fallback to default if all detection methods fail
+      if (!detectedCountry) {
+        detectedCountry = COUNTRIES[0];
+      }
+
+      // Determine best language for the detected country
+      const langCode = langParts[0];
+      const detectedLang =
+        detectedCountry.languages.find((l) => l.code === langCode)?.code || detectedCountry.languages[0].code;
+
+      // Redirect to the detected locale
+      redirectToLocale(detectedCountry.path, detectedLang);
+    } catch (error) {
+      console.error('Error in locale detection:', error);
+      window.location.href = '/pak/en'; // Final fallback
+    }
+  }
+
+  // Helper function for redirect with localStorage caching
+  function redirectToLocale(country, lang) {
+    const path = `/${country}/${lang}`;
+    localStorage.setItem('preferred-locale', path);
+    window.location.href = path;
+  }
+
+  // Run the detection
+  detectUserCountry();
+</script>
+
+<html>
+  <head>
+    <meta charset='UTF-8' />
+    <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+    <title>Redirecting to your local site...</title>
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        text-align: center;
+        background-color: #f9f9f9;
+      }
+      .container {
+        max-width: 500px;
+        padding: 2rem;
+      }
+      .loader {
+        width: 48px;
+        height: 48px;
+        border: 5px solid #794eff;
+        border-bottom-color: transparent;
+        border-radius: 50%;
+        animation: rotation 1s linear infinite;
+        margin: 0 auto 20px;
+      }
+      @keyframes rotation {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+      .manual-selection {
+        margin-top: 2rem;
+        padding-top: 1rem;
+        border-top: 1px solid #eaeaea;
+      }
+      .country-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.5rem;
+        margin-top: 1rem;
+      }
+      .country-button {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        background-color: white;
+        border: 1px solid #ddd;
+        border-radius: 0.5rem;
+        text-decoration: none;
+        color: #333;
+        font-weight: 500;
+        transition: all 0.2s;
+      }
+      .country-button:hover {
+        border-color: #794eff;
+        background-color: #f5f0ff;
+      }
+    </style>
+  </head>
+  <body>
+    <div class='container'>
+      <div class='loader'></div>
+      <p>Detecting your location and redirecting...</p>
+
+      <div class='manual-selection'>
+        <p>Or select your location manually:</p>
+        <div class='country-buttons'>
+          {
+            COUNTRIES.map((country) => (
+              <a href={`/${country.path}/${country.languages[0].code}`} class='country-button'>
+                <span>{country.flag}</span> <span>{country.name}</span>
+              </a>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

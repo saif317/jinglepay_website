@@ -1,0 +1,36 @@
+---
+import FeatureCarousal from '@components/banners/FeatureCarousal.astro';
+import HeroSection from '@components/HeroSection.astro';
+import Layout from '@layouts/Layout.astro';
+
+export async function getStaticPaths() {
+  const countries = ['pak', 'uae'];
+  const languages: Record<string, string[]> = {
+    pak: ['en', 'ur'],
+    uae: ['en', 'ar'],
+  };
+
+  return countries.flatMap((country) => {
+    return languages[country].map((lang) => {
+      return {
+        params: { country, lang },
+      };
+    });
+  });
+}
+
+const { country, lang } = Astro.params;
+
+// Load country-specific data
+const countryData = await import(`../../../i18n/countries/${country}.json`);
+
+// Load language translations
+const translations = await import(`../../../i18n/translations/${lang}.json`);
+
+// Now use countryData and translations in your page
+---
+
+<Layout title={translations.title}>
+  <HeroSection />
+  <FeatureCarousal />
+</Layout>
