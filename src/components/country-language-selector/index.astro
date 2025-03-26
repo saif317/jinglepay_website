@@ -46,8 +46,8 @@ const currentLanguage = currentCountry.languages.find((l) => l.code === currentL
   </div>
   <div class='w-px h-6 mx-3 bg-gray-300 divider'></div>
   <div class='relative language-selector'>
-    <button id='language-button' class='font-medium text-gray-500 language-button'>
-      {currentLanguage.name}
+    <button id='language-button' class='flex items-center gap-1 font-medium text-gray-500 language-button'>
+      <span>{currentCountry.languages.filter((lang) => lang.code !== currentLanguage.code)[0].name}</span>
     </button>
     <div id='language-dropdown' class='absolute right-0 hidden p-2 mt-2 bg-white rounded-md shadow-md top-full w-36'>
       {

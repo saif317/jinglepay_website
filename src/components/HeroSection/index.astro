@@ -1,0 +1,17 @@
+---
+// src/components/HeroSection.astro
+import playStoreImage from '@assets/icons/playstore.svg';
+import appStoreImage from '@assets/icons/appstore.svg';
+import Image from 'astro/components/Image.astro';
+import QRDownload from '@components/HeroSection/QRDownload.astro';
+---
+
+<section class='flex justify-center py-24 pb-16 text-center bg-white'>
+  <div class='container'>
+    <h1 class='text-[2.75rem] leading-tight font-bold mb-6 max-w-[800px] mx-auto'>Simplifying all money!</h1>
+    <p class='text-xl text-gray-600 mb-10 max-w-[600px] mx-auto'>
+      Jingle Pay is the go-to money app for your everyday financial needs.
+    </p>
+    <QRDownload />
+  </div>
+</section>
