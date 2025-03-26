@@ -68,30 +68,26 @@ const carouselItems: (FeatureBannerProps | PromoBannerProps)[] = [
 ];
 ---
 
-<section class='flex justify-center py-16'>
-  <div class='container'>
-    <h2 class='mb-10 text-3xl font-bold text-center'>Why Choose Jingle Pay</h2>
-
-    <!-- Swiper container -->
-    <div class='swiper feature-carousel'>
-      <!-- Swiper wrapper -->
-      <div class='swiper-wrapper'>
-        {
-          carouselItems.map((item) => (
-            <div class='swiper-slide'>
-              {item.type === 'feature' ? (
-                <FeatureBanner {...(item as FeatureBannerProps)}>
-                  <Image src={item.imageSrc} alt={item.imageAlt} class='w-auto h-60' />
-                </FeatureBanner>
-              ) : (
-                <PromoBanner {...(item as PromoBannerProps)}>
-                  <Image src={item.imageSrc} alt={item.imageAlt} class='w-auto h-60' />
-                </PromoBanner>
-              )}
-            </div>
-          ))
-        }
-      </div>
+<section class='flex justify-center pb-8'>
+  <!-- Swiper container -->
+  <div class='swiper feature-carousel'>
+    <!-- Swiper wrapper -->
+    <div class='swiper-wrapper'>
+      {
+        carouselItems.map((item) => (
+          <div class='swiper-slide'>
+            {item.type === 'feature' ? (
+              <FeatureBanner {...(item as FeatureBannerProps)}>
+                <Image src={item.imageSrc} alt={item.imageAlt} class='w-auto h-60' />
+              </FeatureBanner>
+            ) : (
+              <PromoBanner {...(item as PromoBannerProps)}>
+                <Image src={item.imageSrc} alt={item.imageAlt} class='w-auto h-60' />
+              </PromoBanner>
+            )}
+          </div>
+        ))
+      }
     </div>
   </div>
 </section>
@@ -118,7 +114,7 @@ const carouselItems: (FeatureBannerProps | PromoBannerProps)[] = [
       initialSlide: 2,
 
       // Reduce space between slides
-      spaceBetween: 125,
+      spaceBetween: 175,
       loop: true,
 
       // Adjust coverflow effect
