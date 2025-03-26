@@ -1,5 +1,6 @@
 ---
 import FeatureCarousal from '@components/banners/FeatureCarousal.astro';
+import Featured from '@components/Featured.astro';
 import HeroSection from '@components/hero-section/index.astro';
 import Layout from '@layouts/Layout.astro';
 
@@ -36,4 +37,5 @@ const translations = await import(`../../../i18n/translations/${lang}.json`);
 <Layout title={translations.title}>
   <HeroSection />
   <FeatureCarousal />
+  <Featured />
 </Layout>

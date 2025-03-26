@@ -1,54 +1,45 @@
 ---
 import { Image } from 'astro:assets';
 
+import finextraLogo from '@assets/logos/finextra-logo.svg';
+import paypersLogo from '@assets/logos/paypers.png';
+import fintechTimesLogo from '@assets/logos/fintech-times.jpg';
+
 // Featured.astro - Component to showcase media mentions
 ---
 
-<section class='py-16 text-center'>
-  <div class='container px-4 mx-auto'>
-    <h2 class='text-4xl font-bold mb-10 text-[#1c1c1c]'>Jingle Pay has been featured in:</h2>
+<section class='flex flex-col items-center px-4 mx-auto text-center gap-y-4'>
+  <h2 class='text-4xl font-extrabold text-[#1c1c1c]'>Jingle Pay has been featured in:</h2>
 
-    <div class='flex flex-wrap gap-10 justify-center items-center md:gap-16'>
-      <!-- Finextra -->
-      <a
-        href='https://www.finextra.com/pressarticle/95078/jingle-pay-unlocks-mastercards-network-of-90-million-global-merchants-for-its-users'
-        target='_blank'
-        rel='noopener noreferrer'
-        class='transition-opacity duration-300 hover:opacity-80'
-      >
-        <!-- <Image src='/logos/finextra.svg' alt='Finextra' height={12} class='h-12 md:h-16' /> -->
-      </a>
+  <div class='flex flex-row items-center justify-center max-w-[812px] max-h-[63px] gap-x-8'>
+    <!-- Finextra -->
+    <a
+      href='https://www.finextra.com/pressarticle/95078/jingle-pay-unlocks-mastercards-network-of-90-million-global-merchants-for-its-users'
+      target='_blank'
+      rel='noopener noreferrer'
+      class='transition-opacity duration-300 hover:opacity-80'
+    >
+      <Image src={finextraLogo} alt='Finextra' width={174} />
+    </a>
 
-      <!-- The Paypers -->
-      <a
-        href='https://thepaypers.com/search/index.aspx?search=jingle+pay'
-        target='_blank'
-        rel='noopener noreferrer'
-        class='transition-opacity duration-300 hover:opacity-80'
-      >
-        <img src='/logos/the-paypers.svg' alt='The Paypers' class='h-12 md:h-16' />
-      </a>
+    <!-- The Paypers -->
+    <a
+      href='https://thepaypers.com/search/index.aspx?search=jingle+pay'
+      target='_blank'
+      rel='noopener noreferrer'
+      class='transition-opacity duration-300 hover:opacity-80'
+    >
+      <Image src={paypersLogo} alt='The Paypers' width={224} />
+    </a>
 
-      <!-- The Fintech Times -->
-      <a
-        href='https://thefintechtimes.com/?s=%22jingle+pay%22'
-        target='_blank'
-        rel='noopener noreferrer'
-        class='transition-opacity duration-300 hover:opacity-80'
-      >
-        <img src='/logos/the-fintech-times.svg' alt='The Fintech Times' class='h-12 md:h-16' />
-      </a>
-    </div>
+    <!-- The Fintech Times -->
+    <a
+      href='https://thefintechtimes.com/?s=%22jingle+pay%22'
+      target='_blank'
+      rel='noopener noreferrer'
+      class='transition-opacity duration-300 hover:opacity-80'
+    >
+      <Image src={fintechTimesLogo} alt='The Fintech Times' width={321} />
+    </a>
   </div>
 </section>
-
-<style>
-  section {
-    background-color: #fff;
-  }
-
-  img {
-    max-width: 100%;
-    height: auto;
-  }
-</style>
