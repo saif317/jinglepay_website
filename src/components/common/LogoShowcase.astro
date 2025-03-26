@@ -1,0 +1,134 @@
+---
+import { Image } from 'astro:assets';
+import arrow from '@assets/icons/arrow.svg';
+
+export interface Logo {
+  src: ImageMetadata;
+  alt: string;
+  href: string;
+  width?: number;
+  height?: number;
+}
+
+interface Props {
+  title: string;
+  description: string;
+  buttonText: string;
+  buttonLink: string;
+  logos: Logo[];
+  selector: string;
+}
+
+const { title, description, buttonText, buttonLink, logos, selector } = Astro.props;
+---
+
+<section class='flex flex-row justify-between items-center gap-x-[94px]'>
+  <!-- Left side - Text content -->
+  <div class='flex-1'>
+    <h2 class='mb-4 text-4xl font-black'>{title}</h2>
+    <p class='text-xl font-normal text-neutral-500 mb-11'>{description}</p>
+    <a
+      href={buttonLink}
+      class='inline-block px-6 py-3 text-white transition-colors rounded-xl bg-violet-500 hover:bg-violet-600'
+    >
+      {buttonText}
+    </a>
+  </div>
+
+  <!-- Right side - Logo carousel -->
+  <div class='relative flex flex-col items-end flex-1 overflow-hidden gap-y-4'>
+    <!-- Add the data-selector attribute to the swiper container -->
+    <div class={`${selector}-logo-swiper`} data-selector={selector}>
+      <div class='swiper-wrapper'>
+        {
+          [...Array(Math.ceil(logos.length / 6))].map((_, slideIndex) => (
+            <div class='swiper-slide'>
+              <div class='grid grid-cols-3 gap-6'>
+                {logos.slice(slideIndex * 6, (slideIndex + 1) * 6).map((logo) => (
+                  <a
+                    href={logo.href}
+                    class='flex items-center justify-center bg-neutral-100 rounded-2xl h-[120px] p-6'
+                    target='_blank'
+                    rel='noopener noreferrer'
+                  >
+                    <Image
+                      src={logo.src}
+                      alt={logo.alt}
+                      width={logo.width || 150}
+                      height={logo.height || 80}
+                      class='object-contain h-auto max-w-full'
+                    />
+                  </a>
+                ))}
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+    <div class='flex flex-row justify-between gap-x-8'>
+      <div class={`border rounded-full !w-9 !h-9 border-violet-500 ${selector}-swiper-button-prev swiper-button-prev`}>
+        <Image src={arrow} alt='arrow' class='rotate-180' />
+      </div>
+      <div class={`border rounded-full !w-9 !h-9 border-violet-500 ${selector}-swiper-button-next swiper-button-next`}>
+        <Image src={arrow} alt='arrow' />
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Use a custom element to initialize swiper -->
+<logo-showcase-swiper></logo-showcase-swiper>
+
+<script>
+  import Swiper from 'swiper';
+  import { Navigation } from 'swiper/modules';
+  import 'swiper/css';
+  import 'swiper/css/navigation';
+
+  // Define custom element
+  class LogoShowcaseSwiper extends HTMLElement {
+    connectedCallback() {
+      document.addEventListener('DOMContentLoaded', () => {
+        // Find all swiper containers and initialize them
+        document.querySelectorAll('[class$="-logo-swiper"]').forEach((container) => {
+          const selector = container.getAttribute('data-selector');
+
+          if (!selector) return;
+
+          const nextButton = container.querySelector('.swiper-button-next');
+
+          new Swiper(`.${selector}-logo-swiper`, {
+            modules: [Navigation],
+            slidesPerView: 'auto',
+            navigation: {
+              prevEl: `.${selector}-swiper-button-prev`,
+              nextEl: `.${selector}-swiper-button-next`,
+            },
+          });
+        });
+      });
+    }
+  }
+
+  // Register the custom element
+  customElements.define('logo-showcase-swiper', LogoShowcaseSwiper);
+</script>
+
+<style>
+  .swiper-slide {
+    width: 100%;
+  }
+
+  .swiper-button-prev,
+  .swiper-button-next {
+    position: relative;
+    display: flex;
+    margin: 0;
+  }
+
+  .swiper-button-prev::after,
+  .swiper-button-next::after {
+    content: '';
+  }
+</style>

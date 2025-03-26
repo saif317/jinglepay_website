@@ -1,0 +1,90 @@
+---
+import LogoShowcase, { type Logo } from '@components/common/LogoShowcase.astro';
+
+// Investors Slide 1
+//Row 1
+import bankAlfalah from '@assets/logos/bank-alfalah.svg';
+import moneyGram from '@assets/logos/moneygram.svg';
+import seedstars from '@assets/logos/seedstars.svg';
+
+// Row 2
+import aaico from '@assets/logos/aaico.svg';
+import plugplay from '@assets/logos/plugplay.svg';
+import fivehundred from '@assets/logos/500.svg';
+
+// Investors Slide 2
+import hGlobal from '@assets/logos/hglobal.png';
+import elevision from '@assets/logos/elevision.svg';
+import chandariacapital from '@assets/logos/chandariacapital.png';
+
+// Partners Slide 1
+//Row 1
+import gcc from '@assets/logos/gcc.svg';
+import afex from '@assets/logos/afex.png';
+import westernunion from '@assets/logos/western-union.svg';
+
+//Row 2
+import mastercard from '@assets/logos/mastercard.png';
+import singx from '@assets/logos/singx.png';
+import emq from '@assets/logos/emq.svg';
+
+// Partners Slide 2
+// Row 1
+import w2 from '@assets/logos/w2.png';
+import lean from '@assets/logos/lean.svg';
+import finshape from '@assets/logos/finshape.png';
+
+// Row 2
+import infinios from '@assets/logos/infinios.svg';
+import network from '@assets/logos/network.svg';
+import gamechange from '@assets/logos/gamechange.png';
+
+const investorsLogos: Logo[] = [
+  { src: bankAlfalah, alt: 'Bank Alfalah', href: '#' },
+  { src: moneyGram, alt: 'MoneyGram', href: '#' },
+  { src: seedstars, alt: 'Seedstars', href: '#' },
+  { src: aaico, alt: 'AAICO', href: '#' },
+  { src: plugplay, alt: 'Plugplay', href: '#' },
+  { src: fivehundred, alt: '500', href: '#' },
+  { src: hGlobal, alt: 'H Global', href: '#' },
+  { src: elevision, alt: 'Elevision', href: '#' },
+  { src: chandariacapital, alt: 'Chandariacapital', href: '#' },
+];
+
+const partnerLogos: Logo[] = [
+  { src: gcc, alt: 'GCC', href: '#' },
+  { src: afex, alt: 'AFEX', href: '#' },
+  { src: westernunion, alt: 'Western Union', href: '#' },
+  { src: mastercard, alt: 'Mastercard', href: '#' },
+  { src: singx, alt: 'SingX', href: '#' },
+  { src: emq, alt: 'EMQ', href: '#' },
+  { src: w2, alt: 'W2', href: '#' },
+  { src: lean, alt: 'Lean', href: '#' },
+  { src: finshape, alt: 'Finshape', href: '#' },
+  { src: infinios, alt: 'Infinios', href: '#' },
+  { src: network, alt: 'Network', href: '#' },
+  { src: gamechange, alt: 'Gamechange', href: '#' },
+  { src: bankAlfalah, alt: 'Bank Alfalah', href: '#' },
+  { src: moneyGram, alt: 'MoneyGram', href: '#' },
+];
+---
+
+<div class='px-[89px] flex flex-col items-center gap-y-[126px]'>
+  <LogoShowcase
+    title='Investors'
+    description='We’re committed to excellence, backed by top financial institutions for your peace of mind. Experience convenience and confidence in your transactions.'
+    buttonText='Become an Investor'
+    buttonLink='#'
+    logos={investorsLogos}
+    selector='Investors'
+  />
+
+  <LogoShowcase
+    title='Partners'
+    description='Our strategic partners guarantee the quality and security of your Wallet Funding, Sanction Screening, Remittance, and other processes.'
+    buttonText='Become a Partner'
+    buttonLink='#'
+    logos={partnerLogos}
+    selector='partners'
+  />
+</div>
