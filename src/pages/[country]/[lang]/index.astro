@@ -1,8 +1,9 @@
 ---
 import FeatureCarousal from '@components/banners/FeatureCarousal.astro';
-import Featured from '@components/Featured.astro';
+import Featured from '@components/hero-section/Featured.astro';
 import HeroSection from '@components/hero-section/index.astro';
 import Layout from '@layouts/Layout.astro';
+import Benefits from '@components/benefits/index.astro';
 
 export async function getStaticPaths() {
   const countries = [
@@ -38,4 +39,6 @@ const translations = await import(`../../../i18n/translations/${lang}.json`);
   <HeroSection />
   <FeatureCarousal />
   <Featured />
+
+  <Benefits />
 </Layout>

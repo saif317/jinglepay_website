@@ -1,0 +1,153 @@
+---
+import { Image } from 'astro:assets';
+
+import benefit1 from '@assets/images/benefits/benefit-pic-1.png';
+import benefit2 from '@assets/images/benefits/benefit-pic-2.png';
+import benefit3 from '@assets/images/benefits/benefit-pic-3.png';
+import benefit4 from '@assets/images/benefits/benefit-pic-4.png';
+import benefit5 from '@assets/images/benefits/benefit-pic-5.png';
+import benefit6 from '@assets/images/benefits/benefit-pic-6.png';
+
+import billPayment1 from '@assets/icons/Electricity.svg';
+import billPayment2 from '@assets/icons/Gas.svg';
+import billPayment3 from '@assets/icons/Water.svg';
+import billPayment4 from '@assets/icons/Telcos.svg';
+
+import earth from '@assets/images/benefits/earth.png';
+import guy from '@assets/images/benefits/guy.png';
+import girl from '@assets/images/benefits/girl.png';
+import aniaHala from '@assets/images/benefits/ania-hala.png';
+
+const benefits = [
+  {
+    image: benefit1,
+    alt: 'Benefit 1',
+    title: 'Current or Savings Account',
+    description:
+      'No minimum balance is required. Earn +10% APR. Multiple transactions are available, including utility bill payments, mobile top-ups, and fund transfers.',
+  },
+  {
+    image: benefit2,
+    alt: 'Benefit 2',
+    title: 'Home Remittance Account',
+    description: 'Send money to your Home Remittance Account without any fees, no matter where you are!',
+  },
+  {
+    image: benefit3,
+    alt: 'Benefit 3',
+    title: 'Peer-to-Peer transfers',
+    description: 'Spend safely with our single-use virtual cards that are coming soon to select countries.',
+  },
+  {
+    image: benefit4,
+    alt: 'Benefit 4',
+    title: 'Splitting bills with friends',
+    description:
+      "Splitting bills with friends using Jingle Pay is quick, easy, and fun—it's the fastest way to divide any amount!",
+  },
+  {
+    image: benefit5,
+    alt: 'Benefit 5',
+    title: 'Requesting money',
+    description:
+      'Get paid easily by sending a money request to friends using their mobile number or contacts. Quick and secure!',
+  },
+  {
+    image: benefit6,
+    alt: 'Benefit 6',
+    title: 'Free Mastercard Debit card',
+    description:
+      'Unlock your freedom with a versatile debit card! Enjoy a joining bonus and earn cashback on every transaction.',
+  },
+];
+
+const billPaymentIcons = [
+  { icon: billPayment1, text: 'Electricity' },
+  { icon: billPayment2, text: 'Gas' },
+  { icon: billPayment3, text: 'Water' },
+  { icon: billPayment4, text: 'Telecos' },
+];
+---
+
+<div class='flex flex-col items-center gap-y-[76px] px-[89px] 2xl:px-[300px] py-[80px]'>
+  <div class='flex flex-col items-center text-center gap-y-4'>
+    <h4 class='text-4xl font-extrabold'>What are the benefits for you?</h4>
+    <span class='text-xl font-normal text-zinc-900'>
+      We make banking accessible by offering affordable, inclusive financial services through a tailored digital
+      experience.
+    </span>
+  </div>
+
+  <div class='grid grid-cols-3 gap-[60px]'>
+    {
+      benefits.map((benefit) => (
+        <div class='flex flex-col items-center gap-y-4'>
+          <Image src={benefit.image} alt={benefit.alt} />
+          <h5 class='w-full text-xl font-extrabold text-start text-slate-800'>{benefit.title}</h5>
+          <span class='text-xl font-normal text-gray-500'>{benefit.description}</span>
+        </div>
+      ))
+    }
+  </div>
+
+  <div class='bg-[#F5F5F7] text-center py-9 flex flex-col items-center justify-center gap-y-7 px-24 rounded-[30px]'>
+    <h5 class='text-3xl font-extrabold'>Bill Payments made easy</h5>
+    <span class='text-xl font-normal text-zinc-900'
+      >Say goodbye to bill stress with Jingle Pay! Effortlessly manage your utility payments and set up reminders to
+      never miss a due date again. Simplify your life—let Jingle Pay handle your bills!</span
+    >
+
+    <div class='flex flex-row items-center gap-x-5'>
+      {
+        billPaymentIcons.map((icon) => (
+          <div class='flex flex-col items-center gap-y-4'>
+            <Image src={icon.icon} alt={icon.text} />
+            <span class='text-xl font-medium'>{icon.text}</span>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+
+  <div class='flex flex-row gap-x-7'>
+    <div
+      class='bg-gradient-to-br from-teal-400 via-green-400 to-teal-400 rounded-[20px] pl-[44px] pr-[55px] pt-[28px] pb-[34px] min-w-[622px]'
+    >
+      <p class='justify-start'>
+        <span class='text-xl font-medium'>Trusted by<br /></span><span class='text-6xl font-black'>+500,000</span>
+      </p>
+      <p class='text-xl font-medium text-center'>Users worldwide</p>
+
+      <div class='flex items-center justify-center w-full'>
+        <Image src={earth} alt='Earth' height={380} />
+      </div>
+
+      <p class='justify-center text-right'>
+        <span class='text-6xl font-extrabold'>+3MM<br /></span><span class='text-4xl font-extrabold'
+          >Transactions sent</span
+        >
+      </p>
+    </div>
+    <div class='flex flex-col gap-y-[22px]'>
+      <div class='flex flex-row items-center gap-x-[22px]'>
+        <Image src={guy} alt='Jingle Pay User 1' width={294} class='rounded-[20px]' />
+        <div class='flex flex-col items-center justify-center rounded-[20px] w-full pt-10 bg-slate-100 gap-y-10'>
+          <span class='text-xl font-black text-center'>ZERO FEES</span>
+          <Image src={aniaHala} alt='Jingle Pay User 2' width={180} />
+        </div>
+      </div>
+      <div class='flex flex-row items-center justify-center col-span-2 p-6 gap-x-3 bg-slate-100 rounded-[20px]'>
+        <div class='flex flex-col justify-between h-[267px]'>
+          <div>
+            <span class='text-xl font-black'>Total savings generated for customers</span>
+            <br /><br />
+            <span class='text-3xl font-black'>USD 5,000,000 </span>
+          </div>
+
+          <span class='text-xl font-normal'>Jingle Pay is democratizing access to financial services</span>
+        </div>
+        <Image src={girl} alt='Jingle Pay User 3' width={280} class='rounded-[20px]' />
+      </div>
+    </div>
+  </div>
+</div>;
