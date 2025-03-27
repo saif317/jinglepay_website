@@ -29,7 +29,7 @@ steps:
 
 - task: AWSCLI@1
   inputs:
-    awsCredentials: 'AWS-Service-Connection'
+    awsCredentials: 'AWS_DEV'
     regionName: 'me-central-1'  # Change to your region
     command: 's3'
     arguments: 'sync $(Build.SourcesDirectory) s3://jinglepay-website-dev --delete'
