@@ -26,10 +26,10 @@ steps:
       package.json
     TargetFolder: '$(Build.ArtifactStagingDirectory)'
   displayName: 'Copy build files'
-
 - task: AWSCLI@1
   inputs:
     awsCredentials: 'AWS_DEV'
-    regionName: 'me-central-1'  # Change to your region
-    command: 's3'
-    arguments: 'sync $(Build.SourcesDirectory) s3://jinglepay-website-dev --delete'
+    regionName: 'me-central-1'  # Ensure this is the correct AWS region
+    awsCommand: 's3'  # Corrected from 'command' to 'awsCommand'
+    awsSubCommand: 'sync'  # Required subcommand
+    awsArguments: '$(Build.SourcesDirectory) s3://jinglepay-website-dev --delete'
