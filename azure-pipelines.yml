@@ -4,8 +4,7 @@ trigger:
       - develop  # Only trigger on the develop branch
 
 pool:
-  vmImage: 'ubuntu-latest'
-
+  vmImage: 'ubuntu-latest'  
 steps:
 - task: NodeTool@0
   inputs:
@@ -28,8 +27,9 @@ steps:
     TargetFolder: '$(Build.ArtifactStagingDirectory)'
   displayName: 'Copy build files'
 
-- task: PublishBuildArtifacts@1
+- task: AWSCLI@1
   inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'drop'
-  displayName: 'Publish build artifacts'
+    awsCredentials: 'AWS-Service-Connection'
+    regionName: 'me-central-1'  # Change to your region
+    command: 's3'
+    arguments: 'sync $(Build.SourcesDirectory) s3://jinglepay-website-dev --delete'
