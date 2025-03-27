@@ -5,13 +5,13 @@ import CountryLanguageSelector from '@components/country-language-selector/index
 import qrCodeSrc from '@assets/icons/qr.png';
 ---
 
-<header class='flex relative sticky top-0 z-10 items-center px-32 py-6 bg-white shadow-sm'>
+<header class='fixed top-0 z-50 flex items-center w-full px-32 py-6 bg-white shadow-xl'>
   <a href='/' class='absolute left-32'>
     <img src='/JinglePay-logo.svg' alt='Jingle Pay' class='h-[35px] w-auto' />
   </a>
 
   <nav class='bg-[#ececec] rounded-[10px] px-8 py-2 mx-auto'>
-    <ul class='flex gap-12 items-center list-none'>
+    <ul class='flex items-center gap-12 list-none'>
       <li>
         <a
           href='/'
@@ -36,12 +36,12 @@ import qrCodeSrc from '@assets/icons/qr.png';
     </ul>
   </nav>
 
-  <div class='flex absolute right-32 gap-2 items-center'>
+  <div class='absolute flex items-center gap-2 right-32'>
     <QRModal qrCodeSrc={qrCodeSrc} isOpen={false}>
       <div>
         <a
           href='#download'
-          class='inline-block bg-[#794eff] text-white rounded-xl px-6 py-2 text-sm font-medium hover:bg-[#6a3ad9] transition-colors duration-300'
+          class='inline-block bg-[#794eff] text-white rounded-xl px-6 py-3 text-sm font-medium hover:bg-[#6a3ad9] transition-colors duration-300 min-w-[154px]'
           >Download App</a
         >
       </div>

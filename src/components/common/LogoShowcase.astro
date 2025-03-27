@@ -54,8 +54,7 @@ const { title, description, buttonText, buttonLink, logos, selector } = Astro.pr
                     <Image
                       src={logo.src}
                       alt={logo.alt}
-                      width={logo.width || 150}
-                      height={logo.height || 80}
+                      width={logo.width ?? 80}
                       class='object-contain h-auto max-w-full'
                     />
                   </a>

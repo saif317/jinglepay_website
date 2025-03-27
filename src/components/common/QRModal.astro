@@ -1,6 +1,7 @@
 ---
 // Import any needed dependencies
 import PhoneNumberInput from '@components/common/PhoneNumberInput.astro';
+import QRCodeGenerator from '@components/common/QRCodeGenerator.astro';
 import { Image } from 'astro:assets';
 
 // Add this type declaration
@@ -45,7 +46,7 @@ const modalId = `qr-modal-${Math.random().toString(36).substring(2, 9)}`;
       <span class='text-3xl font-light'>Scan the QR code to download the App</span>
 
       <div class='flex justify-center mb-4'>
-        <Image src={qrCodeSrc} alt='Download Jingle Pay App' width={200} height={200} />
+        <QRCodeGenerator />
       </div>
 
       <span class='text-3xl font-light'>or get a download link via SMS</span>

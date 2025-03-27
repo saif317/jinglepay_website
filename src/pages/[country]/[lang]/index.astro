@@ -8,6 +8,7 @@ import Companies from '@components/companies/index.astro';
 import Security from '@components/security/index.astro';
 import StartBanking from '@components/start-banking/index.astro';
 import CTA from '@components/cta/index.astro';
+import Regulation from '@components/regulation/index.astro';
 
 export async function getStaticPaths() {
   const countries = [
@@ -48,7 +49,8 @@ const translations = await import(`../../../i18n/translations/${lang}.json`);
 
   <div class='flex flex-col gap-y-[96px] pb-[96px] px-[89px]'>
     <Companies />
-    <Security />
+    <Regulation />
+    <!-- <Security /> -->
     <StartBanking />
     <CTA />
   </div>

@@ -22,7 +22,9 @@ const currentCountry = COUNTRIES.find((c) => c.path === currentCountryPath) || C
 const currentLanguage = currentCountry.languages.find((l) => l.code === currentLangCode) || currentCountry.languages[0];
 ---
 
-<div class='flex items-center px-4 py-2 bg-gray-100 rounded-full country-language-selector'>
+<div
+  class='flex items-center px-4 py-1.5 bg-gray-100 rounded-full country-language-selector min-w-[154px] cursor-pointer'
+>
   <div class='relative country-selector'>
     <button id='country-button' class='flex items-center gap-2'>
       <div class='flex items-center justify-center w-8 h-8 flag'>

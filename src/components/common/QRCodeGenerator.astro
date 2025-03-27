@@ -1,0 +1,22 @@
+---
+// src/components/common/ServerQRCode.astro
+import QRCode from 'qrcode';
+
+interface Props {
+  size?: number;
+}
+
+const { size = 200 } = Astro.props;
+const siteUrl = import.meta.env.DEV
+  ? 'http://localhost:4321'
+  : 'http://jinglepay-website-dev.s3-website.me-central-1.amazonaws.com';
+const redirectUrl = `${siteUrl}/app-redirect`;
+
+// Generate QR code as a data URL
+const qrCodeDataURL = await QRCode.toDataURL(redirectUrl, {
+  width: size,
+  margin: 1,
+});
+---
+
+<img src={qrCodeDataURL} alt='App Download QR Code' width={size} />

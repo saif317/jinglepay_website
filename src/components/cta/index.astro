@@ -1,6 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import qr from '@assets/icons/qrwhite.svg';
+import QRCodeGenerator from '@components/common/QRCodeGenerator.astro';
 ---
 
 <div class='text-white flex flex-col items-center gap-y-[45px] pt-[47px] pb-[33px] px-[87px] bg-indigo-950 rounded-xl'>
@@ -13,7 +14,7 @@ import qr from '@assets/icons/qrwhite.svg';
   </div>
 
   <div class='border border-white rounded-xl py-3 pr-2.5 pl-4 gap-x-2 flex flex-row items-center max-w-[276px]'>
-    <Image src={qr} alt='Jingle Pay QR' />
+    <QRCodeGenerator size={64} />
     <span class='text-2xl font-bold text-white'>Get the Jingle Pay App</span>
   </div>
 </div>

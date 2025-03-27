@@ -12,8 +12,7 @@ import walletPromoImage from '@assets/images/promos/wallet-promo.webp';
 // Prepare carousel items for rendering
 const carouselItems: (FeatureBannerProps | PromoBannerProps)[] = [
   {
-    title: 'Multiple accounts. All your money. One super-app.',
-    subtitle: 'Manage all your finances in a single place',
+    titles: ['Multiple accounts.', 'All your money.', 'One super-app!'],
     backgroundColor: 'bg-gradient-to-br from-teal-400 via-green-400 to-teal-400', // Green
     textColor: '#000000',
     imageSrc: multipleAccountsImage,
@@ -21,7 +20,7 @@ const carouselItems: (FeatureBannerProps | PromoBannerProps)[] = [
     type: 'feature',
   },
   {
-    heading: 'Earn up to 2000 PKR',
+    heading: ['Earn up to', '2000 PKR'],
     description: 'Complete your registration and Earn. It takes less than 5min.',
     backgroundColor: 'bg-[radial-gradient(ellipse_50.00%_50.00%_at_50.00%_50.00%,_#8744D4_0%,_#6526AE_100%)]',
     textColor: '#FFFFFF',
@@ -30,8 +29,8 @@ const carouselItems: (FeatureBannerProps | PromoBannerProps)[] = [
     type: 'promo',
   },
   {
-    title: 'Instantly transfer money',
-    subtitle: 'Fast and secure transfers to anyone, anywhere',
+    titles: ['Pay your bills in seconds—fast, easy, and hassle-free!'],
+    subtitle: 'One platform, all your payments, zero stress. Stay on top of your finances with just a tap!',
     backgroundColor: 'bg-[radial-gradient(ellipse_115.42%_113.13%_at_15.59%_27.82%,_#31B3FB_0%,_#137EC5_100%)]',
     textColor: '#FFFFFF',
     imageSrc: transferImage,
@@ -39,8 +38,7 @@ const carouselItems: (FeatureBannerProps | PromoBannerProps)[] = [
     type: 'feature',
   },
   {
-    title: 'Multiple accounts. All your money. One super-app.',
-    subtitle: 'Manage all your finances in a single place',
+    titles: ['Multiple accounts.', 'All your money.', 'One super-app!'],
     backgroundColor: 'bg-gradient-to-br from-teal-400 via-green-400 to-teal-400', // Green
     textColor: '#000000',
     imageSrc: multipleAccountsImage,
@@ -48,7 +46,7 @@ const carouselItems: (FeatureBannerProps | PromoBannerProps)[] = [
     type: 'feature',
   },
   {
-    heading: 'Earn up to 2000 PKR',
+    heading: ['Earn up to', '2000 PKR'],
     description: 'Complete your registration and Earn. It takes less than 5min.',
     backgroundColor: 'bg-[radial-gradient(ellipse_50.00%_50.00%_at_50.00%_50.00%,_#8744D4_0%,_#6526AE_100%)]',
     textColor: '#FFFFFF',
@@ -57,8 +55,8 @@ const carouselItems: (FeatureBannerProps | PromoBannerProps)[] = [
     type: 'promo',
   },
   {
-    title: 'Instantly transfer money',
-    subtitle: 'Fast and secure transfers to anyone, anywhere',
+    titles: ['Pay your bills in seconds—fast, easy, and hassle-free!'],
+    subtitle: 'One platform, all your payments, zero stress. Stay on top of your finances with just a tap!',
     backgroundColor: 'bg-[radial-gradient(ellipse_115.42%_113.13%_at_15.59%_27.82%,_#31B3FB_0%,_#137EC5_100%)]',
     textColor: '#FFFFFF',
     imageSrc: transferImage,
@@ -114,7 +112,7 @@ const carouselItems: (FeatureBannerProps | PromoBannerProps)[] = [
       initialSlide: 2,
 
       // Reduce space between slides
-      spaceBetween: 175,
+      spaceBetween: 135,
       loop: true,
 
       // Adjust coverflow effect
