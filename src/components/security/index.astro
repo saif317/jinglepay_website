@@ -1,0 +1,30 @@
+---
+import { Image } from 'astro:assets';
+
+import secure from '@assets/icons/secure.svg';
+import ssl from '@assets/logos/ssl.png';
+import fdic from '@assets/logos/fdic.png';
+import dfsa from '@assets/logos/dfsa.webp';
+---
+
+<div class='flex flex-row justify-between gap-x-36'>
+  <div class='flex flex-col justify-between'>
+    <h5 class='text-3xl font-extrabold'>Security is our priority</h5>
+    <span class='text-xl font-normal text-neutral-500'
+      >All transactions are thoroughly verified and validated. We are licensed, certified, and regulated by the DFSA.</span
+    >
+  </div>
+
+  <div class='flex flex-row items-center gap-x-6 basis-[28rem]'>
+    <Image src={ssl} alt='SSL' height={56} />
+    <Image src={secure} alt='Secure' height={56} class='mt-2.5' />
+    <Image src={fdic} alt='FDIC' height={56} />
+    <Image src={dfsa} alt='DFSA' height={56} class='blackened-img' />
+  </div>
+</div>
+
+<style>
+  .blackened-img {
+    filter: grayscale(100%) brightness(0);
+  }
+</style>

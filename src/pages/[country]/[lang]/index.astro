@@ -5,6 +5,8 @@ import HeroSection from '@components/hero-section/index.astro';
 import Layout from '@layouts/Layout.astro';
 import Benefits from '@components/benefits/index.astro';
 import Companies from '@components/companies/index.astro';
+import Security from '@components/security/index.astro';
+import StartBanking from '@components/start-banking/index.astro';
 
 export async function getStaticPaths() {
   const countries = [
@@ -43,7 +45,9 @@ const translations = await import(`../../../i18n/translations/${lang}.json`);
 
   <Benefits />
 
-  <div class='flex flex-col gap-y-[129px]'>
+  <div class='flex flex-col gap-y-[96px] px-[89px]'>
     <Companies />
+    <Security />
+    <StartBanking />
   </div>
 </Layout>

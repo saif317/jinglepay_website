@@ -1,0 +1,38 @@
+---
+import frame from '@assets/icons/frame.svg';
+import scan from '@assets/icons/scan.svg';
+import auth from '@assets/icons/auth.svg';
+import account from '@assets/icons/accountsvg.svg';
+import { Image } from 'astro:assets';
+
+import line from '@assets/icons/line.svg';
+
+const steps = [
+  { title: 'Enter CNIC details', icon: frame },
+  { title: 'Get ready to scan right hand', icon: scan },
+  { title: 'Get authenticated with NADRA', icon: auth },
+  { title: 'Select preferred account type', icon: account },
+];
+---
+
+<div class='flex flex-col gap-y-[60px]'>
+  <div class='flex flex-col items-center text-center gap-y-5'>
+    <h5 class='text-3xl font-extrabold'>Open a free digital bank account in a few clicks!</h5>
+    <span class='text-3xl font-normal text-zinc-900'>Start banking in minutes.</span>
+  </div>
+
+  <div class='relative flex flex-row mx-auto gap-x-[72px]'>
+    <Image src={line} alt='Line' class='absolute w-full top-1/2 -z-10' />
+
+    {
+      steps.map((step) => (
+        <div class='flex flex-row items-center shadow-[0px_0px_54.5px_0px_rgba(28,28,28,0.08)] bg-white '>
+          <div class='flex flex-col px-3 py-4 gap-y-4 rounded-xl max-w-[151px]'>
+            <Image src={step.icon} alt={step.title} height={32} width={32} />
+            <span class='text-base font-normal text-black'>{step.title}</span>
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</div>
