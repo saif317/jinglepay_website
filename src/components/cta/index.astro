@@ -1,0 +1,19 @@
+---
+import { Image } from 'astro:assets';
+import qr from '@assets/icons/qrwhite.svg';
+---
+
+<div class='text-white flex flex-col items-center gap-y-[45px] pt-[47px] pb-[33px] px-[87px] bg-indigo-950 rounded-xl'>
+  <div class='flex flex-col items-center text-center gap-y-4'>
+    <span class='text-2xl font-bold'>Are you ready to Jingle?</span>
+    <span class='text-4xl font-bold'>Spend, Send and Save your money, all in one place</span>
+    <span class='text-xl font-normal'
+      >Empowering you with a financial super-app that simplifies your day-to-day financial needs.</span
+    >
+  </div>
+
+  <div class='border border-white rounded-xl py-3 pr-2.5 pl-4 gap-x-2 flex flex-row items-center max-w-[276px]'>
+    <Image src={qr} alt='Jingle Pay QR' />
+    <span class='text-2xl font-bold text-white'>Get the Jingle Pay App</span>
+  </div>
+</div>
