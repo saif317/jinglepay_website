@@ -31,7 +31,7 @@ steps:
     awsCredentials: 'AWS_DEV'
     regionName: 'me-central-1'
     bucketName: 'jinglepay-website-dev'
-    sourceFolder: '$(Build.SourcesDirectory)'
+    sourceFolder: '$(Build.ArtifactStagingDirectory)/dist'
     targetFolder: '/'
     flattenFolders: true
 
