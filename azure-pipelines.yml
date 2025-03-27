@@ -4,8 +4,7 @@ trigger:
       - develop  # Only trigger on the develop branch
 
 pool:
-  vmImage: 'ubuntu-latest'
-
+  vmImage: 'ubuntu-latest'  
 steps:
 - task: NodeTool@0
   inputs:
@@ -19,17 +18,20 @@ steps:
 - script: |
     npm run build
   displayName: 'Build Astro project'
-
+  
 - task: CopyFiles@2
   inputs:
-    Contents: |
-      dist/**         # Astro builds to 'dist' by default
-      package.json
-    TargetFolder: '$(Build.ArtifactStagingDirectory)'
-  displayName: 'Copy build files'
-
-- task: PublishBuildArtifacts@1
+    SourceFolder: '$(Build.SourcesDirectory)/dist'
+    Contents: '**'          # Copy all files within the dist folder
+    TargetFolder: '$(Build.ArtifactStagingDirectory)/dist'
+  displayName: 'Copy root dist folder'
+  
+- task: S3Upload@1
   inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'drop'
-  displayName: 'Publish build artifacts'
+    awsCredentials: 'AWS_DEV'
+    regionName: 'me-central-1'
+    bucketName: 'jinglepay-website-dev'
+    sourceFolder: '$(Build.ArtifactStagingDirectory)/dist'
+    targetFolder: '/'
+    flattenFolders: true
+
