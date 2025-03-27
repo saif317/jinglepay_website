@@ -18,14 +18,13 @@ steps:
 - script: |
     npm run build
   displayName: 'Build Astro project'
-
+  
 - task: CopyFiles@2
   inputs:
-    Contents: |
-      dist/**         # Astro builds to 'dist' by default
-      package.json
-    TargetFolder: '$(Build.ArtifactStagingDirectory)'
-  displayName: 'Copy build files'
+    SourceFolder: '$(Build.SourcesDirectory)/dist'
+    Contents: '**'          # Copy all files within the dist folder
+    TargetFolder: '$(Build.ArtifactStagingDirectory)/dist'
+  displayName: 'Copy root dist folder'
   
 - task: S3Upload@1
   inputs:
