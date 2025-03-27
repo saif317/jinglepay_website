@@ -32,6 +32,6 @@ steps:
     regionName: 'me-central-1'
     bucketName: 'jinglepay-website-dev'
     sourceFolder: '$(Build.ArtifactStagingDirectory)/dist'
-    targetFolder: '/'
+    targetFolder: ''
     flattenFolders: true
 
