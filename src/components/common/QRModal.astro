@@ -1,103 +1,72 @@
 ---
-// Import any needed dependencies
 import PhoneNumberInput from '@components/common/PhoneNumberInput.astro';
 import QRCodeGenerator from '@components/common/QRCodeGenerator.astro';
-import { Image } from 'astro:assets';
 
-// Add this type declaration
 declare global {
   interface Window {
     openQRModal: () => void;
   }
 }
-
-// Props for customization
-interface Props {
-  qrCodeSrc: ImageMetadata;
-  isOpen: boolean;
-}
-
-const { qrCodeSrc, isOpen = false } = Astro.props;
-// Generate a unique ID for this component instance
-const modalId = `qr-modal-${Math.random().toString(36).substring(2, 9)}`;
 ---
 
-<div class='qr-modal-container' data-modal-id={modalId}>
-  <button class='cursor-pointer qr-button'>
-    <slot />
-  </button>
-
-  <!-- Modal backdrop -->
+<!-- Global QR Modal (included once) -->
+<div id='global-qr-modal' class='fixed inset-0 z-50 flex items-center justify-center bg-[#00000050] hidden'>
   <div
-    class={`qr-modal-backdrop fixed inset-0 z-50 flex items-center justify-center bg-[#00000050] ${isOpen ? '' : 'hidden'}`}
+    class='w-full max-w-3xl text-center py-16 flex flex-col items-center relative bg-white rounded-[60px] shadow-xl gap-y-11'
   >
-    <!-- Modal content -->
-    <div
-      class='w-full max-w-3xl text-center py-16 flex flex-col items-center relative bg-white rounded-[60px] shadow-xl gap-y-11'
-    >
-      <!-- Close button -->
-      <button class='absolute text-gray-500 close-modal top-12 right-12 hover:text-gray-700'>
-        <svg xmlns='http://www.w3.org/2000/svg' class='w-6 h-6' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
-          <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M6 18L18 6M6 6l12 12'></path>
-        </svg>
-      </button>
+    <!-- Close button -->
+    <button id='global-qr-modal-close' class='absolute text-gray-500 top-12 right-12 hover:text-gray-700'>
+      <svg xmlns='http://www.w3.org/2000/svg' class='w-6 h-6' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
+        <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M6 18L18 6M6 6l12 12'></path>
+      </svg>
+    </button>
 
-      <h3 class='flex items-center justify-between text-5xl font-extrabold'>Get the Jingle Pay App</h3>
-      <span class='text-3xl font-light'>Scan the QR code to download the App</span>
+    <h3 class='flex items-center justify-between text-5xl font-extrabold'>Get the Jingle Pay App</h3>
+    <span class='text-3xl font-light'>Scan the QR code to download the App</span>
 
-      <div class='flex justify-center mb-4'>
-        <QRCodeGenerator />
-      </div>
-
-      <span class='text-3xl font-light'>or get a download link via SMS</span>
-      <PhoneNumberInput class='mx-auto my-4' />
+    <div class='flex justify-center mb-4'>
+      <QRCodeGenerator />
     </div>
+
+    <span class='text-3xl font-light'>or get a download link via SMS</span>
+    <PhoneNumberInput class='mx-auto my-4' />
   </div>
 </div>
 
 <script>
-  // Initialize all QR modal containers on the page
+  // Define global function to open modal
+  window.openQRModal = () => {
+    const modal = document.getElementById('global-qr-modal');
+    if (modal) {
+      modal.classList.remove('hidden');
+      document.body.classList.add('overflow-hidden');
+    }
+  };
+
+  // Set up event listeners (only once)
   document.addEventListener('DOMContentLoaded', () => {
-    const modalContainers = document.querySelectorAll('.qr-modal-container');
+    const modal = document.getElementById('global-qr-modal');
+    const closeButton = document.getElementById('global-qr-modal-close');
 
-    modalContainers.forEach((container) => {
-      const qrButton = container.querySelector('.qr-button');
-      const modalBackdrop = container.querySelector('.qr-modal-backdrop');
-      const closeButton = container.querySelector('.close-modal');
-
-      // Open modal when QR button is clicked
-      qrButton?.addEventListener('click', () => {
-        modalBackdrop?.classList.remove('hidden');
-        document.body.classList.add('overflow-hidden'); // Prevent scrolling
-      });
-
-      // Close modal when close button is clicked
-      closeButton?.addEventListener('click', (e) => {
-        e.preventDefault();
-        modalBackdrop?.classList.add('hidden');
-        document.body.classList.remove('overflow-hidden');
-      });
-
-      // Close modal when clicking outside modal content
-      modalBackdrop?.addEventListener('click', (e) => {
-        if (e.target === modalBackdrop) {
-          modalBackdrop.classList.add('hidden');
-          document.body.classList.remove('overflow-hidden');
-        }
-      });
+    // Close modal when close button is clicked
+    closeButton?.addEventListener('click', () => {
+      modal?.classList.add('hidden');
+      document.body.classList.remove('overflow-hidden');
     });
 
-    // Close modal on escape key (works for any active modal)
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
-        const visibleModals = document.querySelectorAll('.qr-modal-backdrop:not(.hidden)');
-        visibleModals.forEach((modal) => {
-          modal.classList.add('hidden');
-        });
+    // Close modal when clicking outside modal content
+    modal?.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.classList.add('hidden');
+        document.body.classList.remove('overflow-hidden');
+      }
+    });
 
-        if (visibleModals.length > 0) {
-          document.body.classList.remove('overflow-hidden');
-        }
+    // Close modal on escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal && !modal.classList.contains('hidden')) {
+        modal.classList.add('hidden');
+        document.body.classList.remove('overflow-hidden');
       }
     });
   });

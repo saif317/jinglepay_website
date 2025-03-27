@@ -14,6 +14,7 @@
     "@tailwindcss/vite": "^4.0.15",
     "astro": "^5.5.4",
     "astro-expressive-code": "^0.40.2",
+    "axios": "^1.8.4",
     "qrcode": "^1.5.4",
     "swiper": "^11.2.6",
     "tailwindcss": "^4.0.15"

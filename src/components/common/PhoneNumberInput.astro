@@ -8,12 +8,17 @@ import pakFlag from '@assets/flags/pak.svg'; // Adjust the path as needed
 interface Props {
   onSubmit?: string; // Optional handler or form action
   class?: string;
+  smsText?: string; // Add SMS message text prop
 }
 
-const { onSubmit = '#', class: className = '' } = Astro.props;
+const {
+  onSubmit = '#',
+  class: className = '',
+  smsText = 'Download JinglePay now: https://jinglepay.com/download', // Default message
+} = Astro.props;
 ---
 
-<form action={onSubmit} method='POST' class={`flex w-full max-w-md rounded-lg overflow-hidden shadow-lg ${className}`}>
+<div class={`flex w-full max-w-md rounded-lg overflow-hidden shadow-lg ${className}`}>
   <!-- Country code selector -->
   <div class='flex items-center gap-2 px-4 py-3 bg-gray-100 border-r border-gray-200'>
     <Image src={pakFlag} alt='Pakistan' width={24} height={16} class='rounded-sm' />
@@ -31,33 +36,148 @@ const { onSubmit = '#', class: className = '' } = Astro.props;
 
   <!-- Submit button -->
   <button
-    type='submit'
-    class='bg-[#794eff] px-6 py-3 text-white flex items-center justify-center'
+    id='send-link-button'
+    type='button'
+    class='cursor-pointer bg-[#794eff] px-6 py-3 text-white flex items-center justify-center'
     aria-label='Send download link'
   >
     <svg xmlns='http://www.w3.org/2000/svg' class='w-6 h-6' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
       <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M14 5l7 7m0 0l-7 7m7-7H3'></path>
     </svg>
   </button>
-</form>
+</div>
+
+<!-- Toast message -->
+<div
+  id='toast'
+  class='fixed z-50 hidden p-4 transition-all duration-300 transform translate-y-20 bg-white rounded-lg shadow-lg opacity-0 h-fit top-[2rem] right-[2rem]'
+>
+  <div class='flex items-center'>
+    <div id='toast-icon' class='mr-3'>
+      <!-- Icons will be inserted dynamically -->
+    </div>
+    <div id='toast-message' class='text-sm font-medium'></div>
+  </div>
+</div>
 
 <script>
-  // Add any client-side functionality here if needed
-  // For example, validation or handling the submission with JavaScript
-  const form = document.querySelector('form');
-  form?.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const phoneInput = form.querySelector('input[name="phoneNumber"]') as HTMLInputElement;
-    const phoneNumber = phoneInput?.value;
+  import axios from 'axios';
 
-    if (phoneNumber && /^\d{10}$/.test(phoneNumber)) {
-      // Valid phone number - you can submit the form or handle via AJAX
-      console.log('Valid phone:', phoneNumber);
-      // Implement your SMS sending logic here or submit the form
-      form.submit();
+  // Set up the API client
+  const apiClient = axios.create({
+    baseURL: 'https://sms.dovesofttech.io',
+    headers: {
+      'Content-type': 'application/json',
+    },
+  });
+
+  function showToast(message: string, type = 'success') {
+    const toast = document.getElementById('toast');
+    const toastMessage = document.getElementById('toast-message');
+    const toastIcon = document.getElementById('toast-icon');
+
+    if (!toast || !toastMessage || !toastIcon) return;
+
+    // Set message
+    toastMessage.textContent = message;
+
+    // Set icon based on type
+    if (type === 'success') {
+      toastIcon.innerHTML = `<svg class="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+        </svg>`;
+      toast.classList.add('bg-green-50');
+      toast.classList.remove('bg-red-50');
+    } else {
+      toastIcon.innerHTML = `<svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>`;
+      toast.classList.add('bg-red-50');
+      toast.classList.remove('bg-green-50');
+    }
+
+    // Show toast
+    toast.classList.remove('hidden');
+    setTimeout(() => {
+      toast.classList.remove('translate-y-20', 'opacity-0');
+    }, 10);
+
+    // Hide toast after 5 seconds
+    setTimeout(() => {
+      toast.classList.add('translate-y-20', 'opacity-0');
+      setTimeout(() => {
+        toast.classList.add('hidden');
+      }, 300);
+    }, 5000);
+  }
+
+  const button = document.querySelector('#send-link-button');
+
+  button?.addEventListener('click', async (e) => {
+    // alert('Button was clicked!');
+
+    e.preventDefault();
+    const phoneInput = document.querySelector('input[name="phoneNumber"]') as HTMLInputElement;
+    const phoneNumber = phoneInput?.value;
+    const countryCode = '+92'; // Pakistan code
+    const smsText = 'Download JinglePay now: https://jinglepay.com/download'; // Default message, can be passed from props
+
+    // Validate phone number
+    if (phoneNumber && /^\d{9}$/.test(phoneNumber)) {
+      try {
+        // Show loading state
+        const submitButton = document.querySelector('#send-link-button');
+        if (submitButton) {
+          (submitButton as HTMLButtonElement).disabled = true;
+          submitButton.innerHTML = `<svg class="w-5 h-5 text-white animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>`;
+        }
+
+        // Send SMS via API
+        const res = await apiClient.get('/submitsms.jsp', {
+          params: {
+            user: 'JinglPay',
+            key: '255ac3f6caXX',
+            mobile: `${countryCode}${phoneNumber}`,
+            senderid: 'JinglePay',
+            message: smsText,
+            accusage: '3',
+          },
+        });
+
+        // Reset button state
+        if (submitButton) {
+          (submitButton as HTMLButtonElement).disabled = false;
+          submitButton.innerHTML = `<svg xmlns='http://www.w3.org/2000/svg' class='w-6 h-6' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
+          <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M14 5l7 7m0 0l-7 7m7-7H3'></path>
+        </svg>`;
+        }
+
+        // Check response and show appropriate toast
+        if (res.data && (res.data.includes('success') || res.status === 200)) {
+          showToast('Download link sent to your phone!', 'success');
+          phoneInput.value = ''; // Reset the input
+        } else {
+          showToast('Failed to send SMS. Please try again.', 'error');
+        }
+      } catch (error) {
+        // console.error('Error sending SMS:', error);
+        showToast('Failed to send SMS. Please try again.', 'error');
+
+        // Reset button state
+        const submitButton = document.querySelector('#send-link-button');
+        if (submitButton) {
+          (submitButton as HTMLButtonElement).disabled = false;
+          submitButton.innerHTML = `<svg xmlns='http://www.w3.org/2000/svg' class='w-6 h-6' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
+          <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M14 5l7 7m0 0l-7 7m7-7H3'></path>
+        </svg>`;
+        }
+      }
     } else {
       // Invalid phone number
-      alert('Please enter a valid 10-digit mobile number');
+      showToast('Please enter a valid 9-digit mobile number', 'error');
     }
   });
 </script>

@@ -12,11 +12,12 @@ interface Props {
 import qrCode from '@assets/icons/qr.png';
 import QRModal from '@components/common/QRModal.astro';
 import QRCodeGenerator from '@components/common/QRCodeGenerator.astro';
+import QRModalTriggerer from '@components/common/QRModalTriggerer.astro';
 
 const { qrCodeSrc = qrCode, text = 'Get the Jingle Pay App', class: className = '' } = Astro.props;
 ---
 
-<QRModal qrCodeSrc={qrCodeSrc} isOpen={false}>
+<QRModalTriggerer>
   <div
     class={`relative inline-flex items-center rounded-lg p-1.5 shadow-md hover:-translate-y-0.5 transition-transform duration-200 border-2 gap-1.5 ${className} text-left mx-auto max-w-[265px]`}
   >
@@ -25,4 +26,4 @@ const { qrCodeSrc = qrCode, text = 'Get the Jingle Pay App', class: className = 
     </div>
     <span class='block text-2xl font-bold'>{text}</span>
   </div>
-</QRModal>
+</QRModalTriggerer>

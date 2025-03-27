@@ -1,6 +1,6 @@
 ---
 // src/components/Header.astro
-import QRModal from '@components/common/QRModal.astro';
+import QRModalTriggerer from '@components/common/QRModalTriggerer.astro';
 import CountryLanguageSelector from '@components/country-language-selector/index.astro';
 import qrCodeSrc from '@assets/icons/qr.png';
 ---
@@ -37,7 +37,7 @@ import qrCodeSrc from '@assets/icons/qr.png';
   </nav>
 
   <div class='absolute flex items-center gap-2 right-32'>
-    <QRModal qrCodeSrc={qrCodeSrc} isOpen={false}>
+    <QRModalTriggerer>
       <div>
         <a
           href='#download'
@@ -45,7 +45,7 @@ import qrCodeSrc from '@assets/icons/qr.png';
           >Download App</a
         >
       </div>
-    </QRModal>
+    </QRModalTriggerer>
     <CountryLanguageSelector />
   </div>
 </header>
