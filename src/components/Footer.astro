@@ -14,54 +14,54 @@ const navSections = [
   {
     title: 'Features',
     links: [
-      { href: '/features/all-in-one-account', text: 'All-In-One Account' },
-      { href: '/features/bill-payments', text: 'Bill Payments' },
-      { href: '/features/peer-to-peer-payments', text: 'Peer-to-Peer Payments' },
-      { href: '/features/card-payments', text: 'Card Payments' },
+      { href: '#benefit-1', text: 'All-In-One Account' },
+      { href: '#bill-payments', text: 'Bill Payments' },
+      { href: '#benefit-3', text: 'Peer-to-Peer Payments' },
+      { href: '#benefit-6', text: 'Card Payments' },
     ],
   },
   {
     title: 'Accounts',
     links: [
-      { href: '/products/mobile-app', text: 'Home Remittance Account' },
-      { href: '/products/digital-wallet', text: 'Saving Account' },
-      { href: '/products/business', text: 'Current Account' },
+      { href: '#benefit-2', text: 'Home Remittance Account' },
+      { href: '#benefit-1', text: 'Saving Account' },
+      { href: '#benefit-1', text: 'Current Account' },
     ],
   },
   {
     title: 'Company',
     links: [
-      { href: '/company/about', text: 'About Us' },
-      { href: '/company/mission', text: 'Mission' },
-      { href: '/company/careers', text: 'Careers' },
-      { href: '/company/press', text: 'Press' },
-      { href: '/company/contact', text: 'Contact' },
+      { href: '#', text: 'About Us' },
+      { href: '#', text: 'Mission' },
+      { href: '#', text: 'Careers' },
+      { href: '#', text: 'Press' },
+      { href: '#', text: 'Contact' },
     ],
   },
   {
     title: 'Security',
     links: [
-      { href: '/company/about', text: 'Security' },
-      { href: '/company/careers', text: 'About Fraud' },
+      { href: '#regulation', text: 'Security' },
+      { href: '#', text: 'About Fraud' },
     ],
   },
   {
     title: 'Help',
     links: [
-      { href: '/company/about', text: 'Terms & Conditions' },
-      { href: '/company/careers', text: 'FAQs' },
-      { href: '/company/careers', text: 'Contact Us' },
+      { href: '#', text: 'Terms & Conditions' },
+      { href: '#', text: 'FAQs' },
+      { href: '#', text: 'Contact Us' },
     ],
   },
 ];
 
 // Define social media links
 const socialLinks = [
-  { href: '#', icon: facebook, alt: 'Facebook' },
-  { href: '#', icon: instagram, alt: 'Instagram' },
-  { href: '#', icon: twitter, alt: 'Twitter' },
-  { href: '#', icon: linkedin, alt: 'Linkedin' },
-  { href: '#', icon: youtube, alt: 'Youtube' },
+  { href: 'https://www.facebook.com/JinglePay/', icon: facebook, alt: 'Facebook' },
+  { href: 'https://www.instagram.com/jinglepay/', icon: instagram, alt: 'Instagram' },
+  { href: 'https://x.com/jinglepay/', icon: twitter, alt: 'Twitter' },
+  { href: 'https://www.linkedin.com/company/jinglepay/', icon: linkedin, alt: 'Linkedin' },
+  { href: 'https://www.youtube.com/@jinglepay', icon: youtube, alt: 'Youtube' },
 ];
 ---
 
@@ -96,6 +96,7 @@ const socialLinks = [
         socialLinks.map((social) => (
           <a
             href={social.href}
+            target='_blank'
             class='flex items-center justify-center w-6 h-6 rounded-full transition-all duration-300 hover:-translate-y-[3px]'
           >
             <Image src={social.icon} alt={social.alt} />

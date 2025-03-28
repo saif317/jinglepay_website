@@ -54,3 +54,25 @@ const {
     background-color: var(--white);
   }
 </style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const anchors = document.querySelectorAll('a[href^="#"]');
+
+    anchors.forEach((anchor) => {
+      anchor.addEventListener('click', (e: Event) => {
+        e.preventDefault();
+
+        const targetId = (e.currentTarget as HTMLAnchorElement).getAttribute('href');
+        const targetElement = targetId ? document.querySelector(targetId) : null;
+
+        if (targetElement) {
+          window.scrollTo({
+            top: targetElement.getBoundingClientRect().top + window.scrollY - 90,
+            behavior: 'smooth',
+          });
+        }
+      });
+    });
+  });
+</script>

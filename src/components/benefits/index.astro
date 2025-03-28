@@ -82,7 +82,7 @@ const billPaymentIcons = [
 ];
 ---
 
-<div class='flex flex-col items-center gap-y-[76px] px-[89px] 2xl:px-[300px] py-[80px]'>
+<div id="benefits-section" class='flex flex-col items-center gap-y-[76px] px-[89px] 2xl:px-[300px] py-[80px]'>
   <div class='flex flex-col items-center text-center gap-y-4'>
     <h4 class='text-4xl font-extrabold'>What are the benefits for you?</h4>
     <span class='text-xl font-normal text-zinc-900'>
@@ -94,7 +94,7 @@ const billPaymentIcons = [
   <div class='grid grid-cols-3 gap-[60px]'>
     {
       benefits.map((benefit) => (
-        <div class='flex flex-col items-center gap-y-4'>
+        <div class='flex flex-col items-center gap-y-4' id={benefit.alt.toLowerCase().split(' ').join('-')}>
           {
             benefit.alt==='Benefit 6'? 
             <div class="rounded-4xl relative bg-[radial-gradient(ellipse_50.00%_50.00%_at_50.00%_50.00%,_white_0%,_#F4F4F6_100%)] flex justify-center items-center px-[45px] py-[40px]">
@@ -121,7 +121,7 @@ const billPaymentIcons = [
     }
   </div>
 
-  <div class='bg-[#F5F5F7] text-center py-9 flex flex-col items-center justify-center gap-y-7 px-24 rounded-[30px]'>
+  <div id='bill-payments' class='bg-[#F5F5F7] text-center py-9 flex flex-col items-center justify-center gap-y-7 px-24 rounded-[30px]'>
     <h5 class='text-3xl font-extrabold'>Bill Payments made easy</h5>
     <span class='text-xl font-normal text-zinc-900'
       >Say goodbye to bill stress with Jingle Pay! Effortlessly manage your utility payments and set up reminders to
