@@ -19,9 +19,9 @@ const { qrCodeSrc = qrCode, text = 'Get the Jingle Pay App', class: className = 
 
 <QRModalTriggerer>
   <div
-    class={`relative inline-flex items-center rounded-lg p-1.5 shadow-md hover:-translate-y-0.5 transition-transform duration-200 border-2 gap-1.5 ${className} text-left mx-auto max-w-[265px]`}
+    class={`relative inline-flex items-center rounded-lg p-1.5 shadow-md hover:-translate-y-0.5 transition-transform duration-200 border-2 border-[#C8C8C8] gap-1.5 ${className} text-left mx-auto max-w-[265px]`}
   >
-    <div class='flex items-center justify-center rounded-l-lg'>
+    <div class='flex justify-center items-center rounded-l-lg'>
       <QRCodeGenerator size={80} />
     </div>
     <span class='block text-2xl font-bold'>{text}</span>
