@@ -5,7 +5,10 @@ import CountryLanguageSelector from '@components/country-language-selector/index
 import qrCodeSrc from '@assets/icons/qr.png';
 ---
 
-<header class='flex fixed top-0 z-50 items-center px-32 py-6 w-full bg-white shadow-xl'>
+<header
+  class='flex fixed top-0 z-50 items-center px-32 py-6 w-full bg-white border-gray-200 transition-shadow duration-300 border-b-[1px]'
+  id='main-header'
+>
   <a href='/' class='absolute left-32'>
     <img src='/JinglePay-logo.svg' alt='Jingle Pay' class='h-[35px] w-auto' />
   </a>
@@ -58,5 +61,17 @@ import qrCodeSrc from '@assets/icons/qr.png';
   mobileMenuToggle?.addEventListener('click', () => {
     mainNav?.classList.toggle('active');
     mobileMenuToggle.classList.toggle('active');
+  });
+
+  // Header shadow on scroll functionality
+  const header = document.getElementById('main-header');
+  const scrollThreshold = 50; // Adjust this value based on when you want the shadow to appear
+
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > scrollThreshold) {
+      header?.classList.add('shadow-xl');
+    } else {
+      header?.classList.remove('shadow-xl');
+    }
   });
 </script>
