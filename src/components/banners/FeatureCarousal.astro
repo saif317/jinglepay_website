@@ -21,7 +21,8 @@ const carouselItems: (FeatureBannerProps | PromoBannerProps)[] = [
   },
   {
     heading: ['Earn up to', '2000 PKR'],
-    description: 'Complete your registration and Earn. It takes less than 5min.',
+    description:
+      'Get started in minutes! Open your bank account in just a few clicks and start earning today. Download the App now!',
     backgroundColor: 'bg-[radial-gradient(ellipse_50.00%_50.00%_at_50.00%_50.00%,_#8744D4_0%,_#6526AE_100%)]',
     textColor: '#FFFFFF',
     imageSrc: walletPromoImage,
@@ -29,33 +30,7 @@ const carouselItems: (FeatureBannerProps | PromoBannerProps)[] = [
     type: 'promo',
   },
   {
-    titles: ['Pay your bills in seconds—fast, easy, and hassle-free!'],
-    subtitle: 'One platform, all your payments, zero stress. Stay on top of your finances with just a tap!',
-    backgroundColor: 'bg-[radial-gradient(ellipse_115.42%_113.13%_at_15.59%_27.82%,_#31B3FB_0%,_#137EC5_100%)]',
-    textColor: '#FFFFFF',
-    imageSrc: transferImage,
-    imageAlt: 'Transfer money feature',
-    type: 'feature',
-  },
-  {
-    titles: ['Multiple accounts.', 'All your money.', 'One super-app!'],
-    backgroundColor: 'bg-gradient-to-br from-teal-400 via-green-400 to-teal-400', // Green
-    textColor: '#000000',
-    imageSrc: multipleAccountsImage,
-    imageAlt: 'Multiple accounts feature',
-    type: 'feature',
-  },
-  {
-    heading: ['Earn up to', '2000 PKR'],
-    description: 'Complete your registration and Earn. It takes less than 5min.',
-    backgroundColor: 'bg-[radial-gradient(ellipse_50.00%_50.00%_at_50.00%_50.00%,_#8744D4_0%,_#6526AE_100%)]',
-    textColor: '#FFFFFF',
-    imageSrc: walletPromoImage,
-    imageAlt: 'Earn bonus promotion',
-    type: 'promo',
-  },
-  {
-    titles: ['Pay your bills in seconds—fast, easy, and hassle-free!'],
+    titles: ['Pay your bills in seconds—', 'fast easy, and hassle-free!'],
     subtitle: 'One platform, all your payments, zero stress. Stay on top of your finances with just a tap!',
     backgroundColor: 'bg-[radial-gradient(ellipse_115.42%_113.13%_at_15.59%_27.82%,_#31B3FB_0%,_#137EC5_100%)]',
     textColor: '#FFFFFF',
@@ -64,6 +39,9 @@ const carouselItems: (FeatureBannerProps | PromoBannerProps)[] = [
     type: 'feature',
   },
 ];
+
+//duplicate the carousal items once
+carouselItems.push(...carouselItems);
 ---
 
 <section class='flex justify-center'>
@@ -107,12 +85,12 @@ const carouselItems: (FeatureBannerProps | PromoBannerProps)[] = [
       modules: [Navigation, Pagination, Autoplay, EffectCoverflow],
 
       // Adjust these settings to fix the layout
-      slidesPerView: 1.5, // Show 1.5 slides instead of 'auto'
+      slidesPerView: 1.75, // Show 1.5 slides instead of 'auto'
       centeredSlides: true,
       initialSlide: 2,
 
       // Reduce space between slides
-      spaceBetween: 135,
+      spaceBetween: 150,
       loop: true,
 
       // Adjust coverflow effect
