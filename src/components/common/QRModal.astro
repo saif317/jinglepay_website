@@ -10,26 +10,24 @@ declare global {
 ---
 
 <!-- Global QR Modal (included once) -->
-<div id='global-qr-modal' class='fixed inset-0 z-50 flex items-center justify-center bg-[#00000050] hidden'>
-  <div
-    class='w-full max-w-3xl text-center py-16 flex flex-col items-center relative bg-white rounded-[60px] shadow-xl gap-y-11'
-  >
+<div id='global-qr-modal' class='fixed inset-0 z-50 items-center justify-center bg-[#00000050] hidden'>
+  <div class='relative flex flex-col items-center justify-center w-full h-full text-center bg-white shadow-sm gap-y-4'>
     <!-- Close button -->
-    <button id='global-qr-modal-close' class='absolute text-gray-500 top-12 right-12 hover:text-gray-700'>
+    <button id='global-qr-modal-close' class='absolute cursor-pointer text-gray-500 right-4 top-4 hover:text-[#794eff]'>
       <svg xmlns='http://www.w3.org/2000/svg' class='w-6 h-6' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
         <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M6 18L18 6M6 6l12 12'></path>
       </svg>
     </button>
 
-    <h3 class='flex items-center justify-between text-5xl font-extrabold'>Get the Jingle Pay App</h3>
-    <span class='text-3xl font-light'>Scan the QR code to download the App</span>
+    <h3 class='flex items-center justify-between text-xl font-extrabold'>Get the Jingle Pay App</h3>
+    <span class='text-sm font-light'>Scan the QR code to download the App</span>
 
-    <div class='flex justify-center mb-4'>
+    <div class='flex justify-center'>
       <QRCodeGenerator />
     </div>
 
-    <span class='text-3xl font-light'>or get a download link via SMS</span>
-    <PhoneNumberInput class='mx-auto my-4' />
+    <span class='text-sm font-light'>or get a download link via SMS</span>
+    <PhoneNumberInput class='' />
   </div>
 </div>
 

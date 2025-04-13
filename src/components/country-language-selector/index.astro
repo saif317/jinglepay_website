@@ -20,25 +20,24 @@ if (!currentCountryPath || !currentLangCode) {
 // Find current country and language objects
 const currentCountry = COUNTRIES.find((c) => c.path === currentCountryPath) || COUNTRIES[0];
 const currentLanguage = currentCountry.languages.find((l) => l.code === currentLangCode) || currentCountry.languages[0];
+
+const { className } = Astro.props;
 ---
 
 <div
-  class='flex items-center px-2.5 py-1 gap-x-2.5 bg-gray-100 rounded-[12px] country-language-selector min-w-[154px] cursor-pointer'
+  class={`items-center bg-gray-100 px-2.5 py-2 gap-x-2.5 rounded-[12px] min-w-[154px] cursor-pointer country-language-selector ${className}`}
 >
   <div class='relative country-selector'>
-    <button id='country-button' class='flex gap-x-2.5 items-center'>
-      <div class='flex justify-center items-center w-8 h-8 flag'>
-        {currentCountry.flag && <Image src={currentCountry.flag} alt={currentCountry.name} class='w-auto h-6' />}
+    <button id='country-button' class='flex items-center'>
+      <div class='flex items-center justify-center flag'>
+        {currentCountry.flag && <Image src={currentCountry.flag} alt={currentCountry.name} class='' />}
       </div>
       <span class='font-medium text-gray-500'>{currentCountry.code}</span>
     </button>
-    <div id='country-dropdown' class='hidden absolute left-0 top-full p-2 mt-2 w-48 bg-white rounded-md shadow-md'>
+    <div id='country-dropdown' class='absolute left-0 hidden bg-white rounded-md shadow-md top-full'>
       {
         COUNTRIES.map((country) => (
-          <a
-            href={`/${country.path}/${currentLanguage.code}`}
-            class='flex gap-2 items-center px-4 py-2 rounded-md hover:bg-gray-100'
-          >
+          <a href={`/${country.path}/${currentLanguage.code}`} class='flex items-center rounded-md hover:bg-gray-100'>
             {country.flag && <Image src={country.flag} alt={country.name} class='w-auto h-6 rounded-sm shadow-sm' />}
             <span>{country.code}</span>
           </a>
@@ -48,13 +47,13 @@ const currentLanguage = currentCountry.languages.find((l) => l.code === currentL
   </div>
   <div class='w-px h-6 bg-gray-300 divider'></div>
   <div class='relative language-selector'>
-    <button id='language-button' class='flex gap-1 items-center font-medium text-gray-500 language-button'>
+    <button id='language-button' class='flex items-center font-medium text-gray-500 language-button'>
       <span>{currentCountry.languages.filter((lang) => lang.code !== currentLanguage.code)[0].name}</span>
     </button>
-    <div id='language-dropdown' class='hidden absolute right-0 top-full p-2 mt-2 w-36 bg-white rounded-md shadow-md'>
+    <div id='language-dropdown' class='absolute right-0 hidden bg-white rounded-md shadow-md top-full'>
       {
         currentCountry.languages.map((language) => (
-          <a href={`/${currentCountry.path}/${language.code}`} class='block px-4 py-2 rounded-md hover:bg-gray-100'>
+          <a href={`/${currentCountry.path}/${language.code}`} class='block font-medium rounded-md hover:bg-gray-100'>
             {language.name}
           </a>
         ))
@@ -64,31 +63,81 @@ const currentLanguage = currentCountry.languages.find((l) => l.code === currentL
 </div>
 
 <script>
-  // Toggle country dropdown visibility
-  const countryButton = document.getElementById('country-button');
-  const countryDropdown = document.getElementById('country-dropdown');
+  // Function to initialize all dropdowns
+  function initializeDropdowns() {
+    // Select all dropdown buttons and containers
+    const countryButtons = document.querySelectorAll('[id="country-button"]');
+    const countryDropdowns = document.querySelectorAll('[id="country-dropdown"]');
+    const languageButtons = document.querySelectorAll('[id="language-button"]');
+    const languageDropdowns = document.querySelectorAll('[id="language-dropdown"]');
 
-  countryButton?.addEventListener('click', (e) => {
-    e.stopPropagation();
-    countryDropdown?.classList.toggle('hidden');
-    // Hide language dropdown when showing country dropdown
-    languageDropdown?.classList.add('hidden');
-  });
+    // Function to toggle country dropdown
+    function toggleCountryDropdown(e: Event) {
+      e.stopPropagation();
+      e.preventDefault();
 
-  // Toggle language dropdown visibility
-  const languageButton = document.getElementById('language-button');
-  const languageDropdown = document.getElementById('language-dropdown');
+      // Get the closest dropdown to this button
+      // @ts-ignore
+      const dropdown = e.currentTarget.closest('.country-selector').querySelector('#country-dropdown');
 
-  languageButton?.addEventListener('click', (e) => {
-    e.stopPropagation();
-    languageDropdown?.classList.toggle('hidden');
-    // Hide country dropdown when showing language dropdown
-    countryDropdown?.classList.add('hidden');
-  });
+      // Toggle this dropdown
+      dropdown?.classList.toggle('hidden');
 
-  // Close dropdowns when clicking outside
+      // Hide all language dropdowns
+      languageDropdowns.forEach((el) => el.classList.add('hidden'));
+    }
+
+    // Function to toggle language dropdown
+    function toggleLanguageDropdown(e: Event) {
+      e.stopPropagation();
+      e.preventDefault();
+
+      // Get the closest dropdown to this button
+      // @ts-ignore
+      const dropdown = e.currentTarget.closest('.language-selector').querySelector('#language-dropdown');
+
+      // Toggle this dropdown
+      dropdown?.classList.toggle('hidden');
+
+      // Hide all country dropdowns
+      countryDropdowns.forEach((el) => el.classList.add('hidden'));
+    }
+
+    // Add events to all country buttons
+    countryButtons.forEach((button) => {
+      button.addEventListener('click', toggleCountryDropdown);
+      button.addEventListener('touchend', toggleCountryDropdown);
+    });
+
+    // Add events to all language buttons
+    languageButtons.forEach((button) => {
+      button.addEventListener('click', toggleLanguageDropdown);
+      button.addEventListener('touchend', toggleLanguageDropdown);
+    });
+  }
+
+  // Initialize dropdowns on page load
+  document.addEventListener('DOMContentLoaded', initializeDropdowns);
+
+  // Close all dropdowns when clicking outside
   document.addEventListener('click', () => {
-    countryDropdown?.classList.add('hidden');
-    languageDropdown?.classList.add('hidden');
+    const countryDropdowns = document.querySelectorAll('[id="country-dropdown"]');
+    const languageDropdowns = document.querySelectorAll('[id="language-dropdown"]');
+
+    countryDropdowns.forEach((el) => el.classList.add('hidden'));
+    languageDropdowns.forEach((el) => el.classList.add('hidden'));
+  });
+
+  document.addEventListener('touchend', (e) => {
+    // Type assertion to tell TypeScript that target is an Element
+    const target = e.target as Element;
+
+    if (!target.closest('.country-language-selector')) {
+      const countryDropdowns = document.querySelectorAll('[id="country-dropdown"]');
+      const languageDropdowns = document.querySelectorAll('[id="language-dropdown"]');
+
+      countryDropdowns.forEach((el) => el.classList.add('hidden'));
+      languageDropdowns.forEach((el) => el.classList.add('hidden'));
+    }
   });
 </script>

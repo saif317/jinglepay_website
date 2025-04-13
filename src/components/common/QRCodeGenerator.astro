@@ -6,7 +6,7 @@ interface Props {
   size?: number;
 }
 
-const { size = 200 } = Astro.props;
+const { size = 50 } = Astro.props;
 const siteUrl = import.meta.env.DEV
   ? 'http://localhost:4321'
   : 'http://jinglepay-website-dev.s3-website.me-central-1.amazonaws.com';

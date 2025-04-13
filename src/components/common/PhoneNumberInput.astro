@@ -18,11 +18,11 @@ const {
 } = Astro.props;
 ---
 
-<div class={`flex w-full max-w-md rounded-lg overflow-hidden shadow-lg ${className}`}>
+<div class={`flex w-full max-w-[300px] rounded-sm overflow-hidden shadow-sm ${className}`}>
   <!-- Country code selector -->
-  <div class='flex items-center gap-2 px-4 py-3 bg-gray-100 border-r border-gray-200'>
-    <Image src={pakFlag} alt='Pakistan' width={24} height={16} class='rounded-sm' />
-    <span class='text-xl font-medium'>+92</span>
+  <div class='flex items-center gap-x-1 px-2 py-1.5 bg-gray-100 border-r border-gray-200'>
+    <Image src={pakFlag} alt='Pakistan' width={12} height={8} class='rounded-sm' />
+    <span class='text-sm font-medium'>+92</span>
   </div>
 
   <!-- Phone number input -->
@@ -30,7 +30,7 @@ const {
     type='tel'
     name='phoneNumber'
     placeholder='Mobile number'
-    class='flex-1 px-4 py-3 text-xl border-none outline-none'
+    class='flex-1 px-2 py-1.5 text-sm border-none outline-none'
     required
   />
 
@@ -38,10 +38,10 @@ const {
   <button
     id='send-link-button'
     type='button'
-    class='cursor-pointer bg-[#794eff] px-6 py-3 text-white flex items-center justify-center'
+    class='cursor-pointer bg-[#794eff] px-3 py-1.5 text-white flex items-center justify-center'
     aria-label='Send download link'
   >
-    <svg xmlns='http://www.w3.org/2000/svg' class='w-6 h-6' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
+    <svg xmlns='http://www.w3.org/2000/svg' class='w-3 h-3' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
       <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M14 5l7 7m0 0l-7 7m7-7H3'></path>
     </svg>
   </button>
@@ -50,10 +50,10 @@ const {
 <!-- Toast message -->
 <div
   id='toast'
-  class='fixed z-50 hidden p-4 transition-all duration-300 transform translate-y-20 bg-white rounded-lg shadow-lg opacity-0 h-fit top-[2rem] right-[2rem]'
+  class='fixed z-50 hidden p-2 transition-all duration-300 transform translate-y-20 bg-white rounded-sm shadow-sm opacity-0 h-fit top-[3rem] right-[1rem]'
 >
   <div class='flex items-center'>
-    <div id='toast-icon' class='mr-3'>
+    <div id='toast-icon' class='mr-1.5'>
       <!-- Icons will be inserted dynamically -->
     </div>
     <div id='toast-message' class='text-sm font-medium'></div>
