@@ -1,60 +1,142 @@
 ---
 import { Image } from 'astro:assets';
 
-import finextraLogo from '@assets/logos/finextra-logo.svg'; // SVG
-import paypersLogo from '@assets/logos/paypers.png'; // Raster
-import fintechTimesLogo from '@assets/logos/fintech-times.jpg'; // Raster
+// Import Swiper styles
+// import 'swiper/css'; // Core Swiper styles are included in swiper-bundle.min.css
 
-const imageWidths = [150, 220, 320];
-const imageSizes = '(max-width: 640px) 40vw, (max-width: 1024px) 25vw, 320px';
+import finextraLogo from '@assets/logos/finextra-logo.svg';
+import paypersLogo from '@assets/logos/paypers.svg';
+import fintechTimesLogo from '@assets/logos/fintech-times.svg';
+import arabNews from '@assets/logos/arab-news.svg';
+import zawya from '@assets/logos/zawya.svg';
+import pymnts from '@assets/logos/pymnts.svg';
+
+const logos = [
+  {
+    href: 'https://www.pymnts.com/financial-inclusion-3/2022/jingle-pay-launches-mastercard-for-unbanked-uae-residents/',
+    src: pymnts,
+    alt: 'Pymnts',
+  },
+  {
+    href: 'https://thepaypers.com/search/index.aspx?search=jingle+pay',
+    src: paypersLogo,
+    alt: 'The Paypers',
+  },
+  {
+    href: 'https://www.finextra.com/pressarticle/95078/jingle-pay-unlocks-mastercards-network-of-90-million-global-merchants-for-its-users',
+    src: finextraLogo,
+    alt: 'Finextra',
+  },
+  {
+    href: 'https://www.arabnews.pk/tags/bank-alfalah',
+    src: arabNews,
+    alt: 'Arab News',
+  },
+  {
+    href: 'https://www.zawya.com/en/press-release/jingle-pay-brings-instant-money-transfers-and-global-remittances-to-migrant-workers-uyj68p9j',
+    src: zawya,
+    alt: 'Zawya',
+  },
+  {
+    href: 'https://thefintechtimes.com/?s=%22jingle+pay%22',
+    src: fintechTimesLogo,
+    alt: 'The Fintech Times',
+  },
+];
 ---
 
-<section class='flex flex-col items-center px-4 mx-auto text-center gap-y-4 pt-15 max-w-7xl' id='featured-section'>
-  <h2 class='text-3xl sm:text-4xl font-extrabold text-[#1c1c1c]'>Jingle Pay has been featured in:</h2>
+<section
+  class='flex flex-col items-center w-full px-4 pt-12 pb-8 mx-auto text-center gap-y-4 md:pt-16'
+  id='featured-section'
+>
+  <h2 class='text-2xl font-semibold text-gray-600 sm:text-3xl'>Jingle Pay has been featured in:</h2>
 
-  <div class='flex flex-row flex-wrap items-center justify-center w-full max-w-[812px] gap-y-4 gap-x-4 sm:gap-x-8'>
-    <a
-      href='https://www.finextra.com/pressarticle/95078/jingle-pay-unlocks-mastercards-network-of-90-million-global-merchants-for-its-users'
-      target='_blank'
-      rel='noopener noreferrer'
-      class='transition-opacity duration-300 hover:opacity-80'
-      aria-label='Finextra'
-    >
-      <Image src={finextraLogo} alt='Finextra' class='w-auto h-8 md:h-10 lg:h-12' loading='lazy' />
-    </a>
-
-    <a
-      href='https://thepaypers.com/search/index.aspx?search=jingle+pay'
-      target='_blank'
-      rel='noopener noreferrer'
-      class='transition-opacity duration-300 hover:opacity-80'
-      aria-label='The Paypers'
-    >
-      <Image
-        src={paypersLogo}
-        alt='The Paypers'
-        widths={imageWidths}
-        sizes={imageSizes}
-        class='w-auto h-8 md:h-10 lg:h-12'
-        loading='lazy'
-      />
-    </a>
-
-    <a
-      href='https://thefintechtimes.com/?s=%22jingle+pay%22'
-      target='_blank'
-      rel='noopener noreferrer'
-      class='transition-opacity duration-300 hover:opacity-80'
-      aria-label='The Fintech Times'
-    >
-      <Image
-        src={fintechTimesLogo}
-        alt='The Fintech Times'
-        widths={imageWidths}
-        sizes={imageSizes}
-        class='w-auto h-8 md:h-10 lg:h-12'
-        loading='lazy'
-      />
-    </a>
+  <div class='w-full max-w-4xl'>
+    <div class='swiper featured-logos-swiper'>
+      <div class='items-center swiper-wrapper'>
+        {
+          logos.map((logo) => (
+            <div class='swiper-slide !w-auto'>
+              {' '}
+              <a
+                href={logo.href}
+                target='_blank'
+                rel='noopener noreferrer'
+                class='inline-block transition-opacity duration-300 hover:opacity-75'
+                aria-label={`Featured in ${logo.alt}`}
+              >
+                <Image
+                  src={logo.src}
+                  alt={logo.alt}
+                  class={`${logo.alt === 'Finextra' ? 'w-auto h-5 sm:h-6 md:h-7 lg:h-8' : 'w-auto h-6 sm:h-8 md:h-10 lg:h-12'}`}
+                  loading='lazy'
+                  decoding='async'
+                />
+              </a>
+            </div>
+          ))
+        }
+      </div>
+    </div>
   </div>
 </section>
+class='w-auto h-6 sm:h-8 md:h-10 lg:h-12' loading='lazy' decoding='async' /> )} )) }
+
+<!-- Import Swiper CSS from CDN -->
+<link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css' />
+
+<!-- Import Swiper JS and initialize -->
+<script>
+  import Swiper from 'swiper';
+  import { Autoplay, FreeMode } from 'swiper/modules'; // Import necessary modules
+  // Core Swiper styles are usually included in `swiper-bundle.min.css`
+  // If needed:
+  // import 'swiper/css/free-mode';
+  // import 'swiper/css/autoplay';
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const swiper = new Swiper('.featured-logos-swiper', {
+      modules: [Autoplay, FreeMode],
+      slidesPerView: 'auto', // Crucial for variable width slides
+      spaceBetween: 24, // Space between logos (adjust as needed)
+      loop: true, // Enable looping
+      freeMode: {
+        // Allow free scrolling
+        enabled: true,
+        sticky: false, // Don't snap to positions
+        momentumBounce: false,
+      },
+      autoplay: {
+        delay: 2000, // Delay between transitions
+        disableOnInteraction: false, // Keep playing after user interaction
+        pauseOnMouseEnter: true, // Pause when mouse is over the swiper
+      },
+      speed: 4000, // Slower transition speed for continuous effect
+      allowTouchMove: true, // Allow dragging on touch devices
+
+      // Responsive adjustments
+      breakpoints: {
+        // On smaller screens, maybe less space
+        640: {
+          spaceBetween: 32,
+        },
+        // On larger screens, maybe more space
+        1024: {
+          spaceBetween: 48,
+        },
+      },
+    });
+  });
+</script>
+
+<style is:global>
+  .featured-logos-swiper .swiper-wrapper {
+    /* Smooth continuous transition */
+    transition-timing-function: linear !important;
+  }
+
+  .featured-logos-swiper .swiper-slide {
+    /* Ensure slides don't shrink */
+    flex-shrink: 0;
+  }
+</style>
