@@ -1,31 +1,27 @@
 ---
-// Import any needed dependencies
 import { Image } from 'astro:assets';
+import QRCodeGenerator from '@components/common/QRCodeGenerator.astro';
+import QRModalTriggerer from '@components/common/QRModalTriggerer.astro';
+// Removed qrCode import/prop as QRCodeGenerator is used directly
+// Removed text prop as it's hardcoded now, simpler for this example
 
-// Props for customization
 interface Props {
-  qrCodeSrc?: ImageMetadata;
-  text?: string[];
   class?: string;
 }
 
-import qrCode from '@assets/icons/qr.png';
-import QRModal from '@components/common/QRModal.astro';
-import QRCodeGenerator from '@components/common/QRCodeGenerator.astro';
-import QRModalTriggerer from '@components/common/QRModalTriggerer.astro';
-
-const { qrCodeSrc = qrCode, text = ['Get the', 'Jingle Pay App'], class: className = '' } = Astro.props;
+const { class: className = '' } = Astro.props;
 ---
 
 <QRModalTriggerer>
   <div
-    class={`relative inline-flex items-center rounded-2xl py-3 px-1.5 shadow-md hover:-translate-y-0.5 transition-transform duration-200 border-2 border-[#C8C8C8] gap-x-2.5 ${className} text-left mx-auto min-h-[95px] sm:min-h-[130px] sm:max-lg:w-full`}
+    class={`relative flex items-center rounded-xl py-1.5 px-2 shadow-md hover:-translate-y-0.5 transition-transform duration-200 border-2 border-[#C8C8C8] gap-x-3 sm:gap-x-4 text-left w-full max-w-[16rem] md:max-w-[20rem] lg:max-w-full lg:w-full ${className}`}
   >
-    <div class='flex justify-center items-center rounded-l-lg'>
+    <div class='flex items-center justify-center flex-shrink-0'>
       <QRCodeGenerator />
     </div>
-    <div class='flex flex-col'>
-      {text.map((item) => <span class='block text-lg font-bold sm:text-[28px] lg:text-xl leading-tight'>{item}</span>)}
+    <div class='flex flex-col justify-center'>
+      <span class='block text-base font-bold leading-tight sm:text-lg md:text-xl lg:text-lg'>Get the</span>
+      <span class='block text-base font-bold leading-tight sm:text-lg md:text-xl lg:text-lg'>Jingle Pay App</span>
     </div>
   </div>
 </QRModalTriggerer>

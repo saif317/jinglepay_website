@@ -1,45 +1,60 @@
 ---
 import { Image } from 'astro:assets';
 
-import finextraLogo from '@assets/logos/finextra-logo.svg';
-import paypersLogo from '@assets/logos/paypers.png';
-import fintechTimesLogo from '@assets/logos/fintech-times.jpg';
+import finextraLogo from '@assets/logos/finextra-logo.svg'; // SVG
+import paypersLogo from '@assets/logos/paypers.png'; // Raster
+import fintechTimesLogo from '@assets/logos/fintech-times.jpg'; // Raster
 
-// Featured.astro - Component to showcase media mentions
+const imageWidths = [150, 220, 320];
+const imageSizes = '(max-width: 640px) 40vw, (max-width: 1024px) 25vw, 320px';
 ---
 
-<section class='flex flex-col items-center px-4 mx-auto text-center gap-y-4 pt-15' id='featured-section'>
-  <h2 class='text-4xl font-extrabold text-[#1c1c1c]'>Jingle Pay has been featured in:</h2>
+<section class='flex flex-col items-center px-4 mx-auto text-center gap-y-4 pt-15 max-w-7xl' id='featured-section'>
+  <h2 class='text-3xl sm:text-4xl font-extrabold text-[#1c1c1c]'>Jingle Pay has been featured in:</h2>
 
-  <div class='flex flex-row items-center justify-center max-w-[812px] max-h-[63px] gap-x-8'>
-    <!-- Finextra -->
+  <div class='flex flex-row flex-wrap items-center justify-center w-full max-w-[812px] gap-y-4 gap-x-4 sm:gap-x-8'>
     <a
       href='https://www.finextra.com/pressarticle/95078/jingle-pay-unlocks-mastercards-network-of-90-million-global-merchants-for-its-users'
       target='_blank'
       rel='noopener noreferrer'
       class='transition-opacity duration-300 hover:opacity-80'
+      aria-label='Finextra'
     >
-      <Image src={finextraLogo} alt='Finextra' width={174} />
+      <Image src={finextraLogo} alt='Finextra' class='w-auto h-8 md:h-10 lg:h-12' loading='lazy' />
     </a>
 
-    <!-- The Paypers -->
     <a
       href='https://thepaypers.com/search/index.aspx?search=jingle+pay'
       target='_blank'
       rel='noopener noreferrer'
       class='transition-opacity duration-300 hover:opacity-80'
+      aria-label='The Paypers'
     >
-      <Image src={paypersLogo} alt='The Paypers' width={224} />
+      <Image
+        src={paypersLogo}
+        alt='The Paypers'
+        widths={imageWidths}
+        sizes={imageSizes}
+        class='w-auto h-8 md:h-10 lg:h-12'
+        loading='lazy'
+      />
     </a>
 
-    <!-- The Fintech Times -->
     <a
       href='https://thefintechtimes.com/?s=%22jingle+pay%22'
       target='_blank'
       rel='noopener noreferrer'
       class='transition-opacity duration-300 hover:opacity-80'
+      aria-label='The Fintech Times'
     >
-      <Image src={fintechTimesLogo} alt='The Fintech Times' width={321} />
+      <Image
+        src={fintechTimesLogo}
+        alt='The Fintech Times'
+        widths={imageWidths}
+        sizes={imageSizes}
+        class='w-auto h-8 md:h-10 lg:h-12'
+        loading='lazy'
+      />
     </a>
   </div>
 </section>

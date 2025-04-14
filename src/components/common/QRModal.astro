@@ -9,63 +9,81 @@ declare global {
 }
 ---
 
-<!-- Global QR Modal (included once) -->
-<div id='global-qr-modal' class='fixed inset-0 z-50 items-center justify-center bg-[#00000050] hidden'>
-  <div class='relative flex flex-col items-center justify-center w-full h-full text-center bg-white shadow-sm gap-y-4'>
-    <!-- Close button -->
-    <button id='global-qr-modal-close' class='absolute cursor-pointer text-gray-500 right-4 top-4 hover:text-[#794eff]'>
-      <svg xmlns='http://www.w3.org/2000/svg' class='w-6 h-6' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
+<div id='global-qr-modal' class='fixed inset-0 z-50 items-center justify-center bg-[#00000070] hidden p-4'>
+  <div
+    id='modal-content'
+    class='relative flex flex-col items-center justify-center w-11/12 max-w-md text-center bg-white rounded-2xl shadow-xl gap-y-3 sm:gap-y-4 p-4 sm:p-6 lg:p-8 max-h-[90vh] overflow-y-auto'
+  >
+    <button
+      id='global-qr-modal-close'
+      class='absolute cursor-pointer text-gray-500 right-1 top-1 hover:text-[#794eff] p-1 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#794eff]'
+    >
+      <span class='sr-only'>Close modal</span>
+      <svg
+        xmlns='http://www.w3.org/2000/svg'
+        class='w-5 h-5 sm:w-6 sm:h-6'
+        fill='none'
+        viewBox='0 0 24 24'
+        stroke='currentColor'
+      >
         <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M6 18L18 6M6 6l12 12'></path>
       </svg>
     </button>
 
-    <h3 class='flex items-center justify-between text-xl font-extrabold'>Get the Jingle Pay App</h3>
-    <span class='text-sm font-light'>Scan the QR code to download the App</span>
+    <h3 class='text-lg font-extrabold sm:text-xl'>Get the Jingle Pay App</h3>
+    <span class='text-sm font-light text-gray-600 sm:text-base'>Scan the QR code to download the App</span>
 
-    <div class='flex justify-center'>
+    <div class='flex justify-center my-2 sm:my-3'>
       <QRCodeGenerator />
     </div>
 
-    <span class='text-sm font-light'>or get a download link via SMS</span>
-    <PhoneNumberInput class='' />
+    <span class='text-sm font-light text-gray-600 sm:text-base'>or get a download link via SMS</span>
+
+    <PhoneNumberInput class='w-full max-w-xs mx-auto' />
   </div>
 </div>
 
 <script>
-  // Define global function to open modal
   window.openQRModal = () => {
     const modal = document.getElementById('global-qr-modal');
     if (modal) {
       modal.classList.remove('hidden');
-      document.body.classList.add('overflow-hidden');
+      modal.classList.add('flex');
+      document.body.style.overflow = 'hidden';
     }
   };
 
-  // Set up event listeners (only once)
-  document.addEventListener('DOMContentLoaded', () => {
+  function closeModal() {
     const modal = document.getElementById('global-qr-modal');
-    const closeButton = document.getElementById('global-qr-modal-close');
+    if (modal) {
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+      document.body.style.overflow = '';
+    }
+  }
 
-    // Close modal when close button is clicked
-    closeButton?.addEventListener('click', () => {
-      modal?.classList.add('hidden');
-      document.body.classList.remove('overflow-hidden');
+  if (!(window as any).__qrModalListenersAdded) {
+    (window as any).__qrModalListenersAdded = true;
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const modal = document.getElementById('global-qr-modal');
+      const modalContent = document.getElementById('modal-content');
+      const closeButton = document.getElementById('global-qr-modal-close');
+
+      closeButton?.addEventListener('click', closeModal);
+
+      modal?.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          closeModal();
+        }
+      });
     });
 
-    // Close modal when clicking outside modal content
-    modal?.addEventListener('click', (e) => {
-      if (e.target === modal) {
-        modal.classList.add('hidden');
-        document.body.classList.remove('overflow-hidden');
-      }
-    });
-
-    // Close modal on escape key
     document.addEventListener('keydown', (e) => {
+      const modal = document.getElementById('global-qr-modal');
       if (e.key === 'Escape' && modal && !modal.classList.contains('hidden')) {
-        modal.classList.add('hidden');
-        document.body.classList.remove('overflow-hidden');
+        closeModal();
       }
     });
-  });
+  }
 </script>

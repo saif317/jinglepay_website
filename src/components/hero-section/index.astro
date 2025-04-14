@@ -1,30 +1,24 @@
 ---
 import QRDownload from '@components/hero-section/QRDownload.astro';
 import { Image } from 'astro:assets';
-import bankAlfalah from '@assets/logos/bank-alfalah.svg';
+import bankAlfalah from '@assets/logos/bank-alfalah.svg'; // SVG
 ---
 
-<section class='flex justify-center pb-12 px-8 pt-[92px] lg:pt-[150px] text-center bg-white'>
-  <div class='flex flex-col items-center'>
-    <h1 class='text-[36px] sm:text-[56px] lg:text-5xl leading-tight font-extrabold mb-6 mx-auto'>
-      Simplifying all<br class='lg:hidden' /> money!
-    </h1>
-    <p class='mx-auto mb-10 text-sm text-[#2A2A2A] sm:text-2xl lg:text-xl'>
-      Jingle Pay is the go-to money app for<br class='lg:hidden' /> your everyday financial needs.
+<section class='flex justify-center pb-12 px-4 sm:px-8 pt-[92px] lg:pt-[150px] text-center bg-white'>
+  <div class='flex flex-col items-center max-w-4xl'>
+    <h1 class='mx-auto mb-6 text-4xl font-extrabold leading-tight sm:text-6xl lg:text-7xl'>Simplifying all money!</h1>
+    <p class='mx-auto mb-10 text-lg sm:text-2xl lg:text-xl text-[#2A2A2A]'>
+      Jingle Pay is the go-to money app for your everyday financial needs.
     </p>
-    <div class='flex flex-col gap-4 justify-center w-full lg:flex-row'>
-      <QRDownload />
+    <div
+      class='flex flex-col items-center justify-center w-full gap-4 sm:gap-6 lg:flex-row lg:items-stretch lg:max-w-[600px]'
+    >
+      <QRDownload class='w-full lg:w-auto' />
       <div
-        class='flex flex-col items-center justify-center rounded-2xl border-2 border-[#C8C8C8] shadow-md py-3 px-1.5 min-h-[95px] sm:min-h-[130px]'
+        class='flex flex-col items-center justify-center rounded-xl border-2 border-[#C8C8C8] shadow-md py-2.5 px-2 w-full max-w-[16rem] md:max-w-[20rem] lg:max-w-full'
       >
-        <p class='font-normal text-sm sm:text-2xl text-[#616161]'>Powered by</p>
-        <Image
-          src={bankAlfalah}
-          alt='Bank Alfalah'
-          widths={[150, 250, 300]}
-          sizes='(max-width: 575px) 150px, (max-width: 991px) 250px, 300px'
-          class='w-[150px] sm:w-[250px] lg:w-[300px]'
-        />
+        <p class='font-normal text-base sm:text-lg text-[#616161]'>Powered by</p>
+        <Image src={bankAlfalah} alt='Bank Alfalah' class='w-auto h-8 max-w-full sm:h-10' loading='eager' />
       </div>
     </div>
   </div>
