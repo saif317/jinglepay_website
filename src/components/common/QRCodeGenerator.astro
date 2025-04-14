@@ -1,6 +1,7 @@
 ---
 // src/components/common/ServerQRCode.astro
 import QRCode from 'qrcode';
+import { Image } from 'astro:assets';
 
 interface Props {
   size?: number;
@@ -19,4 +20,11 @@ const qrCodeDataURL = await QRCode.toDataURL(redirectUrl, {
 });
 ---
 
-<img src={qrCodeDataURL} alt='App Download QR Code' width={size} />
+<Image
+  inferSize
+  src={qrCodeDataURL}
+  alt='App Download QR Code'
+  widths={[65, 80]}
+  sizes='(max-width: 575px) 65px, 80px'
+  class='w-[65px] sm:w-[80px]'
+/>

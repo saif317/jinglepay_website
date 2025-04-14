@@ -5,7 +5,7 @@ import { Image } from 'astro:assets';
 // Props for customization
 interface Props {
   qrCodeSrc?: ImageMetadata;
-  text?: string;
+  text?: string[];
   class?: string;
 }
 
@@ -14,16 +14,18 @@ import QRModal from '@components/common/QRModal.astro';
 import QRCodeGenerator from '@components/common/QRCodeGenerator.astro';
 import QRModalTriggerer from '@components/common/QRModalTriggerer.astro';
 
-const { qrCodeSrc = qrCode, text = 'Get the Jingle Pay App', class: className = '' } = Astro.props;
+const { qrCodeSrc = qrCode, text = ['Get the', 'Jingle Pay App'], class: className = '' } = Astro.props;
 ---
 
 <QRModalTriggerer>
   <div
-    class={`relative inline-flex items-center rounded-lg p-1.5 shadow-md hover:-translate-y-0.5 transition-transform duration-200 border-2 border-[#C8C8C8] gap-1.5 ${className} text-left mx-auto max-w-[265px]`}
+    class={`relative inline-flex items-center rounded-2xl py-3 px-1.5 shadow-md hover:-translate-y-0.5 transition-transform duration-200 border-2 border-[#C8C8C8] gap-x-2.5 ${className} text-left mx-auto min-h-[95px] sm:min-h-[130px] sm:max-lg:w-full`}
   >
     <div class='flex justify-center items-center rounded-l-lg'>
-      <QRCodeGenerator size={80} />
+      <QRCodeGenerator />
     </div>
-    <span class='block text-2xl font-bold'>{text}</span>
+    <div class='flex flex-col'>
+      {text.map((item) => <span class='block text-lg font-bold sm:text-[28px] lg:text-xl leading-tight'>{item}</span>)}
+    </div>
   </div>
 </QRModalTriggerer>

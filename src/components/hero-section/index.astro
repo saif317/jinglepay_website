@@ -4,19 +4,27 @@ import { Image } from 'astro:assets';
 import bankAlfalah from '@assets/logos/bank-alfalah.svg';
 ---
 
-<section class='flex justify-center pb-24 pb-16 pt-[184px] text-center bg-white'>
-  <div class='container'>
-    <h1 class='text-[2.75rem] leading-tight font-bold mb-6 max-w-[800px] mx-auto'>Simplifying all money!</h1>
-    <p class='text-xl text-gray-600 mb-10 max-w-[650px] mx-auto'>
-      Jingle Pay is the go-to money app for your everyday financial needs.
+<section class='flex justify-center pb-12 px-8 pt-[92px] lg:pt-[150px] text-center bg-white'>
+  <div class='flex flex-col items-center'>
+    <h1 class='text-[36px] sm:text-[56px] lg:text-5xl leading-tight font-extrabold mb-6 mx-auto'>
+      Simplifying all<br class='lg:hidden' /> money!
+    </h1>
+    <p class='mx-auto mb-10 text-sm text-[#2A2A2A] sm:text-2xl lg:text-xl'>
+      Jingle Pay is the go-to money app for<br class='lg:hidden' /> your everyday financial needs.
     </p>
-    <div class='flex flex-row gap-x-4 justify-center'>
+    <div class='flex flex-col gap-4 justify-center w-full lg:flex-row'>
       <QRDownload />
       <div
-        class='flex flex-col items-center justify-center rounded-lg border-2 border-[#C8C8C8] shadow-md w-[265px] py-1.5'
+        class='flex flex-col items-center justify-center rounded-2xl border-2 border-[#C8C8C8] shadow-md py-3 px-1.5 min-h-[95px] sm:min-h-[130px]'
       >
-        <p class='font-normal text-[15px] text-[#616161]'>Powered by</p>
-        <Image src={bankAlfalah} alt='Bank Alfalah' height={32} />
+        <p class='font-normal text-sm sm:text-2xl text-[#616161]'>Powered by</p>
+        <Image
+          src={bankAlfalah}
+          alt='Bank Alfalah'
+          widths={[150, 250, 300]}
+          sizes='(max-width: 575px) 150px, (max-width: 991px) 250px, 300px'
+          class='w-[150px] sm:w-[250px] lg:w-[300px]'
+        />
       </div>
     </div>
   </div>
