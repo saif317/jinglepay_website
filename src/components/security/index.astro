@@ -5,21 +5,58 @@ import secure from '@assets/icons/secure.svg';
 import ssl from '@assets/logos/ssl.png';
 import fdic from '@assets/logos/fdic.png';
 import dfsa from '@assets/logos/dfsa.webp';
+
+const logoWidths = [40, 56, 70];
+const logoSizes = '(max-width: 639px) 20vw, (max-width: 1023px) 10vw, 70px';
 ---
 
-<div class='flex flex-row justify-between gap-x-36'>
-  <div class='flex flex-col justify-between'>
-    <h5 class='text-3xl font-extrabold'>Security is our priority</h5>
-    <span class='text-xl font-normal text-neutral-500'
-      >All transactions are thoroughly verified and validated. We are licensed, certified, and regulated by the DFSA.</span
-    >
+<div
+  class='flex flex-col max-w-screen-lg px-6 py-10 mx-auto lg:flex-row lg:justify-between lg:items-center gap-y-8 lg:gap-y-0 lg:gap-x-12 xl:gap-x-16 sm:px-8 sm:py-12 md:px-12 md:py-16'
+>
+  <div class='w-full text-center lg:w-6/12 lg:text-left'>
+    <h5 class='mb-3 text-2xl font-extrabold sm:text-3xl lg:text-4xl sm:mb-4 text-slate-900'>
+      Security is our priority
+    </h5>
+    <span class='text-lg font-normal sm:text-xl text-neutral-500'>
+      All transactions are thoroughly verified and validated. We are licensed, certified, and regulated by the DFSA.
+    </span>
   </div>
 
-  <div class='flex flex-row items-center gap-x-6 basis-[28rem]'>
-    <Image src={ssl} alt='SSL' height={56} />
-    <Image src={secure} alt='Secure' height={56} class='mt-2.5' />
-    <Image src={fdic} alt='FDIC' height={56} />
-    <Image src={dfsa} alt='DFSA' height={56} class='blackened-img' />
+  <div class='flex flex-row flex-wrap items-center justify-center w-full gap-x-4 gap-y-4 sm:gap-x-6 lg:w-5/12'>
+    <Image
+      src={ssl}
+      alt='SSL Certified'
+      widths={logoWidths}
+      sizes={logoSizes}
+      class='w-auto h-10 sm:h-12 lg:h-14'
+      loading='lazy'
+      decoding='async'
+    />
+    <Image
+      src={secure}
+      alt='Secure Transaction Lock Icon'
+      class='w-auto h-10 sm:h-12 lg:h-14'
+      loading='lazy'
+      decoding='async'
+    />
+    <Image
+      src={fdic}
+      alt='FDIC Insured'
+      widths={logoWidths}
+      sizes={logoSizes}
+      class='w-auto h-10 sm:h-12 lg:h-14'
+      loading='lazy'
+      decoding='async'
+    />
+    <Image
+      src={dfsa}
+      alt='DFSA Regulated Logo'
+      widths={logoWidths}
+      sizes={logoSizes}
+      class='w-auto h-10 sm:h-12 lg:h-14 blackened-img'
+      loading='lazy'
+      decoding='async'
+    />
   </div>
 </div>
 
