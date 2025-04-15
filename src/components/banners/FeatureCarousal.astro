@@ -3,6 +3,10 @@ import FeatureBanner, { type FeatureBannerProps } from './FeatureBanner.astro';
 import PromoBanner, { type PromoBannerProps } from './PromoBanner.astro';
 import { Image } from 'astro:assets';
 
+import shadow1 from '@assets/images/features/shadow1.svg';
+import shadow2 from '@assets/images/features/shadow2.svg';
+import shadowPromo from '@assets/images/promos/shadow-promo.svg';
+
 import multipleAccountsImage from '@assets/images/features/accounts-feature.webp';
 import transferImage from '@assets/images/features/transfer-feature.webp';
 import walletPromoImage from '@assets/images/promos/wallet-promo.webp';
@@ -15,6 +19,7 @@ const carouselItems: (FeatureBannerProps | PromoBannerProps)[] = [
     imageSrc: multipleAccountsImage,
     imageAlt: 'Multiple accounts feature illustration showing cards and app interface',
     type: 'feature',
+    shadow: shadow1,
   },
   {
     heading: ['Earn up to', '2000 PKR'],
@@ -25,6 +30,7 @@ const carouselItems: (FeatureBannerProps | PromoBannerProps)[] = [
     imageSrc: walletPromoImage,
     imageAlt: 'Smartphone showing JinglePay wallet interface with coins',
     type: 'promo',
+    shadow: shadowPromo,
   },
   {
     titles: ['Pay your bills in seconds—', 'fast easy, and hassle-free!'],
@@ -34,6 +40,7 @@ const carouselItems: (FeatureBannerProps | PromoBannerProps)[] = [
     imageSrc: transferImage,
     imageAlt: 'Illustration of fast money transfer with phone and icons',
     type: 'feature',
+    shadow: shadow2,
   },
 ];
 
@@ -51,6 +58,7 @@ const imageSizes = '(max-width: 767px) 50vw, (max-width: 1023px) 40vw, 400px'; /
           <div class='h-auto swiper-slide'>
             {item.type === 'feature' ? (
               <FeatureBanner {...(item as FeatureBannerProps)}>
+               <div class="relative">
                 <Image
                   src={item.imageSrc}
                   alt={item.imageAlt}
@@ -58,11 +66,14 @@ const imageSizes = '(max-width: 767px) 50vw, (max-width: 1023px) 40vw, 400px'; /
                   sizes={imageSizes}
                   loading='lazy'
                   decoding='async'
-                  class='object-contain w-auto h-48 sm:h-56 md:h-60 lg:h-64' 
-                />
+                  class='relative z-[1] object-contain w-auto h-48 sm:h-56 md:h-60 lg:h-64' 
+                  />
+                  {item.shadow && <Image src={item.shadow} class='absolute bottom-[10px] right-[35px] max-w-[160px] md:max-w-[200px] lg:max-w-full' alt='shadow' />}
+               </div>
               </FeatureBanner>
             ) : (
               <PromoBanner {...(item as PromoBannerProps)}>
+             <div class="relative">
                 <Image
                   src={item.imageSrc}
                   alt={item.imageAlt}
@@ -72,6 +83,8 @@ const imageSizes = '(max-width: 767px) 50vw, (max-width: 1023px) 40vw, 400px'; /
                   decoding='async'
                   class='object-contain w-auto h-48 sm:h-56 md:h-60 lg:h-64' 
                 />
+                {item.shadow && <Image src={item.shadow} class='absolute bottom-[-20px] right-[20px] max-w-[160px] md:max-w-[200px] lg:max-w-full' alt='shadow' />}
+             </div>
               </PromoBanner>
             )}
           </div>
