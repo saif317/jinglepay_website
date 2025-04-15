@@ -9,7 +9,6 @@ import twitter from '@assets/icons/twitter.svg';
 import linkedin from '@assets/icons/linkedin.svg';
 import youtube from '@assets/icons/youtube.svg';
 
-// Define the navigation sections
 const navSections = [
   {
     title: 'Features',
@@ -55,64 +54,77 @@ const navSections = [
   },
 ];
 
-// Define social media links
+// Define social media links (no changes needed here)
 const socialLinks = [
   { href: 'https://www.facebook.com/JinglePay/', icon: facebook, alt: 'Facebook' },
   { href: 'https://www.instagram.com/jinglepay/', icon: instagram, alt: 'Instagram' },
   { href: 'https://x.com/jinglepay/', icon: twitter, alt: 'Twitter' },
-  { href: 'https://www.linkedin.com/company/jinglepay/', icon: linkedin, alt: 'Linkedin' },
-  { href: 'https://www.youtube.com/@jinglepay', icon: youtube, alt: 'Youtube' },
+  { href: 'https://www.linkedin.com/company/jinglepay/', icon: linkedin, alt: 'LinkedIn' }, // Corrected alt text
+  { href: 'https://www.youtube.com/@jinglepay', icon: youtube, alt: 'YouTube' }, // Corrected alt text
 ];
 ---
 
-<footer class='pt-14 pb-[156px] px-12 bg-neutral-800 flex flex-col'>
-  <div class='grid grid-cols-5 gap-8 mb-12 mb-[108px]'>
-    {
-      navSections.map((section) => (
-        <div class='text-white'>
-          <h3 class='mb-4 text-xl font-semibold'>{section.title}</h3>
-          <ul class='list-none'>
-            {section.links.map((link, index) => (
-              <li class={index < section.links.length - 1 ? 'mb-4' : ''}>
-                <a
-                  href={link.href}
-                  class='text-base font-normal no-underline transition-colors duration-300 text-zinc-400 hover:text-white'
-                >
-                  {link.text}
-                </a>
-              </li>
-            ))}
-          </ul>
+<footer class='w-full text-white bg-neutral-800'>
+  <div class='container max-w-screen-xl px-4 py-10 mx-auto sm:px-6 md:px-8 lg:px-12 lg:py-16 xl:py-20'>
+    <div class='flex flex-col gap-y-10 lg:gap-y-12'>
+      <nav aria-label='Footer navigation'>
+        <div class='grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-3 lg:grid-cols-5 lg:gap-x-8 xl:gap-x-12'>
+          {
+            navSections.map((section) => (
+              <div>
+                <h3 class='mb-3 text-base font-bold tracking-wider text-white sm:mb-4 sm:text-lg'>{section.title}</h3>
+                <ul class='space-y-2 list-none sm:space-y-3'>
+                  {section.links.map((link) => (
+                    <li>
+                      <a
+                        href={link.href}
+                        class='text-sm font-normal no-underline transition-colors duration-200 text-zinc-400 hover:text-white sm:text-base'
+                      >
+                        {link.text}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))
+          }
         </div>
-      ))
-    }
-  </div>
+      </nav>
 
-  <div class='flex flex-row items-center justify-between mb-[28px]'>
-    <Image src={logo} alt='Jingle Pay' height={50} />
+      <div
+        class='flex flex-col items-center gap-6 pt-8 border-t border-neutral-700 sm:flex-row sm:justify-between sm:pt-10 lg:pt-12'
+      >
+        <a href='/' aria-label='Jingle Pay Home'>
+          <Image src={logo} alt='Jingle Pay Logo' class='w-auto h-8 sm:h-10 lg:h-12' loading='lazy' decoding='async' />
+        </a>
 
-    <div class='flex gap-4'>
-      {
-        socialLinks.map((social) => (
-          <a
-            href={social.href}
-            target='_blank'
-            class='flex items-center justify-center w-6 h-6 rounded-full transition-all duration-300 hover:-translate-y-[3px]'
-          >
-            <Image src={social.icon} alt={social.alt} />
-          </a>
-        ))
-      }
+        <div class='flex gap-4 sm:gap-5 lg:gap-6'>
+          {
+            socialLinks.map((social) => (
+              <a
+                href={social.href}
+                target='_blank'
+                rel='noopener noreferrer'
+                class='flex items-center justify-center w-6 h-6 transition-colors duration-200 rounded-full text-zinc-300 hover:text-white sm:h-7 sm:w-7 lg:h-8 lg:w-8'
+                aria-label={social.alt}
+              >
+                <span class='sr-only'>{social.alt}</span>
+                <Image src={social.icon} alt='' class='w-4 h-4 sm:h-5 sm:w-5' loading='lazy' decoding='async' />
+              </a>
+            ))
+          }
+        </div>
+      </div>
+
+      <div class='pt-8 border-t border-neutral-700 sm:pt-10 lg:pt-12 lg:text-left'>
+        <p class='text-xs font-normal text-neutral-400 sm:text-sm'>
+          Jingle Pay Limited is a money services provider in Dubai International Financial Center (DIFC) regulated by
+          Dubai Financial Services Authority (DFSA), with license number F005329, for Providing Money Services under
+          “Innovation Testing License”. Due to the restricted nature of the license during testing stage, normal
+          requirements and client protections may not apply and clients may have limited rights if they suffer loss as a
+          result of taking part in testing of its services.
+        </p>
+      </div>
     </div>
   </div>
-
-  <div class='h-0 outline-[0.48px] outline-offset-[-0.24px] outline-zinc-500 mb-[51px]'></div>
-
-  <p class='text-xs font-normal text-neutral-500'>
-    Jingle Pay Limited is a money services provider in Dubai International Financial Center (DIFC) regulated by Dubai
-    Financial Services Authority (DFSA), with license number F005329, for Providing Money Services under “Innovation
-    Testing License”. Due to the restricted nature of the license during testing stage, normal requirements and client
-    protections may not apply and clients may have limited rights if they suffer loss as a result of taking part in
-    testing of its services.
-  </p>
 </footer>
