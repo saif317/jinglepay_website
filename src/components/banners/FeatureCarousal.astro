@@ -1,86 +1,77 @@
 ---
-// src/components/banners/FeatureCarousal.astro
 import FeatureBanner, { type FeatureBannerProps } from './FeatureBanner.astro';
-import PromoBanner from './PromoBanner.astro';
-import type { PromoBannerProps } from '@components/banners/PromoBanner.astro';
+import PromoBanner, { type PromoBannerProps } from './PromoBanner.astro';
 import { Image } from 'astro:assets';
 
 import multipleAccountsImage from '@assets/images/features/accounts-feature.webp';
 import transferImage from '@assets/images/features/transfer-feature.webp';
 import walletPromoImage from '@assets/images/promos/wallet-promo.webp';
 
-// Prepare carousel items for rendering
 const carouselItems: (FeatureBannerProps | PromoBannerProps)[] = [
   {
     titles: ['Multiple accounts.', 'All your money.', 'One super-app!'],
-    backgroundColor: 'bg-gradient-to-br from-teal-400 via-green-400 to-teal-400', // Green
+    backgroundColor: 'bg-gradient-to-br from-teal-400 via-green-400 to-teal-400',
     textColor: '#000000',
     imageSrc: multipleAccountsImage,
-    imageAlt: 'Multiple accounts feature',
+    imageAlt: 'Multiple accounts feature illustration showing cards and app interface',
     type: 'feature',
   },
   {
     heading: ['Earn up to', '2000 PKR'],
-    description: 'Complete your registration and Earn. It takes less than 5min.',
-    backgroundColor: 'bg-[radial-gradient(ellipse_50.00%_50.00%_at_50.00%_50.00%,_#8744D4_0%,_#6526AE_100%)]',
+    description:
+      'Get started in minutes! Open your bank account in just a few clicks and start earning today. Download the App now!',
+    backgroundColor: 'bg-[radial-gradient(ellipse_at_center,_#8744D4_0%,_#6526AE_100%)]',
     textColor: '#FFFFFF',
     imageSrc: walletPromoImage,
-    imageAlt: 'Earn bonus promotion',
+    imageAlt: 'Smartphone showing JinglePay wallet interface with coins',
     type: 'promo',
   },
   {
-    titles: ['Pay your bills in seconds—fast, easy, and hassle-free!'],
+    titles: ['Pay your bills in seconds—', 'fast easy, and hassle-free!'],
     subtitle: 'One platform, all your payments, zero stress. Stay on top of your finances with just a tap!',
-    backgroundColor: 'bg-[radial-gradient(ellipse_115.42%_113.13%_at_15.59%_27.82%,_#31B3FB_0%,_#137EC5_100%)]',
+    backgroundColor: 'bg-[radial-gradient(ellipse_at_center,_#31B3FB_0%,_#137EC5_100%)]',
     textColor: '#FFFFFF',
     imageSrc: transferImage,
-    imageAlt: 'Transfer money feature',
-    type: 'feature',
-  },
-  {
-    titles: ['Multiple accounts.', 'All your money.', 'One super-app!'],
-    backgroundColor: 'bg-gradient-to-br from-teal-400 via-green-400 to-teal-400', // Green
-    textColor: '#000000',
-    imageSrc: multipleAccountsImage,
-    imageAlt: 'Multiple accounts feature',
-    type: 'feature',
-  },
-  {
-    heading: ['Earn up to', '2000 PKR'],
-    description: 'Complete your registration and Earn. It takes less than 5min.',
-    backgroundColor: 'bg-[radial-gradient(ellipse_50.00%_50.00%_at_50.00%_50.00%,_#8744D4_0%,_#6526AE_100%)]',
-    textColor: '#FFFFFF',
-    imageSrc: walletPromoImage,
-    imageAlt: 'Earn bonus promotion',
-    type: 'promo',
-  },
-  {
-    titles: ['Pay your bills in seconds—fast, easy, and hassle-free!'],
-    subtitle: 'One platform, all your payments, zero stress. Stay on top of your finances with just a tap!',
-    backgroundColor: 'bg-[radial-gradient(ellipse_115.42%_113.13%_at_15.59%_27.82%,_#31B3FB_0%,_#137EC5_100%)]',
-    textColor: '#FFFFFF',
-    imageSrc: transferImage,
-    imageAlt: 'Transfer money feature',
+    imageAlt: 'Illustration of fast money transfer with phone and icons',
     type: 'feature',
   },
 ];
+
+carouselItems.push(...carouselItems);
+
+const imageWidths = [240, 360, 480]; // Example widths
+const imageSizes = '(max-width: 767px) 50vw, (max-width: 1023px) 40vw, 400px'; // Adjust sizes based on actual layout
 ---
 
-<section class='flex justify-center'>
-  <!-- Swiper container -->
+<section class='w-full py-8 overflow-hidden md:py-12 lg:py-16'>
   <div class='swiper feature-carousel'>
-    <!-- Swiper wrapper -->
-    <div class='swiper-wrapper'>
+    <div class='pb-4 swiper-wrapper'> 
       {
         carouselItems.map((item) => (
-          <div class='swiper-slide'>
+          <div class='h-auto swiper-slide'>
             {item.type === 'feature' ? (
               <FeatureBanner {...(item as FeatureBannerProps)}>
-                <Image src={item.imageSrc} alt={item.imageAlt} class='w-auto h-60' />
+                <Image
+                  src={item.imageSrc}
+                  alt={item.imageAlt}
+                  widths={imageWidths}
+                  sizes={imageSizes}
+                  loading='lazy'
+                  decoding='async'
+                  class='object-contain w-auto h-48 sm:h-56 md:h-60 lg:h-64' 
+                />
               </FeatureBanner>
             ) : (
               <PromoBanner {...(item as PromoBannerProps)}>
-                <Image src={item.imageSrc} alt={item.imageAlt} class='w-auto h-60' />
+                <Image
+                  src={item.imageSrc}
+                  alt={item.imageAlt}
+                  widths={imageWidths}
+                  sizes={imageSizes}
+                  loading='lazy'
+                  decoding='async'
+                  class='object-contain w-auto h-48 sm:h-56 md:h-60 lg:h-64' 
+                />
               </PromoBanner>
             )}
           </div>
@@ -90,50 +81,110 @@ const carouselItems: (FeatureBannerProps | PromoBannerProps)[] = [
   </div>
 </section>
 
-<!-- Import Swiper CSS -->
 <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css' />
 
-<!-- Import Swiper JS and initialize -->
 <script>
   import Swiper from 'swiper';
-  import { Navigation, Pagination, Autoplay, EffectCoverflow } from 'swiper/modules';
-  import 'swiper/css';
-  import 'swiper/css/navigation';
-  import 'swiper/css/pagination';
-  import 'swiper/css/effect-coverflow';
+  import { Autoplay, EffectCoverflow } from 'swiper/modules'; 
 
   document.addEventListener('DOMContentLoaded', () => {
     const swiper = new Swiper('.feature-carousel', {
-      modules: [Navigation, Pagination, Autoplay, EffectCoverflow],
-
-      // Adjust these settings to fix the layout
-      slidesPerView: 1.5, // Show 1.5 slides instead of 'auto'
-      centeredSlides: true,
-      initialSlide: 2,
-
-      // Reduce space between slides
-      spaceBetween: 135,
+      modules: [Autoplay, EffectCoverflow],
       loop: true,
-
-      // Adjust coverflow effect
+      centeredSlides: true,
       effect: 'coverflow',
-      coverflowEffect: {
-        rotate: 0,
-        stretch: 50, // Increase stretch to 50
-        depth: 150, // Increase depth to 200
-        modifier: 1, // Increase modifier to 2
-        slideShadows: false,
-      },
+      grabCursor: true,
 
-      // Autoplay
       autoplay: {
         delay: 5000,
         disableOnInteraction: false,
-        reverseDirection: true,
+        reverseDirection: true, 
       },
+
+      slidesPerView: 1.1, 
+      spaceBetween: 47, 
+      coverflowEffect: { 
+        rotate: 0,
+        stretch: 10,
+        depth: 100,
+        modifier: 1.5,
+        slideShadows: false,
+      },
+      breakpoints: {
+        576: {
+          slidesPerView: 1.25 ,
+          spaceBetween: 90,
+          coverflowEffect: {
+            rotate: 0,
+            stretch: 30,
+            depth: 120,
+            modifier: 1.2,
+            slideShadows: false,
+          },
+        },
+        768: {
+          slidesPerView: 1.1,
+          spaceBetween: 96,
+          coverflowEffect: {
+            rotate: 0,
+            stretch: 30,
+            depth: 120,
+            modifier: 1.2,
+            slideShadows: false,
+          },
+        },
+        992: {
+          slidesPerView: 1.3,
+          spaceBetween: 130,
+          coverflowEffect: {
+            rotate: 0,
+            stretch: 50,
+            depth: 150,
+            modifier: 1,
+            slideShadows: false,
+          },
+        },
+         1200: {
+          slidesPerView: 1.5,
+          spaceBetween: 150,
+          coverflowEffect: {
+            rotate: 0,
+            stretch: 60,
+            depth: 180,
+            modifier: 1,
+            slideShadows: false,
+          },
+        },
+        1400: {
+          slidesPerView: 1.5,
+          spaceBetween: 160,
+          coverflowEffect: {
+            rotate: 0,
+            stretch: 60,
+            depth: 180,
+            modifier: 1,
+            slideShadows: false,
+          },
+        }
+      }
     });
   });
 </script>
 
-<!-- Add additional styling -->
-<style></style>
+<style is:global>
+.feature-carousel .swiper-slide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: auto;
+  width: auto;
+}
+
+.feature-carousel .swiper-slide > div { 
+   width: 100%;
+   height: 100%;
+   min-height: 320px;
+   sm:min-height: 360px;
+   lg:min-height: 400px;
+}
+</style>

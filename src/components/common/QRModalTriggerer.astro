@@ -7,6 +7,9 @@ interface Props {
 const { className = '' } = Astro.props;
 ---
 
-<button class={`cursor-pointer qr-modal-trigger ${className}`} onclick='window.openQRModal()'>
+<button
+  class={`cursor-pointer qr-modal-trigger w-full flex justify-center items-center ${className}`}
+  onclick='window.openQRModal()'
+>
   <slot />
 </button>

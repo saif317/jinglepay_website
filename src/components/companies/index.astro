@@ -1,90 +1,96 @@
 ---
 import LogoShowcase, { type Logo } from '@components/common/LogoShowcase.astro';
 
-// Investors Slide 1
-//Row 1
 import bankAlfalah from '@assets/logos/bank-alfalah.svg';
 import moneyGram from '@assets/logos/moneygram.svg';
 import seedstars from '@assets/logos/seedstars.svg';
-
-// Row 2
 import aaico from '@assets/logos/aaico.svg';
 import plugplay from '@assets/logos/plugplay.svg';
 import fivehundred from '@assets/logos/500.svg';
-
-// Investors Slide 2
 import hGlobal from '@assets/logos/hglobal.png';
 import elevision from '@assets/logos/elevision.svg';
 import chandariacapital from '@assets/logos/chandriacapital.svg';
-
-// Partners Slide 1
-//Row 1
 import gcc from '@assets/logos/gcc.svg';
 import afex from '@assets/logos/afex.svg';
 import westernunion from '@assets/logos/western-union.svg';
-
-//Row 2
 import mastercard from '@assets/logos/mastercard.svg';
 import singx from '@assets/logos/singx.svg';
 import emq from '@assets/logos/emq.svg';
-
-// Partners Slide 2
-// Row 1
 import w2 from '@assets/logos/w2.svg';
 import lean from '@assets/logos/lean.svg';
 import finshape from '@assets/logos/finshape.svg';
-
-// Row 2
 import infinios from '@assets/logos/infinios.svg';
 import network from '@assets/logos/network.svg';
 import gamechange from '@assets/logos/gamechange.svg';
 
+// Define widths/sizes for NON-SVG logos
+const rasterWidths = [100, 140, 180];
+const rasterSizes = '(max-width: 639px) 20vw, (max-width: 1023px) 12vw, 140px';
+
 const investorsLogos: Logo[] = [
-  { src: bankAlfalah, alt: 'Bank Alfalah', href: 'https://www.bankalfalah.com/', width: 125 },
-  { src: moneyGram, alt: 'MoneyGram', href: 'https://www.moneygram.com/', width: 125 },
-  { src: seedstars, alt: 'Seedstars', href: 'https://www.seedstars.com/', width: 125 },
-  { src: aaico, alt: 'AAICO', href: 'https://appliedai.opus.com/' },
-  { src: plugplay, alt: 'Plugplay', href: 'https://appliedai.opus.com/', width: 125 },
-  { src: fivehundred, alt: '500', href: 'https://500.co/' },
-  { src: hGlobal, alt: 'H Global', href: 'http://www.haitouglobal.com/', width: 125 },
-  { src: elevision, alt: 'Elevision', href: 'https://www.elevision.com/', width: 125 },
-  { src: chandariacapital, alt: 'Chandariacapital', href: 'https://www.chandariacapital.com/', width: 125 },
+  { src: bankAlfalah, alt: 'Bank Alfalah', href: 'https://www.bankalfalah.com/', isSvg: true },
+  { src: moneyGram, alt: 'MoneyGram', href: 'https://www.moneygram.com/', isSvg: true },
+  { src: seedstars, alt: 'Seedstars', href: 'https://www.seedstars.com/', isSvg: true },
+  { src: aaico, alt: 'AAICO', href: 'https://appliedai.opus.com/', isSvg: true },
+  { src: plugplay, alt: 'Plug Play', href: 'https://www.plugandplaytechcenter.com/', isSvg: true }, // Corrected name/link
+  { src: fivehundred, alt: '500 Global', href: 'https://500.co/', isSvg: true }, // Corrected name
+  // --- Non-SVG ---
+  {
+    src: hGlobal,
+    alt: 'Haitou Global',
+    href: 'http://www.haitouglobal.com/',
+    isSvg: false,
+    widths: rasterWidths,
+    sizes: rasterSizes,
+  },
+  // --- SVGs ---
+  { src: elevision, alt: 'Elevision', href: 'https://www.elevision.com/', isSvg: true },
+  { src: chandariacapital, alt: 'Chandaria Capital', href: 'https://www.chandariacapital.com/', isSvg: true }, // Corrected name
 ];
 
 const partnerLogos: Logo[] = [
-  { src: gcc, alt: 'GCC', href: 'https://www.gccremit.com/', width: 125 },
-  { src: afex, alt: 'AFEX', href: 'https://alfardanexchange.com/', width: 125 },
-  { src: westernunion, alt: 'Western Union', href: 'https://www.westernunion.com/', width: 125 },
-  { src: mastercard, alt: 'Mastercard', href: 'https://www.mastercard.com/' },
-  { src: singx, alt: 'SingX', href: 'https://www.singx.co/' },
-  { src: emq, alt: 'EMQ', href: 'https://emq.com/' },
-  { src: w2, alt: 'W2', href: 'https://www.fullcircl.com/using-fullcircl/w2-by-fullcircl-overview' },
-  { src: lean, alt: 'Lean', href: 'https://www.leantech.me/', width: 125 },
-  { src: finshape, alt: 'Finshape', href: 'https://finshape.com/', width: 125 },
-  { src: infinios, alt: 'Infinios', href: 'https://infinios.com/', width: 125 },
-  { src: network, alt: 'Network', href: 'https://www.network.ae/', width: 125 },
-  { src: gamechange, alt: 'Gamechange', href: 'https://gamechange.com/', width: 125 },
-  { src: bankAlfalah, alt: 'Bank Alfalah', href: 'https://www.bankalfalah.com/', width: 125 },
-  { src: moneyGram, alt: 'MoneyGram', href: 'https://www.moneygram.com/', width: 125 },
+  { src: gcc, alt: 'GCC Remit', href: 'https://www.gccremit.com/', isSvg: true }, // Corrected name
+  { src: afex, alt: 'Al Fardan Exchange', href: 'https://alfardanexchange.com/', isSvg: true }, // Corrected name
+  { src: westernunion, alt: 'Western Union', href: 'https://www.westernunion.com/', isSvg: true },
+  { src: mastercard, alt: 'Mastercard', href: 'https://www.mastercard.com/', isSvg: true },
+  { src: singx, alt: 'SingX', href: 'https://www.singx.co/', isSvg: true },
+  { src: emq, alt: 'EMQ', href: 'https://emq.com/', isSvg: true },
+  {
+    src: w2,
+    alt: 'W2 by FullCircl',
+    href: 'https://www.fullcircl.com/using-fullcircl/w2-by-fullcircl-overview',
+    isSvg: true,
+  },
+  { src: lean, alt: 'Lean Technologies', href: 'https://www.leantech.me/', isSvg: true }, // Corrected name
+  { src: finshape, alt: 'Finshape', href: 'https://finshape.com/', isSvg: true },
+  { src: infinios, alt: 'Infinios', href: 'https://infinios.com/', isSvg: true },
+  { src: network, alt: 'Network International', href: 'https://www.network.ae/', isSvg: true }, // Corrected name
+  { src: gamechange, alt: 'GameChange', href: 'https://gamechange.com/', isSvg: true },
+  { src: bankAlfalah, alt: 'Bank Alfalah', href: 'https://www.bankalfalah.com/', isSvg: true }, // Duplicate included as per original
+  { src: moneyGram, alt: 'MoneyGram', href: 'https://www.moneygram.com/', isSvg: true }, // Duplicate included as per original
 ];
 ---
 
-<div class='flex flex-col items-center gap-y-[96px]'>
+<div
+  class='flex flex-col items-center w-full px-4 py-16 mx-auto gap-y-16 sm:px-8 md:px-12 lg:px-16 lg:py-24 lg:gap-y-24'
+>
   <LogoShowcase
-    title='Investors'
-    description='Join us in revolutionizing digital finance. As a leading fintech in the MENAP region, we’re driving financial inclusion with seamless payments, remittances, and digital banking solutions. Backed by cutting-edge technology and a rapidly growing user base, we offer a high-growth opportunity in the evolving fintech landscape. Invest in the future of finance with us.'
+    title='Our Investors'
+    description="Join us in revolutionizing digital finance. As a leading fintech in the MENAP region, we're driving financial inclusion with seamless payments, remittances, and digital banking solutions. Backed by cutting-edge technology and a rapidly growing user base, we offer a high-growth opportunity in the evolving fintech landscape. Invest in the future of finance with us."
     buttonText='Become an Investor'
     buttonLink='#'
     logos={investorsLogos}
-    selector='Investors'
+    selector='investors'
   />
 
   <LogoShowcase
-    title='Partners'
+    title='Our Partners'
     description='We collaborate with leading financial institutions, service providers, and businesses to revolutionize digital finance in MENAP. Together, we drive innovation, financial inclusion, and seamless payment solutions for a smarter, more connected future.'
     buttonText='Become a Partner'
     buttonLink='#'
     logos={partnerLogos}
     selector='partners'
   />
+
+  <logo-showcase-swiper class='hidden'></logo-showcase-swiper>
 </div>
