@@ -9,9 +9,10 @@ export type FeatureBannerProps = {
   imageSrc: ImageMetadata;
   imageAlt: string;
   type?: 'feature';
+  shadow?: ImageMetadata;
 };
 
-const { titles, subtitle, tagline, backgroundColor, textColor = '#FFFFFF' } = Astro.props;
+const { titles, subtitle, tagline, backgroundColor, textColor = '#FFFFFF', shadow } = Astro.props;
 ---
 
 <div

@@ -8,9 +8,10 @@ export type PromoBannerProps = {
   backgroundColor?: string;
   textColor?: string;
   type?: 'promo';
+  shadow?: ImageMetadata;
 };
 
-const { heading, description, backgroundColor, textColor = '#FFFFFF' } = Astro.props;
+const { heading, description, backgroundColor, textColor = '#FFFFFF', shadow } = Astro.props;
 ---
 
 <div
@@ -30,6 +31,7 @@ const { heading, description, backgroundColor, textColor = '#FFFFFF' } = Astro.p
     </div>
     <div class='flex items-center justify-center w-full mt-4 md:justify-end md:w-auto md:mt-0'>
       <slot />
+      {shadow && <div class={shadow} />}
     </div>
   </div>
 </div>
