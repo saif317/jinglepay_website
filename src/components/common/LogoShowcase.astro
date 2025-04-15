@@ -1,13 +1,17 @@
 ---
 import { Image } from 'astro:assets';
 import arrow from '@assets/icons/arrow.svg';
+import type { ImageMetadata } from 'astro';
 
+// Extend Logo interface for better image handling
 export interface Logo {
-  src: ImageMetadata;
+  src: ImageMetadata | string; // Allow string for external SVGs if needed
   alt: string;
   href: string;
-  width?: number;
-  height?: number;
+  isSvg?: boolean; // Optional flag for SVG handling
+  // Define widths/sizes for non-SVG logos
+  widths?: number[];
+  sizes?: string;
 }
 
 interface Props {
@@ -20,43 +24,67 @@ interface Props {
 }
 
 const { title, description, buttonText, buttonLink, logos, selector } = Astro.props;
+
+const defaultLogoWidths = [80, 120, 160];
+const defaultLogoSizes = '(max-width: 639px) 25vw, (max-width: 1023px) 15vw, 120px'; // Example sizes, adjust!
+
+const logosPerSlide = 6;
 ---
 
-<section class='flex flex-row justify-between items-center gap-x-[94px]'>
-  <!-- Left side - Text content -->
-  <div class='flex-1'>
-    <h2 class='mb-4 text-4xl font-black'>{title}</h2>
-    <p class='text-xl font-normal text-neutral-500 mb-11'>{description}</p>
+<section
+  class='flex flex-col w-full lg:flex-row lg:justify-between lg:items-start gap-y-10 lg:gap-y-0 lg:gap-x-12 xl:gap-x-20'
+>
+  <div class='flex flex-col items-center flex-shrink-0 w-full lg:items-start lg:w-5/12'>
+    <h2 class='mb-3 text-3xl font-black sm:text-4xl lg:mb-4'>{title}</h2>
+    <p
+      class='mb-6 text-base font-normal text-center lg:text-start sm:text-lg lg:text-xl text-neutral-500 sm:mb-8 lg:mb-10'
+    >
+      {description}
+    </p>
     <a
       href={buttonLink}
-      class='inline-block px-6 py-3 text-white transition-colors rounded-xl bg-violet-500 hover:bg-violet-600'
+      class='inline-block px-5 py-2.5 sm:px-6 sm:py-3 text-sm sm:text-base text-white transition-colors rounded-lg sm:rounded-xl bg-violet-500 hover:bg-violet-600 focus:outline-none focus:ring-2 focus:ring-violet-400 focus:ring-offset-2'
+      rel='noopener noreferrer'
+      target={buttonLink.startsWith('http') ? '_blank' : '_self'}
     >
       {buttonText}
     </a>
   </div>
 
-  <!-- Right side - Logo carousel -->
-  <div class='relative flex flex-col items-end flex-1 overflow-hidden gap-y-4'>
-    <!-- Add the data-selector attribute to the swiper container -->
-    <div class={`${selector}-logo-swiper`} data-selector={selector}>
+  <div class='relative flex flex-col items-center w-full lg:items-end lg:w-7/12 gap-y-4 sm:gap-y-6'>
+    <div class={`swiper ${selector}-logo-swiper w-full`} data-selector={selector}>
       <div class='swiper-wrapper'>
         {
-          [...Array(Math.ceil(logos.length / 6))].map((_, slideIndex) => (
+          [...Array(Math.ceil(logos.length / logosPerSlide))].map((_, slideIndex) => (
             <div class='swiper-slide'>
-              <div class='grid grid-cols-3 gap-6'>
-                {logos.slice(slideIndex * 6, (slideIndex + 1) * 6).map((logo) => (
+              <div class='grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:gap-5'>
+                {logos.slice(slideIndex * logosPerSlide, (slideIndex + 1) * logosPerSlide).map((logo) => (
                   <a
                     href={logo.href}
-                    class='flex items-center justify-center bg-neutral-100 rounded-2xl h-[120px] p-6'
+                    class='flex items-center justify-center bg-neutral-100 rounded-lg sm:rounded-xl lg:rounded-2xl aspect-video sm:aspect-square h-auto min-h-[80px] sm:min-h-[100px] lg:min-h-[110px] xl:min-h-[120px] p-3 sm:p-4 lg:p-5 transition-transform duration-200 hover:scale-105'
                     target='_blank'
                     rel='noopener noreferrer'
+                    aria-label={`Visit ${logo.alt}`}
                   >
-                    <Image
-                      src={logo.src}
-                      alt={logo.alt}
-                      width={logo.width ?? 80}
-                      class='object-contain h-auto max-w-full'
-                    />
+                    {typeof logo.src === 'string' ? (
+                      <img
+                        src={logo.src}
+                        alt={logo.alt}
+                        loading='lazy'
+                        decoding='async'
+                        class='object-contain w-auto h-full max-h-[60%] sm:max-h-[65%] lg:max-h-[70%]'
+                      />
+                    ) : (
+                      <Image
+                        src={logo.src}
+                        alt={logo.alt}
+                        widths={logo.isSvg ? undefined : logo.widths || defaultLogoWidths}
+                        sizes={logo.isSvg ? undefined : logo.sizes || defaultLogoSizes}
+                        loading='lazy'
+                        decoding='async'
+                        class='object-contain w-auto h-full max-h-[60%] sm:max-h-[65%] lg:max-h-[70%]'
+                      />
+                    )}
                   </a>
                 ))}
               </div>
@@ -65,19 +93,24 @@ const { title, description, buttonText, buttonLink, logos, selector } = Astro.pr
         }
       </div>
     </div>
-    <div class='flex flex-row justify-between gap-x-8'>
-      <div class={`border rounded-full !w-9 !h-9 border-violet-500 ${selector}-swiper-button-prev swiper-button-prev`}>
-        <Image src={arrow} alt='arrow' class='rotate-180' />
-      </div>
-      <div class={`border rounded-full !w-9 !h-9 border-violet-500 ${selector}-swiper-button-next swiper-button-next`}>
-        <Image src={arrow} alt='arrow' />
-      </div>
+    <div class='flex flex-row justify-center w-full gap-x-4 sm:gap-x-6 lg:justify-end'>
+      <button
+        type='button'
+        class={`flex items-center justify-center border rounded-full !w-8 !h-8 sm:!w-9 sm:!h-9 border-violet-500 text-violet-500 hover:bg-violet-50 transition-colors ${selector}-swiper-button-prev swiper-button-custom-prev`}
+        aria-label='Previous slide'
+      >
+        <Image src={arrow} alt='Previous' class='w-3 h-3 rotate-180 sm:w-4 sm:h-4' />
+      </button>
+      <button
+        type='button'
+        class={`flex items-center justify-center border rounded-full !w-8 !h-8 sm:!w-9 sm:!h-9 border-violet-500 text-violet-500 hover:bg-violet-50 transition-colors ${selector}-swiper-button-next swiper-button-custom-next`}
+        aria-label='Next slide'
+      >
+        <Image src={arrow} alt='Next' class='w-3 h-3 sm:w-4 sm:h-4' />
+      </button>
     </div>
   </div>
 </section>
-
-<!-- Use a custom element to initialize swiper -->
-<logo-showcase-swiper class='hidden'></logo-showcase-swiper>
 
 <script>
   import Swiper from 'swiper';
@@ -85,49 +118,70 @@ const { title, description, buttonText, buttonLink, logos, selector } = Astro.pr
   import 'swiper/css';
   import 'swiper/css/navigation';
 
-  // Define custom element
   class LogoShowcaseSwiper extends HTMLElement {
     connectedCallback() {
-      document.addEventListener('DOMContentLoaded', () => {
-        // Find all swiper containers and initialize them
-        document.querySelectorAll('[class$="-logo-swiper"]').forEach((container) => {
-          const selector = container.getAttribute('data-selector');
+      if (document.readyState === 'complete') {
+        this.initSwipers();
+      } else {
+        document.addEventListener('DOMContentLoaded', this.initSwipers.bind(this));
+      }
+    }
 
-          if (!selector) return;
+    initSwipers() {
+      const swiperContainers = document.querySelectorAll('[class$="-logo-swiper"][data-selector]');
 
-          const nextButton = container.querySelector('.swiper-button-next');
+      swiperContainers.forEach((container) => {
+        const selector = container.getAttribute('data-selector');
+        if (!selector || container.classList.contains('swiper-initialized')) return;
 
-          new Swiper(`.${selector}-logo-swiper`, {
-            modules: [Navigation],
-            slidesPerView: 'auto',
-            navigation: {
-              prevEl: `.${selector}-swiper-button-prev`,
-              nextEl: `.${selector}-swiper-button-next`,
+        new Swiper(container as HTMLElement, {
+          modules: [Navigation],
+          slidesPerView: 1,
+          spaceBetween: 30,
+          watchOverflow: true,
+          navigation: {
+            prevEl: `.${selector}-swiper-button-prev`,
+            nextEl: `.${selector}-swiper-button-next`,
+          },
+          on: {
+            init: function () {
+              // Add listener to update container height after images load potentially
+              // This might be needed if image loading causes height changes affecting layout
+              // Example: window.dispatchEvent(new Event('resize'));
             },
-          });
+          },
         });
       });
     }
   }
 
-  // Register the custom element
-  customElements.define('logo-showcase-swiper', LogoShowcaseSwiper);
+  if (!customElements.get('logo-showcase-swiper')) {
+    customElements.define('logo-showcase-swiper', LogoShowcaseSwiper);
+  }
 </script>
 
-<style>
-  .swiper-slide {
+<style is:global>
+  /* Ensure swiper container takes full width */
+  .swiper {
     width: 100%;
+    overflow: hidden; /* Hide overflow */
   }
 
-  .swiper-button-prev,
-  .swiper-button-next {
-    position: relative;
-    display: flex;
-    margin: 0;
+  .swiper-slide {
+    width: 100%; /* Ensure slides take full container width */
+    height: auto; /* Allow slide height to adjust based on content */
   }
 
-  .swiper-button-prev::after,
-  .swiper-button-next::after {
-    content: '';
+  /* Hide default Swiper nav arrow pseudo-elements */
+  .swiper-button-custom-prev::after,
+  .swiper-button-custom-next::after {
+    content: none;
+  }
+
+  /* You might need to target the custom button classes if default .swiper-button-prev/next interfere */
+  .swiper-button-disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none; /* Make sure disabled buttons aren't clickable */
   }
 </style>
