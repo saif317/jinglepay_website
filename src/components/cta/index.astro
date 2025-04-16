@@ -1,22 +1,24 @@
 ---
 import QRCodeGenerator from '@components/common/QRCodeGenerator.astro';
+
+const {
+  translations: { cta = {} },
+} = Astro.locals;
 ---
 
 <div class='my-[40px] px-4 sm:px-8 md:px-12 lg:px-16'>
   <div
     class='text-white pt-[32px] pb-[40px] px-[12px] gap-y-[40px] flex flex-col items-center lg:gap-y-[45px] lg:pt-[47px] lg:pb-[33px] lg:px-[87px] bg-indigo-950 rounded-xl'
   >
-    <div class='flex flex-col items-center text-center gap-y-4'>
-      <span class='text-lg font-bold lg:text-2xl xl:text-3xl'>Are you ready to Jingle?</span>
-      <span class='text-xl font-bold lg:text-4xl'>Spend, Send and Save your money, all in one place</span>
-      <span class='text-sm font-normal lg:text-xl'
-        >Empowering you with a financial super-app that simplifies your day-to-day financial needs.</span
-      >
+    <div class='flex flex-col gap-y-4 items-center text-center'>
+      <span class='text-lg font-bold lg:text-2xl xl:text-3xl'>{cta.title}</span>
+      <span class='text-xl font-bold lg:text-4xl'>{cta.subtitle}</span>
+      <span class='text-sm font-normal lg:text-xl'>{cta.text}</span>
     </div>
 
     <div class='flex flex-row gap-x-2.5 items-center py-3 pr-1.5 pl-4 rounded-xl border border-white'>
       <QRCodeGenerator baseGenerationSize={32} />
-      <span class='text-lg font-bold text-white'>Get the Jingle Pay App</span>
+      <span class='text-lg font-bold text-white'>{cta.qrText}</span>
     </div>
   </div>
 </div>

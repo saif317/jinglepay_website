@@ -1,53 +1,91 @@
 import { defineMiddleware } from 'astro:middleware';
-import { middleware, redirectToDefaultLocale } from 'astro:i18n';
 import { COUNTRIES } from './constants';
 
-// Custom middleware to handle country/language detection and routing
-export const countryLanguageMiddleware = defineMiddleware(async (ctx, next) => {
-  return next();
+const DEFAULT_COUNTRY_CODE = 'pak';
+const DEFAULT_LANG_CODE = 'en';
 
+const translationModules = import.meta.glob('/src/constants/locale/*/*/translation.js');
+
+async function loadTranslations(countryCode, langCode) {
+  const modulePath = `/src/constants/locale/${countryCode}/${langCode}/translation.js`;
+  const moduleLoader = translationModules[modulePath]; // Get the loader function
+
+  if (!moduleLoader) {
+    console.error(
+      `Translation module not found for "${countryCode}/${langCode}". Path checked: ${modulePath}. Check import.meta.glob pattern and file location.`
+    );
+    return {};
+  }
+
+  try {
+    const module = await moduleLoader();
+    return module.default || {};
+  } catch (error) {
+    console.error(`Failed to execute translation module load for "${countryCode}/${langCode}": ${error.message}`);
+    return {};
+  }
+}
+
+export const onRequest = defineMiddleware(async (ctx, next) => {
   const url = new URL(ctx.request.url);
   const pathname = url.pathname;
 
-  // Skip for static assets and API routes
   if (
-    pathname.startsWith('/assets/') ||
     pathname.startsWith('/api/') ||
-    pathname.endsWith('.svg') ||
-    pathname.endsWith('.png') ||
-    pathname.endsWith('.jpg')
+    pathname.startsWith('/assets/') ||
+    pathname.startsWith('/_astro/') ||
+    pathname.startsWith('/_image') ||
+    pathname === '/favicon.ico' ||
+    /\.(css|js|json|webmanifest|txt|xml|map)$/i.test(pathname) ||
+    /\.(png|jpe?g|gif|svg|webp|ico|avif|bmp|tiff?)$/i.test(pathname) ||
+    /\.(mp4|mov|avi|webm|ogg)$/i.test(pathname) ||
+    /\.(mp3|wav|aac|flac)$/i.test(pathname) ||
+    /\.(woff2?|ttf|otf|eot)$/i.test(pathname)
   ) {
     return next();
   }
 
-  // If we're at the root, detect country/language
   if (pathname === '/' || pathname === '') {
-    // On client-side, index.astro will handle the detection and redirect
-    return next();
+    const defaultPath = `/${DEFAULT_COUNTRY_CODE}/${DEFAULT_LANG_CODE}/`;
+    console.log(`Redirecting root to default: ${defaultPath}`);
+    return ctx.redirect(defaultPath, 302);
   }
 
-  // Check if the URL already follows our country/language pattern
   const segments = pathname.split('/').filter(Boolean);
 
   if (segments.length >= 2) {
-    const country = segments[0];
-    const lang = segments[1];
+    const countryCode = segments[0];
+    const langCode = segments[1];
 
-    // Validate if this is a valid country/language combination
-    const validCountry = COUNTRIES.find((c) => c.path === country);
+    const validCountry = COUNTRIES.find((c) => c.path === countryCode);
+    const validLang = validCountry?.languages.find((l) => l.code === langCode);
 
-    if (validCountry) {
-      const validLang = validCountry.languages.find((l) => l.code === lang);
-      if (validLang) {
-        // Valid combination, proceed
-        return next();
+    if (validCountry && validLang) {
+      console.log(`Valid path detected: /${countryCode}/${langCode}/`);
+      const translations = await loadTranslations(countryCode, langCode);
+
+      if (Object.keys(translations).length === 0 && !(await loadTranslations(countryCode, DEFAULT_LANG_CODE))) {
+        console.warn(`No translations found for ${countryCode}/${langCode} and no fallback available.`);
       }
+
+      ctx.locals.lang = langCode;
+      ctx.locals.country = countryCode;
+      ctx.locals.translations = translations;
+
+      return next();
+    } else {
+      console.warn(`Invalid country/lang combination in path: "${pathname}".`);
     }
+  } else {
+    console.warn(`Path "${pathname}" does not match expected structure /[country]/[lang]/.`);
   }
 
-  // Invalid URL format, redirect to default locale
-  return redirectToDefaultLocale(ctx, 302);
-});
+  const defaultPath = `/${DEFAULT_COUNTRY_CODE}/${DEFAULT_LANG_CODE}/`;
+  console.log(`Redirecting invalid path "${pathname}" to default: ${defaultPath}`);
+  if (pathname.startsWith(defaultPath)) {
+    console.error('Potential redirect loop detected. Aborting redirect to default path.');
+    return new Response('Configuration Error: Default path invalid or causing loop.', { status: 500 });
+  }
 
-// Use sequence to combine our middleware with Astro's built-in i18n middleware
-export const onRequest = countryLanguageMiddleware;
+  return ctx.redirect(defaultPath, 302);
+});

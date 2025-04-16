@@ -152,3 +152,11 @@
 body {
   @apply text-zinc-800;
 }
+
+.direction-rtl {
+  direction: rtl;
+}
+
+.direction-ltr {
+  direction: ltr;
+}

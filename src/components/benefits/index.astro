@@ -17,74 +17,52 @@ import earth from '@assets/images/benefits/earth.png';
 import guy from '@assets/images/benefits/guy.png';
 import girl from '@assets/images/benefits/girl.png';
 import aniaHala from '@assets/images/benefits/ania-hala.png';
+import type { ImageMetadata } from 'astro';
 
-const benefits = [
+const {
+  translations: { benefits = {}, billPayment = {}, savings = {} },
+} = Astro.locals;
+
+const benefitCardImages = [
   {
     image: benefit1,
     isSvg: false,
     alt: 'Benefit 1',
-    title: 'Current or Savings Account',
-    description: [
-      'No minimum balance is required.',
-      'Earn +10% profit on savings.',
-      'Multiple transactions are available, including utility bill payments, mobile top-ups, and fund transfers.', // Combined for better flow
-    ],
-    boldText: 'Earn +10% profit on savings.',
   },
   {
     image: benefit2,
     isSvg: false,
     alt: 'Benefit 2',
-    title: 'Home Remittance Account',
-    description: [
-      'Receive international money directly to your home remittance account and earn cashback on every transfer!',
-    ],
-    boldText: 'earn cashback on every transfer!',
   },
   {
     image: benefit3,
     isSvg: false,
     alt: 'Benefit 3',
-    title: 'Peer-to-Peer transfers',
-    description: [
-      'Instantly send money to friends using their mobile number or contacts—fast, secure, and hassle-free!',
-    ],
   },
   {
     image: benefit4,
     isSvg: false,
     alt: 'Benefit 4',
-    title: 'Splitting bills with friends',
-    description: [
-      "Splitting bills with friends using Jingle Pay is quick, easy, and fun—it's the fastest way to divide any amount!",
-    ],
   },
   {
     image: benefit5,
     isSvg: false,
     alt: 'Benefit 5',
-    title: 'Requesting money',
-    description: [
-      'Get paid easily by sending a money request to friends using their mobile number or contacts. Quick and secure!',
-    ],
   },
   {
     image: benefit6,
     isSvg: true,
     alt: 'Benefit 6',
-    title: 'Free Mastercard Debit card',
-    description: [
-      'Unlock your freedom with a versatile debit card! Enjoy a joining bonus and earn cashback on every transaction.',
-    ],
   },
 ];
 
-const billPaymentIcons = [
-  { icon: billPayment1, text: 'Electricity' },
-  { icon: billPayment2, text: 'Gas' },
-  { icon: billPayment3, text: 'Water' },
-  { icon: billPayment4, text: 'Telcos' },
-];
+const benefitCards = benefitCardImages.map((benefitCard, index) => {
+  return { ...benefitCard, ...benefits.benefits[index] };
+});
+
+const billPaymentIcons = [billPayment1, billPayment2, billPayment3, billPayment4].map((icon, index) => {
+  return { icon, text: billPayment?.icons?.[index] || '' };
+});
 
 // --- Image Optimization Config ---
 // Adjust widths based on max expected size in the grid (e.g., 1/3 of container width on large screens)
@@ -103,22 +81,21 @@ const aniaHalaImageSizes = '(max-width: 767px) 30vw, (max-width: 1023px) 20vw, 1
 
 <div
   id='benefits-section'
-  class='flex flex-col items-center px-4 py-12 mx-auto gap-y-12 md:gap-y-16 lg:gap-y-20 sm:px-8 md:px-12 lg:px-16 md:py-16 lg:py-20'
+  class='flex flex-col gap-y-12 items-center px-4 py-12 mx-auto md:gap-y-16 lg:gap-y-20 sm:px-8 md:px-12 lg:px-16 md:py-16 lg:py-20'
 >
   {/* Responsive padding, max-width */}
-  <div class='flex flex-col items-center text-center gap-y-3 sm:gap-y-4'>
-    <h4 class='text-3xl font-extrabold sm:text-4xl text-slate-900'>What are the benefits for you?</h4>
+  <div class='flex flex-col gap-y-3 items-center text-center sm:gap-y-4'>
+    <h4 class='text-3xl font-extrabold sm:text-4xl text-slate-900'>{benefits.title}</h4>
     <span class='max-w-3xl text-base font-normal sm:text-lg md:text-xl text-zinc-700'>
-      We make banking accessible by offering affordable, inclusive financial services through a tailored digital
-      experience.
+      {benefits.subtitle}
     </span>
   </div>
 
-  <div class='grid w-full grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 md:gap-12 lg:gap-16'>
+  <div class='grid grid-cols-1 gap-8 w-full sm:grid-cols-2 lg:grid-cols-3 md:gap-12 lg:gap-16'>
     {
-      benefits.map((benefit) => (
+      benefitCards.map((benefit) => (
         <div
-          class='flex flex-col items-center text-center sm:items-start sm:text-start gap-y-4'
+          class='flex flex-col gap-y-4 items-center text-center sm:items-start sm:text-start'
           id={benefit.alt.toLowerCase().split(' ').join('-')}
         >
           {benefit.isSvg ? (
@@ -126,7 +103,7 @@ const aniaHalaImageSizes = '(max-width: 767px) 30vw, (max-width: 1023px) 20vw, 1
               <Image
                 src={benefit.image}
                 alt={benefit.alt}
-                class='object-contain w-auto h-auto max-w-full max-h-full'
+                class='object-contain w-auto max-w-full h-auto max-h-full'
                 loading='lazy'
                 decoding='async'
               />
@@ -145,7 +122,7 @@ const aniaHalaImageSizes = '(max-width: 767px) 30vw, (max-width: 1023px) 20vw, 1
 
           <h5 class='w-full text-lg font-extrabold sm:text-xl text-slate-800'>{benefit.title}</h5>
           <div class='flex flex-col w-full text-base text-gray-600 sm:text-lg'>
-            {benefit.description.map((desc) => {
+            {benefit.description?.map((desc: string) => {
               const boldIndex = benefit.boldText ? desc.indexOf(benefit.boldText) : -1;
               return (
                 <p class={`leading-relaxed ${boldIndex !== -1 ? 'font-normal' : ''}`}>
@@ -171,11 +148,8 @@ const aniaHalaImageSizes = '(max-width: 767px) 30vw, (max-width: 1023px) 20vw, 1
     id='bill-payments'
     class='bg-slate-100 text-center py-8 sm:py-9 flex flex-col items-center justify-center gap-y-5 sm:gap-y-7 px-6 sm:px-12 md:px-16 lg:px-24 rounded-2xl md:rounded-[30px] w-full'
   >
-    <h5 class='text-2xl font-extrabold sm:text-3xl text-slate-900'>Bill Payments made easy</h5>
-    <span class='max-w-3xl text-base font-normal sm:text-lg md:text-xl text-zinc-700'
-      >Say goodbye to bill stress with Jingle Pay! Effortlessly manage your utility payments and set up reminders to
-      never miss a due date again. Simplify your life—let Jingle Pay handle your bills!</span
-    >
+    <h5 class='text-2xl font-extrabold sm:text-3xl text-slate-900'>{billPayment.title}</h5>
+    <span class='max-w-3xl text-base font-normal sm:text-lg md:text-xl text-zinc-700'>{billPayment.subtitle}</span>
 
     <div class='grid grid-cols-2 gap-6 mt-4 sm:grid-cols-2 lg:grid-cols-4'>
       {
@@ -184,7 +158,7 @@ const aniaHalaImageSizes = '(max-width: 767px) 30vw, (max-width: 1023px) 20vw, 1
             <Image
               src={item.icon}
               alt={item.text}
-              class='w-12 h-12 transition-all duration-200 sm:w-16 sm:h-16 md:w-20 md:h-20 drop-shadow-md hover:drop-shadow-lg'
+              class='w-12 h-12 drop-shadow-md transition-all duration-200 sm:w-16 sm:h-16 md:w-20 md:h-20 hover:drop-shadow-lg'
               loading='lazy'
               decoding='async'
             />
@@ -195,17 +169,21 @@ const aniaHalaImageSizes = '(max-width: 767px) 30vw, (max-width: 1023px) 20vw, 1
     </div>
   </div>
 
-  <div class='flex flex-col w-full xl:flex-row gap-y-8 xl:gap-x-7'>
+  <div class='flex flex-col gap-y-8 w-full xl:flex-row xl:gap-x-7'>
     <div
       class='bg-gradient-to-br from-teal-400 via-green-400 to-teal-400 drop-shadow-2xl rounded-xl md:rounded-[20px] p-6 sm:p-8 md:p-10 xl:p-12 w-full flex flex-col justify-between text-black'
     >
       <p class='w-full max-w-[20rem]'>
-        <span class='block text-lg font-medium text-left sm:text-xl opacity-90'>Trusted by</span>
-        <span class='block mt-1 text-4xl font-black text-center sm:text-5xl md:text-6xl 2xl:text-5xl'>+500,000</span>
-        <span class='block mt-1 text-lg font-medium text-right sm:text-xl opacity-90 sm:mt-0'>Users worldwide</span>
+        <span class='block text-lg font-medium opacity-90 text-start sm:text-xl'>{savings.trustedBy}</span>
+        <span class='block mt-1 text-4xl font-black text-center sm:text-5xl md:text-6xl 2xl:text-5xl'
+          >{savings.userNum}</span
+        >
+        <span class='block mt-1 text-lg font-medium opacity-90 text-end sm:text-xl sm:mt-0'
+          >{savings.usersWorldWide}</span
+        >
       </p>
 
-      <div class='flex items-center justify-center w-full drop-shadow-2xl'>
+      <div class='flex justify-center items-center w-full drop-shadow-2xl'>
         <Image
           src={earth}
           alt='Earth illustration'
@@ -217,9 +195,9 @@ const aniaHalaImageSizes = '(max-width: 767px) 30vw, (max-width: 1023px) 20vw, 1
         />
       </div>
 
-      <p class='mt-4 text-right sm:mt-0'>
-        <span class='block text-4xl font-extrabold sm:text-5xl md:text-6xl 2xl:text-5xl'>USD 2 Billion</span>
-        <span class='block text-2xl font-extrabold sm:text-3xl md:text-4xl opacity-90'>Transactions</span>
+      <p class='mt-4 text-end sm:mt-0'>
+        <span class='block text-4xl font-extrabold sm:text-5xl md:text-6xl 2xl:text-5xl'>{savings.transactionNum}</span>
+        <span class='block text-2xl font-extrabold opacity-90 sm:text-3xl md:text-4xl'>{savings.transactionText}</span>
       </p>
     </div>
 
@@ -239,7 +217,7 @@ const aniaHalaImageSizes = '(max-width: 767px) 30vw, (max-width: 1023px) 20vw, 1
           class='flex flex-col drop-shadow-2xl items-center justify-between rounded-lg md:rounded-[20px] w-full sm:w-1/2 p-4 sm:p-6 bg-slate-100 gap-y-4'
         >
           <span class='text-lg font-black text-center sm:text-xl lg:mt-[6rem] text-slate-800 lg:text-3xl'
-            >ZERO FEES</span
+            >{savings.zeroFees}</span
           >
           <Image
             src={aniaHala}
@@ -261,14 +239,14 @@ const aniaHalaImageSizes = '(max-width: 767px) 30vw, (max-width: 1023px) 20vw, 1
         >
           <div>
             <span class='block text-lg font-black sm:text-xl lg:text-3xl xl:text-lg text-slate-800'
-              >Savings generated for customers</span
+              >{savings.genrated}</span
             >
             <span class='block mt-2 text-2xl font-black sm:text-3xl lg:text-5xl xl:text-xl text-slate-900'
-              >USD 5,000,000
+              >{savings.amount}
             </span>
           </div>
           <span class='block mt-4 text-base font-normal text-gray-600 sm:text-lg lg:text-2xl xl:text-lg'
-            >Jingle Pay is democratizing access to financial services</span
+            >{savings.subtitle}</span
           >
         </div>
         <Image
