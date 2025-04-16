@@ -5,26 +5,23 @@ import Header from '@components/Header.astro';
 
 import '@styles/global.css';
 
-interface Props {
-  title?: string;
-  description?: string;
-}
+const { translations, lang } = Astro.locals;
 
-const {
-  title = 'Jingle Pay - Future of Money',
-  description = 'Experience the future of money with Jingle Pay. All your banking needs in one super-app.',
-} = Astro.props;
+const metaData = {
+  title: translations.title,
+  description: translations.description,
+};
 ---
 
 <!doctype html>
-<html lang='en'>
+<html lang={lang} dir={lang === 'ur' || lang === 'ar' ? 'rtl' : 'ltr'}>
   <head>
     <meta charset='UTF-8' />
     <meta name='viewport' content='width=device-width, initial-scale=1.0' />
     <link rel='icon' type='image/svg+xml' href='/favicon.svg' />
     <meta name='generator' content={Astro.generator} />
-    <meta name='description' content={description} />
-    <title>{title}</title>
+    <meta name='description' content={metaData.description} />
+    <title>{metaData.title}</title>
 
     <!-- Google Fonts -->
     <link rel='preconnect' href='https://fonts.googleapis.com' />
@@ -32,7 +29,7 @@ const {
 
     <link rel='sitemap' href='/sitemap-index.xml' />
   </head>
-  <body>
+  <body style={lang === 'ur' || lang === 'ar' ? 'direction: rtl' : 'direction: ltr'}>
     <Header />
     <main>
       <slot />

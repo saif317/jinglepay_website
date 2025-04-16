@@ -4,23 +4,23 @@ import appStoreImage from '@assets/icons/appstore.svg';
 import { Image } from 'astro:assets';
 ---
 
-<div class='flex flex-wrap justify-center gap-2 sm:gap-4'>
+<div class='flex flex-wrap gap-2 justify-center sm:gap-4'>
   <a
     href='#'
-    class='inline-flex items-center justify-center w-full p-2 px-3 font-sans text-black no-underline transition-colors duration-200 border border-black rounded sm:px-4 hover:bg-gray-100 sm:w-auto'
+    class='inline-flex justify-center items-center p-2 px-3 w-full font-sans text-black no-underline rounded border border-black transition-colors duration-200 sm:px-4 hover:bg-gray-100 sm:w-auto'
   >
-    <Image src={playStoreImage} alt='' class='flex-shrink-0 w-5 h-5 mr-2' loading='lazy' />
-    <div class='flex flex-col leading-tight text-left'>
+    <Image src={playStoreImage} alt='' class='flex-shrink-0 mr-2 w-5 h-5' loading='lazy' />
+    <div class='flex flex-col leading-tight text-start'>
       <span class='text-xs'>GET IT ON</span>
       <span class='text-sm font-bold'>Google Play</span>
     </div>
   </a>
   <a
     href='#'
-    class='inline-flex items-center justify-center w-full p-2 px-3 font-sans text-black no-underline transition-colors duration-200 border border-black rounded sm:px-4 hover:bg-gray-100 sm:w-auto'
+    class='inline-flex justify-center items-center p-2 px-3 w-full font-sans text-black no-underline rounded border border-black transition-colors duration-200 sm:px-4 hover:bg-gray-100 sm:w-auto'
   >
-    <Image src={appStoreImage} alt='' class='flex-shrink-0 w-5 h-5 mr-2' loading='lazy' />
-    <div class='flex flex-col leading-tight text-left'>
+    <Image src={appStoreImage} alt='' class='flex-shrink-0 mr-2 w-5 h-5' loading='lazy' />
+    <div class='flex flex-col leading-tight text-start'>
       <span class='text-xs'>Download on the</span>
       <span class='text-sm font-bold'>App Store</span>
     </div>

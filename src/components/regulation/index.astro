@@ -1,30 +1,17 @@
 ---
-// RegulationSecuritySection.astro
+const {
+  translations: { regulation = {} },
+} = Astro.locals;
 ---
 
 <section id='regulation' class='px-4 regulation-security-container sm:px-8 md:px-12 lg:px-16'>
   <div class='regulation-section'>
-    <h2 class='section-title'>Regulated by</h2>
-    <p class='regulation-text'>
-      Jingle Pay is a digital platform providing branchless banking services in Pakistan. Jingle Pay operates under the
-      branchless banking license issued to Bank Alfalah Limited by the State Bank of Pakistan (SBP). The services
-      offered through Jingle Pay comply with the regulations and guidelines established by the SBP for branchless
-      banking operations.
-    </p>
-    <p class='regulation-text'>
-      Please note that Jingle Pay, as a digital platform, does not hold a separate branchless banking license. Instead,
-      it operates within the regulatory framework granted to Bank Alfalah Limited by the SBP. The platform is designed
-      to provide convenient, secure, and compliant branchless banking services in Pakistan.
-    </p>
-    <p class='regulation-text'>
-      All services provided by Jingle Pay are subject to the regulations and oversight of the State Bank of Pakistan and
-      the policies of Bank Alfalah Limited. Users are encouraged to stay informed about any relevant regulatory updates
-      and requirements that may affect their use of the platform.
-    </p>
+    <h2 class='section-title'>{regulation.title}</h2>
+    {regulation.description.map((description: string) => <p class='regulation-text'>{description}</p>)}
   </div>
 
   <div class='security-section'>
-    <h2 class='section-title'>Security</h2>
+    <h2 class='section-title'>{regulation.security}</h2>
     <div class='security-features'>
       <div class='security-feature'>
         <!-- <img src='/images/security-icon-1.svg' alt='Security feature 1' class='security-icon' /> -->

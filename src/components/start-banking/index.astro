@@ -8,26 +8,30 @@ import { Image } from 'astro:assets';
 import line from '@assets/icons/line.svg';
 import lineVertical from '@assets/icons/line-vertical.svg';
 
-const steps = [
-  { title: 'Enter CNIC details', icon: frame },
-  { title: 'Get ready to scan right hand', icon: scan },
-  { title: 'Get authenticated with NADRA', icon: auth },
-  { title: 'Select preferred account type', icon: account },
-];
+const {
+  translations: { onboardingJourney = {} },
+} = Astro.locals;
+
+const icons = [frame, scan, auth, account];
+
+const steps = onboardingJourney.steps?.map((step: string, index: number) => ({
+  title: step,
+  icon: icons[index],
+}));
 ---
 
 <div class='flex flex-col px-4 sm:px-8 md:px-12 lg:px-16 gap-y-[60px]'>
-  <div class='flex flex-col items-center text-center gap-y-5'>
+  <div class='flex flex-col gap-y-5 items-center text-center'>
     <h5 class='text-3xl font-extrabold'>Open a free digital bank account in a few clicks!</h5>
     <span class='text-3xl font-normal text-zinc-900'>Start banking in minutes.</span>
   </div>
 
   <div class='relative flex flex-col lg:flex-row mx-auto gap-x-[72px] gap-y-[48px]'>
-    <Image src={line} alt='Line' class='absolute hidden w-full lg:block top-1/2 -z-10' />
-    <Image src={lineVertical} alt='Line' class='absolute block h-full lg:hidden right-1/2 -z-10' />
+    <Image src={line} alt='Line' class='hidden absolute top-1/2 w-full lg:block -z-10' />
+    <Image src={lineVertical} alt='Line' class='block absolute right-1/2 h-full lg:hidden -z-10' />
 
     {
-      steps.map((step) => (
+      steps.map((step: { title: string; icon: string }) => (
         <div class='flex flex-row items-center shadow-[0px_0px_54.5px_0px_rgba(28,28,28,0.08)] bg-white '>
           <div class='flex flex-col px-3 py-4 gap-y-4 rounded-xl max-w-[151px]'>
             <Image src={step.icon} alt={step.title} height={32} width={32} />

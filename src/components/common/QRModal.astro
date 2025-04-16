@@ -7,6 +7,10 @@ declare global {
     openQRModal: () => void;
   }
 }
+
+const {
+  translations: { qrModal = {} },
+} = Astro.locals;
 ---
 
 <div id='global-qr-modal' class='fixed inset-0 z-50 items-center justify-center bg-[#00000070] hidden p-4'>
@@ -30,16 +34,16 @@ declare global {
       </svg>
     </button>
 
-    <h3 class='text-lg font-extrabold sm:text-xl'>Get the Jingle Pay App</h3>
-    <span class='text-sm font-light text-gray-600 sm:text-base'>Scan the QR code to download the App</span>
+    <h3 class='text-lg font-extrabold sm:text-xl'>{qrModal.title}</h3>
+    <span class='text-sm font-light text-gray-600 sm:text-base'>{qrModal.subtitle}</span>
 
     <div class='flex justify-center my-2 sm:my-3'>
       <QRCodeGenerator />
     </div>
 
-    <span class='text-sm font-light text-gray-600 sm:text-base'>or get a download link via SMS</span>
+    <span class='text-sm font-light text-gray-600 sm:text-base'>{qrModal.alternativeText}</span>
 
-    <PhoneNumberInput class='w-full max-w-xs mx-auto' />
+    <PhoneNumberInput class='mx-auto w-full max-w-xs' />
   </div>
 </div>
 

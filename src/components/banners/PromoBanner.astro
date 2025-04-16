@@ -18,18 +18,18 @@ const { heading, description, backgroundColor, textColor = '#FFFFFF', shadow } =
   class={`w-full p-6 sm:p-8 md:p-10 overflow-hidden rounded-xl md:rounded-2xl h-full ${backgroundColor}`}
   style={`color: ${textColor};`}
 >
-  <div class='container flex flex-col items-center justify-between h-full gap-4 mx-auto md:flex-row md:gap-8'>
-    <div class='flex-1 w-full text-center md:text-left md:w-auto'>
+  <div class='container flex flex-col gap-4 justify-between items-center mx-auto h-full md:flex-row md:gap-8'>
+    <div class='flex-1 w-full text-center md:text-start md:w-auto'>
       {
         heading.map((title: string) => (
           <h2 class='text-3xl sm:text-4xl lg:text-[2.8rem] font-black m-0 leading-tight'>{title}</h2>
         ))
       }
-      <p class='max-w-md mx-auto mt-3 text-base font-medium sm:text-lg lg:text-xl sm:mt-4 opacity-90 md:mx-0'>
+      <p class='mx-auto mt-3 text-base font-medium opacity-90 sm:text-lg lg:text-xl sm:mt-4 md:mx-0'>
         {description}
       </p>
     </div>
-    <div class='flex items-center justify-center w-full mt-4 md:justify-end md:w-auto md:mt-0'>
+    <div class='flex justify-center items-center mt-4 w-full md:justify-end md:w-auto md:mt-0'>
       <slot />
       {shadow && <div class={shadow} />}
     </div>

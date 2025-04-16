@@ -28,19 +28,9 @@ export async function getStaticPaths() {
     });
   });
 }
-
-const { country, lang } = Astro.params;
-
-// Load country-specific data
-const countryData = await import(`../../../i18n/countries/${country}.json`);
-
-// Load language translations
-const translations = await import(`../../../i18n/translations/${lang}.json`);
-
-// Now use countryData and translations in your page
 ---
 
-<Layout title={translations.title}>
+<Layout>
   <HeroSection />
   <FeatureCarousal />
   <Featured />

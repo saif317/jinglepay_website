@@ -9,14 +9,14 @@ interface Props {
 }
 
 const {
-  onSubmit = '#',
-  class: className = '',
-  smsText = 'Download JinglePay now: https://jinglepay.com/download',
-} = Astro.props;
+  translations: { qrModal = {} },
+} = Astro.locals;
+
+const { onSubmit = '#', class: className = '', smsText = qrModal.smsText } = Astro.props;
 ---
 
 <div class={`flex w-full max-w-xs rounded-md overflow-hidden shadow-md ${className}`}>
-  <div class='flex items-center gap-x-1 sm:gap-x-1.5 px-2 sm:px-3 py-1.5 bg-gray-100 border-r border-gray-200'>
+  <div class='flex gap-x-1 items-center px-2 py-1.5 bg-gray-100 border-r border-gray-200 sm:gap-x-1.5 sm:px-3'>
     <Image src={pakFlag} alt='Pakistan' class='w-4 h-auto rounded-sm' />
     <span class='text-sm font-medium sm:text-base'>+92</span>
   </div>
@@ -25,7 +25,7 @@ const {
     type='tel'
     name='phoneNumber'
     placeholder='Mobile number'
-    class='flex-1 px-2 sm:px-3 py-1.5 text-sm sm:text-base border-none outline-none min-w-0'
+    class='flex-1 px-2 py-1.5 min-w-0 text-sm border-none outline-none sm:px-3 sm:text-base'
     required
   />
 
@@ -49,7 +49,7 @@ const {
 
 <div
   id='toast'
-  class='fixed z-50 hidden w-11/12 p-3 transition-all duration-300 transform -translate-x-1/2 translate-y-full bg-white rounded-md shadow-lg opacity-0 bottom-4 left-1/2 sm:w-auto sm:max-w-md'
+  class='hidden fixed bottom-4 left-1/2 z-50 p-3 w-11/12 bg-white rounded-md shadow-lg opacity-0 transition-all duration-300 transform -translate-x-1/2 translate-y-full sm:w-auto sm:max-w-md'
 >
   <div class='flex items-center'>
     <div id='toast-icon' class='flex-shrink-0 mr-2 sm:mr-3'></div>
@@ -106,8 +106,7 @@ const {
   const button = document.querySelector('#send-link-button');
   const phoneInput = document.querySelector('input[name="phoneNumber"]');
 
-  const defaultSmsText =
-    typeof smsText !== 'undefined' ? smsText : 'Download JinglePay now: https://jinglepay.com/download';
+  const defaultSmsText = typeof smsText !== 'undefined' ? smsText : qrModal.smsText;
 
   button?.addEventListener('click', async (e) => {
     e.preventDefault();
@@ -122,7 +121,7 @@ const {
       try {
         if (submitButton) {
           submitButton.disabled = true;
-          submitButton.innerHTML = `<svg class="w-4 h-4 text-white sm:w-5 sm:h-5 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          submitButton.innerHTML = `<svg class="w-4 h-4 text-white animate-spin sm:w-5 sm:h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
           </svg>`;
@@ -147,15 +146,15 @@ const {
         }
 
         if (res.data && (String(res.data).includes('success') || res.status === 200)) {
-          showToast('Download link sent to your phone!', 'success');
+          showToast(qrModal.linkSent, 'success');
           phoneInput.value = '';
         } else {
           console.warn('SMS API Response:', res.data); // Log unexpected responses
-          showToast('Failed to send SMS. Please try again. (1)', 'error');
+          showToast(qrModal.failed, 'error');
         }
       } catch (error) {
         console.error('Error sending SMS:', error);
-        showToast('Failed to send SMS. Please try again. (2)', 'error');
+        showToast(qrModal.failed, 'error');
 
         const submitButton = document.querySelector('#send-link-button');
         if (submitButton) {
@@ -166,7 +165,7 @@ const {
         }
       }
     } else {
-      showToast('Please enter a valid 10-digit mobile number (e.g., 3001234567)', 'error');
+      showToast(qrModal.hint, 'error');
     }
   });
 </script>
