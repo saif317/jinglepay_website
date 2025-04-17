@@ -1,27 +1,22 @@
 ---
-import { COUNTRIES, DEFAULT_LOCALE } from '@constants';
+import { COUNTRIES } from '@constants';
 import { Image } from 'astro:assets';
 
-// With manual routing, we need to extract locale from URL
-const url = Astro.url.pathname;
-const pathSegments = url.split('/').filter(Boolean);
-
-// Extract country and language from path segments
-let currentCountryPath = pathSegments[0] || '';
-let currentLangCode = pathSegments[1] || '';
-
-// Fallback to defaults if not found
-if (!currentCountryPath || !currentLangCode) {
-  const [defaultCountry, defaultLang] = DEFAULT_LOCALE.split('-');
-  currentCountryPath = currentCountryPath || defaultCountry;
-  currentLangCode = currentLangCode || defaultLang;
-}
-
-// Find current country and language objects
-const currentCountry = COUNTRIES.find((c) => c.path === currentCountryPath) || COUNTRIES[0];
-const currentLanguage = currentCountry.languages.find((l) => l.code === currentLangCode) || currentCountry.languages[0];
+const { lang, country } = Astro.locals;
+const { pathname } = Astro.url;
 
 const { className } = Astro.props;
+
+const currentCountry = COUNTRIES.find((c) => c.path === country) || COUNTRIES[0];
+const currentLanguage = currentCountry.languages.find((l) => l.code === lang) || currentCountry.languages[0];
+
+const getCountryLink = (newCountryPath: string) => {
+  return '/' + [newCountryPath, lang, pathname.split('/').slice(3).join('/')].join('/');
+};
+
+const getLanguageLink = (newLangCode: string) => {
+  return '/' + [country, newLangCode, pathname.split('/').slice(3).join('/')].join('/');
+};
 ---
 
 <div
@@ -37,7 +32,7 @@ const { className } = Astro.props;
     <div id='country-dropdown' class='absolute left-0 hidden bg-white rounded-md shadow-md top-full'>
       {
         COUNTRIES.map((country) => (
-          <a href={`/${country.path}/${currentLanguage.code}`} class='flex items-center rounded-md hover:bg-gray-100'>
+          <a href={getCountryLink(country.path)} class='flex items-center rounded-md hover:bg-gray-100'>
             {country.flag && <Image src={country.flag} alt={country.name} class='w-auto h-6 rounded-sm shadow-sm' />}
             <span>{country.code}</span>
           </a>
@@ -53,7 +48,7 @@ const { className } = Astro.props;
     <div id='language-dropdown' class='absolute right-0 hidden bg-white rounded-md shadow-md top-full'>
       {
         currentCountry.languages.map((language) => (
-          <a href={`/${currentCountry.path}/${language.code}`} class='block font-medium rounded-md hover:bg-gray-100'>
+          <a href={getLanguageLink(language.code)} class='block font-medium rounded-md hover:bg-gray-100'>
             {language.name}
           </a>
         ))
