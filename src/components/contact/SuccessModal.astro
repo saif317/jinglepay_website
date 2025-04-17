@@ -48,3 +48,58 @@ const {
       0 0 30px 10px rgba(121, 78, 255, 0.3);
   }
 </style>
+
+<script define:vars={{ id }}>
+  const modal = document.getElementById(id);
+  const body = document.body;
+  const confirmButton = document.getElementById(`${id}-confirm-button`);
+
+  // Function to toggle body scroll
+  const toggleBodyScroll = (isVisible) => {
+    if (isVisible) {
+      body.classList.add('overflow-hidden');
+    } else {
+      body.classList.remove('overflow-hidden');
+    }
+  };
+
+  // Observe changes to the modal's class attribute
+  const observer = new MutationObserver((mutationsList) => {
+    for (const mutation of mutationsList) {
+      if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+        const targetElement = mutation.target;
+        const isVisible = !targetElement.classList.contains('hidden');
+        toggleBodyScroll(isVisible);
+      }
+    }
+  });
+
+  // Start observing
+  if (modal) {
+    observer.observe(modal, { attributes: true });
+    // Initial check in case modal is visible on load (though unlikely with 'hidden' class)
+    toggleBodyScroll(!modal.classList.contains('hidden'));
+  }
+
+  // Handle confirm button click
+  if (confirmButton) {
+    confirmButton.addEventListener('click', () => {
+      // When the button is clicked, ensure scroll is re-enabled.
+      // The modal hiding itself should trigger the observer anyway, but this is a safeguard.
+      body.classList.remove('overflow-hidden');
+    });
+  }
+
+  // Clean up observer on component unload (Astro specific)
+  document.addEventListener(
+    'astro:before-swap',
+    () => {
+      if (modal) {
+        observer.disconnect();
+      }
+      // Ensure scroll is re-enabled on page transition
+      body.classList.remove('overflow-hidden');
+    },
+    { once: true }
+  );
+</script>
