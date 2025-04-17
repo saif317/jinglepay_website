@@ -1,0 +1,20 @@
+---
+import Layout from '@layouts/Layout.astro';
+import { getStaticPathsWrapper } from '@util/getStaticPaths';
+import PrivacyPolicy from '@components/privacy-policy/index.astro';
+
+export const getStaticPaths = getStaticPathsWrapper(
+  [
+    'pak',
+    //  'uae'
+  ],
+  {
+    pak: ['en', 'ur'],
+    // uae: ['en', 'ar'],
+  }
+);
+---
+
+<Layout>
+  <PrivacyPolicy />
+</Layout>
