@@ -4,6 +4,7 @@ import QRModalTriggerer from '@components/common/QRModalTriggerer.astro';
 import CountryLanguageSelector from '@components/country-language-selector/index.astro';
 import { Image } from 'astro:assets';
 import logoSrc from '@assets/logos/jplogo.svg';
+import Link from '@components/common/Link.astro';
 
 const {
   translations: { navbar = {} },
@@ -40,10 +41,10 @@ const {
       >
     </li>
     <li class='py-2'>
-      <a
+      <Link
         href='/contact'
         class='no-underline text-[#1c1c1c] text-md font-semibold transition-colors duration-300 hover:text-[#794eff]'
-        >{navbar.contact}</a
+        >{navbar.contact}</Link
       >
     </li>
   </ul>

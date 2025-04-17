@@ -1,0 +1,56 @@
+---
+import doubleCheckmark from '@assets/icons/double-checkmark.svg';
+
+interface Props {
+  id: string;
+}
+const { id } = Astro.props;
+---
+
+<div
+  id={id}
+  aria-labelledby='modal-title'
+  role='dialog'
+  aria-modal='true'
+  class='hidden fixed inset-0 z-50 justify-center items-center px-4 bg-[#00000020] transition-opacity duration-300 ease-in-out'
+>
+  <div
+    class='relative mx-auto flex w-full max-w-md transform flex-col items-center rounded-[20px] border-2 border-violet-400 bg-white p-8 text-center shadow-xl transition-all'
+  >
+    <div class='flex flex-shrink-0 justify-center items-center p-3 mx-auto mb-6 w-16 h-16 bg-violet-100 rounded-full'>
+      <svg
+        class='w-10 h-10 text-violet-600'
+        xmlns='http://www.w3.org/2000/svg'
+        fill='none'
+        viewBox='0 0 24 24'
+        stroke-width='2'
+        stroke='currentColor'
+      >
+        <path stroke-linecap='round' stroke-linejoin='round' d='M5 13l4 4L19 7'></path>
+      </svg>
+    </div>
+
+    <div>
+      <h3 id='modal-title' class='mb-4 text-2xl font-extrabold text-slate-800'>Thank you for your message</h3>
+      <p class='text-lg text-gray-600'>Our support team will analyze your request and respond shortly.</p>
+    </div>
+
+    <div class='mt-8'>
+      <button
+        id={`${id}-confirm-button`}
+        type='button'
+        class='inline-flex justify-center px-6 py-2.5 text-base font-bold text-white bg-violet-600 rounded-xl border border-transparent shadow-sm transition duration-150 ease-in-out hover:bg-violet-700 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2'
+      >
+        Okay
+      </button>
+    </div>
+  </div>
+</div>
+
+<style>
+  .fuzzy-border {
+    box-shadow:
+      0 0 15px 5px rgba(121, 78, 255, 0.5),
+      0 0 30px 10px rgba(121, 78, 255, 0.3);
+  }
+</style>

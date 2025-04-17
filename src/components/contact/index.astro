@@ -1,0 +1,239 @@
+---
+import SuccessModal from '@components/contact/SuccessModal.astro';
+
+const formEndpoint = '/api/contact';
+---
+
+<section
+  id='contact-us'
+  class='flex flex-col lg:flex-row lg:justify-between gap-y-10 lg:gap-x-[50px] xl:gap-x-[75px] 2xl:gap-x-[100px] px-4 sm:px-8 pt-32 pb-[109px]'
+  aria-labelledby='contact-heading'
+>
+  <div class='flex flex-col gap-y-10'>
+    <h2 id='contact-heading' class='mb-3 text-4xl font-extrabold'>Contact Us</h2>
+    <p class='text-lg'>Feel free to send us a message with your request or access our online support.</p>
+    <div
+      class='p-5 lg:p-6 rounded-[20px] bg-violet-500/3 outline-[0.50px] outline-offset-[-0.50px] outline-violet-500/40 backdrop-blur-sm'
+    >
+      <p class='mb-6 text-lg text-neutral-900'>
+        If you would like, you can email us. Our team will respond to you shortly.
+      </p>
+      <a
+        href='mailto:support@jinglepay.com'
+        class='text-[#794EFF] text-xl transition duration-150 ease-in-out hover:text-violet-900 hover:underline'
+      >
+        support@jinglepay.com
+      </a>
+    </div>
+  </div>
+
+  <div class='relative p-5 lg:p-8 bg-white rounded-[20px] shadow-[0px_0px_60px_0px_rgba(121,78,255,0.12)] w-full'>
+    <h3 class='mb-8 text-2xl font-extrabold text-slate-800'>Send your message</h3>
+
+    <form id='contact-form' action={formEndpoint} method='POST' class='grid grid-cols-1 gap-4 lg:grid-cols-2'>
+      <div>
+        <label for='first-name' class='block mb-1.5 text-base font-semibold'>
+          First name<span class='text-red-500'>*</span>
+        </label>
+        <input
+          type='text'
+          id='first-name'
+          name='firstName'
+          placeholder='Satoshi'
+          required
+          autocomplete='given-name'
+          aria-required='true'
+          class='p-4 w-full placeholder-gray-500 rounded-lg shadow-sm transition duration-150 ease-in-out outline outline-neutral-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent'
+        />
+      </div>
+
+      <div>
+        <label for='last-name' class='block mb-1.5 text-base font-semibold'
+          >Last name<span class='text-red-500'>*</span>
+        </label>
+        <input
+          type='text'
+          id='last-name'
+          name='lastName'
+          placeholder='Satoshi'
+          required
+          autocomplete='family-name'
+          aria-required='true'
+          class='p-4 w-full placeholder-gray-500 rounded-lg shadow-sm transition duration-150 ease-in-out outline outline-neutral-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent'
+        />
+      </div>
+
+      <div>
+        <label for='email' class='block mb-1.5 text-base font-semibold'
+          >Email<span class='text-red-500'>*</span>
+        </label>
+        <input
+          type='email'
+          id='email'
+          name='email'
+          placeholder='example@company.com'
+          required
+          autocomplete='email'
+          aria-required='true'
+          pattern='^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+          title='Please enter a valid email address'
+          class='p-4 w-full placeholder-gray-500 rounded-lg shadow-sm transition duration-150 ease-in-out outline outline-neutral-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent'
+        />
+      </div>
+
+      <div>
+        <label for='phone' class='block mb-1.5 text-base font-semibold'>Phone Number</label>
+        <input
+          type='tel'
+          id='phone'
+          name='phone'
+          placeholder='+92 311 2222222'
+          autocomplete='tel'
+          class='p-4 w-full placeholder-gray-500 rounded-lg shadow-sm transition duration-150 ease-in-out outline outline-neutral-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent'
+        />
+      </div>
+
+      <div class='lg:col-span-2'>
+        <label for='reason' class='block mb-1.5 text-base font-semibold'
+          >Reason for contacting us<span class='text-red-500'>*</span>
+        </label>
+        <div class='relative'>
+          <select
+            id='reason'
+            name='reason'
+            required
+            aria-required='true'
+            class='p-4 pr-8 w-full bg-white rounded-lg shadow-sm transition duration-150 ease-in-out appearance-none outline outline-neutral-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent'
+          >
+            <option value='' disabled selected>Select a reason...</option>
+            <option value='jinglepay_questions'>Questions regarding my Jingle pay account</option>
+            <option value='technical_support'>Technical Support</option>
+            <option value='billing'>Billing Inquiry</option>
+            <option value='feedback'>Feedback/Suggestion</option>
+            <option value='general'>General Inquiry</option>
+          </select>
+          <div class='flex absolute inset-y-0 right-0 items-center px-2 text-gray-700 pointer-events-none'>
+            <svg class='w-4 h-4 fill-current' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'
+              ><path d='M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z'></path></svg
+            >
+          </div>
+        </div>
+      </div>
+
+      <div class='lg:col-span-2'>
+        <label for='message' class='block mb-1.5 text-base font-semibold'
+          >Your Message<span class='text-red-500'>*</span></label
+        >
+        <textarea
+          id='message'
+          name='message'
+          rows='5'
+          placeholder='Please, describe your request or details for your contact.'
+          required
+          aria-required='true'
+          class='p-4 w-full placeholder-gray-500 rounded-lg shadow-sm transition duration-150 ease-in-out outline outline-neutral-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent resize-vertical'
+        ></textarea>
+      </div>
+
+      <div class='lg:col-span-2'>
+        <button
+          id='submit-button'
+          type='submit'
+          class='px-6 py-3 w-full font-bold text-white bg-[#794EFF] rounded-xl transition duration-150 ease-in-out cursor-pointer hover:bg-violet-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-500 disabled:opacity-50 disabled:cursor-not-allowed'
+        >
+          Submit
+        </button>
+        <p id='form-status' class='mt-4 text-sm text-center' aria-live='polite'></p>
+      </div>
+    </form>
+  </div>
+</section>
+
+<SuccessModal id='success-modal' />
+
+<script is:inline>
+  const form = document.getElementById('contact-form');
+  const submitButton = document.getElementById('submit-button');
+  const formStatus = document.getElementById('form-status');
+  const successModal = document.getElementById('success-modal');
+  const modalConfirmButton = document.getElementById('success-modal-confirm-button');
+
+  if (form && successModal && modalConfirmButton && submitButton && formStatus) {
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      submitButton.disabled = true;
+      submitButton.textContent = 'Submitting...';
+      formStatus.textContent = '';
+
+      const formData = new FormData(form);
+      const formAction = form.action;
+
+      try {
+        const response = await fetch(formAction, {
+          method: 'POST',
+          body: formData,
+          headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            Accept: 'application/json',
+          },
+        });
+
+        if (response.ok) {
+          form.reset();
+          formStatus.textContent = '';
+          successModal.classList.remove('hidden');
+          successModal.classList.add('flex');
+
+          modalConfirmButton.focus();
+        } else {
+          console.error('Submission failed:', response.status, response.statusText);
+          let errorMessage = 'Oops! Something went wrong. Please try again later.';
+          try {
+            const errorData = await response.json();
+            errorMessage = errorData.message || errorMessage;
+          } catch (e) {
+            console.error('Could not parse error response:', e);
+          }
+          formStatus.textContent = errorMessage;
+          formStatus.style.color = 'red';
+          submitButton.disabled = false;
+          submitButton.textContent = 'Submit';
+        }
+      } catch (error) {
+        console.error('Network error:', error);
+        formStatus.textContent = 'Could not reach server. Please check your connection.';
+        formStatus.style.color = 'red';
+        submitButton.disabled = false;
+        submitButton.textContent = 'Submit';
+      }
+    });
+
+    modalConfirmButton.addEventListener('click', () => {
+      successModal.classList.add('hidden');
+      successModal.classList.remove('flex');
+      submitButton.disabled = false;
+      submitButton.textContent = 'Submit';
+    });
+
+    successModal.addEventListener('click', (event) => {
+      if (event.target === successModal) {
+        successModal.classList.add('hidden');
+        successModal.classList.remove('flex');
+        submitButton.disabled = false;
+        submitButton.textContent = 'Submit';
+      }
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && !successModal.classList.contains('hidden')) {
+        successModal.classList.add('hidden');
+        successModal.classList.remove('flex');
+        submitButton.disabled = false;
+        submitButton.textContent = 'Submit';
+      }
+    });
+  } else {
+    console.error('Could not find all required elements for form submission script.');
+  }
+</script>

@@ -1,5 +1,6 @@
 ---
 import { Image } from 'astro:assets';
+import Link from '@components/common/Link.astro';
 
 import logo from '@assets/logos/jplogowhitesvg.svg';
 
@@ -60,7 +61,7 @@ const socialLinks = [
         <div class='flex gap-4 sm:gap-5 lg:gap-6'>
           {
             socialLinks.map((social) => (
-              <a
+              <Link
                 href={social.href}
                 target='_blank'
                 rel='noopener noreferrer'
@@ -69,7 +70,7 @@ const socialLinks = [
               >
                 <span class='sr-only'>{social.alt}</span>
                 <Image src={social.icon} alt='' class='w-4 h-4 sm:h-5 sm:w-5' loading='lazy' decoding='async' />
-              </a>
+              </Link>
             ))
           }
         </div>
