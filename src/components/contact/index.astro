@@ -1,0 +1,342 @@
+---
+import SuccessModal from '@components/contact/SuccessModal.astro';
+
+const formEndpoint = '/api/contact';
+
+const {
+  translations: { contact = {} },
+} = Astro.locals;
+---
+
+<section
+  id='contact-us'
+  class='flex flex-col lg:flex-row lg:justify-between gap-y-10 lg:gap-x-[50px] xl:gap-x-[75px] 2xl:gap-x-[100px] px-4 sm:px-8 pt-32 pb-[109px]'
+  aria-labelledby='contact-heading'
+>
+  <div class='flex flex-col gap-y-10'>
+    <h2 id='contact-heading' class='mb-3 text-4xl font-extrabold'>{contact.title}</h2>
+    <p class='text-lg'>{contact.description}</p>
+    <div
+      class='p-5 lg:p-6 rounded-[20px] bg-violet-500/3 outline-[0.50px] outline-offset-[-0.50px] outline-violet-500/40 backdrop-blur-sm'
+    >
+      <p class='mb-6 text-lg text-neutral-900'>{contact.emailUs}</p>
+      <a
+        href='mailto:support@jinglepay.com'
+        class='text-[#794EFF] text-xl transition duration-150 ease-in-out hover:text-violet-900 hover:underline'
+      >
+        support@jinglepay.com
+      </a>
+    </div>
+  </div>
+
+  <div class='relative p-5 lg:p-8 bg-white rounded-[20px] shadow-[0px_0px_60px_0px_rgba(121,78,255,0.12)] w-full'>
+    <h3 class='mb-8 text-2xl font-extrabold text-slate-800'>{contact.formTitle}</h3>
+
+    <form id='contact-form' action={formEndpoint} method='POST' class='grid grid-cols-1 gap-4 lg:grid-cols-2'>
+      <div>
+        <label for='first-name' class='block mb-1.5 text-base font-semibold'>
+          {contact.firstName}<span class='text-red-500'>*</span>
+        </label>
+        <input
+          type='text'
+          id='first-name'
+          name='firstName'
+          placeholder={contact.firstName}
+          required
+          autocomplete='given-name'
+          aria-required='true'
+          class='w-full p-4 placeholder-gray-500 transition duration-150 ease-in-out rounded-lg shadow-sm outline outline-neutral-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent'
+        />
+      </div>
+
+      <div>
+        <label for='last-name' class='block mb-1.5 text-base font-semibold'
+          >{contact.lastName}<span class='text-red-500'>*</span></label
+        >
+        <input
+          type='text'
+          id='last-name'
+          name='lastName'
+          placeholder={contact.lastName}
+          required
+          autocomplete='family-name'
+          aria-required='true'
+          class='w-full p-4 placeholder-gray-500 transition duration-150 ease-in-out rounded-lg shadow-sm outline outline-neutral-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent'
+        />
+      </div>
+
+      <div>
+        <label for='email' class='block mb-1.5 text-base font-semibold'
+          >{contact.email}<span class='text-red-500'>*</span></label
+        >
+        <input
+          type='email'
+          id='email'
+          name='email'
+          placeholder='example@company.com'
+          required
+          autocomplete='email'
+          aria-required='true'
+          pattern='^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+          title='Please enter a valid email address'
+          class='w-full p-4 placeholder-gray-500 transition duration-150 ease-in-out rounded-lg shadow-sm outline outline-neutral-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent'
+        />
+      </div>
+
+      <div>
+        <label for='phone' class='block mb-1.5 text-base font-semibold'>{contact.phone}</label>
+        <input
+          type='tel'
+          id='phone'
+          name='phone'
+          placeholder='+92 311 2222222'
+          autocomplete='tel'
+          class='w-full p-4 placeholder-gray-500 transition duration-150 ease-in-out rounded-lg shadow-sm outline outline-neutral-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent'
+        />
+      </div>
+
+      <div class='lg:col-span-2'>
+        <label for='reason' class='block mb-1.5 text-base font-semibold'
+          >{contact.reason}<span class='text-red-500'>*</span></label
+        >
+        <div class='relative' id='reason-dropdown'>
+          <input type='hidden' id='reason' name='reason' value='' required aria-required='true' />
+          <button
+            type='button'
+            id='reason-button'
+            aria-haspopup='listbox'
+            aria-expanded='false'
+            class='relative w-full p-4 pr-10 text-left bg-white rounded-lg shadow-sm cursor-default outline outline-neutral-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent'
+          >
+            <span class='block text-gray-500 truncate' id='reason-selected-text'>{contact.reasonPlaceholder}</span>
+            <span class='absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none'>
+              <svg
+                class='w-5 h-5 text-gray-400'
+                xmlns='http://www.w3.org/2000/svg'
+                viewBox='0 0 20 20'
+                fill='currentColor'
+                aria-hidden='true'
+              >
+                <path
+                  fill-rule='evenodd'
+                  d='M10 3a.75.75 0 01.53.22l3.5 3.5a.75.75 0 01-1.06 1.06L10 4.81 6.03 8.78a.75.75 0 01-1.06-1.06l3.5-3.5A.75.75 0 0110 3zm-3.78 9.53a.75.75 0 011.06 0L10 15.19l3.97-3.97a.75.75 0 111.06 1.06l-4.5 4.5a.75.75 0 01-1.06 0l-4.5-4.5a.75.75 0 010-1.06z'
+                  clip-rule='evenodd'></path>
+              </svg>
+            </span>
+          </button>
+          <ul
+            id='reason-options'
+            class='absolute z-10 hidden w-full py-1 mt-1 overflow-auto text-base bg-white rounded-md shadow-lg max-h-60 sm:text-sm'
+            tabindex='-1'
+            role='listbox'
+            aria-labelledby='reason-button'
+          >
+            <li
+              class='relative py-2 pl-3 text-gray-900 cursor-default select-none pr-9 hover:bg-violet-100'
+              id='reason-option-jinglepay_questions'
+              role='option'
+              data-value='jinglepay_questions'
+            >
+              <span class='block truncate'>{contact.reasons[0]}</span>
+            </li>
+            <li
+              class='relative py-2 pl-3 text-gray-900 cursor-default select-none pr-9 hover:bg-violet-100'
+              id='reason-option-technical_support'
+              role='option'
+              data-value='technical_support'
+            >
+              <span class='block truncate'>{contact.reasons[1]}</span>
+            </li>
+            <li
+              class='relative py-2 pl-3 text-gray-900 cursor-default select-none pr-9 hover:bg-violet-100'
+              id='reason-option-billing'
+              role='option'
+              data-value='billing'
+            >
+              <span class='block truncate'>{contact.reasons[2]}</span>
+            </li>
+            <li
+              class='relative py-2 pl-3 text-gray-900 cursor-default select-none pr-9 hover:bg-violet-100'
+              id='reason-option-feedback'
+              role='option'
+              data-value='feedback'
+            >
+              <span class='block truncate'>{contact.reasons[3]}</span>
+            </li>
+            <li
+              class='relative py-2 pl-3 text-gray-900 cursor-default select-none pr-9 hover:bg-violet-100'
+              id='reason-option-general'
+              role='option'
+              data-value='general'
+            >
+              <span class='block truncate'>{contact.reasons[4]}</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class='lg:col-span-2'>
+        <label for='message' class='block mb-1.5 text-base font-semibold'
+          >{contact.message}<span class='text-red-500'>*</span></label
+        >
+        <textarea
+          id='message'
+          name='message'
+          rows='5'
+          placeholder={contact.messagePlaceholder}
+          required
+          aria-required='true'
+          class='w-full p-4 placeholder-gray-500 transition duration-150 ease-in-out rounded-lg shadow-sm outline outline-neutral-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent resize-vertical'
+        ></textarea>
+      </div>
+
+      <div class='lg:col-span-2'>
+        <button
+          id='submit-button'
+          type='submit'
+          class='px-6 py-3 w-full font-bold text-white bg-[#794EFF] rounded-xl transition duration-150 ease-in-out cursor-pointer hover:bg-violet-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-500 disabled:opacity-50 disabled:cursor-not-allowed'
+        >
+          {contact.submitButton}
+        </button>
+        <p id='form-status' class='mt-4 text-sm text-center' aria-live='polite'></p>
+      </div>
+    </form>
+  </div>
+</section>
+
+<SuccessModal id='success-modal' />
+
+<script is:inline>
+  const form = document.getElementById('contact-form');
+  const submitButton = document.getElementById('submit-button');
+  const formStatus = document.getElementById('form-status');
+  const successModal = document.getElementById('success-modal');
+  const modalConfirmButton = document.getElementById('success-modal-confirm-button');
+
+  // Custom Dropdown Logic
+  const reasonDropdown = document.getElementById('reason-dropdown');
+  const reasonButton = document.getElementById('reason-button');
+  const reasonOptions = document.getElementById('reason-options');
+  const reasonHiddenInput = document.getElementById('reason');
+  const reasonSelectedText = document.getElementById('reason-selected-text');
+
+  if (reasonButton && reasonOptions && reasonHiddenInput && reasonSelectedText) {
+    reasonButton.addEventListener('click', () => {
+      const isExpanded = reasonButton.getAttribute('aria-expanded') === 'true';
+      reasonButton.setAttribute('aria-expanded', !isExpanded);
+      reasonOptions.classList.toggle('hidden');
+    });
+
+    reasonOptions.addEventListener('click', (event) => {
+      let targetElement = event.target;
+      // Traverse up the DOM tree until a list item (li) with data-value is found
+      while (targetElement && targetElement.tagName !== 'LI' && !targetElement.hasAttribute('data-value')) {
+        targetElement = targetElement.parentElement;
+      }
+
+      if (targetElement && targetElement.hasAttribute('data-value')) {
+        const selectedValue = targetElement.getAttribute('data-value');
+        const selectedText = targetElement.querySelector('.truncate').textContent;
+
+        reasonHiddenInput.value = selectedValue;
+        reasonSelectedText.textContent = selectedText;
+        reasonSelectedText.classList.remove('text-gray-500'); // Remove placeholder styling
+
+        reasonButton.setAttribute('aria-expanded', 'false');
+        reasonOptions.classList.add('hidden');
+
+        // Optional: Add visual indication for selected item
+        reasonOptions.querySelectorAll('li').forEach((li) => li.classList.remove('bg-violet-200'));
+        targetElement.classList.add('bg-violet-200');
+      }
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (event) => {
+      if (reasonDropdown && !reasonDropdown.contains(event.target)) {
+        reasonButton.setAttribute('aria-expanded', 'false');
+        reasonOptions.classList.add('hidden');
+      }
+    });
+  }
+
+  // Existing Form Submission Logic
+  if (form && successModal && modalConfirmButton && submitButton && formStatus) {
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      submitButton.disabled = true;
+      submitButton.textContent = 'Submitting...';
+      formStatus.textContent = '';
+
+      const formData = new FormData(form);
+      const formAction = form.action;
+
+      try {
+        const response = await fetch(formAction, {
+          method: 'POST',
+          body: formData,
+          headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            Accept: 'application/json',
+          },
+        });
+
+        if (response.ok) {
+          form.reset();
+          formStatus.textContent = '';
+          successModal.classList.remove('hidden');
+          successModal.classList.add('flex');
+
+          modalConfirmButton.focus();
+        } else {
+          console.error('Submission failed:', response.status, response.statusText);
+          let errorMessage = 'Oops! Something went wrong. Please try again later.';
+          try {
+            const errorData = await response.json();
+            errorMessage = errorData.message || errorMessage;
+          } catch (e) {
+            console.error('Could not parse error response:', e);
+          }
+          formStatus.textContent = errorMessage;
+          formStatus.style.color = 'red';
+          submitButton.disabled = false;
+          submitButton.textContent = 'Submit';
+        }
+      } catch (error) {
+        console.error('Network error:', error);
+        formStatus.textContent = 'Could not reach server. Please check your connection.';
+        formStatus.style.color = 'red';
+        submitButton.disabled = false;
+        submitButton.textContent = 'Submit';
+      }
+    });
+
+    modalConfirmButton.addEventListener('click', () => {
+      successModal.classList.add('hidden');
+      successModal.classList.remove('flex');
+      submitButton.disabled = false;
+      submitButton.textContent = 'Submit';
+    });
+
+    successModal.addEventListener('click', (event) => {
+      if (event.target === successModal) {
+        successModal.classList.add('hidden');
+        successModal.classList.remove('flex');
+        submitButton.disabled = false;
+        submitButton.textContent = 'Submit';
+      }
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && !successModal.classList.contains('hidden')) {
+        successModal.classList.add('hidden');
+        successModal.classList.remove('flex');
+        submitButton.disabled = false;
+        submitButton.textContent = 'Submit';
+      }
+    });
+  } else {
+    console.error('Could not find all required elements for form submission script.');
+  }
+</script>

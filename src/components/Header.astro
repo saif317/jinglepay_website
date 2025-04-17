@@ -4,6 +4,7 @@ import QRModalTriggerer from '@components/common/QRModalTriggerer.astro';
 import CountryLanguageSelector from '@components/country-language-selector/index.astro';
 import { Image } from 'astro:assets';
 import logoSrc from '@assets/logos/jplogo.svg';
+import Link from '@components/common/Link.astro';
 
 const {
   translations: { navbar = {} },
@@ -40,16 +41,16 @@ const {
       >
     </li>
     <li class='py-2'>
-      <a
+      <Link
         href='/contact'
         class='no-underline text-[#1c1c1c] text-md font-semibold transition-colors duration-300 hover:text-[#794eff]'
-        >{navbar.contact}</a
+        >{navbar.contact}</Link
       >
     </li>
   </ul>
 
   <nav class='flex items-center'>
-    <div class='flex gap-x-2 items-center direction-ltr'>
+    <div class='flex items-center gap-x-2 direction-ltr'>
       <QRModalTriggerer>
         <a
           href='#download'
@@ -60,7 +61,7 @@ const {
 
       <CountryLanguageSelector className='hidden lg:flex' />
 
-      <button id='menu-toggle' class='overflow-hidden relative w-6 h-6 cursor-pointer lg:hidden'>
+      <button id='menu-toggle' class='relative w-6 h-6 overflow-hidden cursor-pointer lg:hidden'>
         <!-- <div class='absolute top-0 left-0 w-6 h-6'></div> -->
         <div class='w-4 h-0 left-[4px] top-[6px] absolute outline-2 outline-offset-[-1px] outline-[#794EFF]'></div>
         <div class='w-4 h-0 left-[4px] top-[12px] absolute outline-2 outline-offset-[-1px] outline-[#794EFF]'></div>

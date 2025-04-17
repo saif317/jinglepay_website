@@ -1,0 +1,50 @@
+---
+import doubleCheckmark from '@assets/icons/double-checkmark.svg';
+import { Image } from 'astro:assets';
+
+interface Props {
+  id: string;
+}
+const { id } = Astro.props;
+
+const {
+  translations: { contact = {} },
+} = Astro.locals;
+---
+
+<div
+  id={id}
+  aria-labelledby='modal-title'
+  role='dialog'
+  aria-modal='true'
+  class='hidden fixed inset-0 z-50 justify-center items-center px-4 bg-[#00000020] transition-opacity duration-300 ease-in-out'
+>
+  <div
+    class='relative mt-20 mx-auto flex w-full max-w-md transform flex-col items-center rounded-[20px] bg-white p-8 text-center shadow-xl transition-all'
+  >
+    <Image class='w-[120px] h-[120px] p-3 mx-auto mb-6' src={doubleCheckmark} alt='Double Checkmark' />
+
+    <div>
+      <h3 id='modal-title' class='mb-4 text-2xl font-extrabold text-slate-800'>{contact.successTitle}</h3>
+      <p class='text-lg text-gray-600'>{contact.successMessage}</p>
+    </div>
+
+    <div class='mt-8'>
+      <button
+        id={`${id}-confirm-button`}
+        type='button'
+        class='cursor-pointer inline-flex justify-center px-6 py-2.5 text-base font-bold text-white bg-violet-600 rounded-xl border border-transparent shadow-sm transition duration-150 ease-in-out hover:bg-violet-700 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2'
+      >
+        {contact.successConfirm}
+      </button>
+    </div>
+  </div>
+</div>
+
+<style>
+  .fuzzy-border {
+    box-shadow:
+      0 0 15px 5px rgba(121, 78, 255, 0.5),
+      0 0 30px 10px rgba(121, 78, 255, 0.3);
+  }
+</style>

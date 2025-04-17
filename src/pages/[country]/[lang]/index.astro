@@ -9,25 +9,18 @@ import Security from '@components/security/index.astro';
 import StartBanking from '@components/start-banking/index.astro';
 import CTA from '@components/cta/index.astro';
 import Regulation from '@components/regulation/index.astro';
+import { getStaticPathsWrapper } from '@util/getStaticPaths';
 
-export async function getStaticPaths() {
-  const countries = [
+export const getStaticPaths = getStaticPathsWrapper(
+  [
     'pak',
     //  'uae'
-  ];
-  const languages: Record<string, string[]> = {
+  ],
+  {
     pak: ['en', 'ur'],
     // uae: ['en', 'ar'],
-  };
-
-  return countries.flatMap((country) => {
-    return languages[country].map((lang) => {
-      return {
-        params: { country, lang },
-      };
-    });
-  });
-}
+  }
+);
 ---
 
 <Layout>

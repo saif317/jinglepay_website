@@ -26,7 +26,7 @@ export default {
         { href: '#', text: 'Mission' },
         { href: '#', text: 'Careers' },
         { href: '#', text: 'Press' },
-        { href: '#', text: 'Contact' },
+        { href: '/contact', text: 'Contact' },
       ],
     },
     {
