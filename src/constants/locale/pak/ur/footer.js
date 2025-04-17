@@ -41,10 +41,10 @@ export default {
       title: 'مدد',
       links: [
         { href: '#', text: 'شرائط و ضوابط' },
-        { href: '#', text: 'پرائیویسی پالیسی' },
+        { href: '/privacy-policy', text: 'پرائیویسی پالیسی' },
         { href: '#', text: 'چارجز کا شیڈول' },
         { href: '#', text: 'اکثر پوچھے گئے سوالات ' },
-        { href: '#', text: 'ہم سے رابطہ کریں' },
+        { href: '/contact', text: 'ہم سے رابطہ کریں' },
       ],
     },
   ],
