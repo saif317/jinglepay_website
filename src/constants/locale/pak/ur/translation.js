@@ -13,6 +13,7 @@ import qrModal from './qrModal.js';
 import onboardingJourney from './onboardingJourney.js';
 import contact from './contact/index.js';
 import company from './company/company.js';
+import career from './career.js';
 
 export default {
   title: 'Jingle Pay - Future of Money',
@@ -33,4 +34,5 @@ export default {
   qrModal,
   contact,
   company,
+  career,
 };

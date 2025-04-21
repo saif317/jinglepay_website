@@ -24,7 +24,7 @@ export default {
       links: [
         { href: '/company', text: 'About Us' },
         { href: '/company#mission', text: 'Mission' },
-        { href: '#', text: 'Careers' },
+        { href: '/career', text: 'Careers' },
         { href: '#', text: 'Press' },
         { href: '#', text: 'Contact' },
       ],
