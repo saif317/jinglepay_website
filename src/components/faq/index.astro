@@ -1,0 +1,197 @@
+---
+import { Image } from 'astro:assets';
+
+import arrow from '@assets/icons/arrow.svg';
+
+const faqData: { question: string; answer: string }[] = [
+  {
+    question: 'What is Branchless Banking?',
+    answer:
+      'Branchless Banking refers to financial services provided without the need for physical bank branches. It allows users to perform transactions like deposits, withdrawals, transfers, and bill payments through mobile phones or agents.',
+  },
+  {
+    question: 'How do I register for Branchless Banking?',
+    answer:
+      'To register, simply visit the mobile app or website of the branchless banking provider, fill out the required details, and complete the verification process using your CNIC or other required documentation.',
+  },
+  {
+    question: 'What are the benefits of using Branchless Banking?',
+    answer:
+      'Branchless banking provides convenient access to financial services, especially in remote areas. It saves time, reduces the need to visit a bank, and offers lower fees for certain services compared to traditional banking.',
+  },
+  {
+    question: 'What types of services can I avail through Branchless Banking?',
+    answer:
+      'You can avail services such as mobile banking, bill payments, money transfers, mobile top-ups, micro-loans, and savings accounts through branchless banking platforms.',
+  },
+  {
+    question: 'How can I deposit money into my Branchless Banking account?',
+    answer:
+      'You can deposit money into your account through authorized branchless banking agents or retailers, or by transferring funds from your linked bank account. ',
+  },
+  {
+    question: 'How do I withdraw money from my Branchless Banking account?',
+    answer:
+      'To withdraw money, you can visit a nearby branchless banking agent or ATM and use your mobile app or account number for identification.',
+  },
+  {
+    question: 'Are there any fees associated with Branchless Banking services?',
+    answer:
+      'Yes, some services such as withdrawals, money transfers, and bill payments may have nominal charges. These fees vary depending on the service provider and transaction type.',
+  },
+  {
+    question: 'Is Branchless Banking secure?',
+    answer:
+      'Branchless banking uses encryption and security measures to protect your account and personal information. Always use secure networks and keep your PIN or password confidential.',
+  },
+  {
+    question: 'Can I transfer money to other banks using Branchless Banking?',
+    answer:
+      "Yes, you can transfer money to any bank account using branchless banking, whether it's a local bank or a different financial institution in Pakistan.",
+  },
+  {
+    question: 'What do I do if I lose my mobile phone or forget my PIN?',
+    answer:
+      'If you lose your mobile phone or forget your PIN, immediately contact your branchless banking provider’s customer support to block your account and reset your credentials.',
+  },
+  {
+    question: 'Can I access Branchless Banking on my computer?',
+    answer:
+      'While branchless banking services are mainly designed for mobile phones, some providers may offer web-based access for selected services. ',
+  },
+  {
+    question: 'How do I check my account balance?',
+    answer:
+      'You can check your account balance by logging into your branchless banking mobile app, using USSD codes, or by visiting an agent.',
+  },
+  {
+    question: 'What should I do if my transaction fails?',
+    answer:
+      'If your transaction fails, check for network issues, insufficient balance, or incorrect details. If the problem persists, contact customer support for assistance.',
+  },
+  {
+    question: 'Is there a minimum balance requirement for Branchless Banking accounts?',
+    answer:
+      'No, branchless banking accounts generally do not have minimum balance requirements. However, some accounts or services may have certain conditions.',
+  },
+  {
+    question: 'How can I close my Branchless Banking account?',
+    answer:
+      'To close your branchless banking account, contact customer support for guidance on the necessary steps. Ensure all pending transactions are settled before closing the account.',
+  },
+];
+---
+
+<section
+  class='flex flex-col pt-[104px] pb-[80px] px-4 lg:px-[88px] lg:pt-[189px] lg:pb-[161px] gap-y-12 lg:gap-y-[65px]'
+  aria-labelledby='faq-heading'
+>
+  <div class='flex flex-row gap-x-4 items-center'>
+    <button onclick='history.back(); return false;' role='button' style='cursor: pointer;'>
+      <div class='w-8 h-8 p-1.5 flex items-center justify-center border rounded-full border-[#794EFF]'>
+        <Image src={arrow} alt='Arrow' class='rotate-180' />
+      </div>
+    </button>
+    <span class='text-3xl font-extrabold lg:text-4xl'>Frequent Answered Questions</span>
+  </div>
+
+  <div class='border-t border-gray-200'>
+    {
+      faqData.map((item, index: number) => (
+        <div class='border-b border-gray-200 faq-item'>
+          <button
+            class='flex justify-between items-center px-2 py-5 w-full text-base font-bold text-left text-gray-800 faq-question focus:outline-none focus-visible:ring focus-visible:ring-indigo-300 focus-visible:ring-opacity-75 group'
+            aria-expanded='false'
+            aria-controls={`faq-answer-${index}`}
+            id={`faq-question-${index}`}
+          >
+            <span class='flex-grow mr-4'>{item.question}</span>
+            <span class='flex-shrink-0 text-gray-500 transition-transform duration-300 ease-in-out transform faq-icon-wrapper group-focus:text-indigo-600'>
+              <svg class='w-4 h-4' xmlns='http://www.w3.org/2000/svg' fill='currentColor' viewBox='0 0 16 16'>
+                <path
+                  fill-rule='evenodd'
+                  d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'
+                />
+              </svg>
+            </span>
+          </button>
+          <div
+            class='faq-answer overflow-hidden max-h-0 transition-[max-height,padding] duration-400 ease-in-out px-2'
+            role='region'
+            aria-labelledby={`faq-question-${index}`}
+            id={`faq-answer-${index}`}
+          >
+            <div class='pt-1 pb-5'>
+              <p class='text-base leading-relaxed text-gray-600'>{item.answer}</p>
+            </div>
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const faqItems = document.querySelectorAll('.faq-item');
+
+    faqItems.forEach((item) => {
+      const questionButton = item.querySelector('.faq-question');
+      const answerPanel: HTMLElement | null = item.querySelector('.faq-answer');
+      const iconWrapper = item.querySelector('.faq-icon-wrapper'); // Target the wrapper
+
+      if (!questionButton || !answerPanel || !iconWrapper) return;
+      questionButton.addEventListener('click', () => {
+        const isExpanded = questionButton.getAttribute('aria-expanded') === 'true';
+        const currentMaxHeight = answerPanel.style.maxHeight;
+
+        // --- Optional: Close all others when one opens ---
+        // document.querySelectorAll('.faq-item').forEach(otherItem => {
+        //     if (otherItem !== item) {
+        //         const otherButton = otherItem.querySelector('.faq-question');
+        //         const otherAnswer = otherItem.querySelector('.faq-answer');
+        //         const otherIconWrapper = otherItem.querySelector('.faq-icon-wrapper');
+        //         if (otherButton && otherAnswer && otherIconWrapper && otherButton.getAttribute('aria-expanded') === 'true') {
+        //             otherButton.setAttribute('aria-expanded', 'false');
+        //             otherAnswer.style.maxHeight = '0px';
+        //             otherIconWrapper.classList.remove('rotate-180', 'text-indigo-600'); // Reset icon state
+        //              otherIconWrapper.classList.add('text-gray-500');
+        //         }
+        //     }
+        // });
+        // --- End Optional ---
+
+        // Toggle the current item
+        questionButton.setAttribute('aria-expanded', String(!isExpanded));
+
+        if (isExpanded) {
+          // Closing: Set max-height to 0
+          answerPanel.style.maxHeight = '0px';
+          iconWrapper.classList.remove('rotate-180', 'text-indigo-600'); // Use your "open" color
+          iconWrapper.classList.add('text-gray-500'); // Reset to default color
+        } else {
+          // Opening: Set max-height to scrollHeight for dynamic content height
+          // Add a small delay to allow CSS transition to catch the change from 0
+          // requestAnimationFrame(() => {
+          answerPanel.style.maxHeight = answerPanel.scrollHeight + 'px';
+          // });
+          iconWrapper.classList.add('rotate-180', 'text-indigo-600'); // Example open color
+          iconWrapper.classList.remove('text-gray-500');
+        }
+      });
+
+      // Optional: Recalculate max-height on resize for open accordions
+      window.addEventListener('resize', () => {
+        if (questionButton.getAttribute('aria-expanded') === 'true') {
+          // Temporarily remove transition to instantly set height, then re-apply
+          const transition = answerPanel.style.transition;
+          answerPanel.style.transition = 'none'; // Disable transition for recalc
+          answerPanel.style.maxHeight = answerPanel.scrollHeight + 'px';
+          // Force reflow/repaint before re-enabling transition
+          answerPanel.offsetHeight;
+          answerPanel.style.transition = transition; // Restore transition
+        }
+      });
+    });
+  });
+</script>
