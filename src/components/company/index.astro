@@ -2,13 +2,17 @@
 import AboutUs from './AboutUs.astro';
 import Leadership from './Leadership.astro';
 
+const {
+  translations: { company = {} },
+} = Astro.locals;
+
 const defaultActiveTabId = 'about-us';
 
-const buttonBaseClass = 'tab-trigger-button text-xl font-extrabold cursor-pointer';
+const buttonBaseClass = 'tab-trigger-button text-xl lg:text-3xl font-extrabold cursor-pointer';
 const buttonActiveClass = 'text-[#7157F8]';
 const buttonInactiveClass = 'text-zinc-900/50 transition-colors duration-200 hover:text-zinc-900';
 
-const underlineBaseClass = 'tab-underline h-1.5 rounded-full';
+const underlineBaseClass = 'tab-underline h-1.5 lg:h-2.5 rounded-full';
 const underlineActiveClass = 'block bg-[#7157F8]';
 const underlineInactiveClass = 'hidden';
 
@@ -27,10 +31,10 @@ const getPanelClasses = (tabId: string) => {
 };
 ---
 
-<div class='container mx-auto px-4 pt-[80px] pb-[100px]'>
-  <div class='mb-12'>
-    <nav class='flex justify-center gap-x-8' aria-label='Tabs' role='tablist'>
-      <div class='flex flex-col items-center gap-y-1.5'>
+<div class='container mx-auto px-4 lg:px-[88px] pt-[80px] lg:pt-[182px] pb-[100px] lg:pb-[96px]'>
+  <div class='mb-12 lg:mb-[65px]'>
+    <nav class='flex gap-x-8 lg:gap-x-[34px] justify-center' aria-label='Tabs' role='tablist'>
+      <div class='flex flex-col gap-y-1.5 items-center'>
         <button
           type='button'
           role='tab'
@@ -40,13 +44,13 @@ const getPanelClasses = (tabId: string) => {
           id='about-us-tab'
           data-tab-target='about-us-panel'
         >
-          About us
+          {company.tab1}
         </button>
         <div class={getUnderlineClasses('about-us')} id='about-us-underline' aria-hidden='true' style='width: 80%;'>
         </div>
       </div>
 
-      <div class='flex flex-col items-center gap-y-1.5'>
+      <div class='flex flex-col gap-y-1.5 items-center'>
         <button
           type='button'
           role='tab'
@@ -57,7 +61,7 @@ const getPanelClasses = (tabId: string) => {
           id='leadership-tab'
           data-tab-target='leadership-panel'
         >
-          Leadership
+          {company.tab2}
         </button>
         <div class={getUnderlineClasses('leadership')} id='leadership-underline' aria-hidden='true' style='width: 80%;'>
         </div>
