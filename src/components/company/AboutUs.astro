@@ -1,0 +1,185 @@
+---
+import { Image } from 'astro:assets';
+
+import fintechAward1 from '@assets/images/company/about-us/fintech-award1.png';
+import fintechAward2 from '@assets/images/company/about-us/fintech-award2.png';
+import aboutusLeft from '@assets/images/company/about-us/aboutus-left.png';
+import aboutusMiddle from '@assets/images/company/about-us/aboutus-middle.png';
+import aboutusRight from '@assets/images/company/about-us/aboutus-right.png';
+import integrity from '@assets/images/company/about-us/integrity.svg';
+import honesty from '@assets/images/company/about-us/honesty.svg';
+import security from '@assets/images/company/about-us/security.svg';
+import leadership from '@assets/images/company/about-us/leadership.svg';
+import respect from '@assets/images/company/about-us/respect.svg';
+import fun from '@assets/images/company/about-us/fun.svg';
+import type { ImageMetadata } from 'astro';
+
+const icons: Record<string, ImageMetadata> = {
+  integrity: integrity,
+  honesty: honesty,
+  security: security,
+  leadership: leadership,
+  respect: respect,
+  fun: fun,
+};
+
+const stats = [
+  { value: '$2B+', label: 'Remitted globally' },
+  { value: '$3M+', label: 'Transaction count' },
+  { value: '+500k', label: 'Trusted Users' },
+  { value: '150 countries', label: 'Payout coverage' },
+];
+
+const coreValues = [
+  {
+    title: 'Integrity',
+    description: 'Provide efficient, customer-centric financial services through a mobile-first experience.',
+    icon: 'integrity',
+  },
+  {
+    title: 'Honesty',
+    description: 'Save time, improve finances, and reward smarter money management.',
+    icon: 'honesty',
+  },
+  {
+    title: 'Security',
+    description: 'Empower customers with financial control through tailored services.',
+    icon: 'security',
+  },
+  { title: 'Leadership', description: 'Lead new markets with technology and innovation.', icon: 'leadership' },
+  { title: 'Respect', description: 'Respect everyones opinions and equal rights.', icon: 'respect' },
+  { title: 'Fun', description: 'Help our customers to have fun and rewarding experiences.', icon: 'fun' },
+];
+
+const images = [
+  { src: aboutusLeft, alt: 'Payment feature illustration', label: 'Payment' },
+  { src: aboutusMiddle, alt: 'Person using mobile banking', label: 'Mobile Banking' },
+  { src: aboutusRight, alt: 'Person using payment card', label: 'Card Payments' },
+];
+
+const imageWidths = [400, 800];
+const imageSizes = '(max-width: 768px) 90vw, (max-width: 1024px) 45vw, 33vw';
+
+import OurStoryCarousel from './OurStoryCarousel.astro';
+---
+
+<div>
+  <p class='text-3xl font-light text-center text-black mb-15'>
+    Our mission is to make banking and payments accessible by offering affordable, inclusive financial services through
+    a personalized digital experience, addressing financial exclusion and inequality.
+  </p>
+
+  <section class='flex flex-col items-center justify-center mb-16 gap-y-10'>
+    <Image src={fintechAward1} alt='Fintech Award 1' />
+    <Image src={fintechAward2} alt='Fintech Award 2' />
+  </section>
+
+  <!-- Swiper Carousel -->
+  <div class='overflow-hidden swiper about-us-carousel mb-[76px]'>
+    <div class='swiper-wrapper'>
+      {
+        images.map((img) => (
+          <div class='swiper-slide'>
+            <div class='relative overflow-hidden shadow-sm rounded-xl'>
+              <Image
+                src={img.src}
+                alt={img.alt}
+                class='object-cover w-full h-64'
+                widths={imageWidths}
+                sizes={imageSizes}
+                loading='lazy'
+                decoding='async'
+              />
+              <div class='absolute px-3 py-1 text-sm font-medium text-white rounded bottom-4 left-4 bg-black/60'>
+                {img.label}
+              </div>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+
+  <section class='text-center flex flex-col gap-y-[60px] mb-[152px]'>
+    {
+      stats.map((stat) => (
+        <div class='flex flex-col gap-y-[14px]'>
+          <p class='text-4xl font-extrabold text-zinc-900'>{stat.value}</p>
+          <p class='text-xl font-normal text-zinc-900'>{stat.label}</p>
+        </div>
+      ))
+    }
+  </section>
+
+  <section class='mb-[146px]'>
+    <h2 class='mb-4 text-3xl font-extrabold text-center'>Our core values</h2>
+    <p class='text-xl font-normal text-center mb-15 text-zinc-900'>
+      We uphold our values through transparency, dedication, and commitment to empowering our customers.
+    </p>
+    <div class='grid grid-cols-1 gap-x-8 gap-y-[52px]'>
+      {
+        coreValues.map((value) => {
+          return (
+            <div class='text-center'>
+              <div class='inline-flex items-center justify-center p-[14px] bg-[#794EFF] rounded-full mb-6'>
+                {icons[value.icon] ? <Image src={icons[value.icon]} alt={value.title} /> : null}
+              </div>
+              <h3 class='mb-2 text-2xl font-extrabold text-slate-800'>{value.title}</h3>
+              <p class='text-xl font-normal text-black'>{value.description}</p>
+            </div>
+          );
+        })
+      }
+    </div>
+  </section>
+
+  <OurStoryCarousel />
+
+  <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css' />
+
+  <script>
+    import Swiper from 'swiper';
+    import { Autoplay, Pagination, Navigation } from 'swiper/modules'; // Import necessary modules
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const swiper = new Swiper('.about-us-carousel', {
+        modules: [Autoplay, Pagination, Navigation],
+        loop: true,
+        slidesPerView: 1.2,
+        spaceBetween: 16,
+        autoplay: {
+          delay: 4000,
+          disableOnInteraction: false,
+        },
+        pagination: {
+          el: '.swiper-pagination',
+          clickable: true,
+        },
+        breakpoints: {
+          768: {
+            slidesPerView: 1.5,
+            spaceBetween: 24,
+          },
+          992: {
+            slidesPerView: 3,
+            spaceBetween: 24,
+          },
+        },
+      });
+    });
+  </script>
+
+  <style is:global>
+    .about-us-carousel .swiper-pagination-bullet {
+      background-color: #007aff; /* Use primary color or theme color */
+      opacity: 0.7;
+    }
+    .about-us-carousel .swiper-pagination-bullet-active {
+      opacity: 1;
+      background-color: #0056b3; /* Darker shade for active */
+    }
+    .swiper-slide {
+      height: auto; /* Allow slide height to adjust */
+    }
+  </style>
+</div>

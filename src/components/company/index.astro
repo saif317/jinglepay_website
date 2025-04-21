@@ -1,0 +1,153 @@
+---
+import AboutUs from './AboutUs.astro';
+import Leadership from './Leadership.astro';
+
+const defaultActiveTabId = 'about-us';
+
+const buttonBaseClass = 'tab-trigger-button text-xl font-extrabold cursor-pointer';
+const buttonActiveClass = 'text-[#7157F8]';
+const buttonInactiveClass = 'text-zinc-900/50 transition-colors duration-200 hover:text-zinc-900';
+
+const underlineBaseClass = 'tab-underline h-1.5 rounded-full';
+const underlineActiveClass = 'block bg-[#7157F8]';
+const underlineInactiveClass = 'hidden';
+
+const tabPanelBaseClasses = 'tab-panel focus:outline-none';
+
+const getButtonTextClasses = (tabId: string) => {
+  return `${buttonBaseClass} ${tabId === defaultActiveTabId ? buttonActiveClass : buttonInactiveClass}`;
+};
+
+const getUnderlineClasses = (tabId: string) => {
+  return `${underlineBaseClass} ${tabId === defaultActiveTabId ? underlineActiveClass : underlineInactiveClass}`;
+};
+
+const getPanelClasses = (tabId: string) => {
+  return `${tabPanelBaseClasses} ${tabId === defaultActiveTabId ? '' : 'hidden'}`;
+};
+---
+
+<div class='container mx-auto px-4 pt-[80px] pb-[100px]'>
+  <div class='mb-12'>
+    <nav class='flex justify-center gap-x-8' aria-label='Tabs' role='tablist'>
+      <div class='flex flex-col items-center gap-y-1.5'>
+        <button
+          type='button'
+          role='tab'
+          class={getButtonTextClasses('about-us')}
+          aria-selected={defaultActiveTabId === 'about-us'}
+          aria-controls='about-us-panel'
+          id='about-us-tab'
+          data-tab-target='about-us-panel'
+        >
+          About us
+        </button>
+        <div class={getUnderlineClasses('about-us')} id='about-us-underline' aria-hidden='true' style='width: 80%;'>
+        </div>
+      </div>
+
+      <div class='flex flex-col items-center gap-y-1.5'>
+        <button
+          type='button'
+          role='tab'
+          class={getButtonTextClasses('leadership')}
+          aria-selected={// @ts-ignore
+          defaultActiveTabId === 'leadership'}
+          aria-controls='leadership-panel'
+          id='leadership-tab'
+          data-tab-target='leadership-panel'
+        >
+          Leadership
+        </button>
+        <div class={getUnderlineClasses('leadership')} id='leadership-underline' aria-hidden='true' style='width: 80%;'>
+        </div>
+      </div>
+    </nav>
+  </div>
+
+  <div>
+    <div
+      class={getPanelClasses('about-us')}
+      role='tabpanel'
+      id='about-us-panel'
+      aria-labelledby='about-us-tab'
+      tabindex='0'
+    >
+      <AboutUs />
+    </div>
+
+    <div
+      class={getPanelClasses('leadership')}
+      role='tabpanel'
+      id='leadership-panel'
+      aria-labelledby='leadership-tab'
+      tabindex='0'
+    >
+      <Leadership />
+    </div>
+  </div>
+</div>
+
+<script
+  define:vars={{
+    buttonActiveClass: buttonActiveClass,
+    buttonInactiveClass: buttonInactiveClass,
+    underlineActiveClass: underlineActiveClass,
+    underlineInactiveClass: underlineInactiveClass,
+  }}
+>
+  document.addEventListener('DOMContentLoaded', () => {
+    const tabContainer = document.querySelector('[role="tablist"]');
+    if (!tabContainer) return;
+
+    const tabButtons = tabContainer.querySelectorAll('button[role="tab"]');
+    const tabUnderlines = tabContainer.querySelectorAll('.tab-underline');
+    const tabPanels = document.querySelectorAll('.tab-panel');
+    function applyClasses(element, classesToRemove, classesToAdd) {
+      if (classesToRemove) {
+        element.classList.remove(...classesToRemove.split(' ').filter(Boolean));
+      }
+      if (classesToAdd) {
+        element.classList.add(...classesToAdd.split(' ').filter(Boolean));
+      }
+    }
+
+    tabButtons.forEach((button) => {
+      button.addEventListener('click', (event) => {
+        const clickedButton = event.currentTarget;
+        const targetPanelId = clickedButton.getAttribute('data-tab-target');
+        const targetUnderlineId = clickedButton.id.replace('-tab', '-underline');
+
+        tabButtons.forEach((btn) => {
+          const underlineId = btn.id.replace('-tab', '-underline');
+          const underlineEl = document.getElementById(underlineId);
+
+          btn.setAttribute('aria-selected', 'false');
+          applyClasses(btn, buttonActiveClass, buttonInactiveClass);
+
+          if (underlineEl) {
+            applyClasses(underlineEl, underlineActiveClass, underlineInactiveClass);
+          }
+        });
+
+        tabPanels.forEach((panel) => {
+          panel.classList.add('hidden');
+        });
+        clickedButton.setAttribute('aria-selected', 'true');
+        applyClasses(clickedButton, buttonInactiveClass, buttonActiveClass);
+
+        const targetUnderline = document.getElementById(targetUnderlineId);
+        if (targetUnderline) {
+          applyClasses(targetUnderline, underlineInactiveClass, underlineActiveClass);
+        }
+
+        const targetPanel = document.getElementById(targetPanelId);
+        if (targetPanel) {
+          targetPanel.classList.remove('hidden');
+        } else {
+          console.error(`Tab panel with ID "${targetPanelId}" not found.`);
+        }
+      });
+    });
+  });
+</script>

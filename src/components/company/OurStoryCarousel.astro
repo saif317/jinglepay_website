@@ -1,0 +1,145 @@
+---
+const story = [
+  { year: '2020', description: 'Founded Jingle Pay with a vision to simplify global finance.', highlight: false },
+  { year: '2021', description: 'Launched our core mobile application, focusing on remittances.', highlight: true },
+  {
+    year: '2022',
+    description: 'Achieved significant user growth milestones. Introduced new payment features.',
+    highlight: false,
+  },
+  {
+    year: '2023',
+    description: 'Expanded global reach. Focused on enhancing user experience and platform security.',
+    highlight: false,
+  },
+];
+---
+
+<section class='max-w-6xl px-4 mx-auto my-16'>
+  <h2 class='mb-5 text-4xl font-extrabold text-center'>Our Story</h2>
+  <p class='mb-10 text-xl font-normal text-center text-zinc-900'>
+    Born out of a desire to bridge financial gaps, we set out to redefine how money moves.
+  </p>
+
+  <!-- Swiper container needs specific width constraints and overflow rules to work properly -->
+  <div class='relative w-full overflow-hidden swiper-container story-carousel'>
+    <div class='swiper-wrapper'>
+      {
+        story.map((item) => (
+          <div class='swiper-slide'>
+            <div class='flex flex-col p-5 gap-y-3 rounded-xl bg-[radial-gradient(ellipse_50.00%_50.00%_at_50.00%_50.00%,_#8744D4_0%,_#6526AE_100%)]'>
+              <h3 class='text-2xl font-extrabold text-white'>{item.year}</h3>
+              <p class='text-xl font-normal text-white'>{item.description}</p>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<!-- For Swiper to work, the correct CSS is crucial -->
+<link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css' />
+
+<script>
+  // Immediately invoked function for Swiper initialization
+  document.addEventListener('DOMContentLoaded', async () => {
+    try {
+      // Import Swiper and modules directly from CDN if needed
+      // const Swiper = window.Swiper;
+
+      // Or use dynamic import
+      const { default: Swiper } = await import('swiper');
+      const { Autoplay, Navigation } = await import('swiper/modules');
+
+      // After importing, check that the library is available
+      console.log('Swiper loaded:', !!Swiper);
+
+      // Create the Swiper instance with proper options
+      const swiper = new Swiper('.story-carousel', {
+        modules: [Autoplay, Navigation],
+        loop: true, // Enabling loop for continuous scrolling experience
+        slidesPerView: 1.2,
+        spaceBetween: 20,
+        grabCursor: true,
+        centerInsufficientSlides: true,
+
+        // Improved autoplay settings
+        autoplay: {
+          delay: 3000,
+          disableOnInteraction: false,
+          pauseOnMouseEnter: true,
+        },
+
+        // Add navigation arrows
+        navigation: {
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev',
+        },
+
+        // Responsive breakpoints
+        breakpoints: {
+          640: { slidesPerView: 2, spaceBetween: 20 },
+          768: { slidesPerView: 2.5, spaceBetween: 30 },
+          1024: { slidesPerView: 3.5, spaceBetween: 40 },
+        },
+
+        // Improve accessibility
+        a11y: { enabled: true },
+      });
+
+      console.log('Story Swiper initialized with autoplay and navigation', swiper);
+
+      // Add debugging event listeners
+      swiper.on('slideChange', () => {
+        console.log('Slide changed to:', swiper.activeIndex);
+      });
+    } catch (error) {
+      console.error('Error initializing Swiper:', error);
+    }
+  });
+</script>
+
+<style is:global>
+  /* Essential Swiper styling overrides */
+  .swiper-container.story-carousel {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .story-carousel .swiper-slide {
+    height: auto;
+    transition: transform 0.3s ease;
+  }
+
+  .story-carousel .swiper-slide > div {
+    height: 100%;
+    min-height: 200px;
+    margin: 0 auto;
+  }
+
+  /* Navigation buttons styling */
+  .story-carousel .swiper-button-next,
+  .story-carousel .swiper-button-prev {
+    color: #8744d4;
+    background: rgba(255, 255, 255, 0.8);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .story-carousel .swiper-button-next:after,
+  .story-carousel .swiper-button-prev:after {
+    font-size: 18px;
+  }
+
+  /* Active slide animation */
+  .story-carousel .swiper-slide-active {
+    transform: scale(1.02);
+    transition: transform 0.3s ease;
+  }
+</style>

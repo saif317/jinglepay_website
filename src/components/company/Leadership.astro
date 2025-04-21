@@ -1,0 +1,167 @@
+---
+// src/components/Leadership.astro
+import { Image } from 'astro:assets';
+
+import amir from '@assets/images/company/leadership/amir.png';
+import arya from '@assets/images/company/leadership/arya.png';
+import chris from '@assets/images/company/leadership/chris.png';
+import faisal from '@assets/images/company/leadership/faisal.png';
+import farooq from '@assets/images/company/leadership/farooq.png';
+import maher from '@assets/images/company/leadership/maher.png';
+import rashid from '@assets/images/company/leadership/rashid.jpg';
+import rick from '@assets/images/company/leadership/rick.png';
+import ritesh from '@assets/images/company/leadership/ritesh.png';
+import sohali from '@assets/images/company/leadership/sohali.png';
+import linkedinIconSvg from '@assets/images/company/leadership/linkedin.svg';
+
+// Updated Data with actual image imports
+const boardMembers = [
+  {
+    name: 'Amir Fardghassemi',
+    title: 'Director',
+    description:
+      'Visionary leader guiding strategic innovation and fostering growth within the fintech landscape, driving Jingle Pay towards market leadership.',
+    image: amir,
+    linkedin: '#',
+  }, // Updated image
+  {
+    name: 'Arya Bolurfrushan',
+    title: 'Director',
+    description:
+      "Expertise in global finance, M&A, and investment strategies, contributing significant financial acumen to the board's decisions.",
+    image: arya,
+    linkedin: '#',
+  }, // Updated image
+  {
+    name: 'Farooq Ahmed Khan',
+    title: 'Director',
+    description:
+      'Extensive background in international banking regulations, compliance frameworks, and risk management across diverse markets.',
+    image: farooq,
+    linkedin: '#',
+  }, // Updated image
+  {
+    name: 'Maher Haddad',
+    title: 'Director',
+    description:
+      'Strong focus on technology disruption and digital transformation within the financial services sector, championing innovation.',
+    image: maher,
+    linkedin: '#',
+  }, // Updated image
+  {
+    name: 'Dalaat Rashid',
+    title: 'Director',
+    description:
+      'Specializes in strategic market expansion, operational scaling, and building high-performance teams in emerging economies.',
+    image: faisal,
+    linkedin: '#',
+  }, // Updated image
+];
+
+const teamMembers = [
+  { name: 'Amir Fardghassemi', title: 'Chief Executive Officer', image: amir, linkedin: '#' }, // Updated image
+  { name: 'Nikhil Murumkar', title: 'Chief Technology Officer', image: rashid, linkedin: '#' }, // Updated image
+  { name: 'Shekhar Ravalli', title: 'Chief Financial Officer', image: chris, linkedin: '#' }, // Updated image
+  { name: 'Saleh Ahmad', title: 'Chief Operations Officer', image: sohali, linkedin: '#' }, // Updated image
+  { name: 'Girish Kumar', title: 'Chief Product Officer', image: ritesh, linkedin: '#' }, // Updated image
+  { name: 'Elle Palmer', title: 'Head of Marketing', image: rick, linkedin: '#' }, // Updated image
+];
+---
+
+<div class='pt-8 pb-16 space-y-20'>
+  {/* Adjusted padding and spacing */}
+  <!-- Introductory Text -->
+  <section class='max-w-[700px] mx-auto text-center px-4'>
+    <h2 class='text-3xl font-bold text-[#1F2937] mb-3'>Meet our board of directors</h2>
+    {/* Specific color */}
+    <p class='text-base text-[#6B7280] leading-relaxed'>
+      {/* Specific color */}
+      Our visionary leaders at Jingle Pay guide our team with extensive financial innovation, high standards of expertise/governance
+      and financial excellence.
+    </p>
+  </section>
+
+  <!-- Board of Directors -->
+  <section class='max-w-5xl px-4 mx-auto space-y-16'>
+    {/* Increased spacing between members */}
+    {
+      boardMembers.map((member, index) => (
+        <div
+          class={`flex flex-col ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'} items-center gap-x-12 gap-y-6`}
+        >
+          {' '}
+          {/* Adjusted gap */}
+          {/* Image */}
+          <div class='flex-shrink-0 w-full max-w-[280px] md:w-2/5'>
+            {' '}
+            {/* Specific max-width */}
+            <Image
+              src={member.image}
+              alt={member.name}
+              class='rounded-xl w-full object-cover aspect-[3/3.5]'
+              widths={[300, 600]}
+              sizes='(max-width: 768px) 80vw, 40vw'
+            />
+          </div>
+          {/* Text Content */}
+          <div class='flex-grow text-center md:text-left md:w-3/5'>
+            <p class='text-xs text-[#6A30FF] uppercase font-semibold mb-1 tracking-wide'>Director</p>{' '}
+            {/* Specific color & tracking */}
+            <h3 class='text-2xl font-bold text-[#1F2937] mb-2'>{member.name}</h3> {/* Specific color */}
+            <p class='text-base text-[#4B5563] leading-relaxed mb-4'>{member.description}</p> {/* Specific color */}
+            {member.linkedin && (
+              <a
+                href={member.linkedin}
+                target='_blank'
+                rel='noopener noreferrer'
+                class='inline-block text-[#0A66C2] hover:opacity-80 transition-opacity'
+                aria-label={`${member.name}'s LinkedIn Profile`}
+              >
+                <Image src={linkedinIconSvg} alt='LinkedIn Profile' class='w-5 h-5' loading='lazy' decoding='async' />
+              </a>
+            )}
+          </div>
+        </div>
+      ))
+    }
+  </section>
+
+  <!-- Our Team -->
+  <section class='max-w-5xl px-4 mx-auto'>
+    <h2 class='text-3xl font-bold text-center text-[#1F2937] mb-3'>Our Team</h2>
+    <p class='text-base text-center text-[#6B7280] mb-12 max-w-3xl mx-auto'>
+      {/* Increased bottom margin */}
+      Jingle Pay employees, like our leadership, bring with them the relevant regulatory banking knowledge and technical
+      know-how.
+    </p>
+    <div class='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-10'>
+      {/* Standard gap */}
+      {
+        teamMembers.map((member) => (
+          <div class='text-center'>
+            <Image
+              src={member.image}
+              alt={member.name}
+              class='rounded-xl w-full object-cover aspect-[3/3.5] mb-4 shadow-sm'
+              widths={[300, 600]}
+              sizes='(max-width: 640px) 90vw, (max-width: 1024px) 45vw, 30vw'
+            />
+            <h3 class='text-lg font-semibold text-[#1F2937]'>{member.name}</h3>
+            <p class='text-sm text-[#6A30FF] mb-2'>{member.title}</p>
+            {member.linkedin && (
+              <a
+                href={member.linkedin}
+                target='_blank'
+                rel='noopener noreferrer'
+                class='inline-block mx-auto text-[#0A66C2] hover:opacity-80 transition-opacity'
+                aria-label={`${member.name}'s LinkedIn Profile`}
+              >
+                <Image src={linkedinIconSvg} alt='LinkedIn Profile' class='w-5 h-5' loading='lazy' decoding='async' />
+              </a>
+            )}
+          </div>
+        ))
+      }
+    </div>
+  </section>
+</div>
