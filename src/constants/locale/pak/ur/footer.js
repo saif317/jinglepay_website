@@ -24,7 +24,7 @@ export default {
       links: [
         { href: '/company', text: 'ہمارے بارے میں' },
         { href: '/company#mission', text: 'ہمارا مشن' },
-        { href: '#', text: 'ہمارے شراکت دار' },
+        { href: '/career', text: 'ہمارے شراکت دار' },
         { href: '#', text: 'سرمایہ کار' },
         { href: '#', text: 'کریئر' },
         { href: '#', text: 'خبریں اور میڈیا' },
