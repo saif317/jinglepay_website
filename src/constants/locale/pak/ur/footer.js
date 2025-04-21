@@ -22,8 +22,8 @@ export default {
     {
       title: 'کمپنی',
       links: [
-        { href: '#', text: 'ہمارے بارے میں' },
-        { href: '#', text: 'ہمارا مشن' },
+        { href: '/company', text: 'ہمارے بارے میں' },
+        { href: '/company#mission', text: 'ہمارا مشن' },
         { href: '#', text: 'ہمارے شراکت دار' },
         { href: '#', text: 'سرمایہ کار' },
         { href: '#', text: 'کریئر' },
@@ -43,7 +43,7 @@ export default {
         { href: '#', text: 'شرائط و ضوابط' },
         { href: '/privacy-policy', text: 'پرائیویسی پالیسی' },
         { href: '#', text: 'چارجز کا شیڈول' },
-        { href: '#', text: 'اکثر پوچھے گئے سوالات ' },
+        { href: '/faq', text: 'اکثر پوچھے گئے سوالات ' },
         { href: '/contact', text: 'ہم سے رابطہ کریں' },
       ],
     },

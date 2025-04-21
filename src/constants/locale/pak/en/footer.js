@@ -22,8 +22,8 @@ export default {
     {
       title: 'Company',
       links: [
-        { href: '#', text: 'About Us' },
-        { href: '#', text: 'Mission' },
+        { href: '/company', text: 'About Us' },
+        { href: '/company#mission', text: 'Mission' },
         { href: '#', text: 'Careers' },
         { href: '#', text: 'Press' },
         { href: '#', text: 'Contact' },
@@ -42,7 +42,7 @@ export default {
         { href: '#', text: 'Terms & Conditions' },
         { href: '/privacy-policy', text: 'Privacy Policy' },
         { href: '#', text: 'Schedule of Charges' },
-        { href: '#', text: 'FAQs' },
+        { href: '/faq', text: 'FAQs' },
         { href: '/contact', text: 'Contact Us' },
       ],
     },

@@ -1,0 +1,103 @@
+---
+import { Image } from 'astro:assets';
+
+import amir from '@assets/images/company/leadership/amir.png';
+import arya from '@assets/images/company/leadership/arya.png';
+import chris from '@assets/images/company/leadership/chris.png';
+import faisal from '@assets/images/company/leadership/faisal.png';
+import farooq from '@assets/images/company/leadership/farooq.png';
+import maher from '@assets/images/company/leadership/maher.png';
+import rashid from '@assets/images/company/leadership/rashid.jpg';
+import rick from '@assets/images/company/leadership/rick.png';
+import ritesh from '@assets/images/company/leadership/ritesh.png';
+import sohali from '@assets/images/company/leadership/sohali.png';
+import linkedinIconSvg from '@assets/images/company/leadership/linkedin.svg';
+
+const {
+  translations: {
+    company: { leadership = {} },
+  },
+} = Astro.locals;
+
+const boardMembers = [amir, arya, farooq, maher, faisal].map((icon, index) => {
+  return {
+    image: icon,
+    ...leadership.boardMembers[index],
+  };
+});
+
+const teamMembers = [amir, rashid, chris, sohali, ritesh, rick].map((icon, index) => {
+  return {
+    image: icon,
+    ...leadership.teamMembers[index],
+  };
+});
+---
+
+<div class='pt-8 pb-16 space-y-20'>
+  <section class='max-w-[700px] mx-auto text-center px-4'>
+    <h2 class='text-3xl lg:text-4xl font-bold text-[#1F2937] mb-3'>{leadership.title}</h2>
+    <p class='text-3xl lg:text-4xl text-[#6B7280]'>{leadership.description}</p>
+  </section>
+
+  <section class='flex flex-col gap-y-12'>
+    {
+      boardMembers.map((member, index) => (
+        <div
+          class={`flex flex-col ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'} items-center gap-x-12 gap-y-8`}
+        >
+          <div class='flex-shrink-0 w-full lg:max-w-[280px] md:w-2/5'>
+            <Image
+              src={member.image}
+              alt={member.name}
+              class='rounded-xl w-full object-cover aspect-[3/3.5]'
+              widths={[300, 600]}
+              sizes='(max-width: 768px) 80vw, 40vw'
+            />
+          </div>
+          <div class='flex-grow md:w-3/5'>
+            <p class='mb-4 text-xl font-bold text-zinc-400'>{member.title}</p>
+            <h3 class='mb-2 text-3xl font-extrabold text-slate-800'>{member.name}</h3>
+            <p class='text-xl text-gray-500'>{member.description}</p>
+          </div>
+        </div>
+      ))
+    }
+  </section>
+
+  <section class='flex flex-col gap-y-12'>
+    <div class='flex flex-col gap-y-4 items-center'>
+      <h2 class='text-3xl font-extrabold text-center'>{leadership.team.title}</h2>
+      <p class='text-xl text-center text-zinc-900'>{leadership.team.description}</p>
+    </div>
+    <div class='grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3'>
+      {
+        teamMembers.map((member) => (
+          <div class=''>
+            <Image
+              src={member.image}
+              alt={member.name}
+              class='rounded-xl w-full object-cover aspect-[3/3.5] mb-4 shadow-sm'
+              widths={[300, 600]}
+              sizes='(max-width: 640px) 90vw, (max-width: 1024px) 45vw, 30vw'
+            />
+            <h3 class='text-lg font-semibold text-[#1F2937]'>{member.name}</h3>
+            <p class='text-sm text-[#6A30FF] mb-2'>{member.title}</p>
+            <p class='mb-1 text-xl text-gray-500'>{member.description}</p>
+            {member.linkedin && (
+              <a
+                href={member.linkedin}
+                target='_blank'
+                rel='noopener noreferrer'
+                class='inline-block mx-auto text-[#0A66C2] hover:opacity-80 transition-opacity'
+                aria-label={`${member.name}'s LinkedIn Profile`}
+              >
+                <Image src={linkedinIconSvg} alt='LinkedIn Profile' class='w-5 h-5' loading='lazy' decoding='async' />
+              </a>
+            )}
+          </div>
+        ))
+      }
+    </div>
+  </section>
+</div>
