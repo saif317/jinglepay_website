@@ -15,17 +15,21 @@ const { heading, description, backgroundColor, textColor = '#FFFFFF', shadow } =
 ---
 
 <div
-  class={`w-full p-6 sm:p-8 md:p-10 overflow-hidden rounded-xl md:rounded-2xl h-full ${backgroundColor}`}
+  class={`w-full p-6 sm:p-8 md:p-10 overflow-hidden rounded-xl md:rounded-2xl 4xl:rounded-3xl h-full ${backgroundColor}`}
   style={`color: ${textColor};`}
 >
   <div class='container flex flex-col gap-4 justify-between items-center mx-auto h-full md:flex-row md:gap-8'>
     <div class='flex-1 w-full text-center md:text-start md:w-auto'>
       {
         heading.map((title: string) => (
-          <h2 class='text-3xl sm:text-4xl lg:text-[2.8rem] font-black m-0 leading-tight'>{title}</h2>
+          <h2 class='text-3xl sm:text-4xl lg:text-[2.8rem] 3xl:text-[3.3rem] 4xl:text-[3.8rem] font-black m-0 leading-tight'>
+            {title}
+          </h2>
         ))
       }
-      <p class='mx-auto mt-3 text-base font-medium opacity-90 sm:text-lg lg:text-xl sm:mt-4 md:mx-0'>
+      <p
+        class='mx-auto mt-3 text-base font-medium opacity-90 sm:text-lg lg:text-xl 3xl:text-2xl 4xl:text-3xl sm:mt-4 md:mx-0'
+      >
         {description}
       </p>
     </div>

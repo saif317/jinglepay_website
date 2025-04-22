@@ -15,7 +15,7 @@ const {
   class='flex fixed top-0 z-50 items-center justify-between px-5 lg:px-10 py-4 lg:py-8 w-full bg-white border-gray-200 transition-shadow duration-300 border-b-[1px] 2xl:px-30'
   id='main-header'
 >
-  <a href='/' class=''>
+  <Link href='/' class=''>
     <Image
       src={logoSrc}
       alt='Jingle Pay'
@@ -23,21 +23,21 @@ const {
       sizes='(max-width: 640px) 60px, (max-width: 1024px) 90px, 120px'
       class='w-[60px] lg:w-[90px]'
     />
-  </a>
+  </Link>
 
   <ul class='rounded-[7px] bg-[#EEEEEE] flex-row items-center justify-center hidden px-4 gap-x-8 lg:flex'>
     <li class='py-2'>
-      <a
+      <Link
         href='/company'
         class='no-underline text-[#1c1c1c] text-md font-semibold transition-colors duration-300 hover:text-[#794eff]'
-        >{navbar.jinglepay}</a
+        >{navbar.jinglepay}</Link
       >
     </li>
     <li class='py-2'>
-      <a
-        href='#benefits-section'
+      <Link
+        href='/#benefits-section'
         class='no-underline text-[#1c1c1c] text-md font-semibold transition-colors duration-300 hover:text-[#794eff]'
-        >{navbar.benefits}</a
+        >{navbar.benefits}</Link
       >
     </li>
     <li class='py-2'>
@@ -74,24 +74,24 @@ const {
         ✕
       </button>
       <li class='py-4'>
-        <a
-          href='#featured-section'
+        <Link
+          href='/#featured-section'
           class='no-underline text-[#1c1c1c] text-xl font-semibold transition-colors duration-300 hover:text-[#794eff]'
-          >{navbar.jinglepay}</a
+          >{navbar.jinglepay}</Link
         >
       </li>
       <li class='py-4'>
-        <a
-          href='#benefits-section'
+        <Link
+          href='/#benefits-section'
           class='no-underline text-[#1c1c1c] text-xl font-semibold transition-colors duration-300 hover:text-[#794eff]'
-          >{navbar.benefits}</a
+          >{navbar.benefits}</Link
         >
       </li>
       <li class='py-4'>
-        <a
+        <Link
           href='/contact'
           class='no-underline text-[#1c1c1c] text-xl font-semibold transition-colors duration-300 hover:text-[#794eff]'
-          >{navbar.contact}</a
+          >{navbar.contact}</Link
         >
       </li>
 

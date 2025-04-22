@@ -11,7 +11,9 @@ const currentCountry = COUNTRIES.find((c) => c.path === country) || COUNTRIES[0]
 const currentLanguage = currentCountry.languages.find((l) => l.code === lang) || currentCountry.languages[0];
 
 const getCountryLink = (newCountryPath: string) => {
-  return '/' + [newCountryPath, lang, pathname.split('/').slice(3).join('/')].join('/');
+  if (newCountryPath === country) return '#';
+  else if (newCountryPath === 'uae') return 'https://jinglepay.com/homepage/AE/';
+  else return '/' + [newCountryPath, lang, pathname.split('/').slice(3).join('/')].join('/');
 };
 
 const getLanguageLink = (newLangCode: string) => {
@@ -20,42 +22,104 @@ const getLanguageLink = (newLangCode: string) => {
 ---
 
 <div
-  class={`items-center bg-gray-100 px-2.5 py-2 gap-x-2.5 rounded-[12px] min-w-[154px] cursor-pointer country-language-selector ${className}`}
+  class={`items-center bg-gray-100 px-2.5 py-2 gap-x-2.5 rounded-[12px] min-w-[154px] country-language-selector ${className}`}
 >
   <div class='relative country-selector'>
-    <button id='country-button' class='flex items-center'>
-      <div class='flex items-center justify-center flag'>
+    <button id='country-button' class='flex items-center cursor-pointer'>
+      <div class='flex justify-center items-center flag'>
         {currentCountry.flag && <Image src={currentCountry.flag} alt={currentCountry.name} class='' />}
       </div>
       <span class='font-medium text-gray-500'>{currentCountry.code}</span>
     </button>
-    <div id='country-dropdown' class='absolute left-0 hidden bg-white rounded-md shadow-md top-full'>
-      {
-        COUNTRIES.map((country) => (
-          <a href={getCountryLink(country.path)} class='flex items-center rounded-md hover:bg-gray-100'>
-            {country.flag && <Image src={country.flag} alt={country.name} class='w-auto h-6 rounded-sm shadow-sm' />}
-            <span>{country.code}</span>
-          </a>
-        ))
-      }
+    <div
+      id='country-dropdown'
+      class='hidden absolute left-0 z-20 mt-2 min-w-[150px] bg-white rounded-lg border border-gray-200 shadow-xl p-1.5 origin-top-left focus:outline-none transform transition-all duration-200'
+    >
+      <div class='py-1' role='menu' aria-orientation='vertical' aria-labelledby='country-button'>
+        {
+          COUNTRIES.map((country) => (
+            <a
+              href={getCountryLink(country.path)}
+              class='flex gap-3 items-center px-3 py-2 text-sm font-medium text-gray-700 rounded-md transition-all duration-200 ease-in-out hover:bg-blue-50 hover:text-blue-600'
+              role='menuitem'
+            >
+              {country.flag && (
+                <div class='flex overflow-hidden justify-center items-center w-6 h-6 rounded-sm'>
+                  <Image src={country.flag} alt={country.name} class='object-cover w-full h-full' />
+                </div>
+              )}
+              <span>{country.code}</span>
+            </a>
+          ))
+        }
+      </div>
     </div>
   </div>
   <div class='w-px h-6 bg-gray-300 divider'></div>
   <div class='relative language-selector'>
-    <button id='language-button' class='flex items-center font-medium text-gray-500 language-button'>
+    <button id='language-button' class='flex items-center font-medium text-gray-500 cursor-pointer language-button'>
       <span>{currentCountry.languages.filter((lang) => lang.code !== currentLanguage.code)[0].name}</span>
     </button>
-    <div id='language-dropdown' class='absolute right-0 hidden bg-white rounded-md shadow-md top-full'>
-      {
-        currentCountry.languages.map((language) => (
-          <a href={getLanguageLink(language.code)} class='block font-medium rounded-md hover:bg-gray-100'>
-            {language.name}
-          </a>
-        ))
-      }
+    <div
+      id='language-dropdown'
+      class='hidden absolute right-0 z-20 p-1.5 mt-2 min-w-[140px] bg-white rounded-lg border border-gray-200 shadow-xl origin-top-right focus:outline-none transform transition-all duration-200'
+    >
+      <div class='py-1' role='menu' aria-orientation='vertical' aria-labelledby='language-button'>
+        {
+          currentCountry.languages.map((language) => (
+            <a
+              href={getLanguageLink(language.code)}
+              class='block px-3 py-2 text-sm font-medium text-gray-700 rounded-md transition-all duration-200 ease-in-out hover:bg-blue-50 hover:text-blue-600'
+              role='menuitem'
+              tabindex='-1'
+              id={`menu-item-${language.code}`}
+            >
+              {language.name}
+            </a>
+          ))
+        }
+      </div>
     </div>
   </div>
 </div>
+
+<style>
+  .country-language-selector {
+    display: inline-flex;
+    position: relative;
+  }
+
+  .flag {
+    margin-right: 0.5rem; /* Keep original flag margin from button */
+  }
+
+  .divider {
+    margin: 0 0.5rem;
+  }
+
+  /* Subtle bounce animation on dropdown open */
+  #country-dropdown:not(.hidden),
+  #language-dropdown:not(.hidden) {
+    animation: dropdown-open 0.2s ease-out forwards;
+  }
+
+  @keyframes dropdown-open {
+    0% {
+      opacity: 0;
+      transform: translateY(-5px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .country-language-selector {
+      min-width: 130px;
+    }
+  }
+</style>
 
 <script>
   // Function to initialize all dropdowns

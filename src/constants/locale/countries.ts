@@ -1,4 +1,6 @@
 import pakistanFlag from '@assets/flags/pak.svg';
+import uaeFlag from '@assets/flags/uae.svg';
+import bhrFlag from '@assets/flags/bhr.svg';
 
 export const COUNTRIES: readonly {
   readonly code: string;
@@ -24,11 +26,20 @@ export const COUNTRIES: readonly {
     code: 'UAE',
     path: 'uae',
     name: 'UAE',
-    // flag: '🇦🇪',
+    flag: uaeFlag,
     languages: [
       { code: 'ar', name: 'العربية' },
       { code: 'en', name: 'English' },
     ],
   },
-  // Add more countries as needed
+  {
+    code: 'BHR',
+    path: 'bhr',
+    name: 'Bahrain',
+    flag: bhrFlag,
+    languages: [
+      { code: 'ar', name: 'العربية' },
+      { code: 'en', name: 'English' },
+    ],
+  },
 ];

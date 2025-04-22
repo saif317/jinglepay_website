@@ -68,9 +68,9 @@ const imageSizes = '(max-width: 767px) 50vw, (max-width: 1023px) 40vw, 400px'; /
                   sizes={imageSizes}
                   loading='lazy'
                   decoding='async'
-                  class='relative z-[1] object-contain w-auto h-48 sm:h-56 md:h-60 lg:h-64' 
+                  class='relative z-[1] object-contain w-auto h-48 sm:h-56 md:h-60 lg:h-64 3xl:h-72 4xl:h-80' 
                   />
-                  {item.shadow && <Image src={item.shadow} class='absolute bottom-[10px] right-[35px] max-w-[160px] md:max-w-[200px] lg:max-w-full' alt='shadow' />}
+                  {item.shadow && <Image src={item.shadow} class='absolute bottom-[10px] right-[35px] 3xl:right-[55px] 4xl:right-[75px] max-w-[160px] md:max-w-[200px] lg:max-w-full' alt='shadow' />}
                </div>
               </FeatureBanner>
             ) : (
@@ -83,9 +83,9 @@ const imageSizes = '(max-width: 767px) 50vw, (max-width: 1023px) 40vw, 400px'; /
                   sizes={imageSizes}
                   loading='lazy'
                   decoding='async'
-                  class='object-contain w-auto h-48 sm:h-56 md:h-60 lg:h-64' 
+                  class='object-contain w-auto h-48 sm:h-56 md:h-60 lg:h-64 3xl:h-72 4xl:h-80' 
                 />
-                {item.shadow && <Image src={item.shadow} class='absolute bottom-[-20px] right-[20px] max-w-[160px] md:max-w-[200px] lg:max-w-full' alt='shadow' />}
+                {item.shadow && <Image src={item.shadow} class='absolute bottom-[-20px] right-[20px] 3xl:right-[40px] 4xl:right-[75px] max-w-[160px] md:max-w-[200px] lg:max-w-full' alt='shadow' />}
              </div>
               </PromoBanner>
             )}
@@ -110,11 +110,11 @@ const imageSizes = '(max-width: 767px) 50vw, (max-width: 1023px) 40vw, 400px'; /
       effect: 'coverflow',
       grabCursor: true,
 
-      // autoplay: {
-      //   delay: 5000,
-      //   disableOnInteraction: false,
-      //   reverseDirection: true, 
-      // },
+      autoplay: {
+        delay: 5000,
+        disableOnInteraction: false,
+        reverseDirection: true, 
+      },
 
       slidesPerView: 1.1, 
       spaceBetween: 47, 
@@ -173,6 +173,28 @@ const imageSizes = '(max-width: 767px) 50vw, (max-width: 1023px) 40vw, 400px'; /
         1400: {
           slidesPerView: 1.5,
           spaceBetween: 160,
+          coverflowEffect: {
+            rotate: 0,
+            stretch: 60,
+            depth: 180,
+            modifier: 1,
+            slideShadows: false,
+          },
+        },
+        1600: {
+          slidesPerView: 1.5,
+          spaceBetween: 175,
+          coverflowEffect: {
+            rotate: 0,
+            stretch: 60,
+            depth: 180,
+            modifier: 1,
+            slideShadows: false,
+          },
+        },
+        1900: {
+          slidesPerView: 1.5,
+          spaceBetween: 190,
           coverflowEffect: {
             rotate: 0,
             stretch: 60,
