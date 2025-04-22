@@ -47,6 +47,8 @@ import { COUNTRIES } from '@constants';
           detectedCountry = COUNTRIES.find((c) => c.path === 'uae');
         } else if (langParts[1] === 'pk') {
           detectedCountry = COUNTRIES.find((c) => c.path === 'pak');
+        } else if (langParts[1] === 'bh') {
+          detectedCountry = COUNTRIES.find((c) => c.path === 'bhr');
         }
       }
 
@@ -56,6 +58,8 @@ import { COUNTRIES } from '@constants';
           detectedCountry = COUNTRIES.find((c) => c.path === 'uae');
         } else if (langParts[0] === 'ur') {
           detectedCountry = COUNTRIES.find((c) => c.path === 'pak');
+        } else if (langParts[0] === 'bh') {
+          detectedCountry = COUNTRIES.find((c) => c.path === 'bhr');
         }
       }
 
@@ -67,6 +71,8 @@ import { COUNTRIES } from '@constants';
             detectedCountry = COUNTRIES.find((c) => c.path === 'pak');
           } else if (timezone.includes('Asia/Dubai') || timezone.includes('Asia/Riyadh')) {
             detectedCountry = COUNTRIES.find((c) => c.path === 'uae');
+          } else if (timezone.includes('Asia/Bahrain')) {
+            detectedCountry = COUNTRIES.find((c) => c.path === 'bhr');
           }
         } catch (e) {
           console.log('Timezone detection failed');
@@ -83,6 +89,8 @@ import { COUNTRIES } from '@constants';
               detectedCountry = COUNTRIES.find((c) => c.path === 'uae');
             } else if (geoData.country_code === 'PK') {
               detectedCountry = COUNTRIES.find((c) => c.path === 'pak');
+            } else if (geoData.country_code === 'BH') {
+              detectedCountry = COUNTRIES.find((c) => c.path === 'bhr');
             }
           }
         } catch (e) {
