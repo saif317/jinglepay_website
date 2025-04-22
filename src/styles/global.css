@@ -4,140 +4,187 @@
   font-family: 'Hero New';
   font-style: normal;
   font-weight: 100;
-  src: local('Hero New Hairline'), url('/fonts/hero-new/Hero New Hairline.woff') format('woff');
+  src:
+    local('Hero New Hairline'),
+    url('/fonts/hero-new/Hero New Hairline.woff') format('woff');
 }
 
 @font-face {
   font-family: 'Hero New';
   font-style: italic;
   font-weight: 100;
-  src: local('Hero New Hairline Italic'), url('/fonts/hero-new/Hero New Hairline Italic.woff') format('woff');
+  src:
+    local('Hero New Hairline Italic'),
+    url('/fonts/hero-new/Hero New Hairline Italic.woff') format('woff');
 }
 
 @font-face {
   font-family: 'Hero New';
   font-style: normal;
   font-weight: 200;
-  src: local('Hero New Thin'), url('/fonts/hero-new/Hero New Thin.woff') format('woff');
+  src:
+    local('Hero New Thin'),
+    url('/fonts/hero-new/Hero New Thin.woff') format('woff');
 }
 
 @font-face {
   font-family: 'Hero New';
   font-style: italic;
   font-weight: 200;
-  src: local('Hero New Thin Italic'), url('/fonts/hero-new/Hero New Thin Italic.woff') format('woff');
+  src:
+    local('Hero New Thin Italic'),
+    url('/fonts/hero-new/Hero New Thin Italic.woff') format('woff');
 }
 
 @font-face {
   font-family: 'Hero New';
   font-style: normal;
   font-weight: 300;
-  src: local('Hero New UltraLight'), url('/fonts/hero-new/Hero New UltraLight.woff') format('woff');
+  src:
+    local('Hero New UltraLight'),
+    url('/fonts/hero-new/Hero New UltraLight.woff') format('woff');
 }
 
 @font-face {
   font-family: 'Hero New';
   font-style: italic;
   font-weight: 300;
-  src: local('Hero New UltraLight Italic'), url('/fonts/hero-new/Hero New UltraLight Italic.woff') format('woff');
+  src:
+    local('Hero New UltraLight Italic'),
+    url('/fonts/hero-new/Hero New UltraLight Italic.woff') format('woff');
 }
 
 @font-face {
   font-family: 'Hero New';
   font-style: normal;
   font-weight: 400;
-  src: local('Hero New Light'), url('/fonts/hero-new/Hero New Light.woff') format('woff');
+  src:
+    local('Hero New Light'),
+    url('/fonts/hero-new/Hero New Light.woff') format('woff');
 }
 
 @font-face {
   font-family: 'Hero New';
   font-style: italic;
   font-weight: 400;
-  src: local('Hero New Light Italic'), url('/fonts/hero-new/Hero New Light Italic.woff') format('woff');
+  src:
+    local('Hero New Light Italic'),
+    url('/fonts/hero-new/Hero New Light Italic.woff') format('woff');
 }
 
 @font-face {
   font-family: 'Hero New';
   font-style: normal;
   font-weight: 500;
-  src: local('Hero New Regular'), url('/fonts/hero-new/Hero New Regular.woff') format('woff');
+  src:
+    local('Hero New Regular'),
+    url('/fonts/hero-new/Hero New Regular.woff') format('woff');
 }
 
 @font-face {
   font-family: 'Hero New';
   font-style: italic;
   font-weight: 500;
-  src: local('Hero New Regular Italic'), url('/fonts/hero-new/Hero New Regular Italic.woff') format('woff');
+  src:
+    local('Hero New Regular Italic'),
+    url('/fonts/hero-new/Hero New Regular Italic.woff') format('woff');
 }
 
 @font-face {
   font-family: 'Hero New';
   font-style: normal;
   font-weight: 600;
-  src: local('Hero New Medium'), url('/fonts/hero-new/Hero New Medium.woff') format('woff');
+  src:
+    local('Hero New Medium'),
+    url('/fonts/hero-new/Hero New Medium.woff') format('woff');
 }
 
 @font-face {
   font-family: 'Hero New';
   font-style: ital ic;
   font-weight: 600;
-  src: local('Hero New Medium Italic'), url('/fonts/hero-new/Hero New Medium Italic.woff') format('woff');
+  src:
+    local('Hero New Medium Italic'),
+    url('/fonts/hero-new/Hero New Medium Italic.woff') format('woff');
 }
 
 @font-face {
   font-family: 'Hero New';
   font-style: normal;
   font-weight: 700;
-  src: local('Hero New SemiBold'), url('/fonts/hero-new/Hero New SemiBold.woff') format('woff');
+  src:
+    local('Hero New SemiBold'),
+    url('/fonts/hero-new/Hero New SemiBold.woff') format('woff');
 }
 
 @font-face {
   font-family: 'Hero New';
   font-style: italic;
   font-weight: 700;
-  src: local('Hero New SemiBold Italic'), url('/fonts/hero-new/Hero New SemiBold Italic.woff') format('woff');
+  src:
+    local('Hero New SemiBold Italic'),
+    url('/fonts/hero-new/Hero New SemiBold Italic.woff') format('woff');
 }
 
 @font-face {
   font-family: 'Hero New';
   font-style: normal;
   font-weight: 800;
-  src: local('Hero New Bold'), url('/fonts/hero-new/Hero New Bold.woff') format('woff');
+  src:
+    local('Hero New Bold'),
+    url('/fonts/hero-new/Hero New Bold.woff') format('woff');
 }
 
 @font-face {
   font-family: 'Hero New';
   font-style: italic;
   font-weight: 800;
-  src: local('Hero New Bold Italic'), url('/fonts/hero-new/Hero New Bold Italic.woff') format('woff');
+  src:
+    local('Hero New Bold Italic'),
+    url('/fonts/hero-new/Hero New Bold Italic.woff') format('woff');
 }
 
 @font-face {
   font-family: 'Hero New';
   font-style: normal;
   font-weight: 900;
-  src: local('Hero New ExtraBold'), url('/fonts/hero-new/Hero New ExtraBold.woff') format('woff');
+  src:
+    local('Hero New ExtraBold'),
+    url('/fonts/hero-new/Hero New ExtraBold.woff') format('woff');
 }
 
 @font-face {
   font-family: 'Hero New';
   font-style: italic;
   font-weight: 900;
-  src: local('Hero New ExtraBold Italic'), url('/fonts/hero-new/Hero New ExtraBold Italic.woff') format('woff');
+  src:
+    local('Hero New ExtraBold Italic'),
+    url('/fonts/hero-new/Hero New ExtraBold Italic.woff') format('woff');
 }
 
 @font-face {
   font-family: 'Hero New';
   font-style: normal;
   font-weight: 950;
-  src: local('Hero New Super'), url('/fonts/hero-new/Hero New Super.woff') format('woff');
+  src:
+    local('Hero New Super'),
+    url('/fonts/hero-new/Hero New Super.woff') format('woff');
 }
 
 @font-face {
   font-family: 'Hero New';
   font-style: italic;
   font-weight: 950;
-  src: local('Hero New Super Italic'), url('/fonts/hero-new/Hero New Super Italic.woff') format('woff');
+  src:
+    local('Hero New Super Italic'),
+    url('/fonts/hero-new/Hero New Super Italic.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Jameel Noori Nastaleeq Kasheeda';
+  src:
+    local('Jameel Noori Nastaleeq Kasheeda'),
+    url('/fonts/Jameel Noori Nastaleeq Kasheeda.ttf') format('truetype');
 }
 
 @theme {
