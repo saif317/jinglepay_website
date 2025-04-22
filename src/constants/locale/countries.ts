@@ -33,7 +33,7 @@ export const COUNTRIES: readonly {
     ],
   },
   {
-    code: 'bhr',
+    code: 'BHR',
     path: 'bhr',
     name: 'Bahrain',
     flag: bhrFlag,

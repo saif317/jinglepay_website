@@ -11,6 +11,7 @@ export interface Logo {
   isSvg?: boolean; // Optional flag for SVG handling
   // Define widths/sizes for non-SVG logos
   widths?: number[];
+  widthPercent?: number;
   sizes?: string;
 }
 
@@ -83,6 +84,7 @@ const logosPerSlide = 6;
                         loading='lazy'
                         decoding='async'
                         class='object-contain w-auto h-full max-h-[60%] sm:max-h-[65%] lg:max-h-[70%]'
+                        style={logo.widthPercent ? `width: ${logo.widthPercent}%` : undefined}
                       />
                     )}
                   </a>

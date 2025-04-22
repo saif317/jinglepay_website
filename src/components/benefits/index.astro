@@ -180,9 +180,7 @@ const aniaHalaImageSizes = '(max-width: 767px) 30vw, (max-width: 1023px) 20vw, 1
         <span class='block text-4xl font-extrabold sm:text-5xl md:text-6xl 2xl:text-5xl 4xl:text-6xl'
           >{savings.transactionNum}</span
         >
-        <span class='block text-2xl font-extrabold opacity-90 sm:text-3xl md:text-4xl 4xl:text-5xl'
-          >{savings.transactionText}</span
-        >
+        <span class='block text-2xl font-medium sm:text-3xl md:text-4xl 4xl:text-5xl'>{savings.transactionText}</span>
       </p>
     </div>
 
@@ -199,11 +197,9 @@ const aniaHalaImageSizes = '(max-width: 767px) 30vw, (max-width: 1023px) 20vw, 1
           decoding='async'
         />
         <div
-          class='flex flex-col drop-shadow-2xl items-center justify-between rounded-lg md:rounded-[20px] w-full sm:w-1/2 p-4 sm:p-6 bg-slate-100 gap-y-4'
+          class='flex flex-col drop-shadow-2xl items-center justify-between rounded-lg md:rounded-[20px] w-full sm:w-1/2 p-4 sm:p-6 bg-slate-100 gap-y-4 2xl:gap-y-0 2xl:pt-10'
         >
-          <span class='text-lg font-black text-center sm:text-xl lg:mt-[6rem] text-slate-800 lg:text-3xl'
-            >{savings.zeroFees}</span
-          >
+          <span class='text-lg font-black text-center sm:text-xl text-slate-800'>{savings.zeroFees}</span>
           <Image
             src={aniaHala}
             alt='Jingle Pay User 2 - Ania & Hala'
@@ -224,7 +220,10 @@ const aniaHalaImageSizes = '(max-width: 767px) 30vw, (max-width: 1023px) 20vw, 1
         >
           <div>
             <span class='block text-lg font-black sm:text-xl lg:text-3xl xl:text-lg 4xl:text-2xl text-slate-800'
-              >{savings.genrated}</span
+              >{savings.genrated[0]}</span
+            >
+            <span class='block text-2xl font-black sm:text-3xl lg:text-5xl xl:text-xl 4xl:text-2xl text-slate-900'
+              >{savings.genrated[1]}</span
             >
             <span class='block mt-2 text-2xl font-black sm:text-3xl lg:text-5xl xl:text-xl 4xl:text-2xl text-slate-900'
               >{savings.amount}
