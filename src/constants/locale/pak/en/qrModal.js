@@ -5,5 +5,5 @@ export default {
   linkSent: 'Download link sent to your phone!',
   failed: 'Failed to send SMS. Please try again.',
   hint: 'Please enter a valid 10-digit mobile number (e.g., 3001234567)',
-  smsText: 'Download JinglePay now: https://jinglepay.com/download',
+  smsText: 'Download JinglePay now: http://jinglepay-website-dev.s3-website.me-central-1.amazonaws.com/app-redirect',
 };

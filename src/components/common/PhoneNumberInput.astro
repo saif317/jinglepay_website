@@ -57,16 +57,7 @@ const { onSubmit = '#', class: className = '', smsText = qrModal.smsText } = Ast
   </div>
 </div>
 
-<script define:vars={{ smsText }}>
-  import axios from 'axios';
-
-  const apiClient = axios.create({
-    baseURL: 'https://sms.dovesofttech.io',
-    headers: {
-      'Content-type': 'application/json',
-    },
-  });
-
+<script define:vars={{ smsText, qrModal }}>
   function showToast(message, type = 'success') {
     const toast = document.getElementById('toast');
     const toastMessage = document.getElementById('toast-message');
@@ -104,6 +95,7 @@ const { onSubmit = '#', class: className = '', smsText = qrModal.smsText } = Ast
   }
 
   const button = document.querySelector('#send-link-button');
+  console.log(button);
   const phoneInput = document.querySelector('input[name="phoneNumber"]');
 
   const defaultSmsText = typeof smsText !== 'undefined' ? smsText : qrModal.smsText;
@@ -115,7 +107,7 @@ const { onSubmit = '#', class: className = '', smsText = qrModal.smsText } = Ast
     const phoneNumber = phoneInput.value;
     const countryCode = '+92';
 
-    if (phoneNumber && /^\d{10}$/.test(phoneNumber)) {
+    if (phoneNumber && /^\d{9}$/.test(phoneNumber)) {
       const submitButton = document.querySelector('#send-link-button');
 
       try {
@@ -127,16 +119,23 @@ const { onSubmit = '#', class: className = '', smsText = qrModal.smsText } = Ast
           </svg>`;
         }
 
-        const res = await apiClient.get('/submitsms.jsp', {
-          params: {
-            user: 'JinglPay',
-            key: 'YOUR_API_KEY',
-            mobile: `${countryCode}${phoneNumber}`,
-            senderid: 'JinglePay',
-            message: defaultSmsText,
-            accusage: '3',
+        const params = new URLSearchParams();
+        params.append('user', 'JinglPay');
+        params.append('key', '255ac3f6caXX'); // IMPORTANT: Replace with actual key!
+        params.append('mobile', `+971${phoneNumber}`); // Assuming +971 UAE prefix, adjust if needed
+        params.append('message', defaultSmsText);
+        params.append('senderid', 'Jingle Pay');
+        params.append('accusage', '3');
+
+        const response = await fetch('https://sms.dovesofttech.io/submitsms.jsp', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
           },
+          body: params,
         });
+
+        const responseDataText = await response.text(); // Get response body as text
 
         if (submitButton) {
           submitButton.innerHTML = `<svg xmlns='http://www.w3.org/2000/svg' class='w-4 h-4 sm:w-5 sm:h-5' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
@@ -145,11 +144,15 @@ const { onSubmit = '#', class: className = '', smsText = qrModal.smsText } = Ast
           submitButton.disabled = false;
         }
 
-        if (res.data && (String(res.data).includes('success') || res.status === 200)) {
+        if (
+          response.ok && // Check if HTTP status code is 2xx
+          (responseDataText.includes('success') || responseDataText.includes('Sent'))
+        ) {
           showToast(qrModal.linkSent, 'success');
           phoneInput.value = '';
         } else {
-          console.warn('SMS API Response:', res.data); // Log unexpected responses
+          console.warn('SMS API Response Status:', response.status);
+          console.warn('SMS API Response Body:', responseDataText); // Log unexpected responses
           showToast(qrModal.failed, 'error');
         }
       } catch (error) {
