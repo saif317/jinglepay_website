@@ -8,7 +8,7 @@ const { className = '' } = Astro.props;
 ---
 
 <button
-  class={`cursor-pointer qr-modal-trigger w-full flex justify-center items-center ${className}`}
+  class={`cursor-pointer qr-modal-trigger flex justify-center items-center ${className}`}
   onclick='window.openQRModal()'
 >
   <slot />
