@@ -4,7 +4,7 @@ import { COUNTRIES } from './constants';
 const DEFAULT_COUNTRY_CODE = 'pak';
 const DEFAULT_LANG_CODE = 'en';
 
-const NON_LOCALIZED_PATHS = ['/contact', '/about', '/terms-of-service'];
+const NON_LOCALIZED_PATHS = ['/contact', '/about', '/terms-of-service', '/app-redirect'];
 
 const translationModules = import.meta.glob('/src/constants/locale/*/*/translation.js');
 

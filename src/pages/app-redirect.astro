@@ -1,12 +1,14 @@
 ---
-// src/pages/app-redirect.astro
+import DownloadAppButton from '@components/hero-section/DownloadAppButton.astro';
+
+import '@styles/global.css';
 ---
 
 <html lang='en'>
   <head>
     <meta charset='utf-8' />
     <meta name='viewport' content='width=device-width' />
-    <title>Redirecting to App Store</title>
+    <title>Redirecting...</title>
     <style>
       body {
         font-family: system-ui, sans-serif;
@@ -30,60 +32,69 @@
           transform: rotate(360deg);
         }
       }
+      #download-buttons {
+        display: none;
+        margin-top: 2rem;
+      }
+      h1 {
+        margin-bottom: 1rem;
+      }
     </style>
   </head>
   <body>
-    <h1>Redirecting you to download the app...</h1>
+    <h1>Redirecting you...</h1>
     <div class='loader'></div>
     <p id='message'>Please wait...</p>
 
+    <div id='download-buttons'>
+      <DownloadAppButton />
+    </div>
+
     <script>
-      // App store URLs
       const IOS_APP_URL = 'https://apps.apple.com/pl/app/jingle-pay/id1493392189';
       const ANDROID_APP_URL = 'https://play.google.com/store/apps/details?id=com.jinglepay&hl=en';
-      const FALLBACK_URL = 'http://jinglepay-website-dev.s3-website.me-central-1.amazonaws.com/pak/en/PK/en/'; // Fallback for desktop or unknown
 
       function detectOS() {
         const userAgent = navigator.userAgent || navigator.vendor || (window as any).opera;
 
-        // iOS detection
         if (/iPad|iPhone|iPod/.test(userAgent) && !(window as any).MSStream) {
           return 'iOS';
         }
 
-        // Android detection
         if (/android/i.test(userAgent)) {
           return 'Android';
         }
 
-        // Default to desktop/unknown
         return 'other';
       }
 
-      function redirect() {
+      function handleRedirectOrShowButton() {
         const os = detectOS();
-        let redirectURL = FALLBACK_URL;
-        let message = 'Redirecting to download page...';
+        const messageElement = document.getElementById('message');
+        const loaderElement = document.querySelector('.loader');
+        const headingElement = document.querySelector('h1');
+        const downloadButtonContainer = document.getElementById('download-buttons');
 
         if (os === 'iOS') {
-          redirectURL = IOS_APP_URL;
-          message = 'Redirecting to App Store...';
+          const redirectURL = IOS_APP_URL;
+          const message = 'Redirecting to App Store...';
+          if (messageElement) messageElement.innerText = message;
+          window.location.href = redirectURL;
         } else if (os === 'Android') {
-          redirectURL = ANDROID_APP_URL;
-          message = 'Redirecting to Google Play Store...';
+          const redirectURL = ANDROID_APP_URL;
+          const message = 'Redirecting to Google Play Store...';
+          if (messageElement) messageElement.innerText = message;
+          window.location.href = redirectURL;
+        } else {
+          document.title = 'Download the Jingle Pay App';
+          if (headingElement) headingElement.innerText = 'Download Our App';
+          if (loaderElement) loaderElement.style.display = 'none';
+          if (messageElement) messageElement.style.display = 'none';
+          if (downloadButtonContainer) downloadButtonContainer.style.display = 'block';
         }
-
-        const messageElement = document.getElementById('message');
-
-        if (messageElement) {
-          messageElement.innerText = message;
-        }
-
-        window.location.href = redirectURL;
       }
 
-      // Execute redirect when page loads
-      window.onload = redirect;
+      window.onload = handleRedirectOrShowButton;
     </script>
   </body>
 </html>
