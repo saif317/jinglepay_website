@@ -39,9 +39,9 @@ export default {
     {
       title: 'Help',
       links: [
-        { href: '#', text: 'Terms & Conditions' },
+        { href: '/ConventionalAlfa-wallets-Alif-Alfa-Savings-Alfa-remittance.pdf', text: 'Terms & Conditions' },
         { href: '/privacy-policy', text: 'Privacy Policy' },
-        { href: '#', text: 'Schedule of Charges' },
+        { href: '/Schedule-of-Charges-Branchless-Banking-January-till-March-2024.pdf', text: 'Schedule of Charges' },
         { href: '/faq', text: 'FAQs' },
         { href: '/contact', text: 'Contact Us' },
       ],

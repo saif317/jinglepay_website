@@ -34,16 +34,28 @@ const socialLinks = [
               <div>
                 <h3 class='mb-3 text-base font-bold tracking-wider text-white sm:mb-4 sm:text-lg'>{section.title}</h3>
                 <ul class='space-y-2 list-none sm:space-y-3'>
-                  {section.links.map((link) => (
-                    <li>
-                      <Link
-                        href={link.href}
-                        class='text-sm font-normal no-underline transition-colors duration-200 text-zinc-400 hover:text-white sm:text-base'
-                      >
-                        {link.text}
-                      </Link>
-                    </li>
-                  ))}
+                  {section.links.map((link) => {
+                    return (
+                      <li>
+                        {link.text !== 'Terms & Conditions' && link.text !== 'Schedule of Charges' ? (
+                          <Link
+                            href={link.href}
+                            class='text-sm font-normal no-underline transition-colors duration-200 text-zinc-400 hover:text-white sm:text-base'
+                          >
+                            {link.text}
+                          </Link>
+                        ) : (
+                          <a
+                            href={link.href}
+                            class='text-sm font-normal no-underline transition-colors duration-200 text-zinc-400 hover:text-white sm:text-base'
+                            target='_blank'
+                          >
+                            {link.text}
+                          </a>
+                        )}
+                      </li>
+                    );
+                  })}
                 </ul>
               </div>
             ))

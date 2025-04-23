@@ -40,9 +40,9 @@ export default {
     {
       title: 'مدد',
       links: [
-        { href: '#', text: 'شرائط و ضوابط' },
+        { href: '/ConventionalAlfa-wallets-Alif-Alfa-Savings-Alfa-remittance.pdf', text: 'شرائط و ضوابط' },
         { href: '/privacy-policy', text: 'پرائیویسی پالیسی' },
-        { href: '#', text: 'چارجز کا شیڈول' },
+        { href: '/Schedule-of-Charges-Branchless-Banking-January-till-March-2024.pdf', text: 'چارجز کا شیڈول' },
         { href: '/faq', text: 'اکثر پوچھے گئے سوالات ' },
         { href: '/contact', text: 'ہم سے رابطہ کریں' },
       ],
