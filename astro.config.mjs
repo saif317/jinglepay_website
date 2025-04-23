@@ -15,7 +15,7 @@ export default defineConfig({
     plugins: [tailwindcss()],
   },
 
-  site: 'https://jinglepay.com/PK',
+  site: 'https://jinglepay.com/',
   integrations: [sitemap(), expressiveCode(), mdx()],
 
   i18n: {
