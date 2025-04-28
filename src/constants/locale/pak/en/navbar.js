@@ -1,5 +1,5 @@
 export default {
-  jinglepay: 'Jingle Pay',
+  aboutUs: 'About Us',
   benefits: 'Benefits',
   contact: 'Contact',
   downloadApp: 'Download App',
