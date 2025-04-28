@@ -1,6 +1,5 @@
 ---
-import { Image } from 'astro:assets';
-import pakFlag from '@assets/flags/pak.svg';
+import PakFlag from '@assets/flags/pak.svg';
 
 interface Props {
   onSubmit?: string;
@@ -17,7 +16,7 @@ const { onSubmit = '#', class: className = '', smsText = qrModal.smsText } = Ast
 
 <div class={`flex w-full max-w-xs rounded-md overflow-hidden shadow-md ${className}`}>
   <div class='flex gap-x-1 items-center px-2 py-1.5 bg-gray-100 border-r border-gray-200 sm:gap-x-1.5 sm:px-3'>
-    <Image src={pakFlag} alt='Pakistan' class='w-4 h-auto rounded-sm' />
+    <PakFlag class='w-4 h-auto rounded-sm' />
     <span class='text-sm font-medium sm:text-base'>+92</span>
   </div>
 

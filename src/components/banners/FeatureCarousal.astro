@@ -3,9 +3,9 @@ import FeatureBanner, { type FeatureBannerProps } from './FeatureBanner.astro';
 import PromoBanner, { type PromoBannerProps } from './PromoBanner.astro';
 import { Image } from 'astro:assets';
 
-import shadow1 from '@assets/images/features/shadow1.svg';
-import shadow2 from '@assets/images/features/shadow2.svg';
-import shadowPromo from '@assets/images/promos/shadow-promo.svg';
+import Shadow1 from '@assets/images/features/shadow1.svg';
+import Shadow2 from '@assets/images/features/shadow2.svg';
+import ShadowPromo from '@assets/images/promos/shadow-promo.svg';
 
 import multipleAccountsImage from '@assets/images/features/accounts-feature.webp';
 import transferImage from '@assets/images/features/transfer-feature.webp';
@@ -21,7 +21,7 @@ const carouselItems: (FeatureBannerProps | PromoBannerProps)[] = [
     imageSrc: multipleAccountsImage,
     imageAlt: 'Multiple accounts feature illustration showing cards and app interface',
     type: 'feature',
-    shadow: shadow1,
+    shadow: Shadow1,
   },
   {
     heading: carousal.earn,
@@ -32,7 +32,7 @@ const carouselItems: (FeatureBannerProps | PromoBannerProps)[] = [
     imageSrc: walletPromoImage,
     imageAlt: 'Smartphone showing JinglePay wallet interface with coins',
     type: 'promo',
-    shadow: shadowPromo,
+    shadow: ShadowPromo,
   },
   {
     titles: carousal.payBills,
@@ -42,7 +42,7 @@ const carouselItems: (FeatureBannerProps | PromoBannerProps)[] = [
     imageSrc: transferImage,
     imageAlt: 'Illustration of fast money transfer with phone and icons',
     type: 'feature',
-    shadow: shadow2,
+    shadow: Shadow2,
   },
 ];
 
@@ -68,9 +68,10 @@ const imageSizes = '(max-width: 767px) 50vw, (max-width: 1023px) 40vw, 400px'; /
                   sizes={imageSizes}
                   loading='lazy'
                   decoding='async'
+                  quality="max"
                   class='relative z-[1] object-contain w-auto h-48 sm:h-56 md:h-60 lg:h-64 3xl:h-72 4xl:h-80' 
                   />
-                  {item.shadow && <Image src={item.shadow} class='absolute bottom-[10px] right-[35px] 3xl:right-[55px] 4xl:right-[75px] max-w-[160px] md:max-w-[200px] lg:max-w-full' alt='shadow' />}
+                  {item.shadow && <item.shadow class='absolute bottom-[10px] right-[35px] 3xl:right-[55px] 4xl:right-[75px] max-w-[160px] md:max-w-[200px] lg:max-w-full'  />}
                </div>
               </FeatureBanner>
             ) : (
@@ -83,9 +84,10 @@ const imageSizes = '(max-width: 767px) 50vw, (max-width: 1023px) 40vw, 400px'; /
                   sizes={imageSizes}
                   loading='lazy'
                   decoding='async'
+                  quality="max"
                   class='object-contain w-auto h-48 sm:h-56 md:h-60 lg:h-64 3xl:h-72 4xl:h-80' 
                 />
-                {item.shadow && <Image src={item.shadow} class='absolute bottom-[-20px] right-[20px] 3xl:right-[40px] 4xl:right-[75px] max-w-[160px] md:max-w-[200px] lg:max-w-full' alt='shadow' />}
+                {item.shadow && <item.shadow class='absolute bottom-[-20px] right-[20px] 3xl:right-[40px] 4xl:right-[75px] max-w-[160px] md:max-w-[200px] lg:max-w-full' />}
              </div>
               </PromoBanner>
             )}

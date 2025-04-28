@@ -11,7 +11,8 @@ import rashid from '@assets/images/company/leadership/rashid.jpg';
 import rick from '@assets/images/company/leadership/rick.png';
 import ritesh from '@assets/images/company/leadership/ritesh.png';
 import sohali from '@assets/images/company/leadership/sohali.png';
-import linkedinIconSvg from '@assets/images/company/leadership/linkedin.svg';
+
+import LinkedinIcon from '@assets/images/company/leadership/linkedin.svg';
 
 const {
   translations: {
@@ -53,6 +54,9 @@ const teamMembers = [amir, rashid, chris, sohali, ritesh, rick].map((icon, index
               class='rounded-xl w-full object-cover aspect-[3/3.5]'
               widths={[300, 600]}
               sizes='(max-width: 768px) 80vw, 40vw'
+              decoding={index === 0 ? 'sync' : 'async'}
+              loading={index === 0 ? 'eager' : 'lazy'}
+              quality='max'
             />
           </div>
           <div class='flex-grow md:w-3/5'>
@@ -80,6 +84,9 @@ const teamMembers = [amir, rashid, chris, sohali, ritesh, rick].map((icon, index
               class='rounded-xl w-full object-cover aspect-[3/3.5] mb-4 shadow-sm'
               widths={[300, 600]}
               sizes='(max-width: 640px) 90vw, (max-width: 1024px) 45vw, 30vw'
+              decoding='async'
+              loading='lazy'
+              quality='max'
             />
             <h3 class='text-lg font-semibold text-[#1F2937]'>{member.name}</h3>
             <p class='text-sm text-[#6A30FF] mb-2'>{member.title}</p>
@@ -92,7 +99,7 @@ const teamMembers = [amir, rashid, chris, sohali, ritesh, rick].map((icon, index
                 class='inline-block mx-auto text-[#0A66C2] hover:opacity-80 transition-opacity'
                 aria-label={`${member.name}'s LinkedIn Profile`}
               >
-                <Image src={linkedinIconSvg} alt='LinkedIn Profile' class='w-5 h-5' loading='lazy' decoding='async' />
+                <LinkedinIcon class='w-5 h-5' />
               </a>
             )}
           </div>

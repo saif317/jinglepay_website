@@ -1,18 +1,17 @@
 ---
-import frame from '@assets/icons/frame.svg';
-import scan from '@assets/icons/scan.svg';
-import auth from '@assets/icons/auth.svg';
-import account from '@assets/icons/accountsvg.svg';
-import { Image } from 'astro:assets';
+import Frame from '@assets/icons/frame.svg';
+import Scan from '@assets/icons/scan.svg';
+import Auth from '@assets/icons/auth.svg';
+import Account from '@assets/icons/accountsvg.svg';
 
-import line from '@assets/icons/line.svg';
-import lineVertical from '@assets/icons/line-vertical.svg';
+import Line from '@assets/icons/line.svg';
+import LineVertical from '@assets/icons/line-vertical.svg';
 
 const {
   translations: { onboardingJourney = {} },
 } = Astro.locals;
 
-const icons = [frame, scan, auth, account];
+const icons = [Frame, Scan, Auth, Account];
 
 const steps = onboardingJourney.steps?.map((step: string, index: number) => ({
   title: step,
@@ -27,14 +26,15 @@ const steps = onboardingJourney.steps?.map((step: string, index: number) => ({
   </div>
 
   <div class='relative flex flex-col lg:flex-row mx-auto gap-x-[72px] gap-y-[48px]'>
-    <Image src={line} alt='Line' class='hidden absolute top-1/2 w-full lg:block -z-10' />
-    <Image src={lineVertical} alt='Line' class='block absolute right-1/2 h-full lg:hidden -z-10' />
+    <Line class='hidden absolute top-1/2 w-full lg:block -z-10' />
+    <LineVertical class='block absolute right-1/2 h-full lg:hidden -z-10' />
 
     {
       steps.map((step: { title: string; icon: string }) => (
         <div class='flex flex-row items-center shadow-[0px_0px_54.5px_0px_rgba(28,28,28,0.08)] bg-white '>
           <div class='flex flex-col px-3 py-4 gap-y-4 rounded-xl max-w-[151px]'>
-            <Image src={step.icon} alt={step.title} height={32} width={32} />
+            {/* @ts-ignore */}
+            <step.icon height={32} width={32} />
             <span class='text-base font-normal text-black'>{step.title}</span>
           </div>
         </div>

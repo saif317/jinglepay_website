@@ -9,7 +9,7 @@ export type FeatureBannerProps = {
   imageSrc: ImageMetadata;
   imageAlt: string;
   type?: 'feature';
-  shadow?: ImageMetadata;
+  shadow?: AstroSVGElement;
 };
 
 const { titles, subtitle, tagline, backgroundColor, textColor = '#FFFFFF', shadow } = Astro.props;

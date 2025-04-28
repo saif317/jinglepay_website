@@ -1,7 +1,5 @@
 ---
-import { Image } from 'astro:assets';
-
-import arrow from '@assets/icons/arrow.svg';
+import Arrow from '@assets/icons/arrow.svg';
 
 const faqData: { question: string; answer: string }[] = [
   {
@@ -89,7 +87,7 @@ const faqData: { question: string; answer: string }[] = [
   <div class='flex flex-row gap-x-4 items-center'>
     <button onclick='history.back(); return false;' role='button' style='cursor: pointer;'>
       <div class='w-8 h-8 p-1.5 flex items-center justify-center border rounded-full border-[#794EFF]'>
-        <Image src={arrow} alt='Arrow' class='rotate-180' />
+        <Arrow class='rotate-180' />
       </div>
     </button>
     <span class='text-3xl font-extrabold lg:text-4xl'>Frequent Answered Questions</span>

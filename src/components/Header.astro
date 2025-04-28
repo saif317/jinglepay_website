@@ -2,8 +2,7 @@
 // src/components/Header.astro
 import QRModalTriggerer from '@components/common/QRModalTriggerer.astro';
 import CountryLanguageSelector from '@components/country-language-selector/index.astro';
-import { Image } from 'astro:assets';
-import logoSrc from '@assets/logos/jplogo.svg';
+import Logo from '@assets/logos/jplogo.svg';
 import Link from '@components/common/Link.astro';
 
 const {
@@ -16,13 +15,7 @@ const {
   id='main-header'
 >
   <Link href='/' class=''>
-    <Image
-      src={logoSrc}
-      alt='Jingle Pay'
-      widths={[60, 90, 120]}
-      sizes='(max-width: 640px) 60px, (max-width: 1024px) 90px, 120px'
-      class='w-[60px] lg:w-[90px]'
-    />
+    <Logo class='w-[60px] lg:w-[90px]' />
   </Link>
 
   <ul class='rounded-[7px] bg-[#EEEEEE] flex-row items-center justify-center hidden px-4 gap-x-8 lg:flex'>

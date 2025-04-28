@@ -8,7 +8,7 @@ export type PromoBannerProps = {
   backgroundColor?: string;
   textColor?: string;
   type?: 'promo';
-  shadow?: ImageMetadata;
+  shadow?: AstroSVGElement;
 };
 
 const { heading, description, backgroundColor, textColor = '#FFFFFF', shadow } = Astro.props;

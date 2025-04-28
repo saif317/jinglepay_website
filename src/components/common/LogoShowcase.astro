@@ -1,11 +1,11 @@
 ---
 import { Image } from 'astro:assets';
-import arrow from '@assets/icons/arrow.svg';
+import Arrow from '@assets/icons/arrow.svg';
 import type { ImageMetadata } from 'astro';
 
 // Extend Logo interface for better image handling
 export interface Logo {
-  src: ImageMetadata | string; // Allow string for external SVGs if needed
+  src: AstroSVGElement | ImageMetadata;
   alt: string;
   href: string;
   isSvg?: boolean; // Optional flag for SVG handling
@@ -67,24 +67,22 @@ const logosPerSlide = 6;
                     rel='noopener noreferrer'
                     aria-label={`Visit ${logo.alt}`}
                   >
-                    {typeof logo.src === 'string' ? (
-                      <img
-                        src={logo.src}
-                        alt={logo.alt}
-                        loading='lazy'
-                        decoding='async'
+                    {logo.isSvg && typeof logo.src === 'function' ? (
+                      <logo.src
                         class='object-contain w-auto h-full max-h-[60%] sm:max-h-[65%] lg:max-h-[70%]'
+                        style={logo.widthPercent ? `width: ${logo.widthPercent}%` : undefined}
                       />
                     ) : (
                       <Image
                         src={logo.src}
                         alt={logo.alt}
-                        widths={logo.isSvg ? undefined : logo.widths || defaultLogoWidths}
-                        sizes={logo.isSvg ? undefined : logo.sizes || defaultLogoSizes}
+                        widths={logo.widths || defaultLogoWidths}
+                        sizes={logo.sizes || defaultLogoSizes}
                         loading='lazy'
                         decoding='async'
                         class='object-contain w-auto h-full max-h-[60%] sm:max-h-[65%] lg:max-h-[70%]'
                         style={logo.widthPercent ? `width: ${logo.widthPercent}%` : undefined}
+                        quality='max'
                       />
                     )}
                   </a>
@@ -101,14 +99,14 @@ const logosPerSlide = 6;
         class={`flex items-center justify-center border rounded-full !w-8 !h-8 sm:!w-9 sm:!h-9 border-violet-500 text-violet-500 hover:bg-violet-50 transition-colors ${selector}-swiper-button-prev swiper-button-custom-prev`}
         aria-label='Previous slide'
       >
-        <Image src={arrow} alt='Previous' class='w-3 h-3 rotate-180 sm:w-4 sm:h-4' />
+        <Arrow class='w-3 h-3 rotate-180 sm:w-4 sm:h-4' />
       </button>
       <button
         type='button'
         class={`flex items-center justify-center border rounded-full !w-8 !h-8 sm:!w-9 sm:!h-9 border-violet-500 text-violet-500 hover:bg-violet-50 transition-colors ${selector}-swiper-button-next swiper-button-custom-next`}
         aria-label='Next slide'
       >
-        <Image src={arrow} alt='Next' class='w-3 h-3 sm:w-4 sm:h-4' />
+        <Arrow class='w-3 h-3 sm:w-4 sm:h-4' />
       </button>
     </div>
   </div>
