@@ -93,7 +93,7 @@ const logosPerSlide = 6;
         }
       </div>
     </div>
-    <div class='flex flex-row gap-x-4 justify-center w-full sm:gap-x-6 lg:justify-end'>
+    <div class={`flex flex-row gap-x-4 justify-center w-full sm:gap-x-6 lg:justify-end ${selector}-swiper-controls`}>
       <button
         type='button'
         class={`flex items-center justify-center border rounded-full !w-8 !h-8 sm:!w-9 sm:!h-9 border-violet-500 text-violet-500 hover:bg-violet-50 transition-colors ${selector}-swiper-button-prev swiper-button-custom-prev`}
@@ -118,10 +118,22 @@ const logosPerSlide = 6;
   import Swiper from 'swiper';
   import { Navigation } from 'swiper/modules';
 
+  function updateInvestorButtonPosition(swiperInstance: any) {
+    // Find the controls container relative to the swiper element
+    const controlsContainer = swiperInstance.el.parentElement?.querySelector('.investors-swiper-controls');
+    if (!controlsContainer) return; // Exit if controls not found
+
+    if (swiperInstance.isEnd) {
+      // We are on the last slide
+      controlsContainer.classList.add('controls-shifted-down');
+    } else {
+      // We are NOT on the last slide
+      controlsContainer.classList.remove('controls-shifted-down');
+    }
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
     const swiperContainers = document.querySelectorAll('[data-name*="-logo-swiper"]');
-
-    console.log(swiperContainers);
 
     swiperContainers.forEach((container) => {
       const selector = container.getAttribute('data-selector');
@@ -138,9 +150,14 @@ const logosPerSlide = 6;
         },
         on: {
           init: function () {
-            // Add listener to update container height after images load potentially
-            // This might be needed if image loading causes height changes affecting layout
-            // Example: window.dispatchEvent(new Event('resize'));
+            if (selector === 'investors') {
+              updateInvestorButtonPosition(this);
+            }
+          },
+          slideChange: function () {
+            if (selector === 'investors') {
+              updateInvestorButtonPosition(this);
+            }
           },
         },
       });
@@ -149,27 +166,66 @@ const logosPerSlide = 6;
 </script>
 
 <style is:global>
-  /* Ensure swiper container takes full width */
   .swiper {
     width: 100%;
-    overflow: hidden; /* Hide overflow */
+    overflow: hidden;
   }
 
   .swiper-slide {
-    width: 100%; /* Ensure slides take full container width */
-    height: auto; /* Allow slide height to adjust based on content */
+    width: 100%;
+    height: auto;
   }
 
-  /* Hide default Swiper nav arrow pseudo-elements */
   .swiper-button-custom-prev::after,
   .swiper-button-custom-next::after {
     content: none;
   }
 
-  /* You might need to target the custom button classes if default .swiper-button-prev/next interfere */
   .swiper-button-disabled {
     opacity: 0.5;
     cursor: not-allowed;
-    pointer-events: none; /* Make sure disabled buttons aren't clickable */
+    pointer-events: none;
+  }
+
+  .lg\\:w-6\\/12 {
+    position: relative;
+  }
+
+  .investors-swiper-controls {
+    position: relative;
+    width: 100%;
+    transition:
+      transform 0.3s ease-in-out,
+      opacity 0.3s ease-in-out,
+      bottom 0.3s ease-in-out;
+    transform: translateY(0);
+    opacity: 1;
+    bottom: 0;
+  }
+
+  .investors-swiper-controls.controls-shifted-down {
+    position: absolute;
+    bottom: 15%;
+    left: 0;
+    right: 0;
+    transform: translateY(0);
+    opacity: 1;
+    z-index: 10;
+
+    @media screen and (min-width: 576px) {
+      bottom: 30%;
+    }
+
+    @media screen and (min-width: 768px) {
+      bottom: 35%;
+    }
+
+    @media screen and (min-width: 992px) {
+      bottom: 30%;
+    }
+
+    @media screen and (min-width: 1920px) {
+      bottom: 35%;
+    }
   }
 </style>
