@@ -1,6 +1,6 @@
 export default {
   aboutUs: 'About Us',
-  benefits: 'Benefits',
+  features: 'Features',
   contact: 'Contact',
   downloadApp: 'Download App',
 };

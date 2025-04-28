@@ -1,6 +1,6 @@
 export default {
   aboutUs: 'ہمارے بارے میں',
-  benefits: 'فائدے',
+  features: 'خصوصیات',
   contact: 'رابطہ کریں',
   downloadApp: 'ایپ ڈاؤن لوڈ کریں',
 };
