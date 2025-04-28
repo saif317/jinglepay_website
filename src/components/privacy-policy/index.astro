@@ -1,7 +1,5 @@
 ---
-import { Image } from 'astro:assets';
-
-import arrow from '@assets/icons/arrow.svg';
+import Arrow from '@assets/icons/arrow.svg';
 
 const textItems: { title?: string; content: string[] }[] = [
   {
@@ -63,10 +61,10 @@ const textItems: { title?: string; content: string[] }[] = [
 <section
   class='flex flex-col pt-[104px] pb-[94px] px-4 lg:px-[88px] lg:pt-[189px] lg:pb-[227px] gap-y-12 lg:gap-y-[65px]'
 >
-  <div class='flex flex-row items-center gap-x-4'>
+  <div class='flex flex-row gap-x-4 items-center'>
     <button onclick='history.back(); return false;' role='button' style='cursor: pointer;'>
       <div class='w-8 h-8 p-1.5 flex items-center justify-center border rounded-full border-[#794EFF]'>
-        <Image src={arrow} alt='Arrow' class='rotate-180' />
+        <Arrow class='rotate-180' />
       </div>
     </button>
     <span class='text-3xl font-extrabold lg:text-4xl'>Privacy Policy</span>
@@ -75,7 +73,7 @@ const textItems: { title?: string; content: string[] }[] = [
   {
     textItems.map((item) => (
       <div class='flex flex-col gap-y-5'>
-        <span class='text-2xl font-semibold text-stone-800 '>{item.title}</span>
+        <span class='text-2xl font-semibold text-stone-800'>{item.title}</span>
         <div class='flex flex-col gap-y-12'>
           {item.content.map((content) => (
             <span class='text-xl font-normal text-zinc-900'>{content}</span>

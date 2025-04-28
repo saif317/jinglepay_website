@@ -29,13 +29,13 @@ export default {
         { href: '#', text: 'Contact' },
       ],
     },
-    {
-      title: 'Security',
-      links: [
-        { href: '/#regulation', text: 'Security' },
-        { href: '#', text: 'About Fraud' },
-      ],
-    },
+    // {
+    //   title: 'Security',
+    //   links: [
+    //     { href: '/#regulation', text: 'Security' },
+    //     { href: '#', text: 'About Fraud' },
+    //   ],
+    // },
     {
       title: 'Help',
       links: [

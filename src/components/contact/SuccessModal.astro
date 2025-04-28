@@ -1,6 +1,5 @@
 ---
-import doubleCheckmark from '@assets/icons/double-checkmark.svg';
-import { Image } from 'astro:assets';
+import DoubleCheckmark from '@assets/icons/double-checkmark.svg';
 
 interface Props {
   id: string;
@@ -22,7 +21,7 @@ const {
   <div
     class='relative mt-20 mx-auto flex w-full max-w-md transform flex-col items-center rounded-[20px] bg-white p-8 text-center shadow-xl transition-all'
   >
-    <Image class='w-[120px] h-[120px] p-3 mx-auto mb-6' src={doubleCheckmark} alt='Double Checkmark' />
+    <DoubleCheckmark class='w-[120px] h-[120px] p-3 mx-auto mb-6' />
 
     <div>
       <h3 id='modal-title' class='mb-4 text-2xl font-extrabold text-slate-800'>{contact.successTitle}</h3>

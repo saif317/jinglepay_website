@@ -16,8 +16,8 @@ import company from './company/company.js';
 import career from './career.js';
 
 export default {
-  title: 'Jingle Pay',
-  description: 'Simplifying All Money!',
+  title: 'Jingle Pay - Simplifying All Money!',
+  description: 'Jingle Pay is the go-to money app for your everyday financial needs.',
   navbar,
   hero,
   carousal,

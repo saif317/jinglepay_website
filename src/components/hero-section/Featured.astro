@@ -1,45 +1,43 @@
 ---
-import { Image } from 'astro:assets';
-
 // Import Swiper styles
 // import 'swiper/css'; // Core Swiper styles are included in swiper-bundle.min.css
 
-import finextraLogo from '@assets/logos/finextra-logo.svg';
-import paypersLogo from '@assets/logos/paypers.svg';
-import fintechTimesLogo from '@assets/logos/fintech-times.svg';
-import arabNews from '@assets/logos/arab-news.svg';
-import zawya from '@assets/logos/zawya.svg';
-import pymnts from '@assets/logos/pymnts.svg';
+import FinextraLogo from '@assets/logos/finextra-logo.svg';
+import PaypersLogo from '@assets/logos/paypers.svg';
+import FintechTimesLogo from '@assets/logos/fintech-times.svg';
+import ArabNews from '@assets/logos/arab-news.svg';
+import Zawya from '@assets/logos/zawya.svg';
+import Pymnts from '@assets/logos/pymnts.svg';
 
 const logos = [
   {
     href: 'https://www.pymnts.com/financial-inclusion-3/2022/jingle-pay-launches-mastercard-for-unbanked-uae-residents/',
-    src: pymnts,
+    src: Pymnts,
     alt: 'Pymnts',
   },
   {
     href: 'https://thepaypers.com/search/index.aspx?search=jingle+pay',
-    src: paypersLogo,
+    src: PaypersLogo,
     alt: 'The Paypers',
   },
   {
     href: 'https://www.finextra.com/pressarticle/95078/jingle-pay-unlocks-mastercards-network-of-90-million-global-merchants-for-its-users',
-    src: finextraLogo,
+    src: FinextraLogo,
     alt: 'Finextra',
   },
   {
     href: 'https://www.arabnews.pk/tags/bank-alfalah',
-    src: arabNews,
+    src: ArabNews,
     alt: 'Arab News',
   },
   {
     href: 'https://www.zawya.com/en/press-release/jingle-pay-brings-instant-money-transfers-and-global-remittances-to-migrant-workers-uyj68p9j',
-    src: zawya,
+    src: Zawya,
     alt: 'Zawya',
   },
   {
     href: 'https://thefintechtimes.com/?s=%22jingle+pay%22',
-    src: fintechTimesLogo,
+    src: FintechTimesLogo,
     alt: 'The Fintech Times',
   },
 ];
@@ -66,12 +64,8 @@ const { translations = {} } = Astro.locals;
                 class='inline-block transition-opacity duration-300 hover:opacity-75'
                 aria-label={`Featured in ${logo.alt}`}
               >
-                <Image
-                  src={logo.src}
-                  alt={logo.alt}
+                <logo.src
                   class={`${logo.alt === 'Finextra' ? 'w-auto h-5 sm:h-6 md:h-7 lg:h-8' : 'w-auto h-6 sm:h-8 md:h-10 lg:h-12'}`}
-                  loading='lazy'
-                  decoding='async'
                 />
               </a>
             </div>
@@ -107,7 +101,7 @@ const { translations = {} } = Astro.locals;
         momentumBounce: false,
       },
       autoplay: {
-        delay: 2000, // Delay between transitions
+        delay: 5000, // Delay between transitions
         disableOnInteraction: false, // Keep playing after user interaction
         pauseOnMouseEnter: true, // Pause when mouse is over the swiper
       },

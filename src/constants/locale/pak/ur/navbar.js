@@ -1,6 +1,6 @@
 export default {
-  jinglepay: 'جِنگل پے',
-  benefits: 'فائدے',
+  aboutUs: 'ہمارے بارے میں',
+  features: 'خصوصیات',
   contact: 'رابطہ کریں',
   downloadApp: 'ایپ ڈاؤن لوڈ کریں',
 };

@@ -1,12 +1,12 @@
-import pakistanFlag from '@assets/flags/pak.svg';
-import uaeFlag from '@assets/flags/uae.svg';
-import bhrFlag from '@assets/flags/bhr.svg';
+import PakistanFlag from '@assets/flags/pak.svg';
+import UaeFlag from '@assets/flags/uae.svg';
+import BhrFlag from '@assets/flags/bhr.svg';
 
 export const COUNTRIES: readonly {
   readonly code: string;
   readonly path: string;
   readonly name: string;
-  readonly flag?: ImageMetadata;
+  readonly flag?: AstroSVGElement;
   readonly languages: readonly {
     readonly code: string;
     readonly name: string;
@@ -16,7 +16,7 @@ export const COUNTRIES: readonly {
     code: 'PAK',
     path: 'pak',
     name: 'Pakistan',
-    flag: pakistanFlag,
+    flag: PakistanFlag,
     languages: [
       { code: 'ur', name: 'اردو' },
       { code: 'en', name: 'English' },
@@ -26,7 +26,7 @@ export const COUNTRIES: readonly {
     code: 'UAE',
     path: 'uae',
     name: 'UAE',
-    flag: uaeFlag,
+    flag: UaeFlag,
     languages: [
       { code: 'ar', name: 'العربية' },
       { code: 'en', name: 'English' },
@@ -36,7 +36,7 @@ export const COUNTRIES: readonly {
     code: 'BHR',
     path: 'bhr',
     name: 'Bahrain',
-    flag: bhrFlag,
+    flag: BhrFlag,
     languages: [
       { code: 'ar', name: 'العربية' },
       { code: 'en', name: 'English' },

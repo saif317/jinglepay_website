@@ -30,13 +30,13 @@ export default {
         { href: '#', text: 'خبریں اور میڈیا' },
       ],
     },
-    {
-      title: 'سیکیورٹی',
-      links: [
-        { href: '#regulation', text: 'سیکیورٹی' },
-        { href: '#', text: 'فراڈ سے متعلق معلومات' },
-      ],
-    },
+    // {
+    //   title: 'سیکیورٹی',
+    //   links: [
+    //     { href: '#regulation', text: 'سیکیورٹی' },
+    //     { href: '#', text: 'فراڈ سے متعلق معلومات' },
+    //   ],
+    // },
     {
       title: 'مدد',
       links: [

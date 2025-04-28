@@ -1,6 +1,5 @@
 ---
-import doubleCheckmark from '@assets/icons/double-checkmark.svg';
-import { Image } from 'astro:assets';
+import DoubleCheckmark from '@assets/icons/double-checkmark.svg';
 
 const {
   translations: { career = {} },
@@ -48,7 +47,7 @@ const {
     class='hidden flex-col px-3 lg:px-[85px] lg:py-[45px] lg:flex-row justify-between items-center rounded-[20px] shadow-[0px_0px_60px_0px_rgba(121,78,255,0.12)] py-15'
   >
     <div class='lg:order-2 w-fit mb-8 lg:mb-[0] rounded-full bg-[#F0EBFF] flex items-center justify-center'>
-      <Image class='p-2.5 w-20 h-20 xl:w-32 xl:h-32 2xl:w-36 2xl:h-36' src={doubleCheckmark} alt='Double Checkmark' />
+      <DoubleCheckmark class='p-2.5 w-20 h-20 xl:w-32 xl:h-32 2xl:w-36 2xl:h-36' />
     </div>
     <div class='flex flex-col lg:order-1'>
       <h3 class='mb-5 xl:mb-[22px] text-3xl font-extrabold xl:text-5xl'>{career.successTitle}</h3>

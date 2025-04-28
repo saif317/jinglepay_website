@@ -8,10 +8,10 @@ import benefit4 from '@assets/images/benefits/benefit-pic-4.png';
 import benefit5 from '@assets/images/benefits/benefit-pic-5.png';
 import benefit6 from '@assets/images/benefits/benefit-pic-6.png';
 
-import billPayment1 from '@assets/icons/Electricity.svg';
-import billPayment2 from '@assets/icons/Gas.svg';
-import billPayment3 from '@assets/icons/Water.svg';
-import billPayment4 from '@assets/icons/Telcos.svg';
+import BillPayment1 from '@assets/icons/Electricity.svg';
+import BillPayment2 from '@assets/icons/Gas.svg';
+import BillPayment3 from '@assets/icons/Water.svg';
+import BillPayment4 from '@assets/icons/Telcos.svg';
 
 import earth from '@assets/images/benefits/earth.png';
 import guy from '@assets/images/benefits/guy.png';
@@ -53,7 +53,7 @@ const benefitCards = benefitCardImages.map((benefitCard, index) => {
   return { ...benefitCard, ...benefits.benefits[index] };
 });
 
-const billPaymentIcons = [billPayment1, billPayment2, billPayment3, billPayment4].map((icon, index) => {
+const billPaymentIcons = [BillPayment1, BillPayment2, BillPayment3, BillPayment4].map((icon, index) => {
   return { icon, text: billPayment?.icons?.[index] || '' };
 });
 
@@ -91,7 +91,6 @@ const aniaHalaImageSizes = '(max-width: 767px) 30vw, (max-width: 1023px) 20vw, 1
           class='flex flex-col gap-y-4 items-center text-center sm:items-start sm:text-start'
           id={benefit.alt.toLowerCase().split(' ').join('-')}
         >
-          {/* w-full h-auto aspect-[4/3] object-contain max-h-[260px] sm:max-h-[300px] drop-shadow-lg */}
           <Image
             src={benefit.image}
             alt={benefit.alt}
@@ -100,6 +99,7 @@ const aniaHalaImageSizes = '(max-width: 767px) 30vw, (max-width: 1023px) 20vw, 1
             class='aspect-[4/3] rounded-lg'
             loading='lazy'
             decoding='async'
+            quality='max'
           />
           <h5 class='text-lg font-extrabold sm:text-xl 3xl:text-2xl 4xl:text-3xl text-slate-800'>{benefit.title}</h5>
           <div class='flex flex-col text-base text-gray-600 sm:text-lg 3xl:text-xl 4xl:text-2xl'>
@@ -136,13 +136,7 @@ const aniaHalaImageSizes = '(max-width: 767px) 30vw, (max-width: 1023px) 20vw, 1
       {
         billPaymentIcons.map((item) => (
           <div class='flex flex-col items-center text-center gap-y-2 sm:gap-y-3 min-w-[80px] group'>
-            <Image
-              src={item.icon}
-              alt={item.text}
-              class='w-12 h-12 drop-shadow-md transition-all duration-200 sm:w-16 sm:h-16 md:w-20 md:h-20 hover:drop-shadow-lg'
-              loading='lazy'
-              decoding='async'
-            />
+            <item.icon class='w-12 h-12 transition-all duration-200 sm:w-16 sm:h-16 md:w-20 md:h-20' />
             <span class='mt-1 text-sm font-medium sm:text-base md:text-lg text-zinc-800'>{item.text}</span>
           </div>
         ))
@@ -152,7 +146,7 @@ const aniaHalaImageSizes = '(max-width: 767px) 30vw, (max-width: 1023px) 20vw, 1
 
   <div class='flex flex-col gap-y-8 w-full xl:flex-row xl:gap-x-7'>
     <div
-      class='bg-gradient-to-br from-teal-400 via-green-400 to-teal-400 drop-shadow-2xl rounded-xl md:rounded-[20px] p-6 sm:p-8 md:p-10 xl:p-12 w-full flex flex-col justify-between text-black'
+      class='bg-gradient-to-br from-teal-400 via-green-400 to-teal-400 rounded-xl md:rounded-[20px] p-6 sm:p-8 md:p-10 xl:p-12 w-full flex flex-col justify-between text-black'
     >
       <p class='w-full max-w-[20rem]'>
         <span class='block text-lg font-medium opacity-90 text-start sm:text-xl 4xl:text-2xl'>{savings.trustedBy}</span>
@@ -164,7 +158,7 @@ const aniaHalaImageSizes = '(max-width: 767px) 30vw, (max-width: 1023px) 20vw, 1
         >
       </p>
 
-      <div class='flex justify-center items-center w-full drop-shadow-2xl'>
+      <div class='flex justify-center items-center w-full'>
         <Image
           src={earth}
           alt='Earth illustration'
@@ -173,6 +167,7 @@ const aniaHalaImageSizes = '(max-width: 767px) 30vw, (max-width: 1023px) 20vw, 1
           class='max-h-[250px] sm:max-h-[300px] md:max-h-[380px] xl:max-h-[310px] 4xl:max-h-[480px] w-auto'
           loading='lazy'
           decoding='async'
+          quality='max'
         />
       </div>
 
@@ -192,12 +187,13 @@ const aniaHalaImageSizes = '(max-width: 767px) 30vw, (max-width: 1023px) 20vw, 1
           width={294}
           widths={sideImageWidths}
           sizes={guyImageSizes}
-          class='w-full sm:w-1/2 h-auto object-cover rounded-lg drop-shadow-2xl md:rounded-[20px]'
+          class='w-full sm:w-1/2 h-auto object-cover rounded-lg md:rounded-[20px]'
           loading='lazy'
           decoding='async'
+          quality='max'
         />
         <div
-          class='flex flex-col drop-shadow-2xl items-center justify-between rounded-lg md:rounded-[20px] w-full sm:w-1/2 p-4 sm:p-6 bg-slate-100 gap-y-4 2xl:gap-y-0 2xl:pt-10'
+          class='flex flex-col items-center justify-between rounded-lg md:rounded-[20px] w-full sm:w-1/2 p-4 sm:p-6 bg-slate-100 gap-y-4 2xl:gap-y-0 2xl:pt-10'
         >
           <span class='text-lg font-black text-center sm:text-xl text-slate-800'>{savings.zeroFees}</span>
           <Image
@@ -206,18 +202,17 @@ const aniaHalaImageSizes = '(max-width: 767px) 30vw, (max-width: 1023px) 20vw, 1
             width={180}
             widths={sideImageWidths}
             sizes={aniaHalaImageSizes}
-            class='max-w-[120px] drop-shadow-2xl sm:max-w-[150px] md:max-w-[180px] h-auto object-contain'
+            class='max-w-[120px] sm:max-w-[150px] md:max-w-[180px] h-auto object-contain'
             loading='lazy'
             decoding='async'
+            quality='max'
           />
         </div>
       </div>
       <div
         class='flex flex-col sm:flex-row items-stretch justify-center p-4 sm:p-6 gap-4 sm:gap-6 bg-slate-100 rounded-lg md:rounded-[20px]'
       >
-        <div
-          class='flex drop-shadow-2xl flex-col justify-between lg:justify-center gap-y-4 flex-1 sm:min-h-[200px] md:min-h-[267px]'
-        >
+        <div class='flex flex-col justify-between lg:justify-center gap-y-4 flex-1 sm:min-h-[200px] md:min-h-[267px]'>
           <div>
             <span class='block text-lg font-black sm:text-xl lg:text-3xl xl:text-lg 4xl:text-2xl text-slate-800'
               >{savings.genrated[0]}</span
@@ -241,6 +236,7 @@ const aniaHalaImageSizes = '(max-width: 767px) 30vw, (max-width: 1023px) 20vw, 1
           class='w-full max-w-[450px] xl:max-w-[250px] 2xl:max-w-[200px] 4xl:max-w-[280px] h-auto object-cover rounded-lg md:rounded-[20px] self-center sm:self-auto'
           loading='lazy'
           decoding='async'
+          quality='max'
         />
       </div>
     </div>

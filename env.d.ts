@@ -13,3 +13,5 @@ declare namespace App {
     translations: Record<string, any>;
   }
 }
+
+type AstroSVGElement = ((_props: astroHTML.JSX.SVGAttributes) => any) & ImageMetadata;
