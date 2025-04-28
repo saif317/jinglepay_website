@@ -89,12 +89,14 @@ import OurStoryCarousel from './OurStoryCarousel.astro';
     </div>
   </div>
 
-  <section class='text-center flex flex-col gap-y-[60px] mb-[152px] lg:mb-[214px] md:grid md:grid-cols-2'>
+  <section
+    class='text-center flex flex-col gap-y-[60px] mb-[152px] lg:mb-[214px] md:flex-row md:justify-between md:items-center'
+  >
     {
       stats.map((stat: { value: string; label: string }) => (
         <div class='flex flex-col gap-y-[14px]'>
-          <p class='text-4xl font-extrabold lg:text-5xl text-zinc-900'>{stat.value}</p>
-          <p class='text-xl font-normal lg:text-2xl text-zinc-900'>{stat.label}</p>
+          <p class='text-4xl font-extrabold md:text-3xl xl:text-5xl text-zinc-900'>{stat.value}</p>
+          <p class='text-xl font-normal md:text-lg xl:text-2xl text-zinc-900'>{stat.label}</p>
         </div>
       ))
     }

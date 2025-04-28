@@ -45,7 +45,7 @@ const {
           required
           autocomplete='given-name'
           aria-required='true'
-          class='w-full p-4 placeholder-gray-500 transition duration-150 ease-in-out rounded-lg shadow-sm outline outline-neutral-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent'
+          class='w-full p-4 placeholder-[#797C88] transition duration-150 ease-in-out rounded-lg shadow-sm outline outline-neutral-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent'
         />
       </div>
 
@@ -61,7 +61,7 @@ const {
           required
           autocomplete='family-name'
           aria-required='true'
-          class='w-full p-4 placeholder-gray-500 transition duration-150 ease-in-out rounded-lg shadow-sm outline outline-neutral-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent'
+          class='w-full p-4 placeholder-[#797C88] transition duration-150 ease-in-out rounded-lg shadow-sm outline outline-neutral-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent'
         />
       </div>
 
@@ -79,7 +79,7 @@ const {
           aria-required='true'
           pattern='^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
           title='Please enter a valid email address'
-          class='w-full p-4 placeholder-gray-500 transition duration-150 ease-in-out rounded-lg shadow-sm outline outline-neutral-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent'
+          class='w-full p-4 placeholder-[#797C88] transition duration-150 ease-in-out rounded-lg shadow-sm outline outline-neutral-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent'
         />
       </div>
 
@@ -91,7 +91,7 @@ const {
           name='phone'
           placeholder='+92 311 2222222'
           autocomplete='tel'
-          class='w-full p-4 placeholder-gray-500 transition duration-150 ease-in-out rounded-lg shadow-sm outline outline-neutral-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent'
+          class='w-full p-4 placeholder-[#797C88] transition duration-150 ease-in-out rounded-lg shadow-sm outline outline-neutral-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent'
         />
       </div>
 
@@ -106,10 +106,10 @@ const {
             id='reason-button'
             aria-haspopup='listbox'
             aria-expanded='false'
-            class='relative w-full p-4 pr-10 text-left bg-white rounded-lg shadow-sm cursor-default outline outline-neutral-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent'
+            class='relative p-4 pr-10 w-full text-left bg-white rounded-lg shadow-sm cursor-default outline outline-neutral-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent'
           >
-            <span class='block text-gray-500 truncate' id='reason-selected-text'>{contact.reasonPlaceholder}</span>
-            <span class='absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none'>
+            <span class='block text-[#797C88] truncate' id='reason-selected-text'>{contact.reasonPlaceholder}</span>
+            <span class='flex absolute inset-y-0 right-0 items-center pr-2 pointer-events-none'>
               <svg
                 class='w-5 h-5 text-gray-400'
                 xmlns='http://www.w3.org/2000/svg'
@@ -126,13 +126,13 @@ const {
           </button>
           <ul
             id='reason-options'
-            class='absolute z-10 hidden w-full py-1 mt-1 overflow-auto text-base bg-white rounded-md shadow-lg max-h-60 sm:text-sm'
+            class='hidden overflow-auto absolute z-10 py-1 mt-1 w-full max-h-60 text-base bg-white rounded-md shadow-lg sm:text-sm'
             tabindex='-1'
             role='listbox'
             aria-labelledby='reason-button'
           >
             <li
-              class='relative py-2 pl-3 text-gray-900 cursor-default select-none pr-9 hover:bg-violet-100'
+              class='relative py-2 pr-9 pl-3 text-gray-900 cursor-default select-none hover:bg-violet-100'
               id='reason-option-jinglepay_questions'
               role='option'
               data-value='jinglepay_questions'
@@ -140,7 +140,7 @@ const {
               <span class='block truncate'>{contact.reasons[0]}</span>
             </li>
             <li
-              class='relative py-2 pl-3 text-gray-900 cursor-default select-none pr-9 hover:bg-violet-100'
+              class='relative py-2 pr-9 pl-3 text-gray-900 cursor-default select-none hover:bg-violet-100'
               id='reason-option-technical_support'
               role='option'
               data-value='technical_support'
@@ -148,7 +148,7 @@ const {
               <span class='block truncate'>{contact.reasons[1]}</span>
             </li>
             <li
-              class='relative py-2 pl-3 text-gray-900 cursor-default select-none pr-9 hover:bg-violet-100'
+              class='relative py-2 pr-9 pl-3 text-gray-900 cursor-default select-none hover:bg-violet-100'
               id='reason-option-billing'
               role='option'
               data-value='billing'
@@ -156,7 +156,7 @@ const {
               <span class='block truncate'>{contact.reasons[2]}</span>
             </li>
             <li
-              class='relative py-2 pl-3 text-gray-900 cursor-default select-none pr-9 hover:bg-violet-100'
+              class='relative py-2 pr-9 pl-3 text-gray-900 cursor-default select-none hover:bg-violet-100'
               id='reason-option-feedback'
               role='option'
               data-value='feedback'
@@ -164,7 +164,7 @@ const {
               <span class='block truncate'>{contact.reasons[3]}</span>
             </li>
             <li
-              class='relative py-2 pl-3 text-gray-900 cursor-default select-none pr-9 hover:bg-violet-100'
+              class='relative py-2 pr-9 pl-3 text-gray-900 cursor-default select-none hover:bg-violet-100'
               id='reason-option-general'
               role='option'
               data-value='general'
@@ -186,7 +186,7 @@ const {
           placeholder={contact.messagePlaceholder}
           required
           aria-required='true'
-          class='w-full p-4 placeholder-gray-500 transition duration-150 ease-in-out rounded-lg shadow-sm outline outline-neutral-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent resize-vertical'
+          class='w-full p-4 placeholder-[#797C88] transition duration-150 ease-in-out rounded-lg shadow-sm outline outline-neutral-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent resize-vertical'
         ></textarea>
       </div>
 
@@ -240,7 +240,7 @@ const {
 
         reasonHiddenInput.value = selectedValue;
         reasonSelectedText.textContent = selectedText;
-        reasonSelectedText.classList.remove('text-gray-500'); // Remove placeholder styling
+        reasonSelectedText.classList.remove('text-[#797C88]'); // Remove placeholder styling
 
         reasonButton.setAttribute('aria-expanded', 'false');
         reasonOptions.classList.add('hidden');
