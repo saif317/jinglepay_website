@@ -33,3 +33,12 @@ steps:
       PathtoPublish: '$(Build.ArtifactStagingDirectory)'
       ArtifactName: 'drop'
     displayName: 'Publish build artifacts'
+
+- task: S3Upload@1
+  inputs:
+    awsCredentials: 'AWS_PROD'
+    regionName: 'me-central-1'
+    bucketName: 'jinglepay-website'
+    sourceFolder: '$(Build.ArtifactStagingDirectory)/dist'
+    targetFolder: ''
+    flattenFolders: false
