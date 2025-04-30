@@ -1,0 +1,100 @@
+---
+import LogoShowcase, { type Logo } from '@components/common/LogoShowcase.astro';
+
+import BankAlfalah from '@assets/logos/bank-alfalah.svg';
+import MoneyGram from '@assets/logos/moneygram.svg';
+import Seedstars from '@assets/logos/seedstars.svg';
+import Aaico from '@assets/logos/aaico.svg';
+import Plugplay from '@assets/logos/plugplay.svg';
+import Fivehundred from '@assets/logos/500.svg';
+import hGlobal from '@assets/logos/hglobal.png';
+import Elevision from '@assets/logos/elevision.svg';
+import Chandariacapital from '@assets/logos/chandriacapital.svg';
+import Gcc from '@assets/logos/gcc.svg';
+import Afex from '@assets/logos/afex.svg';
+import Westernunion from '@assets/logos/western-union.svg';
+import Mastercard from '@assets/logos/mastercard.svg';
+import Singx from '@assets/logos/singx.svg';
+import Emq from '@assets/logos/emq.svg';
+import W2 from '@assets/logos/w2.svg';
+import Lean from '@assets/logos/lean.svg';
+import Finshape from '@assets/logos/finshape.svg';
+import Infinios from '@assets/logos/infinios.svg';
+import Network from '@assets/logos/network.svg';
+import Gamechange from '@assets/logos/gamechange.svg';
+
+// Define widths/sizes for NON-SVG logos
+const rasterWidths = [100, 140, 180];
+const rasterSizes = '(max-width: 639px) 20vw, (max-width: 1023px) 12vw, 140px';
+
+const {
+  translations: { investors = {}, partners = {} },
+} = Astro.locals;
+
+const investorsLogos: Logo[] = [
+  { src: BankAlfalah, alt: 'Bank Alfalah', href: 'https://www.bankalfalah.com/', isSvg: true },
+  { src: MoneyGram, alt: 'MoneyGram', href: 'https://www.moneygram.com/', isSvg: true },
+  { src: Seedstars, alt: 'Seedstars', href: 'https://www.seedstars.com/', isSvg: true },
+  { src: Aaico, alt: 'AAICO', href: 'https://appliedai.opus.com/', isSvg: true, widthPercent: 50 },
+  { src: Plugplay, alt: 'Plug Play', href: 'https://www.plugandplaytechcenter.com/', isSvg: true }, // Corrected name/link
+  { src: Fivehundred, alt: '500 Global', href: 'https://500.co/', isSvg: true, widthPercent: 50 }, // Corrected name
+  // --- Non-SVG ---
+  {
+    src: hGlobal,
+    alt: 'Haitou Global',
+    href: 'http://www.haitouglobal.com/',
+    isSvg: false,
+    widths: rasterWidths,
+    sizes: rasterSizes,
+  },
+  // --- SVGs ---
+  { src: Elevision, alt: 'Elevision', href: 'https://www.elevision.com/', isSvg: true },
+  { src: Chandariacapital, alt: 'Chandaria Capital', href: 'https://www.chandariacapital.com/', isSvg: true }, // Corrected name
+];
+
+const partnerLogos: Logo[] = [
+  { src: BankAlfalah, alt: 'Bank Alfalah', href: 'https://www.bankalfalah.com/', isSvg: true }, // Duplicate included as per original
+  { src: MoneyGram, alt: 'MoneyGram', href: 'https://www.moneygram.com/', isSvg: true }, // Duplicate included as per original
+  { src: Westernunion, alt: 'Western Union', href: 'https://www.westernunion.com/', isSvg: true },
+  { src: Mastercard, alt: 'Mastercard', href: 'https://www.mastercard.com/', isSvg: true, widthPercent: 50 },
+  { src: Infinios, alt: 'Infinios', href: 'https://infinios.com/', isSvg: true },
+  { src: Network, alt: 'Network International', href: 'https://www.network.ae/', isSvg: true }, // Corrected name
+  {
+    src: W2,
+    alt: 'W2 by FullCircl',
+    href: 'https://www.fullcircl.com/using-fullcircl/w2-by-fullcircl-overview',
+    isSvg: true,
+  },
+  { src: Lean, alt: 'Lean Technologies', href: 'https://www.leantech.me/', isSvg: true }, // Corrected name
+  { src: Finshape, alt: 'Finshape', href: 'https://finshape.com/', isSvg: true },
+  { src: Emq, alt: 'EMQ', href: 'https://emq.com/', isSvg: true },
+  { src: Gcc, alt: 'GCC Remit', href: 'https://www.gccremit.com/', isSvg: true }, // Corrected name
+  { src: Gamechange, alt: 'GameChange', href: 'https://gamechange.com/', isSvg: true },
+  { src: Afex, alt: 'Al Fardan Exchange', href: 'https://alfardanexchange.com/', isSvg: true }, // Corrected name
+  { src: Singx, alt: 'SingX', href: 'https://www.singx.co/', isSvg: true },
+];
+---
+
+<div
+  class='flex flex-col gap-y-16 items-center px-4 py-16 mx-auto w-full sm:px-8 md:px-12 lg:px-16 lg:py-24 lg:gap-y-24'
+>
+  <LogoShowcase
+    title={investors.title}
+    description={investors.description}
+    buttonText={investors.cta}
+    buttonLink='mailto:investors@jinglepay.com'
+    logos={investorsLogos}
+    selector='investors'
+  />
+
+  <LogoShowcase
+    title={partners.title}
+    description={partners.description}
+    buttonText={partners.cta}
+    buttonLink='mailto:partners@jinglepay.com'
+    logos={partnerLogos}
+    selector='partners'
+  />
+
+  <logo-showcase-swiper class='hidden'></logo-showcase-swiper>
+</div>

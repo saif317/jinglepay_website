@@ -1,86 +1,93 @@
 ---
-// Import any needed dependencies
 import PhoneNumberInput from '@components/common/PhoneNumberInput.astro';
-import { Image } from 'astro:assets';
+import QRCodeGenerator from '@components/common/QRCodeGenerator.astro';
 
-// Add this type declaration
 declare global {
   interface Window {
     openQRModal: () => void;
   }
 }
 
-// Props for customization
-interface Props {
-  qrCodeSrc: ImageMetadata;
-  isOpen: boolean;
-}
-
-const { qrCodeSrc, isOpen = false } = Astro.props;
+const {
+  translations: { qrModal = {} },
+} = Astro.locals;
 ---
 
-<button id='qr-button' type='button' class='cursor-pointer'>
-  <slot />
-</button>
-
-<!-- Modal backdrop -->
-<div
-  id='qr-modal-backdrop'
-  class={`fixed inset-0 z-50 flex items-center justify-center bg-[#00000050] ${isOpen ? '' : 'hidden'}`}
->
-  <!-- Modal content -->
+<div id='global-qr-modal' class='fixed inset-0 z-50 items-center justify-center bg-[#00000070] hidden p-4'>
   <div
-    class='w-full max-w-3xl text-center py-16 flex flex-col items-center relative bg-white rounded-[60px] shadow-xl text-zinc-800 gap-y-11'
+    id='modal-content'
+    class='relative flex flex-col items-center justify-center w-11/12 max-w-md text-center bg-white rounded-2xl shadow-xl gap-y-3 sm:gap-y-4 p-4 sm:p-6 lg:p-8 max-h-[90vh] overflow-y-auto'
   >
-    <!-- <button id='close-modal' class='absolute text-gray-500 top-12 right-12 hover:text-gray-700'>
-      <svg xmlns='http://www.w3.org/2000/svg' class='w-6 h-6' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
+    <button
+      id='global-qr-modal-close'
+      class='absolute cursor-pointer text-gray-500 right-1 top-1 hover:text-[#794eff] p-1 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#794eff]'
+    >
+      <span class='sr-only'>Close modal</span>
+      <svg
+        xmlns='http://www.w3.org/2000/svg'
+        class='w-5 h-5 sm:w-6 sm:h-6'
+        fill='none'
+        viewBox='0 0 24 24'
+        stroke='currentColor'
+      >
         <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M6 18L18 6M6 6l12 12'></path>
       </svg>
-    </button> -->
+    </button>
 
-    <h3 class='flex items-center justify-between text-5xl font-extrabold'>Get the Jingle Pay App</h3>
-    <span class='text-3xl font-light'>Scan the QR code to download the App</span>
+    <h3 class='text-lg font-extrabold sm:text-xl'>{qrModal.title}</h3>
+    <span class='text-sm font-light text-gray-600 sm:text-base'>{qrModal.subtitle}</span>
 
-    <div class='flex justify-center mb-4'>
-      <Image src={qrCodeSrc} alt='Download Jingle Pay App' width={200} height={200} />
+    <div class='flex justify-center my-2 sm:my-3'>
+      <QRCodeGenerator />
     </div>
 
-    <span class='text-3xl font-light'>or get a download link via SMS</span>
-    <PhoneNumberInput class='mx-auto my-4' />
+    <span class='text-sm font-light text-gray-600 sm:text-base'>{qrModal.alternativeText}</span>
+
+    <PhoneNumberInput class='mx-auto w-full max-w-xs' />
   </div>
 </div>
+
 <script>
-  // Only run this script on the client
-  const qrButton = document.getElementById('qr-button');
-  const modalBackdrop = document.getElementById('qr-modal-backdrop');
-  const closeButton = document.getElementById('close-modal');
-
-  // Open modal when QR button is clicked
-  qrButton?.addEventListener('click', () => {
-    modalBackdrop?.classList.remove('hidden');
-    document.body.classList.add('overflow-hidden'); // Prevent scrolling
-  });
-
-  // Close modal when close button is clicked
-  closeButton?.addEventListener('click', (e) => {
-    e.preventDefault();
-    modalBackdrop?.classList.add('hidden');
-    document.body.classList.remove('overflow-hidden');
-  });
-
-  // Close modal when clicking outside modal content
-  modalBackdrop?.addEventListener('click', (e) => {
-    if (e.target === modalBackdrop) {
-      modalBackdrop.classList.add('hidden');
-      document.body.classList.remove('overflow-hidden');
+  window.openQRModal = () => {
+    const modal = document.getElementById('global-qr-modal');
+    if (modal) {
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      document.body.style.overflow = 'hidden';
     }
-  });
+  };
 
-  // Close modal on escape key
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && modalBackdrop && !modalBackdrop.classList.contains('hidden')) {
-      modalBackdrop.classList.add('hidden');
-      document.body.classList.remove('overflow-hidden');
+  function closeModal() {
+    const modal = document.getElementById('global-qr-modal');
+    if (modal) {
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+      document.body.style.overflow = '';
     }
-  });
+  }
+
+  if (!(window as any).__qrModalListenersAdded) {
+    (window as any).__qrModalListenersAdded = true;
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const modal = document.getElementById('global-qr-modal');
+      const modalContent = document.getElementById('modal-content');
+      const closeButton = document.getElementById('global-qr-modal-close');
+
+      closeButton?.addEventListener('click', closeModal);
+
+      modal?.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          closeModal();
+        }
+      });
+    });
+
+    document.addEventListener('keydown', (e) => {
+      const modal = document.getElementById('global-qr-modal');
+      if (e.key === 'Escape' && modal && !modal.classList.contains('hidden')) {
+        closeModal();
+      }
+    });
+  }
 </script>

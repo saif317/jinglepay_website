@@ -1,0 +1,22 @@
+---
+import Layout from '@layouts/Layout.astro';
+import { getStaticPathsWrapper } from '@util/getStaticPaths';
+import CTA from '@components/cta/index.astro';
+import FAQ from '@components/faq/index.astro';
+
+export const getStaticPaths = getStaticPathsWrapper(
+  [
+    'pak',
+    //  'uae'
+  ],
+  {
+    pak: ['en', 'ur'],
+    // uae: ['en', 'ar'],
+  }
+);
+---
+
+<Layout>
+  <FAQ />
+  <CTA />
+</Layout>

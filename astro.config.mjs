@@ -15,12 +15,12 @@ export default defineConfig({
     plugins: [tailwindcss()],
   },
 
-  site: 'https://jinglepay.com/PK',
+  site: 'https://jinglepay.com/',
   integrations: [sitemap(), expressiveCode(), mdx()],
 
   i18n: {
-    defaultLocale: 'pak-en',
-    locales: ['pak-en', 'pak-ur', 'uae-en', 'uae-ar'],
+    defaultLocale: 'en',
+    locales: ['en', 'ur', 'ar'],
     routing: 'manual',
   },
 });

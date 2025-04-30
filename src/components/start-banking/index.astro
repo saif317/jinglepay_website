@@ -1,0 +1,44 @@
+---
+import Frame from '@assets/icons/frame.svg';
+import Scan from '@assets/icons/scan.svg';
+import Auth from '@assets/icons/auth.svg';
+import Account from '@assets/icons/accountsvg.svg';
+
+import Line from '@assets/icons/line.svg';
+import LineVertical from '@assets/icons/line-vertical.svg';
+
+const {
+  translations: { onboardingJourney = {} },
+} = Astro.locals;
+
+const icons = [Frame, Scan, Auth, Account];
+
+const steps = onboardingJourney.steps?.map((step: string, index: number) => ({
+  title: step,
+  icon: icons[index],
+}));
+---
+
+<div class='flex flex-col px-4 sm:px-8 md:px-12 lg:px-16 gap-y-[60px]'>
+  <div class='flex flex-col gap-y-5 items-center text-center'>
+    <h5 class='text-3xl font-extrabold'>Open a free digital bank account in a few clicks!</h5>
+    <span class='text-3xl font-normal text-zinc-900'>Start banking in minutes.</span>
+  </div>
+
+  <div class='relative flex flex-col lg:flex-row mx-auto gap-x-[72px] gap-y-[48px]'>
+    <Line class='hidden absolute top-1/2 w-full lg:block -z-10' />
+    <LineVertical class='block absolute right-1/2 h-full lg:hidden -z-10' />
+
+    {
+      steps.map((step: { title: string; icon: string }) => (
+        <div class='flex flex-row items-center shadow-[0px_0px_54.5px_0px_rgba(28,28,28,0.08)] bg-white '>
+          <div class='flex flex-col px-3 py-4 gap-y-4 rounded-xl max-w-[151px]'>
+            {/* @ts-ignore */}
+            <step.icon height={32} width={32} />
+            <span class='text-base font-normal text-black'>{step.title}</span>
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</div>

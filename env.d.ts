@@ -5,3 +5,13 @@ interface ImportMetaEnv {
 interface ImportMeta {
   readonly env: ImportMetaEnv;
 }
+
+declare namespace App {
+  interface Locals {
+    lang: string;
+    country: string | null;
+    translations: Record<string, any>;
+  }
+}
+
+type AstroSVGElement = ((_props: astroHTML.JSX.SVGAttributes) => any) & ImageMetadata;

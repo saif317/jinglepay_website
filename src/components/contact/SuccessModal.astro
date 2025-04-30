@@ -1,0 +1,104 @@
+---
+import DoubleCheckmark from '@assets/icons/double-checkmark.svg';
+
+interface Props {
+  id: string;
+}
+const { id } = Astro.props;
+
+const {
+  translations: { contact = {} },
+} = Astro.locals;
+---
+
+<div
+  id={id}
+  aria-labelledby='modal-title'
+  role='dialog'
+  aria-modal='true'
+  class='hidden fixed inset-0 z-50 justify-center items-center px-4 bg-[#00000020] transition-opacity duration-300 ease-in-out'
+>
+  <div
+    class='relative mt-20 mx-auto flex w-full max-w-md transform flex-col items-center rounded-[20px] bg-white p-8 text-center shadow-xl transition-all'
+  >
+    <DoubleCheckmark class='w-[120px] h-[120px] p-3 mx-auto mb-6' />
+
+    <div>
+      <h3 id='modal-title' class='mb-4 text-2xl font-extrabold text-slate-800'>{contact.successTitle}</h3>
+      <p class='text-lg text-gray-600'>{contact.successMessage}</p>
+    </div>
+
+    <div class='mt-8'>
+      <button
+        id={`${id}-confirm-button`}
+        type='button'
+        class='inline-flex justify-center px-6 py-2.5 text-base font-bold text-white bg-violet-600 rounded-xl border border-transparent shadow-sm transition duration-150 ease-in-out cursor-pointer hover:bg-violet-700 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2'
+      >
+        {contact.successConfirm}
+      </button>
+    </div>
+  </div>
+</div>
+
+<style>
+  .fuzzy-border {
+    box-shadow:
+      0 0 15px 5px rgba(121, 78, 255, 0.5),
+      0 0 30px 10px rgba(121, 78, 255, 0.3);
+  }
+</style>
+
+<script define:vars={{ id }}>
+  const modal = document.getElementById(id);
+  const body = document.body;
+  const confirmButton = document.getElementById(`${id}-confirm-button`);
+
+  // Function to toggle body scroll
+  const toggleBodyScroll = (isVisible) => {
+    if (isVisible) {
+      body.classList.add('overflow-hidden');
+    } else {
+      body.classList.remove('overflow-hidden');
+    }
+  };
+
+  // Observe changes to the modal's class attribute
+  const observer = new MutationObserver((mutationsList) => {
+    for (const mutation of mutationsList) {
+      if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+        const targetElement = mutation.target;
+        const isVisible = !targetElement.classList.contains('hidden');
+        toggleBodyScroll(isVisible);
+      }
+    }
+  });
+
+  // Start observing
+  if (modal) {
+    observer.observe(modal, { attributes: true });
+    // Initial check in case modal is visible on load (though unlikely with 'hidden' class)
+    toggleBodyScroll(!modal.classList.contains('hidden'));
+  }
+
+  // Handle confirm button click
+  if (confirmButton) {
+    confirmButton.addEventListener('click', () => {
+      // When the button is clicked, ensure scroll is re-enabled.
+      // The modal hiding itself should trigger the observer anyway, but this is a safeguard.
+      body.classList.remove('overflow-hidden');
+    });
+  }
+
+  // Clean up observer on component unload (Astro specific)
+  document.addEventListener(
+    'astro:before-swap',
+    () => {
+      if (modal) {
+        observer.disconnect();
+      }
+      // Ensure scroll is re-enabled on page transition
+      body.classList.remove('overflow-hidden');
+    },
+    { once: true }
+  );
+</script>

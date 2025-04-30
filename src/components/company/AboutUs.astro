@@ -1,0 +1,176 @@
+---
+import { Image } from 'astro:assets';
+
+const {
+  translations: {
+    company: { aboutUs = {} },
+  },
+} = Astro.locals;
+
+import fintechAward1 from '@assets/images/company/about-us/fintech-award1.png';
+import fintechAward2 from '@assets/images/company/about-us/fintech-award2.png';
+import aboutusLeft from '@assets/images/company/about-us/aboutus-left.png';
+import aboutusMiddle from '@assets/images/company/about-us/aboutus-middle.png';
+import aboutusRight from '@assets/images/company/about-us/aboutus-right.png';
+
+import Integrity from '@assets/images/company/about-us/integrity.svg';
+import Honesty from '@assets/images/company/about-us/honesty.svg';
+import Security from '@assets/images/company/about-us/security.svg';
+import Leadership from '@assets/images/company/about-us/leadership.svg';
+import Respect from '@assets/images/company/about-us/respect.svg';
+import Fun from '@assets/images/company/about-us/fun.svg';
+
+const stats = aboutUs.stats;
+
+const coreValues = [Integrity, Honesty, Security, Leadership, Respect, Fun].map((icon, index) => {
+  return {
+    icon,
+    ...aboutUs.coreValues.items[index],
+  };
+});
+
+const images = [
+  { src: aboutusLeft, alt: 'Payment feature illustration' },
+  { src: aboutusMiddle, alt: 'Person using mobile banking' },
+  { src: aboutusRight, alt: 'Person using payment card' },
+];
+
+const imageWidths = [400, 800];
+const imageSizes = '(max-width: 768px) 90vw, (max-width: 1024px) 45vw, 33vw';
+
+import OurStoryCarousel from './OurStoryCarousel.astro';
+---
+
+<div id='mission'>
+  <p class='text-3xl font-light text-center text-black lg:text-4xl mb-15 lg:mb-[65px] leading-normal'>
+    {aboutUs.mission}
+  </p>
+
+  <section class='flex flex-col gap-10 justify-center items-center mb-16 lg:mb-[96px] md:flex-row'>
+    <Image
+      src={fintechAward1}
+      alt='Fintech Award 1'
+      class='w-[70%] md:w-1/4'
+      decoding='sync'
+      loading='eager'
+      quality='max'
+    />
+    <Image
+      src={fintechAward2}
+      alt='Fintech Award 2'
+      class='w-[70%] md:w-1/4'
+      decoding='sync'
+      loading='eager'
+      quality='max'
+    />
+  </section>
+
+  <!-- Swiper Carousel -->
+  <div class='overflow-hidden swiper about-us-carousel mb-[76px]'>
+    <div class='swiper-wrapper'>
+      {
+        images.map((img) => (
+          <div class='swiper-slide'>
+            <div class='overflow-hidden relative rounded-xl shadow-sm'>
+              <Image
+                src={img.src}
+                alt={img.alt}
+                class='object-cover w-full h-64'
+                widths={imageWidths}
+                sizes={imageSizes}
+                loading='lazy'
+                decoding='async'
+                quality='max'
+              />
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+
+  <section
+    class='text-center flex flex-col gap-y-[60px] mb-[152px] lg:mb-[214px] md:flex-row md:justify-between md:items-center'
+  >
+    {
+      stats.map((stat: { value: string; label: string }) => (
+        <div class='flex flex-col gap-y-[14px]'>
+          <p class='text-4xl font-extrabold md:text-3xl xl:text-5xl text-zinc-900'>{stat.value}</p>
+          <p class='text-xl font-normal md:text-lg xl:text-2xl text-zinc-900'>{stat.label}</p>
+        </div>
+      ))
+    }
+  </section>
+
+  <section class='mb-[146px]'>
+    <h2 class='mb-4 text-3xl font-extrabold text-center'>{aboutUs.coreValues.title}</h2>
+    <p class='text-xl font-normal text-center mb-15 lg:mb-[80px] text-zinc-900'>
+      {aboutUs.coreValues.description}
+    </p>
+    <div class='grid grid-cols-1 gap-x-8 gap-y-[52px] md:grid-cols-2 lg:grid-cols-3'>
+      {
+        coreValues.map((value) => {
+          return (
+            <div class='text-center'>
+              <div class='inline-flex items-center justify-center p-[14px] bg-[#794EFF] rounded-full mb-6'>
+                {value.icon ? <value.icon /> : null}
+              </div>
+              <h3 class='mb-2 text-2xl font-extrabold text-slate-800'>{value.title}</h3>
+              <p class='text-xl font-normal text-black'>{value.description}</p>
+            </div>
+          );
+        })
+      }
+    </div>
+  </section>
+
+  <OurStoryCarousel />
+
+  <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css' />
+
+  <script>
+    import Swiper from 'swiper';
+    import { Autoplay, Pagination, Navigation } from 'swiper/modules'; // Import necessary modules
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const swiper = new Swiper('.about-us-carousel', {
+        modules: [Autoplay, Pagination, Navigation],
+        loop: true,
+        slidesPerView: 1.2,
+        spaceBetween: 16,
+        autoplay: {
+          delay: 4000,
+          disableOnInteraction: false,
+        },
+        pagination: {
+          el: '.swiper-pagination',
+          clickable: true,
+        },
+        breakpoints: {
+          768: {
+            slidesPerView: 1.5,
+            spaceBetween: 24,
+          },
+          992: {
+            slidesPerView: 3,
+            spaceBetween: 24,
+          },
+        },
+      });
+    });
+  </script>
+
+  <style is:global>
+    .about-us-carousel .swiper-pagination-bullet {
+      background-color: #007aff; /* Use primary color or theme color */
+      opacity: 0.7;
+    }
+    .about-us-carousel .swiper-pagination-bullet-active {
+      opacity: 1;
+      background-color: #0056b3; /* Darker shade for active */
+    }
+    .swiper-slide {
+      height: auto; /* Allow slide height to adjust */
+    }
+  </style>
+</div>

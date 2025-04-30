@@ -1,36 +1,40 @@
 ---
 import FeatureCarousal from '@components/banners/FeatureCarousal.astro';
-import HeroSection from '@components/HeroSection/index.astro';
+import Featured from '@components/hero-section/Featured.astro';
+import HeroSection from '@components/hero-section/index.astro';
 import Layout from '@layouts/Layout.astro';
+import Benefits from '@components/benefits/index.astro';
+import Companies from '@components/companies/index.astro';
+import Security from '@components/security/index.astro';
+import StartBanking from '@components/start-banking/index.astro';
+import CTA from '@components/cta/index.astro';
+import Regulation from '@components/regulation/index.astro';
+import { getStaticPathsWrapper } from '@util/getStaticPaths';
 
-export async function getStaticPaths() {
-  const countries = ['pak', 'uae'];
-  const languages: Record<string, string[]> = {
+export const getStaticPaths = getStaticPathsWrapper(
+  [
+    'pak',
+    //  'uae'
+  ],
+  {
     pak: ['en', 'ur'],
-    uae: ['en', 'ar'],
-  };
-
-  return countries.flatMap((country) => {
-    return languages[country].map((lang) => {
-      return {
-        params: { country, lang },
-      };
-    });
-  });
-}
-
-const { country, lang } = Astro.params;
-
-// Load country-specific data
-const countryData = await import(`../../../i18n/countries/${country}.json`);
-
-// Load language translations
-const translations = await import(`../../../i18n/translations/${lang}.json`);
-
-// Now use countryData and translations in your page
+    // uae: ['en', 'ar'],
+  }
+);
 ---
 
-<Layout title={translations.title}>
+<Layout>
   <HeroSection />
   <FeatureCarousal />
+  <Featured />
+
+  <Benefits />
+
+  <div class='flex flex-col'>
+    <Companies />
+    <Regulation />
+    <!-- <Security /> -->
+    <StartBanking />
+    <CTA />
+  </div>
 </Layout>

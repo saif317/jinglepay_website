@@ -1,0 +1,76 @@
+---
+import DoubleCheckmark from '@assets/icons/double-checkmark.svg';
+
+const {
+  translations: { career = {} },
+} = Astro.locals;
+---
+
+<section class='px-4 lg:px-[88px] pt-[128px] pb-[197px]'>
+  <div class='flex flex-col gap-y-3 mb-[160px]'>
+    <h2 class='text-4xl font-extrabold'>{career.title}</h2>
+    <p class='text-lg'>{career.description}</p>
+  </div>
+
+  <p class='text-2xl font-light text-gray-500 mb-[120px]'>{career.thanks}</p>
+
+  <div
+    id='newsletter-container'
+    class='flex lg:p-12 flex-col lg:flex-row lg:gap-x-[60px] gap-y-3 px-3 py-6 shadow-[0px_0px_60px_0px_rgba(121,78,255,0.12)] rounded-[20px]'
+  >
+    <div class='w-full'>
+      <h2 class='mb-4 text-4xl font-extrabold lg:mb-6 lg:text-5xl text-stone-800'>{career.newsletter}</h2>
+      <p class='mb-12 text-xl lg:mb-0 text-stone-800'>{career.newsletterDescription}</p>
+    </div>
+
+    <div class='w-full newsletter-form'>
+      <form id='career-newsletter-form' class='flex flex-col gap-y-4 lg:gap-y-8'>
+        <input
+          type='email'
+          name='email'
+          placeholder='example@company.com'
+          class='flex-grow px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500'
+          required
+        />
+        <button
+          type='submit'
+          class='bg-[#7043FF] hover:bg-[#5D37D7] text-white font-medium py-3 px-8 rounded-xl transition duration-300 ease-in-out text-lg'
+        >
+          {career.newsletterButton}
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div
+    id='newsletter-success'
+    class='hidden flex-col px-3 lg:px-[85px] lg:py-[45px] lg:flex-row justify-between items-center rounded-[20px] shadow-[0px_0px_60px_0px_rgba(121,78,255,0.12)] py-15'
+  >
+    <div class='lg:order-2 w-fit mb-8 lg:mb-[0] rounded-full bg-[#F0EBFF] flex items-center justify-center'>
+      <DoubleCheckmark class='p-2.5 w-20 h-20 xl:w-32 xl:h-32 2xl:w-36 2xl:h-36' />
+    </div>
+    <div class='flex flex-col lg:order-1'>
+      <h3 class='mb-5 xl:mb-[22px] text-3xl font-extrabold xl:text-5xl'>{career.successTitle}</h3>
+      <p class='text-lg xl:text-xl'>{career.successMessage}</p>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('career-newsletter-form');
+    const successMsg = document.getElementById('newsletter-success');
+    const container = document.getElementById('newsletter-container');
+
+    form?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      // Here you would normally add code to submit the form data to your backend
+
+      // For now, we'll just show the success message
+      container?.classList.add('hidden');
+
+      successMsg?.classList.remove('hidden');
+      successMsg?.classList.add('flex');
+    });
+  });
+</script>

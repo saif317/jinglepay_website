@@ -1,0 +1,29 @@
+---
+import QRDownload from '@components/hero-section/QRDownload.astro';
+// import { Image } from 'astro:assets';
+// import bankAlfalah from '@assets/logos/bank-alfalah.svg';
+
+const {
+  translations: { hero = {} },
+} = Astro.locals;
+---
+
+<section class='flex justify-center pb-12 px-4 sm:px-8 pt-[92px] lg:pt-[150px] text-center bg-white'>
+  <div class='flex flex-col items-center max-w-4xl'>
+    <h1 class='mx-auto mb-6 text-4xl font-extrabold leading-tight sm:text-6xl lg:text-7xl'>{hero.title}</h1>
+    <p class='mx-auto mb-10 text-lg sm:text-2xl lg:text-xl text-[#2A2A2A]'>
+      {hero.subtitle}
+    </p>
+    <div
+      class='flex flex-col items-center justify-center w-full gap-4 sm:gap-6 lg:flex-row lg:items-stretch lg:max-w-[600px]'
+    >
+      <QRDownload class='w-full lg:w-auto' />
+      <!-- <div
+        class='flex flex-col items-center justify-center rounded-xl border-2 border-[#C8C8C8] shadow-md py-2.5 px-2 w-full max-w-[16rem] md:max-w-[20rem] lg:max-w-full'
+      >
+        <p class='font-normal text-base sm:text-lg text-[#616161]'>{hero.poweredBy}</p>
+        <Image src={bankAlfalah} alt='Bank Alfalah' class='w-auto max-w-full h-8 sm:h-10' loading='eager' />
+      </div> -->
+    </div>
+  </div>
+</section>
