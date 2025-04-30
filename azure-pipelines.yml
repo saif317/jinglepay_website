@@ -36,7 +36,7 @@ steps:
 
 - task: S3Upload@1
   inputs:
-    awsCredentials: 'AWS_PROD'
+    awsCredentials: 'AWS_Prod'
     regionName: 'me-central-1'
     bucketName: 'jinglepay-website'
     sourceFolder: '$(Build.ArtifactStagingDirectory)/dist'
