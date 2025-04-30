@@ -1,7 +1,6 @@
 trigger:
   branches:
-    include:
-      - main
+    include: 
       - develop
 
 pool:
@@ -34,11 +33,11 @@ steps:
       ArtifactName: 'drop'
     displayName: 'Publish build artifacts'
 
-- task: S3Upload@1
-  inputs:
-    awsCredentials: 'AWS_Prod'
-    regionName: 'me-central-1'
-    bucketName: 'jinglepay-website'
-    sourceFolder: '$(Build.ArtifactStagingDirectory)/dist'
-    targetFolder: ''
-    flattenFolders: false
+  - task: S3Upload@1
+    inputs:
+      awsCredentials: 'AWS_Prod'
+      regionName: 'me-central-1'
+      bucketName: 'jinglepay-website'
+      sourceFolder: '$(Build.ArtifactStagingDirectory)/dist'
+      targetFolder: ''
+      flattenFolders: false
