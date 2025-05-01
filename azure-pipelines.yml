@@ -17,6 +17,22 @@ steps:
       npm install
     displayName: 'Install dependencies'
 
+  - bash: |
+      echo "Determining Site URL based on branch: $(Build.SourceBranchName)"
+      if [ "$(Build.SourceBranchName)" == "main" ]; then
+        SITE_URL="https://jinglepay.com" # Production URL
+      else
+        SITE_URL="http://jinglepay-website-dev.s3-website.me-central-1.amazonaws.com" # Staging URL
+      fi
+      
+      mkdir -p $(Build.SourcesDirectory)/src
+      
+      echo "export const siteBaseUrl = '${SITE_URL}';" > $(Build.SourcesDirectory)/src/siteConfig.js
+      
+      cat $(Build.SourcesDirectory)/src/siteConfig.js
+    displayName: 'Generate src/siteConfig.js'
+    workingDirectory: $(Build.SourcesDirectory)
+
   - script: |
       npm run build
     displayName: 'Build Astro project'

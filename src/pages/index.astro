@@ -44,7 +44,7 @@ import { COUNTRIES } from '@constants';
       // Look for country code in browser language
       if (langParts[1]) {
         if (langParts[1] === 'ae' || langParts[1] === 'sa') {
-          detectedCountry = COUNTRIES.find((c) => c.path === 'uae');
+          detectedCountry = COUNTRIES.find((c) => c.path === 'are');
         } else if (langParts[1] === 'pk') {
           detectedCountry = COUNTRIES.find((c) => c.path === 'pak');
         } else if (langParts[1] === 'bh') {
@@ -55,7 +55,7 @@ import { COUNTRIES } from '@constants';
       // If no country match, try language match
       if (!detectedCountry) {
         if (langParts[0] === 'ar') {
-          detectedCountry = COUNTRIES.find((c) => c.path === 'uae');
+          detectedCountry = COUNTRIES.find((c) => c.path === 'are');
         } else if (langParts[0] === 'ur') {
           detectedCountry = COUNTRIES.find((c) => c.path === 'pak');
         } else if (langParts[0] === 'bh') {
@@ -70,7 +70,7 @@ import { COUNTRIES } from '@constants';
           if (timezone.includes('Asia/Karachi')) {
             detectedCountry = COUNTRIES.find((c) => c.path === 'pak');
           } else if (timezone.includes('Asia/Dubai') || timezone.includes('Asia/Riyadh')) {
-            detectedCountry = COUNTRIES.find((c) => c.path === 'uae');
+            detectedCountry = COUNTRIES.find((c) => c.path === 'are');
           } else if (timezone.includes('Asia/Bahrain')) {
             detectedCountry = COUNTRIES.find((c) => c.path === 'bhr');
           }
@@ -86,7 +86,7 @@ import { COUNTRIES } from '@constants';
           if (geoResponse.ok) {
             const geoData = await geoResponse.json();
             if (geoData.country_code === 'AE' || geoData.country_code === 'SA') {
-              detectedCountry = COUNTRIES.find((c) => c.path === 'uae');
+              detectedCountry = COUNTRIES.find((c) => c.path === 'are');
             } else if (geoData.country_code === 'PK') {
               detectedCountry = COUNTRIES.find((c) => c.path === 'pak');
             } else if (geoData.country_code === 'BH') {

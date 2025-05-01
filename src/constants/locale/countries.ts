@@ -23,8 +23,8 @@ export const COUNTRIES: readonly {
     ],
   },
   {
-    code: 'UAE',
-    path: 'uae',
+    code: 'ARE',
+    path: 'are',
     name: 'UAE',
     flag: UaeFlag,
     languages: [

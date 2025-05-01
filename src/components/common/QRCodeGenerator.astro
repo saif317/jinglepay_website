@@ -1,5 +1,6 @@
 ---
 import QRCode from 'qrcode';
+import { siteBaseUrl } from '@/siteConfig.js';
 
 interface Props {
   baseGenerationSize?: number;
@@ -7,14 +8,10 @@ interface Props {
 
 const { baseGenerationSize = 120 } = Astro.props;
 
-const siteUrl =
-  import.meta.env.PUBLIC_SITE_URL ||
-  (import.meta.env.DEV
-    ? 'http://localhost:4321'
-    : // TODO: Remove this after deployment
-      'http://jinglepay-website-dev.s3-website.me-central-1.amazonaws.com/');
+const pathSegments = Astro.url.pathname.split('/').filter(Boolean);
+const countryCode = pathSegments[0] || 'are';
 
-const redirectUrl = `${siteUrl}/app-redirect`;
+const redirectUrl = `${siteBaseUrl}/${countryCode}/app-redirect`;
 
 const qrCodeDataURL = await QRCode.toDataURL(redirectUrl, {
   width: baseGenerationSize,

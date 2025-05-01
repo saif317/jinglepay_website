@@ -5,5 +5,5 @@ export default {
   linkSent: 'ڈاؤن لوڈ لنک اپنے فون پر حاصل کریں!',
   failed: 'ایس ایم ایس کو ارسٹ کرنا نہیں کیا جھکا۔ لیے دوبارہ تکھیک کریں۔',
   hint: 'لیے اپنے فون پر سوال کریں۔',
-  smsText: 'جِنگل پے ایپ حاصل کریں: https://jinglepay.com/download',
+  smsText: 'جِنگل پے ایپ حاصل کریں: https://jinglepay.com/pak/app-redirect',
 };

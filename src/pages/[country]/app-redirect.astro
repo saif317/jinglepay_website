@@ -2,6 +2,14 @@
 import DownloadAppButton from '@components/hero-section/DownloadAppButton.astro';
 
 import '@styles/global.css';
+
+export async function getStaticPaths() {
+  return ['pak', 'are'].flatMap((country) => {
+    return {
+      params: { country },
+    };
+  });
+}
 ---
 
 <html lang='en'>
