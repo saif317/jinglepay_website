@@ -14,6 +14,7 @@ import onboardingJourney from './onboardingJourney.js';
 import contact from './contact/index.js';
 import company from './company/company.js';
 import career from './career.js';
+import privacyPolicy from './privacyPolicy.js';
 
 export default {
   title: 'Jingle Pay - Simplifying All Money!',
@@ -35,4 +36,5 @@ export default {
   contact,
   company,
   career,
+  privacyPolicy,
 };
