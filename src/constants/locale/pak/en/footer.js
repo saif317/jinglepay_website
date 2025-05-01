@@ -1,6 +1,6 @@
 export default {
   copyrights:
-    'Jingle Pay Limited is a money services provider in Dubai International Financial Center (DIFC) regulated by Dubai Financial Services Authority (DFSA), with license number F005329, for Providing Money Services under “Innovation Testing License”. Due to the restricted nature of the license during testing stage, normal requirements and client protections may not apply and clients may have limited rights if they suffer loss as a result of taking part in testing of its services.',
+    'Jingle Pay is a digital platform offering branchless banking services in Pakistan, operating under the branchless banking license granted to Bank Alfalah Limited by the State Bank of Pakistan (SBP). It follows SBP regulations and does not hold a separate license. Users should stay informed about any relevant regulatory updates.',
   nav: [
     {
       title: 'Features',
