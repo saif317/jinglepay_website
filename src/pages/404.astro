@@ -1,21 +1,154 @@
 ---
 // src/pages/404.astro
-import Link from '@components/common/Link.astro';
-import Layout from '@layouts/Layout.astro';
+import { COUNTRIES } from '../constants';
+
+// We'll handle the redirection on the client side
+// Nothing to do on the server for a prerendered page
 ---
 
-<Layout title='Page Not Found | Jingle Pay'>
-  <div class='flex min-h-[calc(100vh-200px)] flex-col items-center justify-center text-center px-4 pb-16 pt-24'>
-    <h1 class='mb-4 text-6xl font-bold md:text-8xl text-primary'>404</h1>
-    <p class='mb-8 text-xl text-gray-700 md:text-2xl'>Oops! Page Not Found</p>
-    <p class='mb-10 max-w-md text-base text-gray-500'>
-      It seems the page you were looking for doesn't exist or has been moved. Let's get you back on track.
-    </p>
-    <Link
-      href='/'
-      class='inline-block px-4 py-2 bg-[#794eff] text-white rounded-xl text-xs lg:text-base font-medium hover:bg-[#6a3ad9] transition-colors duration-300'
-    >
-      Go to Homepage
-    </Link>
-  </div>
-</Layout>
+<!doctype html>
+<html lang='en'>
+  <head>
+    <meta charset='UTF-8' />
+    <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+    <title>Page Not Found | Jingle Pay</title>
+    <link rel='icon' type='image/svg+xml' href='/favicon.svg' />
+  </head>
+  <body>
+    <div class='container'>
+      <h1 class='error-code'>404</h1>
+      <p class='error-title'>Oops! Page Not Found</p>
+      <p class='error-message'>
+        It seems the page you were looking for doesn't exist or has been moved. Let's get you back on track.
+      </p>
+      <a href='/' class='home-button'>Go to Homepage</a>
+    </div>
+  </body>
+</html>
+
+<style>
+  body {
+    font-family:
+      system-ui,
+      -apple-system,
+      BlinkMacSystemFont,
+      'Segoe UI',
+      Roboto,
+      Oxygen,
+      Ubuntu,
+      Cantarell,
+      'Open Sans',
+      'Helvetica Neue',
+      sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem 1rem;
+    min-height: calc(100vh - 2rem);
+  }
+  .error-code {
+    font-size: 6rem;
+    font-weight: bold;
+    color: #794eff;
+    margin-bottom: 1rem;
+  }
+  .error-title {
+    font-size: 1.5rem;
+    color: #374151;
+    margin-bottom: 2rem;
+  }
+  .error-message {
+    max-width: 28rem;
+    margin: 0 auto 2.5rem;
+    color: #6b7280;
+  }
+  .home-button {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background-color: #794eff;
+    color: white;
+    border-radius: 0.75rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background-color 0.3s;
+  }
+  .home-button:hover {
+    background-color: #6a3ad9;
+  }
+  @media (min-width: 768px) {
+    .error-code {
+      font-size: 8rem;
+    }
+    .error-title {
+      font-size: 2rem;
+    }
+  }
+</style>
+
+<!-- Client-side redirection script -->
+<script>
+  (function () {
+    // Define function to extract country and language from path
+    function extractLocaleFromPath(path: string) {
+      const segments = path.split('/').filter(Boolean);
+      if (segments.length >= 2) {
+        return {
+          country: segments[0],
+          lang: segments[1],
+        };
+      }
+      return null;
+    }
+
+    // Get potential country/lang from URL
+    const path = window.location.pathname;
+    const locale = extractLocaleFromPath(path);
+
+    // If we have a locale in the current URL, try redirecting to its localized 404 page
+    if (locale) {
+      fetch(`/${locale.country}/${locale.lang}/404`)
+        .then((response) => {
+          // If 200, redirect to the localized 404 page
+          if (response.ok) {
+            window.location.href = `/${locale.country}/${locale.lang}/404`;
+          }
+        })
+        .catch(() => {
+          // Do nothing, stay on generic 404
+        });
+    }
+    // If we don't have a potential locale in the current URL, check the referrer
+    else if (document.referrer) {
+      try {
+        const referrerUrl = new URL(document.referrer);
+        const referrerLocale = extractLocaleFromPath(referrerUrl.pathname);
+        if (referrerLocale) {
+          // Try to fetch the localized 404 page
+          fetch(`/${referrerLocale.country}/${referrerLocale.lang}/404`)
+            .then((response) => {
+              // If 200, redirect to the localized 404 page
+              if (response.ok) {
+                window.location.href = `/${referrerLocale.country}/${referrerLocale.lang}/404`;
+              }
+            })
+            .catch(() => {
+              // Do nothing, stay on generic 404
+            });
+        }
+      } catch (e) {
+        // Error parsing referrer, stay on generic 404
+        console.error('Error parsing referrer:', e);
+      }
+    }
+  })();
+</script>

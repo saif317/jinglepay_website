@@ -1,15 +1,8 @@
 ---
-// src/pages/index.astro
 import { COUNTRIES } from '@constants';
 ---
 
-<script define:vars={{ COUNTRIES, isDev: import.meta.env.MODE === 'development' }}>
-  // In development mode, always redirect to Pakistan/English
-  // if (isDev) {
-  window.location.href = '/pak/en';
-  return;
-  // }
-
+<script define:vars={{ COUNTRIES }} is:inline>
   // Tiered location detection strategy from fastest to slowest
   async function detectUserCountry() {
     try {
@@ -20,10 +13,11 @@ import { COUNTRIES } from '@constants';
         return;
       }
 
-      // TIER 2: URL parameters (e.g., /?country=pak&lang=en)
+      // // TIER 2: URL parameters (e.g., /?country=pak&lang=en)
       const urlParams = new URLSearchParams(window.location.search);
       const urlCountry = urlParams.get('country');
       const urlLang = urlParams.get('lang');
+
       if (urlCountry) {
         const country = COUNTRIES.find((c) => c.path === urlCountry);
         if (country) {
@@ -34,7 +28,7 @@ import { COUNTRIES } from '@constants';
         }
       }
 
-      // TIER 3: Browser language settings
+      // // TIER 3: Browser language settings
       const browserLang = navigator.language || navigator.userLanguage;
       const langParts = browserLang.toLowerCase().split(/[-_]/);
 
@@ -43,53 +37,38 @@ import { COUNTRIES } from '@constants';
 
       // Look for country code in browser language
       if (langParts[1]) {
-        if (langParts[1] === 'ae' || langParts[1] === 'sa') {
+        if (langParts[1] === 'ae') {
           detectedCountry = COUNTRIES.find((c) => c.path === 'are');
         } else if (langParts[1] === 'pk') {
           detectedCountry = COUNTRIES.find((c) => c.path === 'pak');
-        } else if (langParts[1] === 'bh') {
+        } else if (
+          langParts[1] === 'bh' ||
+          langParts[1] === 'sa' ||
+          langParts[1] === 'kw' ||
+          langParts[1] === 'qa' ||
+          langParts[1] === 'om'
+        ) {
           detectedCountry = COUNTRIES.find((c) => c.path === 'bhr');
         }
       }
 
-      // If no country match, try language match
-      if (!detectedCountry) {
-        if (langParts[0] === 'ar') {
-          detectedCountry = COUNTRIES.find((c) => c.path === 'are');
-        } else if (langParts[0] === 'ur') {
-          detectedCountry = COUNTRIES.find((c) => c.path === 'pak');
-        } else if (langParts[0] === 'bh') {
-          detectedCountry = COUNTRIES.find((c) => c.path === 'bhr');
-        }
-      }
-
-      // TIER 4: Try timezone detection
-      if (!detectedCountry) {
-        try {
-          const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-          if (timezone.includes('Asia/Karachi')) {
-            detectedCountry = COUNTRIES.find((c) => c.path === 'pak');
-          } else if (timezone.includes('Asia/Dubai') || timezone.includes('Asia/Riyadh')) {
-            detectedCountry = COUNTRIES.find((c) => c.path === 'are');
-          } else if (timezone.includes('Asia/Bahrain')) {
-            detectedCountry = COUNTRIES.find((c) => c.path === 'bhr');
-          }
-        } catch (e) {
-          console.log('Timezone detection failed');
-        }
-      }
-
-      // TIER 5: IP geolocation (slowest but most accurate)
+      // // TIER 4: IP geolocation (slowest but most accurate)
       if (!detectedCountry) {
         try {
           const geoResponse = await fetch('https://ipapi.co/json/');
           if (geoResponse.ok) {
             const geoData = await geoResponse.json();
-            if (geoData.country_code === 'AE' || geoData.country_code === 'SA') {
+            if (geoData.country_code === 'AE') {
               detectedCountry = COUNTRIES.find((c) => c.path === 'are');
             } else if (geoData.country_code === 'PK') {
               detectedCountry = COUNTRIES.find((c) => c.path === 'pak');
-            } else if (geoData.country_code === 'BH') {
+            } else if (
+              geoData.country_code === 'BH' ||
+              geoData.country_code === 'SA' ||
+              geoData.country_code === 'KW' ||
+              geoData.country_code === 'QA' ||
+              geoData.country_code === 'OM'
+            ) {
               detectedCountry = COUNTRIES.find((c) => c.path === 'bhr');
             }
           }
@@ -98,12 +77,12 @@ import { COUNTRIES } from '@constants';
         }
       }
 
-      // Fallback to default if all detection methods fail
+      // // Fallback to default if all detection methods fail
       if (!detectedCountry) {
         detectedCountry = COUNTRIES[0];
       }
 
-      // Determine best language for the detected country
+      // // Determine best language for the detected country
       const langCode = langParts[0];
       const detectedLang =
         detectedCountry.languages.find((l) => l.code === langCode)?.code || detectedCountry.languages[0].code;
@@ -112,7 +91,7 @@ import { COUNTRIES } from '@constants';
       redirectToLocale(detectedCountry.path, detectedLang);
     } catch (error) {
       console.error('Error in locale detection:', error);
-      window.location.href = '/pak/en'; // Final fallback
+      window.location.href = '/are/en'; // Final fallback
     }
   }
 
@@ -206,7 +185,7 @@ import { COUNTRIES } from '@constants';
           {
             COUNTRIES.map((country) => (
               <a href={`/${country.path}/${country.languages[0].code}`} class='country-button'>
-                <span>{country.flag}</span> <span>{country.name}</span>
+                <country.flag /> <span>{country.name}</span>
               </a>
             ))
           }

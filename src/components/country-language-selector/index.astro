@@ -12,7 +12,7 @@ const currentLanguage = currentCountry.languages.find((l) => l.code === lang) ||
 const getCountryLink = (newCountryPath: string) => {
   if (newCountryPath === country) return '#';
   else if (newCountryPath === 'uae') return 'https://jinglepay.com/homepage/AE/';
-  else if (newCountryPath === 'bhr') return '/bhr/coming-soon';
+  else if (newCountryPath === 'bhr') return '/bhr';
   else return '/' + [newCountryPath, lang, pathname.split('/').slice(3).join('/')].join('/');
 };
 
@@ -26,7 +26,7 @@ const getLanguageLink = (newLangCode: string) => {
 >
   <div class='relative country-selector'>
     <button id='country-button' class='flex items-center cursor-pointer'>
-      <div class='flex justify-center items-center flag'>
+      <div class='flex items-center justify-center flag'>
         {currentCountry.flag && <currentCountry.flag class='' />}
       </div>
       <span class='font-medium text-gray-500'>{currentCountry.code}</span>
@@ -40,11 +40,11 @@ const getLanguageLink = (newLangCode: string) => {
           COUNTRIES.map((country) => (
             <a
               href={getCountryLink(country.path)}
-              class='flex gap-3 items-center px-3 py-2 text-sm font-medium text-gray-700 rounded-md transition-all duration-200 ease-in-out hover:bg-blue-50 hover:text-blue-600'
+              class='flex items-center gap-3 px-3 py-2 text-sm font-medium text-gray-700 transition-all duration-200 ease-in-out rounded-md hover:bg-blue-50 hover:text-blue-600'
               role='menuitem'
             >
               {country.flag && (
-                <div class='flex overflow-hidden justify-center items-center w-6 h-6 rounded-sm'>
+                <div class='flex items-center justify-center w-6 h-6 overflow-hidden rounded-sm'>
                   <country.flag class='object-cover w-full h-full' />
                 </div>
               )}
@@ -69,7 +69,7 @@ const getLanguageLink = (newLangCode: string) => {
           currentCountry.languages.map((language) => (
             <a
               href={getLanguageLink(language.code)}
-              class='block px-3 py-2 text-sm font-medium text-gray-700 rounded-md transition-all duration-200 ease-in-out hover:bg-blue-50 hover:text-blue-600'
+              class='block px-3 py-2 text-sm font-medium text-gray-700 transition-all duration-200 ease-in-out rounded-md hover:bg-blue-50 hover:text-blue-600'
               role='menuitem'
               tabindex='-1'
               id={`menu-item-${language.code}`}
