@@ -53,7 +53,7 @@ const currentCountry = countryDetails[countryParam] || countryDetails['ARE'];
   >
     <svg
       xmlns='http://www.w3.org/2000/svg'
-      class='w-4 h-4 sm:w-5 sm:h-5'
+      class='w-4 h-4 sm:w-5 sm:h-5 rtl:rotate-180'
       fill='none'
       viewBox='0 0 24 24'
       stroke='currentColor'
@@ -65,7 +65,7 @@ const currentCountry = countryDetails[countryParam] || countryDetails['ARE'];
 
 <div
   id='toast'
-  class='hidden fixed bottom-4 left-1/2 z-50 p-3 w-11/12 bg-white rounded-md shadow-lg opacity-0 transition-all duration-300 transform -translate-x-1/2 translate-y-full sm:w-auto sm:max-w-md'
+  class='fixed z-50 hidden w-11/12 p-3 transition-all duration-300 transform -translate-x-1/2 translate-y-full bg-white rounded-md shadow-lg opacity-0 bottom-4 left-1/2 sm:w-auto sm:max-w-md'
 >
   <div class='flex items-center'>
     <div id='toast-icon' class='flex-shrink-0 mr-2 sm:mr-3'></div>
