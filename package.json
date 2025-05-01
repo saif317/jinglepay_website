@@ -9,10 +9,10 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/mdx": "^4.2.5",
+    "@astrojs/mdx": "^4.2.6",
     "@astrojs/sitemap": "^3.3.1",
     "@tailwindcss/vite": "^4.0.15",
-    "astro": "^5.7.6",
+    "astro": "^5.7.10",
     "astro-expressive-code": "^0.40.2",
     "axios": "^1.8.4",
     "qrcode": "^1.5.4",
