@@ -1,5 +1,6 @@
 ---
 import PakFlag from '@assets/flags/pak.svg';
+import UaeFlag from '@assets/flags/uae.svg';
 
 interface Props {
   onSubmit?: string;
@@ -12,18 +13,34 @@ const {
 } = Astro.locals;
 
 const { onSubmit = '#', class: className = '', smsText = qrModal.smsText } = Astro.props;
+
+const countryParam = Astro.params.country?.toUpperCase() || 'ARE';
+
+type CountryDetails = {
+  prefix: string;
+  regex: RegExp;
+  placeholder: string;
+  flag: AstroSVGElement;
+};
+
+const countryDetails: Record<string, CountryDetails> = {
+  PAK: { prefix: '+92', regex: /^\d{10}$/, placeholder: '300 1234567', flag: PakFlag },
+  ARE: { prefix: '+971', regex: /^\d{9}$/, placeholder: '50 123 4567', flag: UaeFlag },
+};
+
+const currentCountry = countryDetails[countryParam] || countryDetails['ARE'];
 ---
 
 <div class={`flex w-full max-w-xs rounded-md overflow-hidden shadow-md ${className}`}>
   <div class='flex gap-x-1 items-center px-2 py-1.5 bg-gray-100 border-r border-gray-200 sm:gap-x-1.5 sm:px-3'>
-    <PakFlag class='w-4 h-auto rounded-sm' />
-    <span class='text-sm font-medium sm:text-base'>+92</span>
+    {currentCountry.flag && <currentCountry.flag class='w-4 h-auto rounded-sm' />}
+    <span id='phone-prefix' class='text-sm font-medium sm:text-base'>{currentCountry.prefix}</span>
   </div>
 
   <input
     type='tel'
     name='phoneNumber'
-    placeholder='Mobile number'
+    placeholder={currentCountry.placeholder}
     class='flex-1 px-2 py-1.5 min-w-0 text-sm border-none outline-none sm:px-3 sm:text-base'
     required
   />
@@ -36,7 +53,7 @@ const { onSubmit = '#', class: className = '', smsText = qrModal.smsText } = Ast
   >
     <svg
       xmlns='http://www.w3.org/2000/svg'
-      class='w-4 h-4 sm:w-5 sm:h-5'
+      class='w-4 h-4 sm:w-5 sm:h-5 rtl:rotate-180'
       fill='none'
       viewBox='0 0 24 24'
       stroke='currentColor'
@@ -48,7 +65,7 @@ const { onSubmit = '#', class: className = '', smsText = qrModal.smsText } = Ast
 
 <div
   id='toast'
-  class='hidden fixed bottom-4 left-1/2 z-50 p-3 w-11/12 bg-white rounded-md shadow-lg opacity-0 transition-all duration-300 transform -translate-x-1/2 translate-y-full sm:w-auto sm:max-w-md'
+  class='fixed z-50 hidden w-11/12 p-3 transition-all duration-300 transform -translate-x-1/2 translate-y-full bg-white rounded-md shadow-lg opacity-0 bottom-4 left-1/2 sm:w-auto sm:max-w-md'
 >
   <div class='flex items-center'>
     <div id='toast-icon' class='flex-shrink-0 mr-2 sm:mr-3'></div>
@@ -56,7 +73,7 @@ const { onSubmit = '#', class: className = '', smsText = qrModal.smsText } = Ast
   </div>
 </div>
 
-<script define:vars={{ smsText, qrModal }}>
+<script define:vars={{ smsText, qrModal, countryParam, countryDetails }}>
   function showToast(message, type = 'success') {
     const toast = document.getElementById('toast');
     const toastMessage = document.getElementById('toast-message');
@@ -94,19 +111,22 @@ const { onSubmit = '#', class: className = '', smsText = qrModal.smsText } = Ast
   }
 
   const button = document.querySelector('#send-link-button');
-  console.log(button);
   const phoneInput = document.querySelector('input[name="phoneNumber"]');
+  const prefixSpan = document.querySelector('#phone-prefix');
 
-  const defaultSmsText = typeof smsText !== 'undefined' ? smsText : qrModal.smsText;
+  const clientCountryDetails = countryDetails[countryParam] || countryDetails['ARE'];
+  const countryCode = clientCountryDetails.prefix;
+  const validationRegex = new RegExp(clientCountryDetails.regex.source);
+  if (prefixSpan) prefixSpan.textContent = countryCode;
+  if (phoneInput) phoneInput.placeholder = clientCountryDetails.placeholder;
 
   button?.addEventListener('click', async (e) => {
     e.preventDefault();
     if (!phoneInput) return;
 
-    const phoneNumber = phoneInput.value;
-    const countryCode = '+92';
+    const phoneNumber = phoneInput.value.replace(/\s+/g, '');
 
-    if (phoneNumber && /^\d{9}$/.test(phoneNumber)) {
+    if (phoneNumber && validationRegex.test(phoneNumber)) {
       const submitButton = document.querySelector('#send-link-button');
 
       try {
@@ -118,23 +138,20 @@ const { onSubmit = '#', class: className = '', smsText = qrModal.smsText } = Ast
           </svg>`;
         }
 
-        const params = new URLSearchParams();
-        params.append('user', 'JinglPay');
-        params.append('key', '255ac3f6caXX'); // IMPORTANT: Replace with actual key!
-        params.append('mobile', `+971${phoneNumber}`); // Assuming +971 UAE prefix, adjust if needed
-        params.append('message', defaultSmsText);
-        params.append('senderid', 'Jingle Pay');
-        params.append('accusage', '3');
+        const requestBody = {
+          mobile: `${countryCode}${phoneNumber}`,
+          country: countryParam,
+        };
 
-        const response = await fetch('https://sms.dovesofttech.io/submitsms.jsp', {
+        const response = await fetch('https://remit-dev.jinglepay.dev/api/rb2b-send-sms-app-download', {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
+            'Content-Type': 'application/json',
           },
-          body: params,
+          body: JSON.stringify(requestBody),
         });
 
-        const responseDataText = await response.text(); // Get response body as text
+        const responseDataText = await response.text();
 
         if (submitButton) {
           submitButton.innerHTML = `<svg xmlns='http://www.w3.org/2000/svg' class='w-4 h-4 sm:w-5 sm:h-5' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
@@ -143,15 +160,12 @@ const { onSubmit = '#', class: className = '', smsText = qrModal.smsText } = Ast
           submitButton.disabled = false;
         }
 
-        if (
-          response.ok && // Check if HTTP status code is 2xx
-          (responseDataText.includes('success') || responseDataText.includes('Sent'))
-        ) {
+        if (response.ok && (responseDataText.includes('success') || responseDataText.includes('Sent'))) {
           showToast(qrModal.linkSent, 'success');
           phoneInput.value = '';
         } else {
           console.warn('SMS API Response Status:', response.status);
-          console.warn('SMS API Response Body:', responseDataText); // Log unexpected responses
+          console.warn('SMS API Response Body:', responseDataText);
           showToast(qrModal.failed, 'error');
         }
       } catch (error) {

@@ -1,6 +1,6 @@
 export default {
   aboutUs: 'About Us',
-  features: 'Features',
-  contact: 'Contact',
+  services: 'Services',
+  contactUs: 'Contact Us',
   downloadApp: 'Download App',
 };

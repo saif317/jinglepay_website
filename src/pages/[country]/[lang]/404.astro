@@ -1,0 +1,26 @@
+---
+// src/pages/404.astro
+import Link from '@components/common/Link.astro';
+import Layout from '@layouts/Layout.astro';
+import { getStaticPathsWrapper } from '@util/getStaticPaths';
+
+export const getStaticPaths = getStaticPathsWrapper(['pak'], {
+  pak: ['en', 'ur'],
+});
+---
+
+<Layout title='Page Not Found | Jingle Pay'>
+  <div class='flex min-h-[calc(100vh-200px)] flex-col items-center justify-center text-center px-4 pb-16 pt-24'>
+    <h1 class='mb-4 text-6xl font-bold md:text-8xl text-primary'>404</h1>
+    <p class='mb-8 text-xl text-gray-700 md:text-2xl'>Oops! Page Not Found</p>
+    <p class='max-w-md mb-10 text-base text-gray-500'>
+      It seems the page you were looking for doesn't exist or has been moved. Let's get you back on track.
+    </p>
+    <Link
+      href='/'
+      class='inline-block px-4 py-2 bg-[#794eff] text-white rounded-xl text-xs lg:text-base font-medium hover:bg-[#6a3ad9] transition-colors duration-300'
+    >
+      Go to Homepage
+    </Link>
+  </div>
+</Layout>

@@ -1,16 +1,11 @@
 import { defineMiddleware } from 'astro:middleware';
 import { COUNTRIES } from './constants';
 
-const DEFAULT_COUNTRY_CODE = 'pak';
-const DEFAULT_LANG_CODE = 'en';
-
-const NON_LOCALIZED_PATHS = ['/contact', '/about', '/terms-of-service', '/app-redirect'];
-
 const translationModules = import.meta.glob('/src/constants/locale/*/*/translation.js');
 
 async function loadTranslations(countryCode, langCode) {
   const modulePath = `/src/constants/locale/${countryCode}/${langCode}/translation.js`;
-  const moduleLoader = translationModules[modulePath]; // Get the loader function
+  const moduleLoader = translationModules[modulePath];
 
   if (!moduleLoader) {
     console.error(
@@ -50,17 +45,6 @@ export const onRequest = defineMiddleware(async (ctx, next) => {
     return next();
   }
 
-  if (NON_LOCALIZED_PATHS.includes(pathname)) {
-    console.log(`Allowing non-localized path: ${pathname}`);
-    return next();
-  }
-
-  if (pathname === '/' || pathname === '') {
-    const defaultPath = `/${DEFAULT_COUNTRY_CODE}/${DEFAULT_LANG_CODE}`;
-    console.log(`Redirecting root to default: ${defaultPath}`);
-    return ctx.redirect(defaultPath, 302);
-  }
-
   const segments = pathname.split('/').filter(Boolean);
 
   if (segments.length >= 2) {
@@ -93,14 +77,5 @@ export const onRequest = defineMiddleware(async (ctx, next) => {
     );
   }
 
-  const defaultRedirectPath = `/${DEFAULT_COUNTRY_CODE}/${DEFAULT_LANG_CODE}`; // Redirect to default locale root
-  console.log(`Redirecting invalid or unmatched path "${pathname}" to default: ${defaultRedirectPath}`);
-
-  if (pathname.startsWith(`/${DEFAULT_COUNTRY_CODE}/${DEFAULT_LANG_CODE}`)) {
-    console.error(`Potential redirect loop detected for path "${pathname}". Aborting redirect.`);
-
-    return new Response('Server configuration error prevented redirect.', { status: 500 });
-  }
-
-  return ctx.redirect(defaultRedirectPath, 302);
+  return next();
 });

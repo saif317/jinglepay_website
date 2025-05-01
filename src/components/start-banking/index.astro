@@ -20,14 +20,14 @@ const steps = onboardingJourney.steps?.map((step: string, index: number) => ({
 ---
 
 <div class='flex flex-col px-4 sm:px-8 md:px-12 lg:px-16 gap-y-[60px]'>
-  <div class='flex flex-col gap-y-5 items-center text-center'>
-    <h5 class='text-3xl font-extrabold'>Open a free digital bank account in a few clicks!</h5>
-    <span class='text-3xl font-normal text-zinc-900'>Start banking in minutes.</span>
+  <div class='flex flex-col items-center text-center gap-y-5'>
+    <h5 class='text-3xl font-extrabold'>{onboardingJourney.title}</h5>
+    <span class='text-3xl font-normal text-zinc-900'>{onboardingJourney.subtitle}</span>
   </div>
 
   <div class='relative flex flex-col lg:flex-row mx-auto gap-x-[72px] gap-y-[48px]'>
-    <Line class='hidden absolute top-1/2 w-full lg:block -z-10' />
-    <LineVertical class='block absolute right-1/2 h-full lg:hidden -z-10' />
+    <Line class='absolute hidden w-full top-1/2 lg:block -z-10' />
+    <LineVertical class='absolute block h-full right-1/2 lg:hidden -z-10' />
 
     {
       steps.map((step: { title: string; icon: string }) => (

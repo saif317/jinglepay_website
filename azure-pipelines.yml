@@ -16,15 +16,31 @@ steps:
       npm install
     displayName: 'Install dependencies'
 
+  - bash: |
+      echo "Determining Site URL based on branch: $(Build.SourceBranchName)"
+      if [ "$(Build.SourceBranchName)" == "main" ]; then
+        SITE_URL="https://jinglepay.com" # Production URL
+      else
+        SITE_URL="http://jinglepay-website-dev.s3-website.me-central-1.amazonaws.com" # Staging URL
+      fi
+      
+      mkdir -p $(Build.SourcesDirectory)/src
+      
+      echo "export const siteBaseUrl = '${SITE_URL}';" > $(Build.SourcesDirectory)/src/siteConfig.js
+      
+      cat $(Build.SourcesDirectory)/src/siteConfig.js
+    displayName: 'Generate src/siteConfig.js'
+    workingDirectory: $(Build.SourcesDirectory)
+
   - script: |
       npm run build
     displayName: 'Build Astro project'
 
   - task: CopyFiles@2
     inputs:
-      Contents: |
-        dist/**
-      TargetFolder: '$(Build.ArtifactStagingDirectory)'
+      SourceFolder: '$(Build.SourcesDirectory)/dist'
+      Contents: '**'
+      TargetFolder: '$(Build.ArtifactStagingDirectory)/dist'
     displayName: 'Copy build files'
 
   - task: PublishBuildArtifacts@1
@@ -32,12 +48,26 @@ steps:
       PathtoPublish: '$(Build.ArtifactStagingDirectory)'
       ArtifactName: 'drop'
     displayName: 'Publish build artifacts'
-
+    
+  # Deploy to S3 bucket based on the branch
   - task: S3Upload@1
+    condition: eq(variables['Build.SourceBranchName'], 'develop')
     inputs:
-      awsCredentials: 'AWS_Prod'
+      awsCredentials: 'AWS_DEV'
       regionName: 'me-central-1'
-      bucketName: 'jinglepay-website'
+      bucketName: 'jinglepay-website-dev'
       sourceFolder: '$(Build.ArtifactStagingDirectory)/dist'
       targetFolder: ''
       flattenFolders: false
+    displayName: 'Deploy to DEV S3 bucket'
+    
+  - task: S3Upload@1
+    condition: eq(variables['Build.SourceBranchName'], 'main')
+    inputs:
+      awsCredentials: 'AWS_PROD'
+      regionName: 'me-central-1'
+      bucketName: 'jinglepay-website-prod'
+      sourceFolder: '$(Build.ArtifactStagingDirectory)/dist'
+      targetFolder: ''
+      flattenFolders: false
+    displayName: 'Deploy to PROD S3 bucket'

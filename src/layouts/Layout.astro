@@ -22,9 +22,13 @@ const fontFamily =
   <head>
     <meta charset='UTF-8' />
     <meta name='viewport' content='width=device-width, initial-scale=1.0' />
-    <link rel='icon' type='image/svg+xml' href='/favicon.svg' />
+    <link rel='icon' type='image/x-icon' href='/favicon.ico' sizes='16x16 32x32' />
+    <link rel='icon' type='image/svg+xml' href='/favicon.svg' sizes='any' />
+    <link rel='apple-touch-icon' href='/favicon.png' />
     <meta name='generator' content={Astro.generator} />
     <meta name='description' content={metaData.description} />
+    <meta name='theme-color' content='#794eff' />
+    <link rel='manifest' href='/site.webmanifest' />
     <title>{metaData.title}</title>
 
     <!-- Google Fonts -->
@@ -63,6 +67,7 @@ const fontFamily =
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
+    // Handle smooth scrolling for anchor links
     const anchors = document.querySelectorAll('a[href^="#"]');
 
     anchors.forEach((anchor) => {
@@ -80,5 +85,23 @@ const fontFamily =
         }
       });
     });
+
+    // Save country and language preferences from URL
+    const saveBrowsingPreferences = () => {
+      const pathSegments = window.location.pathname.split('/').filter(Boolean);
+
+      // Check if we have both country and language segments in the URL
+      if (pathSegments.length >= 2) {
+        const country = pathSegments[0];
+        const language = pathSegments[1];
+
+        // Save to localStorage
+        localStorage.setItem('preferred_country', country);
+        localStorage.setItem('preferred_language', language);
+      }
+    };
+
+    // Call immediately to save current page's preferences
+    saveBrowsingPreferences();
   });
 </script>

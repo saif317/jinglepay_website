@@ -1,0 +1,127 @@
+---
+import { COUNTRIES, type Country } from '@constants';
+
+export async function getStaticPaths() {
+  return ['pak', 'are'].flatMap((country) => {
+    return {
+      params: { country },
+    };
+  });
+}
+
+const { country } = Astro.params;
+
+const countryConfig = COUNTRIES.find((c) => c.path === country);
+
+if (!countryConfig) {
+  return Astro.redirect('/');
+}
+
+// Get default language from the server side
+// We'll use browser's Accept-Language header as a fallback
+function getDefaultLanguage(countryConfig: Country) {
+  const acceptLanguageHeader = Astro.request.headers.get('accept-language');
+  if (acceptLanguageHeader) {
+    // Parse language preferences from header (e.g., 'en-US,en;q=0.9,ur;q=0.8')
+    const browserLangs = acceptLanguageHeader.split(',').map((item) => item.split(';')[0].trim().split('-')[0]);
+
+    // Check if any browser language matches our available languages
+    for (const lang of browserLangs) {
+      const langExists = countryConfig.languages.some((l) => l.code === lang);
+      if (langExists) {
+        return lang;
+      }
+    }
+  }
+
+  // Default to first language in country config
+  return countryConfig.languages.find((l) => l.code === 'en')?.code || countryConfig.languages[0].code;
+}
+
+// Generate the fallback language for server-side rendering
+const defaultLang = getDefaultLanguage(countryConfig);
+
+// We will use client-side JavaScript to check localStorage and redirect if needed
+---
+
+<html>
+  <head>
+    <meta charset='UTF-8' />
+    <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+    <title>Redirecting to your preferred language | JinglePay</title>
+    <style>
+      body {
+        font-family:
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          'Segoe UI',
+          Roboto,
+          sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background-color: #f5f5f5;
+      }
+      .loader {
+        border: 4px solid #f3f3f3;
+        border-top: 4px solid #3498db;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        animation: spin 1s linear infinite;
+        margin-right: 15px;
+      }
+      .container {
+        display: flex;
+        align-items: center;
+      }
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class='container'>
+      <div class='loader'></div>
+      <p>Redirecting to your preferred language...</p>
+    </div>
+
+    <script define:vars={{ defaultLang, countryLanguages: countryConfig.languages, currentCountry: country }}>
+      // Get the country from the URL path
+      const country = currentCountry;
+
+      // Function to check if a language is available for this country
+      function isLanguageAvailableForCountry(lang, languages) {
+        return languages.some((l) => l.code === lang);
+      }
+
+      // Check localStorage for preferred language
+      const storedLang = localStorage.getItem('preferred_language');
+
+      let preferredLang;
+
+      // If we have a stored language and it's available for this country, use it
+      if (storedLang && isLanguageAvailableForCountry(storedLang, countryLanguages)) {
+        preferredLang = storedLang;
+      } else {
+        // Otherwise use the server-determined default
+        preferredLang = defaultLang;
+      }
+
+      // Update localStorage with current selections
+      localStorage.setItem('preferred_country', country);
+      localStorage.setItem('preferred_language', preferredLang);
+
+      // Redirect to the language-specific page
+      window.location.href = `/${country}/${preferredLang}`;
+    </script>
+  </body>
+</html>
