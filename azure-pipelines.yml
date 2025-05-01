@@ -39,9 +39,9 @@ steps:
 
   - task: CopyFiles@2
     inputs:
-      Contents: |
-        dist/**
-      TargetFolder: '$(Build.ArtifactStagingDirectory)'
+      SourceFolder: '$(Build.SourcesDirectory)/dist'
+      Contents: '**'
+      TargetFolder: '$(Build.ArtifactStagingDirectory)/dist'
     displayName: 'Copy build files'
 
   - task: PublishBuildArtifacts@1
@@ -49,3 +49,26 @@ steps:
       PathtoPublish: '$(Build.ArtifactStagingDirectory)'
       ArtifactName: 'drop'
     displayName: 'Publish build artifacts'
+    
+  # Deploy to S3 bucket based on the branch
+  - task: S3Upload@1
+    condition: eq(variables['Build.SourceBranchName'], 'develop')
+    inputs:
+      awsCredentials: 'AWS_DEV'
+      regionName: 'me-central-1'
+      bucketName: 'jinglepay-website-dev'
+      sourceFolder: '$(Build.ArtifactStagingDirectory)/dist'
+      targetFolder: ''
+      flattenFolders: false
+    displayName: 'Deploy to DEV S3 bucket'
+    
+  - task: S3Upload@1
+    condition: eq(variables['Build.SourceBranchName'], 'main')
+    inputs:
+      awsCredentials: 'AWS_PROD'
+      regionName: 'me-central-1'
+      bucketName: 'jinglepay-website-prod'
+      sourceFolder: '$(Build.ArtifactStagingDirectory)/dist'
+      targetFolder: ''
+      flattenFolders: false
+    displayName: 'Deploy to PROD S3 bucket'
