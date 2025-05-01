@@ -71,7 +71,7 @@ import OurStoryCarousel from './OurStoryCarousel.astro';
       {
         images.map((img) => (
           <div class='swiper-slide'>
-            <div class='overflow-hidden relative rounded-xl shadow-sm'>
+            <div class='relative overflow-hidden shadow-sm rounded-xl'>
               <Image
                 src={img.src}
                 alt={img.alt}
@@ -102,25 +102,27 @@ import OurStoryCarousel from './OurStoryCarousel.astro';
     }
   </section>
 
-  <section class='mb-[146px]'>
-    <h2 class='mb-4 text-3xl font-extrabold text-center'>{aboutUs.coreValues.title}</h2>
-    <p class='text-xl font-normal text-center mb-15 lg:mb-[80px] text-zinc-900'>
-      {aboutUs.coreValues.description}
-    </p>
-    <div class='grid grid-cols-1 gap-x-8 gap-y-[52px] md:grid-cols-2 lg:grid-cols-3'>
-      {
-        coreValues.map((value) => {
-          return (
-            <div class='text-center'>
-              <div class='inline-flex items-center justify-center p-[14px] bg-[#794EFF] rounded-full mb-6'>
-                {value.icon ? <value.icon /> : null}
+  <section class='bg-[#F6F6F6] w-screen relative left-[50%] right-[50%] ml-[-50vw] mr-[-50vw] py-16 mb-[146px]'>
+    <div class='px-4 mx-auto max-w-7xl sm:px-6 lg:px-8'>
+      <h2 class='mb-4 text-3xl font-extrabold text-center'>{aboutUs.coreValues.title}</h2>
+      <p class='text-xl font-normal text-center mb-15 lg:mb-[80px] text-zinc-900'>
+        {aboutUs.coreValues.description}
+      </p>
+      <div class='grid grid-cols-1 gap-x-8 gap-y-[52px] md:grid-cols-2 lg:grid-cols-3'>
+        {
+          coreValues.map((value) => {
+            return (
+              <div class='text-center'>
+                <div class='inline-flex items-center justify-center p-[14px] bg-[#794EFF] rounded-full mb-6'>
+                  {value.icon ? <value.icon /> : null}
+                </div>
+                <h3 class='mb-2 text-2xl font-extrabold text-slate-800'>{value.title}</h3>
+                <p class='text-xl font-normal text-black'>{value.description}</p>
               </div>
-              <h3 class='mb-2 text-2xl font-extrabold text-slate-800'>{value.title}</h3>
-              <p class='text-xl font-normal text-black'>{value.description}</p>
-            </div>
-          );
-        })
-      }
+            );
+          })
+        }
+      </div>
     </div>
   </section>
 
