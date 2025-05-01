@@ -8,14 +8,14 @@ const NON_LOCALIZED_PATHS = [
   '/contact',
   '/about',
   '/terms-of-service',
-  ...COUNTRIES.map((c) => `/${c.path}/app-redirect`),
+  ...COUNTRIES.map((c) => [`/${c.path}/app-redirect`, `/${c.path}/coming-soon`]).flat(),
 ];
 
 const translationModules = import.meta.glob('/src/constants/locale/*/*/translation.js');
 
 async function loadTranslations(countryCode, langCode) {
   const modulePath = `/src/constants/locale/${countryCode}/${langCode}/translation.js`;
-  const moduleLoader = translationModules[modulePath]; // Get the loader function
+  const moduleLoader = translationModules[modulePath];
 
   if (!moduleLoader) {
     console.error(

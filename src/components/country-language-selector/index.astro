@@ -1,6 +1,5 @@
 ---
 import { COUNTRIES } from '@constants';
-import { Image } from 'astro:assets';
 
 const { lang, country } = Astro.locals;
 const { pathname } = Astro.url;
@@ -13,6 +12,7 @@ const currentLanguage = currentCountry.languages.find((l) => l.code === lang) ||
 const getCountryLink = (newCountryPath: string) => {
   if (newCountryPath === country) return '#';
   else if (newCountryPath === 'uae') return 'https://jinglepay.com/homepage/AE/';
+  else if (newCountryPath === 'bhr') return '/bhr/coming-soon';
   else return '/' + [newCountryPath, lang, pathname.split('/').slice(3).join('/')].join('/');
 };
 
