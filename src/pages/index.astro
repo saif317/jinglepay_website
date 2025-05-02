@@ -7,9 +7,10 @@ import { COUNTRIES } from '@constants';
   async function detectUserCountry() {
     try {
       // TIER 1: Check localStorage (fastest)
-      const cached = localStorage.getItem('preferred-locale');
-      if (cached) {
-        window.location.href = cached;
+      const cachedCountry = localStorage.getItem('preferred_country');
+      const cachedLang = localStorage.getItem('preferred_language');
+      if (cachedCountry && cachedLang) {
+        window.location.href = `/${cachedCountry}/${cachedLang}`;
         return;
       }
 
@@ -98,7 +99,8 @@ import { COUNTRIES } from '@constants';
   // Helper function for redirect with localStorage caching
   function redirectToLocale(country, lang) {
     const path = `/${country}/${lang}`;
-    localStorage.setItem('preferred-locale', path);
+    localStorage.setItem('preferred_country', country);
+    localStorage.setItem('preferred_language', lang);
     window.location.href = path;
   }
 
