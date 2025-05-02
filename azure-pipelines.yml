@@ -76,7 +76,7 @@ steps:
     workingDirectory: $(Pipeline.Workspace)/gatsby # Path where Gatsby repo was checked out
 
   - script: |
-      npx gatsby build
+      npx gatsby build --prefix-paths
     displayName: 'Build Gatsby project'
     workingDirectory: $(Pipeline.Workspace)/gatsby # Path where Gatsby repo was checked out
 
