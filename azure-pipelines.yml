@@ -17,11 +17,9 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
-# --- Checkout Self (Astro Repo - Implicit) ---
-# By default, the repo containing the YAML is checked out as 's'
-# Or uncomment below for clarity:
-# - checkout: self
-#   path: s # Default path
+# --- Explicitly Checkout Self (Astro Repo) ---
+  - checkout: self # Checkout the repo this yaml file is in
+    path: s       # Checkout into the 's' subdirectory of $(Pipeline.Workspace)
 
 # --- Checkout Gatsby Repo ---
   - checkout: gatsbyRepo # Use the alias defined in resources
