@@ -67,7 +67,7 @@ steps:
 # --- Gatsby Steps ---
   - task: NodeTool@0 # Install Node again if needed, or ensure version compatibility
     inputs:
-      versionSpec: '18.x' # Or the Node version required by Gatsby
+      versionSpec: '14.x' # Or the Node version required by Gatsby
     displayName: 'Install Node.js for Gatsby'
 
   - script: |
