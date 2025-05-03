@@ -23,11 +23,4 @@ export default defineConfig({
     locales: ['en', 'ur', 'ar'],
     routing: 'manual',
   },
-
-  redirects: {
-    '/homepage': {
-      status: 302,
-      destination: '/',
-    },
-  },
 });
