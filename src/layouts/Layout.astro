@@ -18,7 +18,7 @@ const fontFamily =
 ---
 
 <!doctype html>
-<html lang={lang} dir={lang === 'ur' || lang === 'ar' ? 'rtl' : 'ltr'}>
+<html lang={lang} dir={lang === 'ur' || lang === 'ar' ? 'rtl' : 'ltr'} class='scroll-smooth'>
   <head>
     <meta charset='UTF-8' />
     <meta name='viewport' content='width=device-width, initial-scale=1.0' />
@@ -79,7 +79,7 @@ const fontFamily =
 
         if (targetElement) {
           window.scrollTo({
-            top: targetElement.getBoundingClientRect().top + window.scrollY - 90,
+            top: targetElement.getBoundingClientRect().top + window.scrollY - 120,
             behavior: 'smooth',
           });
         }

@@ -79,26 +79,28 @@ const teamMembers = [amir, rashid, chris, sohali, ritesh, rick].map((icon, index
     <div class='grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3'>
       {
         teamMembers.map((member) => (
-          <div class=''>
-            <Image
-              src={member.image}
-              alt={member.name}
-              class='rounded-xl w-full object-cover aspect-[3/3.5] mb-4 shadow-sm'
-              widths={[300, 600]}
-              sizes='(max-width: 640px) 90vw, (max-width: 1024px) 45vw, 30vw'
-              decoding='async'
-              loading='lazy'
-              quality='max'
-            />
-            <h3 class='text-lg font-semibold text-[#1F2937]'>{member.name}</h3>
-            <p class='text-sm text-[#6A30FF] mb-2'>{member.title}</p>
-            <p class='mb-1 text-xl text-gray-500'>{member.description}</p>
+          <div class='flex flex-col h-full'>
+            <div class='flex-grow'>
+              <Image
+                src={member.image}
+                alt={member.name}
+                class='rounded-xl w-full object-cover aspect-[3/3.5] mb-4 shadow-sm'
+                widths={[300, 600]}
+                sizes='(max-width: 640px) 90vw, (max-width: 1024px) 45vw, 30vw'
+                decoding='async'
+                loading='lazy'
+                quality='max'
+              />
+              <h3 class='text-lg font-semibold text-[#1F2937]'>{member.name}</h3>
+              <p class='text-sm text-[#6A30FF] mb-2'>{member.title}</p>
+              <p class='mb-1 text-xl text-gray-500'>{member.description}</p>
+            </div>
             {member.linkedin && (
               <a
                 href={member.linkedin}
                 target='_blank'
                 rel='noopener noreferrer'
-                class='inline-block mx-auto text-[#0A66C2] hover:opacity-80 transition-opacity'
+                class='inline-block mt-auto text-[#0A66C2] hover:opacity-80 transition-opacity'
                 aria-label={`${member.name}'s LinkedIn Profile`}
               >
                 <LinkedinIcon class='w-5 h-5' />

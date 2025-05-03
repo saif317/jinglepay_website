@@ -5,18 +5,18 @@ export default {
     {
       title: 'Features',
       links: [
-        { href: '/#benefit-1', text: 'All-In-One Account' },
-        { href: '/#bill-payments', text: 'Bill Payments' },
-        { href: '/#benefit-3', text: 'Peer-to-Peer Payments' },
-        { href: '/#benefit-6', text: 'Card Payments' },
+        { href: '#benefit-1', text: 'All-In-One Account' },
+        { href: '#bill-payments', text: 'Bill Payments' },
+        { href: '#benefit-3', text: 'Peer-to-Peer Payments' },
+        { href: '#benefit-6', text: 'Card Payments' },
       ],
     },
     {
       title: 'Accounts',
       links: [
-        { href: '/#benefit-2', text: 'Home Remittance Account' },
-        { href: '/#benefit-1', text: 'Saving Account' },
-        { href: '/#benefit-1', text: 'Current Account' },
+        { href: '#benefit-2', text: 'Home Remittance Account' },
+        { href: '#benefit-1', text: 'Saving Account' },
+        { href: '#benefit-1', text: 'Current Account' },
       ],
     },
     {
