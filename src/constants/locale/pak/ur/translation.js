@@ -17,8 +17,8 @@ import career from './career.js';
 import privacyPolicy from './privacyPolicy.js';
 
 export default {
-  title: 'Jingle Pay - Simplifying All Money!',
-  description: 'Jingle Pay is the go-to money app for your everyday financial needs.',
+  title: 'جِنگل پے - اب پیسے کے سب معاملات ہوئے آسان',
+  description: 'جِنگل پے آپ کی روزمرہ مالی ضروریات کے لیے ایک مکمل ایپ ہے۔',
   navbar,
   hero,
   carousal,
