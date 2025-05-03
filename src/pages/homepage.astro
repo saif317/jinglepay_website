@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang='en'>
+  <head>
+    <meta charset='UTF-8' />
+    <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+    <title>Redirecting...</title>
+    <script is:inline>
+      window.location.replace('/?js_fix=' + Date.now());
+
+      // Fallback if the above somehow fails (unlikely but for safety)
+      setTimeout(() => {
+        if (window.location.pathname.includes('/homepage')) {
+          // Check if still on homepage
+          window.location.href = '/?js_fallback=' + Date.now();
+        }
+      }, 50);
+    </script>
+  </head>
+  <body>
+    <p>If you are not redirected automatically, <a href='/'>click here</a>.</p>
+  </body>
+</html>
