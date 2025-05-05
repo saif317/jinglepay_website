@@ -5,6 +5,7 @@ import AppStore from '@assets/icons/appstore.svg';
 
 <div class='flex flex-wrap items-center justify-center gap-3 sm:gap-4'>
   <a
+    id='google-play-link'
     href='https://play.google.com/store/apps/details?id=com.jinglepay&hl=en'
     class='inline-flex items-center px-4 py-2.5 w-full text-black no-underline bg-gray-50 rounded-lg border border-gray-300 transition-all duration-200 ease-in-out sm:w-auto hover:bg-gray-100 hover:shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400'
   >
@@ -15,6 +16,7 @@ import AppStore from '@assets/icons/appstore.svg';
     </div>
   </a>
   <a
+    id='app-store-link'
     href='https://apps.apple.com/pl/app/jingle-pay/id1493392189'
     class='inline-flex items-center px-4 py-2.5 w-full text-black no-underline bg-gray-50 rounded-lg border border-gray-300 transition-all duration-200 ease-in-out sm:w-auto hover:bg-gray-100 hover:shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400'
   >
@@ -25,3 +27,17 @@ import AppStore from '@assets/icons/appstore.svg';
     </div>
   </a>
 </div>
+
+<script>
+  import { triggerAppRedirect } from '@util/handleAppRedirect';
+
+  const googlePlayLink = document.getElementById('google-play-link');
+  const appStoreLink = document.getElementById('app-store-link');
+
+  if (googlePlayLink) {
+    googlePlayLink.addEventListener('click', triggerAppRedirect);
+  }
+  if (appStoreLink) {
+    appStoreLink.addEventListener('click', triggerAppRedirect);
+  }
+</script>

@@ -1,7 +1,6 @@
 ---
 import QRCodeGenerator from '@components/common/QRCodeGenerator.astro';
 import QRModalTriggerer from '@components/common/QRModalTriggerer.astro';
-import DownloadAppButton from '@components/hero-section/DownloadAppButton.astro';
 
 const {
   translations: { cta = {} },
@@ -28,7 +27,22 @@ const {
     </div>
 
     <div class='block px-9 lg:hidden'>
-      <DownloadAppButton />
+      <a
+        id='cta-download-sm'
+        href='#download'
+        class='block px-4 py-2 text-xs font-medium text-[#1E1A4D] transition-colors duration-300 bg-white lg:hidden rounded-xl lg:text-base hover:bg-gray-200'
+        >{cta.downloadApp}</a
+      >
     </div>
   </div>
 </div>
+
+<script>
+  import { triggerAppRedirect } from '@util/handleAppRedirect';
+
+  const downloadSm = document.getElementById('cta-download-sm');
+
+  if (downloadSm) {
+    downloadSm.addEventListener('click', triggerAppRedirect);
+  }
+</script>

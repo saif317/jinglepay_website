@@ -43,18 +43,28 @@ const {
   </ul>
 
   <nav class='flex items-center'>
-    <div class='flex gap-x-2 items-center direction-ltr'>
-      <QRModalTriggerer>
-        <a
-          href='#download'
-          class='hidden lg:block px-4 py-2 bg-[#794eff] text-white rounded-xl text-xs lg:text-base font-medium hover:bg-[#6a3ad9] transition-colors duration-300'
-          >{navbar.downloadApp}</a
-        >
-      </QRModalTriggerer>
+    <div class='flex items-center gap-x-2 direction-ltr'>
+      <div class='hidden lg:block'>
+        <QRModalTriggerer>
+          <a
+            id='header-download-lg'
+            href='#download'
+            class='hidden px-4 py-2 text-xs font-medium text-white transition-colors duration-300 bg-black lg:block rounded-xl lg:text-base hover:bg-gray-600'
+            >{navbar.downloadApp}</a
+          >
+        </QRModalTriggerer>
+      </div>
+
+      <a
+        id='header-download-sm'
+        href='#download'
+        class='block px-4 py-2 text-xs font-medium text-white transition-colors duration-300 bg-black lg:hidden rounded-xl lg:text-base hover:bg-gray-600'
+        >{navbar.downloadApp}</a
+      >
 
       <CountryLanguageSelector className='hidden lg:flex' />
 
-      <button id='menu-toggle' class='overflow-hidden relative w-6 h-6 cursor-pointer lg:hidden'>
+      <button id='menu-toggle' class='relative w-6 h-6 overflow-hidden cursor-pointer lg:hidden'>
         <!-- <div class='absolute top-0 left-0 w-6 h-6'></div> -->
         <div class='w-4 h-0 left-[4px] top-[6px] absolute outline-2 outline-offset-[-1px] outline-[#794EFF]'></div>
         <div class='w-4 h-0 left-[4px] top-[12px] absolute outline-2 outline-offset-[-1px] outline-[#794EFF]'></div>
@@ -94,6 +104,8 @@ const {
 </header>
 
 <script>
+  import { triggerAppRedirect } from '@util/handleAppRedirect';
+
   // Mobile menu functionality
   const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
   const mainNav = document.querySelector('nav');
@@ -174,4 +186,10 @@ const {
       // For other links, navigation will happen automatically
     });
   });
+
+  const downloadSm = document.getElementById('header-download-sm');
+
+  if (downloadSm) {
+    downloadSm.addEventListener('click', triggerAppRedirect);
+  }
 </script>

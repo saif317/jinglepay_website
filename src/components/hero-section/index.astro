@@ -1,8 +1,5 @@
 ---
 import QRDownload from '@components/hero-section/QRDownload.astro';
-import DownloadAppButton from '@components/hero-section/DownloadAppButton.astro';
-// import { Image } from 'astro:assets';
-// import bankAlfalah from '@assets/logos/bank-alfalah.svg';
 
 const {
   translations: { hero = {} },
@@ -21,16 +18,14 @@ const {
       <div class='hidden lg:block'>
         <QRDownload class='w-full lg:w-auto' />
       </div>
-      <div class='block px-12 lg:hidden'>
-        <DownloadAppButton />
+      <div class='block lg:hidden'>
+        <a
+          id='cta-download-sm'
+          href='#download'
+          class='block px-8 py-4 text-base font-bold text-white transition-colors duration-300 bg-black lg:hidden rounded-[14px] lg:text-base hover:bg-gray-600'
+          >{hero.downloadApp}</a
+        >
       </div>
     </div>
   </div>
 </section>
-
-<!-- <div
-        class='flex flex-col items-center justify-center rounded-xl border-2 border-[#C8C8C8] shadow-md py-2.5 px-2 w-full max-w-[16rem] md:max-w-[20rem] lg:max-w-full'
-      >
-        <p class='font-normal text-base sm:text-lg text-[#616161]'>{hero.poweredBy}</p>
-        <Image src={bankAlfalah} alt='Bank Alfalah' class='w-auto max-w-full h-8 sm:h-10' loading='eager' />
-      </div> -->
