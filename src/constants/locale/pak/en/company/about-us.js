@@ -1,6 +1,5 @@
 export default {
-  mission:
-    'Our mission is to make banking and payments accessible by offering affordable, inclusive financial services through a personalized digital experience, addressing financial exclusion and inequality.',
+  mission: 'We’re creating a borderless financial future—where banking is inclusive, affordable, and built for all.',
   stats: [
     { value: '$2B+', label: 'Remitted globally' },
     { value: '$3M+', label: 'Transaction count' },
@@ -8,24 +7,38 @@ export default {
     { value: '150 countries', label: 'Payout coverage' },
   ],
   coreValues: {
-    title: 'Our core values',
-    description: 'We uphold our values through integrity, innovation, and a commitment to empowering our customers.',
+    title: 'What We Stand For',
+    description:
+      'We’re here to do more than just offer services, we’re on a mission to empower people, build trust, and make managing money feel good. Our values guide everything we do:',
     items: [
       {
         title: 'Integrity',
-        description: 'Provide affordable, user-centric financial services through a mobile-first experience.',
+        description:
+          'Our promise? Fair, human-centered financial services that fit into your life, all through the power of mobile.',
       },
       {
         title: 'Honesty',
-        description: 'Save time, offer choices, and reward smarter money management.',
+        description: 'We keep it real. No hidden fees, no fluff, just smart choices that respect your time and money.',
       },
       {
         title: 'Security',
-        description: 'Empower customers with financial control through tailored services.',
+        description:
+          'Your peace of mind matters. That’s why we give you tools to stay in control, confidently and securely.',
       },
-      { title: 'Leadership', description: 'Lead new markets with technology and innovation.' },
-      { title: 'Respect', description: 'Respect everyone’s opinions and equal rights.' },
-      { title: 'Fun', description: 'Help our customers to have fun and rewarding experiences.' },
+      {
+        title: 'Leadership',
+        description:
+          'We’re not just following trends we’re shaping the future of finance with smart technology and bold ideas.',
+      },
+      {
+        title: 'Respect',
+        description: 'Everyone deserves to be heard and treated equally. We listen, we learn, and we grow together.',
+      },
+      {
+        title: 'Fun',
+        description:
+          'We believe money shouldn’t be boring. We’re here to make every interaction simple, enjoyable, and rewarding.',
+      },
     ],
   },
   story: {

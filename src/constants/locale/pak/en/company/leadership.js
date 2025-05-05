@@ -7,31 +7,29 @@ export default {
       name: 'Amir Fardghassemi',
       title: 'Founder & CEO',
       description:
-        'Founder and CEO with over 14 years of experience in financial services and technology, formerly a Hedge Fund Manager at HSRC, with notable investments.',
+        '15+ years in FinTech, 2x founder with successful exits, ex-hedge fund manager trading $2.5B+ annually, and former investments in notable stock listed companies such as Twitter, Japan Post Bank, Ferrari, Shake Shack.',
     },
     {
       name: 'Arya Bolurfrushan',
       title: 'Director',
       description:
-        'CEO of Bolurfrushan International Group and CFO of RAK Petroleum. He previously worked at Goldman Sachs, focusing on private equity research. He holds degrees from Carnegie Mellon University and an MBA from Harvard Business School.',
+        'Former CFO of RAK Petroleum and Goldman Sachs Strategic Committee member; serial entrepreneur and founder of G42-backed AI firm AAICO.',
     },
     {
       name: 'Farooq Ahmed Khan',
       title: 'Director',
-      description:
-        'Farooq has over 27 years of experience in the financial sector, having worked at prestigious institutions including Faysal Bank, MCB Bank, Eco Trade & Development Bank, and United Bank Limited.',
+      description: 'Group Head of Corporate, Investment Banking & International Business at Bank Alfalah.',
     },
     {
       name: 'Maher Haddad',
       title: 'Director',
       description:
-        'Global business leader with a strong record of driving revenue for MoneyGram and American Express in the Middle East and Emerging Markets. He achieved double-digit growth and expanded MoneyGram in Saudi Arabia through key banking partnerships. Known for consultative leadership and commercial acumen, he excels in business development and sales in complex markets.',
+        'Global strategy leader at MoneyGram; formerly led go-to-market initiatives at American Express across the Middle East.',
     },
     {
       name: 'Faisal Rashid',
       title: 'Director',
-      description:
-        'Chairman of Jingle Pay Held key roles at MoneyGram. Heading the APAC region with 20+ years of experience. Chairman of Jingle Pay Held key roles at MoneyGram. Heading the APAC region with 20+ years of experience',
+      description: 'Head of Financial Institutions, International Banking & Remittances at Bank Alfalah.',
     },
   ],
   teamMembers: [
@@ -39,33 +37,33 @@ export default {
       name: 'Amir Fardghassemi',
       title: 'Founder and CEO',
       linkedin: 'https://www.linkedin.com/in/amir-fardghassemi-154b4136/',
-      description: 'Chairman of Jingle Pay Held key roles at MoneyGram. Heading the APAC region with',
-    },
-    {
-      name: 'Rashid Muhammad',
-      title: 'COO',
-      linkedin: 'https://www.linkedin.com/in/muhammad-rashid/',
-      description: 'Chief Compliance Officer. Former Khushhali Microfinance Bank, PwC, and Western Union.',
-    },
-    {
-      name: 'Christian Farioli',
-      title: 'CMO',
-      linkedin: 'https://www.linkedin.com/in/christianfarioli/',
-      description: 'Previously at Oracle, advised major regional banks on digital growth through numerous campaigns.',
+      description: 'FinTech leader with 15+ years’ experience, two successful exits, and a hedge fund background.',
     },
     {
       name: 'Sohali Ahmad',
       title: 'CBO',
       linkedin: 'https://www.linkedin.com/in/sohail-ahmad-8b629314b/',
+      description: '20+ years in remittances and payments; led MENAP & APAC at Western Union and MoneyGram.',
+    },
+    {
+      name: 'Rashid Muhammad',
+      title: 'CCO',
+      linkedin: 'https://www.linkedin.com/in/muhammad-rashid/',
+      description: 'Compliance veteran with roles at Western Union, PwC, and Khushali Microfinance Bank.',
+    },
+    {
+      name: 'Prof. Christian Farioli ',
+      title: 'CMO',
+      linkedin: 'https://www.linkedin.com/in/christianfarioli/',
       description:
-        'Held key roles at Western Union and MoneyGram, heading the APAC/MENAP region with over 30+ years of experience.',
+        'Ex-Oracle digital strategist, marketing professor, and advisor to top banks on digital transformation.',
     },
     {
       name: 'Ritesh Kumar',
       title: 'CTO',
       linkedin: 'https://www.linkedin.com/in/ritesh-kumar-0b574755/',
       description:
-        'Managed teams of up to 50 technical resources, leading digital initiatives at Goldman Sachs and Delivery Hero.',
+        'Led engineering teams at Goldman Sachs and Delivery Hero; expert in scaling financial tech platforms.',
     },
     {
       name: 'Rick Freitas',
@@ -78,6 +76,6 @@ export default {
   team: {
     title: 'Our Team',
     description:
-      'Jingle Pay’s management team comprises seasoned leaders with 15 years’ experience in banking, focused on secure, user-friendly financial solutions.',
+      'Jingle Pay’s management team consists of experienced leaders with 15+ years in banking, payments, and technology, dedicated to delivering secure, scalable, and user-friendly financial solutions.',
   },
 };

@@ -1,6 +1,6 @@
 export default {
-  title: 'Our Partners',
+  title: 'Partners',
   description:
-    'We collaborate with leading financial institutions, service providers, and businesses to revolutionize digital finance in MENAP. Together, we drive innovation, financial inclusion, and seamless payment solutions for a smarter, more connected future.',
+    'We partner with leading financial institutions, global service providers, and innovative businesses to transform digital finance across MENAP. These collaborations fuel innovation, expand financial access, and deliver seamless, intelligent payment solutions—powering a smarter, more connected financial future.',
   cta: 'Become a Partner',
 };

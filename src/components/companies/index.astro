@@ -76,11 +76,14 @@ const partnerLogos: Logo[] = [
 ---
 
 <div
-  class='flex flex-col gap-y-16 items-center px-4 py-16 mx-auto w-full sm:px-8 md:px-12 lg:px-16 lg:py-24 lg:gap-y-24'
+  class='flex flex-col items-center w-full px-4 py-16 mx-auto gap-y-16 sm:px-8 md:px-12 lg:px-16 lg:py-24 lg:gap-y-24'
 >
   <LogoShowcase
     title={investors.title}
     description={investors.description}
+    extraDescriptionTitle={investors.extraDescriptionTitle}
+    extraDescription={investors.extraDescription}
+    boldExtraDescription={investors.boldExtraDescription}
     buttonText={investors.cta}
     buttonLink='mailto:investors@jinglepay.com'
     logos={investorsLogos}
