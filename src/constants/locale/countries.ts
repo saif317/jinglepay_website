@@ -6,6 +6,7 @@ export type Country = {
   readonly code: string;
   readonly path: string;
   readonly name: string;
+  readonly fullName: string;
   readonly flag: AstroSVGElement;
   readonly languages: readonly {
     readonly code: string;
@@ -18,6 +19,7 @@ export const COUNTRIES: readonly Country[] = [
     code: 'ARE',
     path: 'are',
     name: 'UAE',
+    fullName: 'UAE',
     flag: UaeFlag,
     languages: [
       { code: 'ar', name: 'العربية' },
@@ -27,7 +29,8 @@ export const COUNTRIES: readonly Country[] = [
   {
     code: 'PAK',
     path: 'pak',
-    name: 'Pakistan',
+    name: 'PAK',
+    fullName: 'Pakistan',
     flag: PakistanFlag,
     languages: [
       { code: 'ur', name: 'اردو' },
@@ -37,7 +40,8 @@ export const COUNTRIES: readonly Country[] = [
   {
     code: 'BHR',
     path: 'bhr',
-    name: 'Bahrain',
+    name: 'BHR',
+    fullName: 'Bahrain',
     flag: BhrFlag,
     languages: [
       { code: 'ar', name: 'العربية' },

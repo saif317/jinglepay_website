@@ -1,5 +1,5 @@
 export default {
-  title: 'What are the benefits for you?',
+  title: 'Everything You Need, in One Place.',
   subtitle:
     'We make banking accessible by offering affordable, inclusive financial services through a tailored digital experience.',
   benefits: [

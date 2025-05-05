@@ -29,7 +29,7 @@ const getLanguageLink = (newLangCode: string) => {
       <div class='flex justify-center items-center flag'>
         {currentCountry.flag && <currentCountry.flag class='' />}
       </div>
-      <span class='font-medium text-gray-500'>{currentCountry.code}</span>
+      <span class='font-medium text-gray-500'>{currentCountry.name}</span>
     </button>
     <div
       id='country-dropdown'
@@ -37,18 +37,33 @@ const getLanguageLink = (newLangCode: string) => {
     >
       <div class='py-1' role='menu' aria-orientation='vertical' aria-labelledby='country-button'>
         {
-          COUNTRIES.map((country) => (
+          COUNTRIES.map((item) => (
             <a
-              href={getCountryLink(country.path)}
-              class='flex gap-3 items-center px-3 py-2 text-sm font-medium text-gray-700 rounded-md transition-all duration-200 ease-in-out hover:bg-blue-50 hover:text-blue-600'
+              href={getCountryLink(item.path)}
+              class={`flex gap-3 items-center px-3 py-2 text-sm font-medium rounded-md transition-all duration-200 ease-in-out hover:bg-[#794eff25] hover:text-[#794eff] ${item.path === currentCountry.path ? 'bg-[#794eff50] text-[#794eff] font-semibold' : 'text-gray-700'}`}
               role='menuitem'
             >
-              {country.flag && (
+              {item.flag && (
                 <div class='flex overflow-hidden justify-center items-center w-6 h-6 rounded-sm'>
-                  <country.flag class='object-cover w-full h-full' />
+                  <item.flag class='object-cover w-full h-full' />
                 </div>
               )}
-              <span>{country.code}</span>
+              <span class='flex-grow'>{item.fullName}</span>
+              {/* Conditionally render checkmark for the selected country */}
+              {item.path === currentCountry.path && (
+                <svg
+                  xmlns='http://www.w3.org/2000/svg'
+                  viewBox='0 0 20 20'
+                  fill='currentColor'
+                  class='w-5 h-5 text-[#794eff]'
+                >
+                  <path
+                    fill-rule='evenodd'
+                    d='M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z'
+                    clip-rule='evenodd'
+                  />
+                </svg>
+              )}
             </a>
           ))
         }

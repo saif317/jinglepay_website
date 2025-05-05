@@ -102,7 +102,9 @@ import OurStoryCarousel from './OurStoryCarousel.astro';
     }
   </section>
 
-  <section class='bg-[#F6F6F6] w-screen relative left-[50%] right-[50%] ml-[-50vw] mr-[-50vw] py-16 mb-[146px]'>
+  <section
+    class='bg-[#F6F6F6] w-screen relative left-[50%] right-[50%] ml-[-50vw] mr-[-50vw] py-16 pb-[100px] lg:pb-[96px]'
+  >
     <div class='px-4 mx-auto max-w-7xl sm:px-6 lg:px-8'>
       <h2 class='mb-4 text-3xl font-extrabold text-center'>{aboutUs.coreValues.title}</h2>
       <p class='text-xl font-normal text-center mb-15 lg:mb-[80px] text-zinc-900'>
@@ -127,8 +129,6 @@ import OurStoryCarousel from './OurStoryCarousel.astro';
   </section>
 
   <!-- <OurStoryCarousel /> -->
-
-  <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css' />
 
   <script>
     import Swiper from 'swiper';
