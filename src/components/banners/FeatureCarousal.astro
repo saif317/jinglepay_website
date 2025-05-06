@@ -46,14 +46,63 @@ const carouselItems: (FeatureBannerProps | PromoBannerProps)[] = [
   },
 ];
 
-carouselItems.push(...carouselItems);
-
 const imageWidths = [240, 360, 480]; // Example widths
 const imageSizes = '(max-width: 767px) 50vw, (max-width: 1023px) 40vw, 400px'; // Adjust sizes based on actual layout
 ---
 
+<section id="static-carousel-preview" class='relative flex flex-row items-center justify-center w-full overflow-hidden gap-x-4'>
+  <div class="absolute scale-85 left-[-20%] sm:left-[-15%] xl:left-[-6%] md:left-[-20%] lg:left-[-12%] 2xl:left-[-5.5rem ] w-[26%] overflow-visible p-6 sm:p-8 md:p-10 rounded-xl md:rounded-2xl 4xl:rounded-3xl h-full bg-[radial-gradient(ellipse_at_center,_#31B3FB_0%,_#137EC5_100%)]">
+    <div class="relative">
+      <Image
+        src={transferImage}
+        alt=''
+        widths={imageWidths}
+        sizes={imageSizes}
+        loading='eager'
+        decoding='sync'
+        quality="max"
+        class='relative z-[1] object-contain w-auto h-48 sm:h-56 md:h-60 lg:h-64 3xl:h-72 4xl:h-80' 
+        />
+      <Shadow2 class='absolute bottom-[10px] right-[35px] 3xl:right-[55px] 4xl:right-[75px] max-w-[160px] md:max-w-[200px] lg:max-w-full'  />
+    </div>
+  </div>
+  <div class="relative xl:w-[63%] 3xl:py-[4rem] lg:w-[74%] lg:py-[4rem] 2xl:py-10 p-6 w-[88%] md:w-[90%] sm:w-[77%] 2xl:w-[63%] overflow-visible sm:p-8 md:p-10 rounded-xl md:rounded-2xl 4xl:rounded-3xl bg-gradient-to-br from-teal-400 via-green-400 to-teal-400">
+    <div class="container gap-y-[9rem] flex flex-col items-center justify-between h-full gap-4 mx-auto md:flex-row md:gap-8">
+      <div class="flex-1 w-full text-center md:text-start md:w-auto"> 
+        <h2 class="text-2xl sm:text-3xl lg:text-[2.5rem] 3xl:text-[3rem] 4xl:text-[3.5rem] font-black m-0 leading-tight text-left">{carousal.multipleAccounts[0]}</h2>
+        <h2 class="text-2xl sm:text-3xl lg:text-[2.5rem] 3xl:text-[3rem] 4xl:text-[3.5rem] font-black m-0 leading-tight text-left">{carousal.multipleAccounts[1]}</h2>
+        <h2 class="text-2xl sm:text-3xl lg:text-[2.5rem] 3xl:text-[3rem] 4xl:text-[3.5rem] font-black m-0 leading-tight text-left">{carousal.multipleAccounts[2]}</h2>
+      </div>
+      <div class="flex items-center justify-center w-full mt-4 md:justify-end md:w-auto md:mt-0">
+        <div class="relative">
+          <Image
+            src={multipleAccountsImage}
+            alt=''
+            widths={imageWidths}
+            sizes={imageSizes}
+            loading='eager'
+            decoding='sync'
+            quality="max"
+            class='relative z-[1] object-contain w-auto h-48 sm:h-56 md:h-60 lg:h-64 3xl:h-72 4xl:h-80' 
+          />
+          <Shadow1 class='absolute bottom-[10px] right-[35px] 3xl:right-[55px] 4xl:right-[75px] max-w-[160px] md:max-w-[200px] lg:max-w-full'  />
+        </div> 
+      </div>
+    </div>
+  <div class="absolute bottom-[-1rem] left-[1rem] z-[-1] w-[95%] h-7 bg-zinc-300/50 rounded-[20px]"></div>
+  </div>
+  <div class="absolute w-[40%] right-[-33%] xl:right-[-19%] sm:right-[-28%] lg:right-[-25%] md:right-[-33%]  scale-85 p-6 sm:p-8 md:p-10  rounded-xl md:rounded-2xl 4xl:rounded-3xl h-full bg-[radial-gradient(ellipse_at_center,_#8744D4_0%,_#6526AE_100%)] text-white">
+    <div class="container flex flex-col items-center justify-between h-full gap-4 mx-auto md:flex-row md:gap-8">
+      <div class="flex-1 w-full text-center md:text-start md:w-auto">
+         <h2 class="text-3xl sm:text-4xl lg:text-[2.8rem] 3xl:text-[3.3rem] 4xl:text-[3.8rem] font-black m-0 leading-tight"> Earn up to </h2>
+         <h2 class="text-3xl sm:text-4xl lg:text-[2.8rem] 3xl:text-[3.3rem] 4xl:text-[3.8rem] font-black m-0 leading-tight"> 2000 PKR </h2>
+         <p class="mx-auto mt-3 text-base font-medium opacity-90 sm:text-lg lg:text-xl 3xl:text-2xl 4xl:text-3xl sm:mt-4 md:mx-0"> Get started in minutes! Open your bank account in just a few clicks and start earning today. Download the App now! </p>
+      </div>
+   </div>
+  </div>
+</section>
 
-<section class='w-full overflow-hidden'>
+<section id="swiper-carousel-section" class='w-full overflow-hidden' style="display: none;">
   <div class='swiper feature-carousel'>
     <div class='pb-4 swiper-wrapper'> 
       {
@@ -104,18 +153,24 @@ const imageSizes = '(max-width: 767px) 50vw, (max-width: 1023px) 40vw, 400px'; /
   import { Autoplay, EffectCoverflow } from 'swiper/modules'; 
 
   document.addEventListener('DOMContentLoaded', () => {
+    const staticPreviewSection = document.getElementById('static-carousel-preview');
+    const swiperSection = document.getElementById('swiper-carousel-section');
+
     const swiper = new Swiper('.feature-carousel', {
       modules: [Autoplay, EffectCoverflow],
       loop: true,
       centeredSlides: true,
+      initialSlide: 1, // Explicitly set initial slide
       effect: 'coverflow',
       grabCursor: true,
+      observer: true,
+      observeParents: true,
 
-      autoplay: {
-        delay: 1000,
-        disableOnInteraction: false,
-        pauseOnMouseEnter: true,
-      },
+      // autoplay: {
+      //   delay: 1000,
+      //   disableOnInteraction: false,
+      //   pauseOnMouseEnter: true,
+      // },
 
       slidesPerView: 1.1, 
       spaceBetween: 47, 
@@ -204,8 +259,32 @@ const imageSizes = '(max-width: 767px) 50vw, (max-width: 1023px) 40vw, 400px'; /
             slideShadows: false,
           },
         }
-      }
+      },
+      on: {
+        init: function () {
+          // This 'this' refers to the swiper instance
+          if (staticPreviewSection && swiperSection) {
+            swiperSection.style.display = 'block'; // Or 'flex' or its original display type
+            staticPreviewSection.style.display = 'none';
+            
+            this.update(); // Update Swiper layout after it's visible
+            if (this.params.loop) {
+              this.slideToLoop(0, 0, false); // Go to the first "real" slide in the loop
+            }
+            
+          } else if (swiperSection) {
+            // Fallback if static section wasn't found for some reason
+            swiperSection.style.display = 'block';
+            this.update();
+            if (this.params.loop) {
+              this.slideToLoop(0, 0, false);
+            }
+          }
+        },
+      },
     });
+
+    // Old logic for showing/hiding is removed as it's now handled by swiper's on:init event
   });
 </script>
 
