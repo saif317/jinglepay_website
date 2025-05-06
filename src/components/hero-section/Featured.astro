@@ -1,4 +1,7 @@
 ---
+// Import Swiper styles
+// import 'swiper/css'; // Core Swiper styles are included in swiper-bundle.min.css
+
 import FinextraLogo from '@assets/logos/finextra-logo.svg';
 import PaypersLogo from '@assets/logos/paypers.svg';
 import FintechTimesLogo from '@assets/logos/fintech-times.svg';
@@ -43,27 +46,91 @@ const { translations = {} } = Astro.locals;
 ---
 
 <section
-  class='flex flex-col gap-y-4 items-center px-4 pt-12 pb-8 mx-auto w-full text-center md:pt-16 bg-[#F6F6F6]'
+  class='flex flex-col gap-y-4 items-center px-4 pt-12 pb-16 mx-auto w-full text-center md:pt-16 bg-[#F6F6F6]'
   id='featured-section'
 >
-  <h2 class='text-2xl font-semibold text-gray-600 sm:text-3xl'>{translations.featuredIn}</h2>
+  <h2 class='text-lg lg:text-xl'>{translations.featuredIn}</h2>
 
-  <!-- Featured Logos -->
-  <div
-    class='flex flex-wrap gap-x-4 gap-y-6 justify-center items-center px-4 mt-12 w-full xl:flex-nowrap xl:justify-center xl:gap-x-10 xl:overflow-x-auto xl:pb-2'
-  >
-    {
-      logos.map((logo) => (
-        <a
-          href={logo.href}
-          target='_blank'
-          rel='noopener noreferrer'
-          class={`flex justify-center items-center w-[30%] transition-opacity duration-300 hover:opacity-75 xl:w-auto xl:flex-shrink xl:min-w-0 ${logo.alt === 'Finextra' ? 'max-h-5 sm:max-h-6 md:max-h-7 lg:max-h-8' : 'max-h-6 sm:max-h-8 md:max-h-10 lg:max-h-12'}`}
-          aria-label={`Featured in ${logo.alt}`}
-        >
-          <logo.src class='w-auto h-full' />
-        </a>
-      ))
-    }
+  <div class='w-full max-w-4xl'>
+    <div class='swiper featured-logos-swiper'>
+      <div class='items-center swiper-wrapper'>
+        {
+          logos.map((logo) => (
+            <div class='swiper-slide !w-auto'>
+              <a
+                href={logo.href}
+                target='_blank'
+                rel='noopener noreferrer'
+                class='inline-block transition-opacity duration-300 hover:opacity-75'
+                aria-label={`Featured in ${logo.alt}`}
+              >
+                <logo.src
+                  class={`${logo.alt === 'Finextra' ? 'w-auto h-5 sm:h-6 md:h-7 lg:h-8' : 'w-auto h-6 sm:h-8 md:h-10 lg:h-12'}`}
+                />
+              </a>
+            </div>
+          ))
+        }
+      </div>
+    </div>
   </div>
 </section>
+
+<!-- Import Swiper CSS from CDN -->
+<link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css' />
+
+<!-- Import Swiper JS and initialize -->
+<script>
+  import Swiper from 'swiper';
+  import { Autoplay, FreeMode } from 'swiper/modules'; // Import necessary modules
+  // Core Swiper styles are usually included in `swiper-bundle.min.css`
+  // If needed:
+  // import 'swiper/css/free-mode';
+  // import 'swiper/css/autoplay';
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const swiper = new Swiper('.featured-logos-swiper', {
+      modules: [Autoplay, FreeMode],
+      slidesPerView: 'auto', // Crucial for variable width slides
+      spaceBetween: 24, // Space between logos (adjust as needed)
+      loop: true, // Enable looping
+      freeMode: {
+        // Allow free scrolling
+        enabled: true,
+        sticky: false, // Don't snap to positions
+        momentumBounce: false,
+      },
+      autoplay: {
+        delay: 0, // No delay for continuous movement
+        disableOnInteraction: false,
+        pauseOnMouseEnter: true,
+      },
+      speed: 5000, // Slower transition speed for smoother continuous effect
+      allowTouchMove: true, // Allow dragging on touch devices
+
+      // Responsive adjustments
+      breakpoints: {
+        // On smaller screens, maybe less space
+        640: {
+          spaceBetween: 32,
+        },
+        // On larger screens, maybe more space
+        1024: {
+          spaceBetween: 48,
+        },
+      },
+    });
+  });
+</script>
+
+<style is:global>
+  .featured-logos-swiper .swiper-wrapper {
+    /* Smooth continuous transition */
+    transition-timing-function: linear !important;
+  }
+
+  .featured-logos-swiper .swiper-slide {
+    /* Ensure slides don't shrink */
+    flex-shrink: 0;
+  }
+</style>

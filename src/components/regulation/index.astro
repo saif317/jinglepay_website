@@ -9,24 +9,26 @@ const {
 } = Astro.locals;
 ---
 
-<section id='regulation' class='p-4 mb-12 bg-gray-100 rounded-xl sm:p-8 md:p-12 lg:p-16'>
-  <div class='mb-12 regulation-section'>
-    <h2 class='mb-6 text-3xl font-bold text-gray-800'>{regulation.title}</h2>
-    {
-      regulation.description.map((description: string) => (
-        <p class='mb-4 leading-relaxed text-gray-600'>{description}</p>
-      ))
-    }
-  </div>
-
-  <div class='security-section'>
-    <h2 class='mb-6 text-3xl font-bold text-gray-800'>{regulation.security}</h2>
-    <div class='flex flex-col gap-4 items-center lg:flex-row'>
+<section id='regulation' class='p-4 mb-12 sm:p-8 md:p-12 lg:p-16'>
+  <div class='p-3 bg-white rounded-xl shadow-[0px_0px_54.5px_0px_rgba(28,28,28,0.08)] lg:px-12 lg:pt-12 lg:pb-6'>
+    <div class='mb-12 regulation-section'>
+      <h2 class='mb-6 text-3xl font-bold text-gray-800'>{regulation.title}</h2>
       {
-        [cis, nist, pci].map((icon) => {
-          return <Image src={icon} alt='Security feature' class='w-auto h-10' loading='lazy' decoding='async' />;
-        })
+        regulation.description.map((description: string) => (
+          <p class='mb-4 leading-relaxed text-gray-600'>{description}</p>
+        ))
       }
+    </div>
+
+    <div class='security-section'>
+      <h2 class='mb-6 text-3xl font-bold text-gray-800'>{regulation.security}</h2>
+      <div class='flex flex-col items-center gap-4 lg:flex-row'>
+        {
+          [cis, nist, pci].map((icon) => {
+            return <Image src={icon} alt='Security feature' class='w-auto h-10' loading='lazy' decoding='async' />;
+          })
+        }
+      </div>
     </div>
   </div>
 </section>

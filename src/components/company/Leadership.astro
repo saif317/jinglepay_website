@@ -27,7 +27,7 @@ const boardMembers = [amir, arya, farooq, maher, faisal].map((icon, index) => {
   };
 });
 
-const teamMembers = [amir, rashid, chris, sohali, ritesh, rick].map((icon, index) => {
+const teamMembers = [amir, sohali, rashid, chris, ritesh, rick].map((icon, index) => {
   return {
     image: icon,
     ...leadership.teamMembers[index],
@@ -38,7 +38,7 @@ const teamMembers = [amir, rashid, chris, sohali, ritesh, rick].map((icon, index
 <div class='pt-8 pb-16 space-y-20'>
   <section class='max-w-[700px] mx-auto text-center px-4'>
     <h2 class='text-3xl lg:text-4xl font-bold text-[#1F2937] mb-3'>{leadership.title}</h2>
-    <p class='text-3xl lg:text-4xl text-[#6B7280]'>{leadership.description}</p>
+    <p class='text-3xl font-light text-gray-500 lg:text-4xl'>{leadership.description}</p>
   </section>
 
   <section class='flex flex-col gap-y-12'>
@@ -72,7 +72,7 @@ const teamMembers = [amir, rashid, chris, sohali, ritesh, rick].map((icon, index
   </section>
 
   <section class='flex flex-col gap-y-12'>
-    <div class='flex flex-col gap-y-4 items-center'>
+    <div class='flex flex-col items-center gap-y-4'>
       <h2 class='text-3xl font-extrabold text-center'>{leadership.team.title}</h2>
       <p class='text-xl text-center text-zinc-900'>{leadership.team.description}</p>
     </div>

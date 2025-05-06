@@ -18,14 +18,14 @@ const {
 
 <QRModalTriggerer>
   <div
-    class={`relative flex items-center rounded-xl py-1.5 px-2 hover:-translate-y-0.5 transition-transform duration-200 border-2 border-[#C8C8C8] gap-x-3 sm:gap-x-4 text-start w-full max-w-[16rem] md:max-w-[20rem] ${className}`}
+    class={`relative flex items-center rounded-[14px] py-3 px-4 hover:-translate-y-0.5 transition-transform duration-200 border-2 border-[#C8C8C8] gap-x-3 sm:gap-x-4 text-start w-full ${className}`}
   >
-    <div class='flex flex-shrink-0 justify-center items-center'>
+    <div class='flex items-center justify-center flex-shrink-0'>
       <QRCodeGenerator />
     </div>
     <div class='flex flex-col justify-center'>
-      <span class='block text-base font-bold leading-tight sm:text-lg md:text-xl lg:text-lg'>{hero.cta[0]}</span>
-      <span class='block text-base font-bold leading-tight sm:text-lg md:text-xl lg:text-lg'>{hero.cta[1]}</span>
+      <span class='block text-base font-bold leading-tight text-stone-800 lg:text-2xl'>{hero.cta[0]} {hero.cta[1]}</span
+      >
     </div>
   </div>
 </QRModalTriggerer>
