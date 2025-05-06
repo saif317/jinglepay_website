@@ -46,6 +46,10 @@ const carouselItems: (FeatureBannerProps | PromoBannerProps)[] = [
   },
 ];
 
+
+carouselItems.push(...carouselItems);
+
+
 const imageWidths = [240, 360, 480]; // Example widths
 const imageSizes = '(max-width: 767px) 50vw, (max-width: 1023px) 40vw, 400px'; // Adjust sizes based on actual layout
 ---
@@ -166,11 +170,11 @@ const imageSizes = '(max-width: 767px) 50vw, (max-width: 1023px) 40vw, 400px'; /
       observer: true,
       observeParents: true,
 
-      // autoplay: {
-      //   delay: 1000,
-      //   disableOnInteraction: false,
-      //   pauseOnMouseEnter: true,
-      // },
+      autoplay: {
+        delay: 1000,
+        disableOnInteraction: false,
+        pauseOnMouseEnter: true,
+      },
 
       slidesPerView: 1.1, 
       spaceBetween: 47, 
