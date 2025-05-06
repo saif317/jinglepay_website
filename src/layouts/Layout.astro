@@ -9,7 +9,6 @@ import 'swiper/css';
 // import * as Swiper from 'swiper';
 
 const { translations, lang } = Astro.locals;
-
 const metaData = {
   title: translations.title,
   description: translations.description,
@@ -95,11 +94,9 @@ const fontFamily =
 
       // Check if we have both country and language segments in the URL
       if (pathSegments.length >= 2) {
-        const country = pathSegments[0];
         const language = pathSegments[1];
 
         // Save to localStorage
-        localStorage.setItem('preferred_country', country);
         localStorage.setItem('preferred_language', language);
       }
     };

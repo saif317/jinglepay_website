@@ -26,7 +26,7 @@ const getLanguageLink = (newLangCode: string) => {
 >
   <div class='relative country-selector'>
     <button id='country-button' class='flex items-center cursor-pointer'>
-      <div class='flex justify-center items-center flag'>
+      <div class='flex items-center justify-center flag'>
         {currentCountry.flag && <currentCountry.flag class='' />}
       </div>
       <span class='font-medium text-gray-500'>{currentCountry.name}</span>
@@ -44,7 +44,7 @@ const getLanguageLink = (newLangCode: string) => {
               role='menuitem'
             >
               {item.flag && (
-                <div class='flex overflow-hidden justify-center items-center w-6 h-6 rounded-sm'>
+                <div class='flex items-center justify-center w-6 h-6 overflow-hidden rounded-sm'>
                   <item.flag class='object-cover w-full h-full' />
                 </div>
               )}
@@ -152,31 +152,6 @@ const getLanguageLink = (newLangCode: string) => {
   // Initialize dropdowns on page load
   document.addEventListener('DOMContentLoaded', () => {
     initializeDropdowns();
-
-    // --- Add localStorage logic for specific country links ---
-    const countryDropdown = document.getElementById('country-dropdown');
-    if (countryDropdown) {
-      // Find the Pakistan link (href starts with /pak/)
-      const pakLink = countryDropdown.querySelector('a[href^="/pak/"]');
-      if (pakLink) {
-        pakLink.addEventListener('click', () => {
-          localStorage.setItem('preferred_country', 'pak');
-          // Allow default navigation
-        });
-      }
-
-      // Find the UAE link (href goes to external AE homepage)
-      const areLink = countryDropdown.querySelector('a[href="https://jinglepay.com/homepage/AE/"]');
-      if (areLink) {
-        areLink.addEventListener('click', () => {
-          // Assuming 'are' is the internal code for UAE used elsewhere
-          localStorage.setItem('preferred_country', 'are');
-          localStorage.setItem('preferred_language', 'en');
-          // Allow default navigation
-        });
-      }
-    }
-    // ------------------------------------------------------
   });
 
   // Close all dropdowns when clicking outside
