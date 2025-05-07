@@ -2,6 +2,7 @@
 import { Image } from 'astro:assets';
 import Arrow from '@assets/icons/arrow.svg';
 import type { ImageMetadata } from 'astro';
+import { updateSwiperControlsPosition } from '../../utils/swiperUtils';
 
 // Extend Logo interface for better image handling
 export interface Logo {
@@ -46,11 +47,11 @@ const logosPerSlide = 6;
 ---
 
 <section
-  class='flex flex-col w-full gap-y-10 lg:flex-row lg:justify-between lg:items-start lg:gap-y-0 lg:gap-x-12 xl:gap-x-20'
+  class='flex flex-col gap-y-10 w-full lg:flex-row lg:justify-between lg:items-start lg:gap-y-0 lg:gap-x-12 xl:gap-x-20'
 >
   <div class='flex flex-col flex-shrink-0 w-full lg:items-start'>
     <div
-      class='flex flex-col w-full gap-y-10 xl:flex-row lg:justify-between lg:items-start lg:gap-y-0 lg:gap-x-12 xl:gap-x-20'
+      class='flex flex-col gap-y-10 w-full xl:flex-row lg:justify-between lg:items-start lg:gap-y-0 lg:gap-x-12 xl:gap-x-20'
     >
       <div>
         <h2 class='mb-3 text-3xl font-black sm:text-4xl 4xl:text-5xl lg:mb-4'>{title}</h2>
@@ -61,7 +62,9 @@ const logosPerSlide = 6;
         </p>
       </div>
 
-      <div class='relative flex flex-col items-center w-full gap-y-4 lg:items-end xl:w-[50%] 3xl:w-[40%] sm:gap-y-6'>
+      <div
+        class='relative flex flex-col items-center w-full gap-y-4 lg:items-end xl:w-[50%] 3xl:w-[40%] sm:gap-y-6 pb-4'
+      >
         <div class={`swiper w-full`} data-selector={selector} data-name={`${selector}-logo-swiper`}>
           <div class='swiper-wrapper'>
             {
@@ -103,7 +106,7 @@ const logosPerSlide = 6;
           </div>
         </div>
         <div
-          class={`flex flex-row gap-x-4 justify-center sm:justify-end w-full sm:gap-x-6 ${selector}-swiper-controls`}
+          class={`flex flex-row gap-x-4 justify-center sm:justify-end w-full sm:gap-x-6 ${selector}-swiper-controls logo-showcase-dynamic-controls`}
         >
           <button
             type='button'
@@ -125,7 +128,7 @@ const logosPerSlide = 6;
 
     {
       extraDescription && (
-        <p class='flex flex-col mb-6 sm:text-lg lg:text-xl 4xl:text-2xl text-neutral-500 sm:mb-8 lg:mb-10 lg:gap-y-4 '>
+        <p class='flex flex-col mb-6 sm:text-lg lg:text-xl 4xl:text-2xl text-neutral-500 sm:mb-8 lg:mb-10 lg:gap-y-4'>
           <span class='text-xl font-bold text-zinc-800'>{extraDescriptionTitle}</span>
           <span class='text-xl text-neutral-500'>{extraDescription}</span>
           <span class='text-xl font-bold text-zinc-800'>{boldExtraDescription}</span>
@@ -146,20 +149,7 @@ const logosPerSlide = 6;
 <script>
   import Swiper from 'swiper';
   import { Navigation } from 'swiper/modules';
-
-  function updateInvestorButtonPosition(swiperInstance: any) {
-    // Find the controls container relative to the swiper element
-    const controlsContainer = swiperInstance.el.parentElement?.querySelector('.investors-swiper-controls');
-    if (!controlsContainer) return; // Exit if controls not found
-
-    if (swiperInstance.isEnd) {
-      // We are on the last slide
-      controlsContainer.classList.add('controls-shifted-down');
-    } else {
-      // We are NOT on the last slide
-      controlsContainer.classList.remove('controls-shifted-down');
-    }
-  }
+  import { updateSwiperControlsPosition } from '../../utils/swiperUtils';
 
   document.addEventListener('DOMContentLoaded', () => {
     const swiperContainers = document.querySelectorAll('[data-name*="-logo-swiper"]');
@@ -179,14 +169,12 @@ const logosPerSlide = 6;
         },
         on: {
           init: function () {
-            if (selector === 'investors') {
-              updateInvestorButtonPosition(this);
-            }
+            // Apply to all logo showcases, not just investors
+            updateSwiperControlsPosition(this, `.${selector}-swiper-controls`, 'controls-shifted-down');
           },
           slideChange: function () {
-            if (selector === 'investors') {
-              updateInvestorButtonPosition(this);
-            }
+            // Apply to all logo showcases, not just investors
+            updateSwiperControlsPosition(this, `.${selector}-swiper-controls`, 'controls-shifted-down');
           },
         },
       });
@@ -220,7 +208,7 @@ const logosPerSlide = 6;
     position: relative;
   }
 
-  .investors-swiper-controls {
+  .logo-showcase-dynamic-controls {
     position: relative;
     width: 100%;
     transition:
@@ -232,9 +220,9 @@ const logosPerSlide = 6;
     bottom: 0;
   }
 
-  .investors-swiper-controls.controls-shifted-down {
+  .logo-showcase-dynamic-controls.controls-shifted-down {
     position: absolute;
-    bottom: 15%;
+    bottom: 20%;
     left: 0;
     right: 0;
     transform: translateY(0);
@@ -242,11 +230,11 @@ const logosPerSlide = 6;
     z-index: 10;
 
     @media screen and (min-width: 576px) {
-      bottom: 30%;
+      bottom: 25%;
     }
 
     @media screen and (min-width: 768px) {
-      bottom: 35%;
+      bottom: 30%;
     }
 
     @media screen and (min-width: 992px) {
@@ -254,7 +242,7 @@ const logosPerSlide = 6;
     }
 
     @media screen and (min-width: 1920px) {
-      bottom: 35%;
+      bottom: 25%;
     }
   }
 </style>
