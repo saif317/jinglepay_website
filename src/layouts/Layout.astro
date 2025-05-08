@@ -70,20 +70,73 @@ const fontFamily =
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     // Handle smooth scrolling for anchor links
-    const anchors = document.querySelectorAll('a[href^="#"]');
+    const anchors = document.querySelectorAll('a[href^="#"], a[href*="#"]');
+
+    // Function to check if the current page is any homepage variant
+    const isCurrentPageHomepage = () => {
+      const path = window.location.pathname;
+      // Root homepage
+      if (path === '/' || path.endsWith('/index.html')) {
+        return true;
+      }
+
+      // Country/language specific homepages (like /pak/en/ or /pak/)
+      const segments = path.split('/').filter(Boolean);
+      if (segments.length <= 2 && path.endsWith('/')) {
+        return true;
+      }
+
+      return false;
+    };
+
+    // Check if we're on the homepage or a different page
+    const isHomepage = isCurrentPageHomepage();
 
     anchors.forEach((anchor) => {
       anchor.addEventListener('click', (e: Event) => {
         e.preventDefault();
 
-        const targetId = (e.currentTarget as HTMLAnchorElement).getAttribute('href');
-        const targetElement = targetId ? document.querySelector(targetId) : null;
+        const hrefValue = (e.currentTarget as HTMLAnchorElement).getAttribute('href') || '';
 
-        if (targetElement) {
-          window.scrollTo({
-            top: targetElement.getBoundingClientRect().top + window.scrollY - 120,
-            behavior: 'smooth',
-          });
+        // Case 1: Link to a different page with an anchor (e.g., /company#mission)
+        if (hrefValue.includes('/') && hrefValue.includes('#')) {
+          // This is a link to another page with an anchor
+          window.location.href = hrefValue;
+          return;
+        }
+
+        // Case 2: Simple anchor link starting with # (e.g., #benefits-section)
+        if (hrefValue.startsWith('#')) {
+          // If not on homepage, navigate to homepage with the anchor
+          if (!isHomepage) {
+            // Preserve full path structure (both country and language)
+            const pathSegments = window.location.pathname.split('/').filter(Boolean);
+            let basePath = '';
+
+            // Build the base path correctly preserving country and language parts
+            if (pathSegments.length >= 1) {
+              // Get country segment
+              basePath = `/${pathSegments[0]}`;
+
+              // If there's a language segment, include it too
+              if (pathSegments.length >= 2) {
+                basePath += `/${pathSegments[1]}`;
+              }
+            }
+
+            // Navigate to the proper path + anchor
+            window.location.href = `${basePath}/${hrefValue}`;
+            return;
+          }
+
+          // On homepage, just scroll to the element
+          const targetElement = document.querySelector(hrefValue);
+          if (targetElement) {
+            window.scrollTo({
+              top: targetElement.getBoundingClientRect().top + window.scrollY - 120,
+              behavior: 'smooth',
+            });
+          }
         }
       });
     });
@@ -103,5 +156,27 @@ const fontFamily =
 
     // Call immediately to save current page's preferences
     saveBrowsingPreferences();
+
+    // Handle scrolling to anchors on page load if hash exists in URL
+    const handleHashOnLoad = () => {
+      const hash = window.location.hash;
+
+      if (hash) {
+        // Small delay to ensure the page is fully loaded
+        setTimeout(() => {
+          const targetElement = document.querySelector(hash);
+
+          if (targetElement) {
+            window.scrollTo({
+              top: targetElement.getBoundingClientRect().top + window.scrollY - 120,
+              behavior: 'smooth',
+            });
+          }
+        }, 100);
+      }
+    };
+
+    // Call to handle initial hash in URL
+    handleHashOnLoad();
   });
 </script>

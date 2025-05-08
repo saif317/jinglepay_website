@@ -2,7 +2,7 @@ export default {
   mission: 'We’re creating a borderless financial future—where banking is inclusive, affordable, and built for all.',
   stats: [
     { value: '$2B+', label: 'Remitted globally' },
-    { value: '$3M+', label: 'Transaction count' },
+    { value: '3M+', label: 'Transactions' },
     { value: '+500k', label: 'Trusted Users' },
     { value: '150 countries', label: 'Payout coverage' },
   ],

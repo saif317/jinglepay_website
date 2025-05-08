@@ -49,6 +49,7 @@ const logos = [
     href: 'https://thepaypers.com/search/index.aspx?search=jingle+pay',
     src: PaypersLogo,
     alt: 'The Paypers',
+    class: 'grayscale',
   },
   {
     href: 'https://www.finextra.com/pressarticle/95078/jingle-pay-unlocks-mastercards-network-of-90-million-global-merchants-for-its-users',
@@ -243,13 +244,8 @@ const { translations = {} } = Astro.locals;
               class='inline-block transition-opacity duration-300 hover:opacity-75'
               aria-label={`Featured in ${logo.alt}`}
               draggable='false'
-              Prevent
-              native
-              image
-              link
-              dragging
             >
-              <logo.src />
+              <logo.src class={logo.class} />
             </a>
           </div>
         ))
@@ -281,6 +277,7 @@ const { translations = {} } = Astro.locals;
     let isDragging = false;
     let dragStartX = 0;
     let dragInitialTrackX = 0;
+    let wasDragged = false; // Track if actual movement occurred during drag
 
     // Calculate the width of a single set of original logos
     originalItems.forEach((item) => {
@@ -360,6 +357,7 @@ const { translations = {} } = Astro.locals;
     function onDragStart(event) {
       isPaused = true; // Pause autoplay during drag
       isDragging = true;
+      wasDragged = false; // Reset drag state when starting a new drag
       dragStartX = getEventX(event);
       dragInitialTrackX = currentX; // Use currentX as the source of truth for initial track position
 
@@ -375,12 +373,20 @@ const { translations = {} } = Astro.locals;
 
     function onDragMove(event) {
       if (!isDragging) return;
+
+      const currentEventX = getEventX(event);
+      const deltaX = currentEventX - dragStartX;
+
+      // Only mark as dragged if there was significant movement (to distinguish from minor unintentional movement)
+      if (Math.abs(deltaX) > 5) {
+        wasDragged = true;
+      }
+
       // Prevent page scroll only if there's actual movement
       if (event.type === 'touchmove') {
         event.preventDefault();
       }
-      const currentEventX = getEventX(event);
-      const deltaX = currentEventX - dragStartX;
+
       currentX = dragInitialTrackX + deltaX;
       track.style.transform = `translateX(${currentX}px)`;
     }
@@ -388,6 +394,9 @@ const { translations = {} } = Astro.locals;
     function onDragEnd(event) {
       // event can be mouseup or touchend
       if (!isDragging) return; // Only process if a drag was actually happening
+
+      // Store the drag state before resetting isDragging
+      const dragOccurred = wasDragged;
 
       isDragging = false;
       container.classList.remove('is-dragging');
@@ -433,6 +442,19 @@ const { translations = {} } = Astro.locals;
 
     document.addEventListener('mouseup', onDragEnd);
     document.addEventListener('touchend', onDragEnd);
+
+    // Prevent link clicks after drag
+    container.addEventListener(
+      'click',
+      function (event) {
+        if (wasDragged) {
+          event.preventDefault();
+          event.stopPropagation();
+          wasDragged = false; // Reset for the next interaction
+        }
+      },
+      true
+    ); // Use capture phase to intercept the event before it bubbles
 
     // Initial cursor style
     container.style.cursor = 'grab';

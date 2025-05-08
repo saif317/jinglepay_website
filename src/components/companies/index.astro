@@ -32,11 +32,11 @@ const {
 } = Astro.locals;
 
 const investorsLogos: Logo[] = [
-  { src: BankAlfalah, alt: 'Bank Alfalah', href: 'https://www.bankalfalah.com/', isSvg: true },
-  { src: MoneyGram, alt: 'MoneyGram', href: 'https://www.moneygram.com/', isSvg: true },
-  { src: Seedstars, alt: 'Seedstars', href: 'https://www.seedstars.com/', isSvg: true },
+  { src: BankAlfalah, alt: 'Bank Alfalah', href: 'https://www.bankalfalah.com/', isSvg: true, widthPercent: 75 },
+  { src: MoneyGram, alt: 'MoneyGram', href: 'https://www.moneygram.com/', isSvg: true, widthPercent: 75 },
+  { src: Seedstars, alt: 'Seedstars', href: 'https://www.seedstars.com/', isSvg: true, widthPercent: 75 },
   { src: Aaico, alt: 'AAICO', href: 'https://appliedai.opus.com/', isSvg: true, widthPercent: 50 },
-  { src: Plugplay, alt: 'Plug Play', href: 'https://www.plugandplaytechcenter.com/', isSvg: true }, // Corrected name/link
+  { src: Plugplay, alt: 'Plug Play', href: 'https://www.plugandplaytechcenter.com/', isSvg: true, widthPercent: 75 }, // Corrected name/link
   { src: Fivehundred, alt: '500 Global', href: 'https://500.co/', isSvg: true, widthPercent: 50 }, // Corrected name
   // --- Non-SVG ---
   {
@@ -48,17 +48,23 @@ const investorsLogos: Logo[] = [
     sizes: rasterSizes,
   },
   // --- SVGs ---
-  { src: Elevision, alt: 'Elevision', href: 'https://www.elevision.com/', isSvg: true },
-  { src: Chandariacapital, alt: 'Chandaria Capital', href: 'https://www.chandariacapital.com/', isSvg: true }, // Corrected name
+  { src: Elevision, alt: 'Elevision', href: 'https://www.elevision.com/', isSvg: true, widthPercent: 75 },
+  {
+    src: Chandariacapital,
+    alt: 'Chandaria Capital',
+    href: 'https://www.chandariacapital.com/',
+    isSvg: true,
+    widthPercent: 75,
+  }, // Corrected name
 ];
 
 const partnerLogos: Logo[] = [
-  { src: BankAlfalah, alt: 'Bank Alfalah', href: 'https://www.bankalfalah.com/', isSvg: true }, // Duplicate included as per original
-  { src: MoneyGram, alt: 'MoneyGram', href: 'https://www.moneygram.com/', isSvg: true }, // Duplicate included as per original
-  { src: Westernunion, alt: 'Western Union', href: 'https://www.westernunion.com/', isSvg: true },
+  { src: BankAlfalah, alt: 'Bank Alfalah', href: 'https://www.bankalfalah.com/', isSvg: true, widthPercent: 75 }, // Duplicate included as per original
+  { src: MoneyGram, alt: 'MoneyGram', href: 'https://www.moneygram.com/', isSvg: true, widthPercent: 75 }, // Duplicate included as per original
+  { src: Westernunion, alt: 'Western Union', href: 'https://www.westernunion.com/', isSvg: true, widthPercent: 75 },
   { src: Mastercard, alt: 'Mastercard', href: 'https://www.mastercard.com/', isSvg: true, widthPercent: 50 },
-  { src: Infinios, alt: 'Infinios', href: 'https://infinios.com/', isSvg: true },
-  { src: Network, alt: 'Network International', href: 'https://www.network.ae/', isSvg: true }, // Corrected name
+  { src: Infinios, alt: 'Infinios', href: 'https://infinios.com/', isSvg: true, widthPercent: 75 },
+  { src: Network, alt: 'Network International', href: 'https://www.network.ae/', isSvg: true, widthPercent: 75 }, // Corrected name
   {
     src: W2,
     alt: 'W2 by FullCircl',
@@ -66,12 +72,12 @@ const partnerLogos: Logo[] = [
     isSvg: true,
   },
   { src: Lean, alt: 'Lean Technologies', href: 'https://www.leantech.me/', isSvg: true }, // Corrected name
-  { src: Thunes, alt: 'Thunes', href: 'https://www.thunes.com/', isSvg: true },
-  { src: Emq, alt: 'EMQ', href: 'https://emq.com/', isSvg: true },
-  { src: Gcc, alt: 'GCC Remit', href: 'https://www.gccremit.com/', isSvg: true }, // Corrected name
-  { src: Gamechange, alt: 'GameChange', href: 'https://gamechange.com/', isSvg: true },
-  { src: Afex, alt: 'Al Fardan Exchange', href: 'https://alfardanexchange.com/', isSvg: true }, // Corrected name
-  { src: Singx, alt: 'SingX', href: 'https://www.singx.co/', isSvg: true },
+  { src: Thunes, alt: 'Thunes', href: 'https://www.thunes.com/', isSvg: true, widthPercent: 75 },
+  { src: Emq, alt: 'EMQ', href: 'https://emq.com/', isSvg: true, widthPercent: 50 },
+  { src: Gcc, alt: 'GCC Remit', href: 'https://www.gccremit.com/', isSvg: true, widthPercent: 75 }, // Corrected name
+  { src: Gamechange, alt: 'GameChange', href: 'https://gamechange.com/', isSvg: true, widthPercent: 75 },
+  { src: Afex, alt: 'Al Fardan Exchange', href: 'https://alfardanexchange.com/', isSvg: true, widthPercent: 75 }, // Corrected name
+  { src: Singx, alt: 'SingX', href: 'https://www.singx.co/', isSvg: true, widthPercent: 75 },
 ];
 ---
 
