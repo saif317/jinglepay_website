@@ -29,5 +29,9 @@ export default defineConfig({
       status: 302,
       destination: '/?redirect_fix=1',
     },
+    '/homepage/AE/terms-and-conditions/privacy-policy/': {
+      status: 301,
+      destination: '/are/en/terms-and-conditions/privacy-policy/',
+    },
   },
 });
