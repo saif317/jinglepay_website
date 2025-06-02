@@ -61,65 +61,109 @@ const fontFamily =
     background-color: var(--white);
   }
 
-  /* Mobile-specific styles for Freshchat - full screen */
+  /*
+  Styles for Freshchat Widget (div#fc_frame and iframe#fc_widget).
+  The goal is to use your preferred styles when the chat is OPEN,
+  but ensure it doesn't block page content when CLOSED (minimized to launcher).
+
+  This is achieved by scoping the "open" styles to div#fc_frame only when it has
+  a specific class indicating the chat is open. We use '.fc-widget-is-open' as a PLACEHOLDER.
+
+  !!! CRITICAL ACTION FOR YOU !!!
+  You MUST find the actual CSS class Freshchat adds to the <div id="fc_frame"> element
+  when the chat window is open. Then, replace ALL instances of '.fc-widget-is-open'
+  in the CSS below with that actual class name.
+  To find it: Inspect div#fc_frame in your browser's developer tools, first when the chat is
+  closed (it might have 'fc-widget-small'), then open the chat and see what class is added
+  (e.g., 'fc-widget-open', 'fc-chat-open', 'fc-expanded', 'open', etc.).
+*/
+
+  /* Mobile: Full screen style, applied ONLY when chat is OPEN */
   @media (max-width: 768px) {
-    /* Try targeting common Freshchat iframe ID patterns */
-    /* Replace #YOUR_FRESHCHAT_WIDGET_SELECTOR_HERE if these don't work */
-    #YOUR_FRESHCHAT_WIDGET_SELECTOR_HERE,
-    iframe[id^="fc_widget"],
-    iframe[id^="fc_frame"],
-    .freshchat-widget /* Another common class, adjust if needed */ {
-      /* Override for fullscreen on mobile */
+    /* !!! IMPORTANT: Ensure '.fc-widget-is-open' is replaced with Freshchat's actual 'open' class !!! */
+    /* div#fc_frame is positioned 50px from the top, filling the rest of the screen */
+    div#fc_frame.fc-widget-is-open {
       position: fixed !important;
-      width: 100% !important;
-      height: 100vh !important;
-      max-width: 100% !important; /* Override desktop max-width */
-      max-height: 100vh !important; /* Override desktop max-height */
-      min-height: 100vh !important; /* Override desktop min-height */
-      top: 0 !important;
+      top: 50px !important; /* Gap at the top */
       left: 0 !important;
-      right: 0 !important; /* Ensure it spans full width */
-      bottom: 0 !important;
-      border-radius: 0 !important; /* No rounded corners for fullscreen */
-      box-shadow: none !important; /* No shadow for fullscreen */
-      border: none !important;
-      z-index: 2147483001 !important; /* Higher than desktop to ensure it's on top */
-      margin: 0 !important;
+      right: 0 !important; /* Spans full width */
+      bottom: 0 !important; /* Goes to the bottom of the screen */
+      /* height is implicitly calc(100vh - 50px) */
+
+      background-color: transparent !important; /* Ensure container is transparent so page behind shows in the gap */
       padding: 0 !important;
-      display: block !important; /* Ensure widget is visible */
+      margin: 0 !important;
+      border: none !important;
+      z-index: 2147483001 !important;
+      display: block !important;
+      overflow: hidden !important; /* To prevent scrollbars on the container itself */
     }
 
-    /* If the chat launcher icon is separate and still visible, you might need to hide it when the chat is full screen */
-    /* .fc-launcher { display: none !important; } */
+    /* iframe#fc_widget (Freshchat UI) fills its container div#fc_frame */
+    div#fc_frame.fc-widget-is-open iframe#fc_widget {
+      width: 100% !important;
+      height: 97% !important;
+      display: block !important;
+      border: none !important;
+    }
+
+    div#fc_frame.fc-mobile-view.h-open-container {
+      height: 98% !important;
+    }
   }
 
+  /* Desktop: Your original 50% width, 70% height style, applied ONLY when chat is OPEN */
   @media (min-width: 769px) {
-    /* Try targeting common Freshchat iframe ID patterns */
-    /* Replace #YOUR_FRESHCHAT_WIDGET_SELECTOR_HERE if these don't work */
-    #YOUR_FRESHCHAT_WIDGET_SELECTOR_HERE,
-    iframe[id^="fc_widget"],
-    iframe[id^="fc_frame"],
-    .freshchat-widget /* Another common class, adjust if needed */ {
-      /* Override for fullscreen on mobile */
+    /* Replace '.fc-widget-is-open' with the actual open class! */
+    div#fc_frame.fc-widget-is-open {
       position: fixed !important;
-      width: 50% !important;
-      height: 70% !important;
-      max-width: 100% !important; /* Override desktop max-width */
-      max-height: 100vh !important; /* Override desktop max-height */
-      right: 1rem !important; /* Ensure it spans full width */
-      bottom: 1rem !important;
-      border-radius: 0 !important; /* No rounded corners for fullscreen */
-      box-shadow: none !important; /* No shadow for fullscreen */
-      border: none !important;
-      z-index: 2147483001 !important; /* Higher than desktop to ensure it's on top */
+      width: 50% !important; /* Your original preference */
+      height: 70% !important; /* Your original preference */
+      /* max-width: 100% !important; /* From your original, often redundant if width is fixed % */
+      /* max-height: 100vh !important; /* From your original, often redundant if height is fixed % */
+      top: auto !important; /* Allows bottom/right positioning */
+      left: auto !important; /* Allows bottom/right positioning */
+      right: 1rem !important; /* Your original preference */
+      bottom: 1rem !important; /* Your original preference */
+      border-radius: 0 !important; /* Your original preference */
+      box-shadow: none !important; /* Your original preference */
+      border: none !important; /* Your original preference */
+      z-index: 2147483001 !important;
       margin: 0 !important;
       padding: 0 !important;
-      display: block !important; /* Ensure widget is visible */
+      display: block !important;
+      /* overflow: hidden; /* Consider adding if content ever overflows rounded corners, though radius is 0 here */
     }
 
-    /* If the chat launcher icon is separate and still visible, you might need to hide it when the chat is full screen */
-    /* .fc-launcher { display: none !important; } */
+    /* Make the iframe fill the container when chat is OPEN on desktop */
+    div#fc_frame.fc-widget-is-open iframe#fc_widget {
+      width: 100% !important;
+      height: 97% !important;
+      display: block !important;
+      /* border-radius: inherit !important; /* Only if parent div#fc_frame had a radius */
+    }
   }
+
+  /*
+  When div#fc_frame does NOT have the '.fc-widget-is-open' class (i.e., chat is closed),
+  the styles above will not apply. This should allow Freshchat's default styles for the
+  launcher icon (e.g., via the 'fc-widget-small' class and its inline styles like
+  'bottom: 15px; right: 15px;') to take effect without being overridden to be huge.
+
+  If, after replacing '.fc-widget-is-open' with the correct class, the launcher icon itself
+  (when chat is closed) is still causing issues or is not visible, you might need to add
+  specific, minimal styles for 'div#fc_frame.fc-widget-small' or 'div#fc_frame:not(.THE_ACTUAL_OPEN_CLASS)'
+  to ensure it's small and positioned correctly, e.g.:
+
+  div#fc_frame.fc-widget-small {
+    width: 60px !important; // Or Freshchat's default launcher width
+    height: 60px !important; // Or Freshchat's default launcher height
+    // Ensure other properties like top, left are not making it cover the screen
+  }
+  div#fc_frame.fc-widget-small iframe#fc_widget {
+     display: none !important; // If the iframe content should be hidden for the launcher state
+  }
+*/
 </style>
 
 <script>
