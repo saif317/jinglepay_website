@@ -6,6 +6,25 @@ const formEndpoint = 'https://usebasin.com/f/c6eae2f970e6';
 const {
   translations: { contact = {} },
 } = Astro.locals;
+
+// Prepare translations for client-side script
+const clientTranslations = {
+  reasonPlaceholder: contact.reasonPlaceholder || 'Select an option',
+  validationRequired: contact.validationRequired || 'This field is required.',
+  validationEmail: contact.validationEmail || 'Please enter a valid email address.',
+  validationPhone: contact.validationPhone || 'Please enter a valid phone number.',
+  validationMinLength: contact.validationMinLength || 'Minimum {num} characters required.',
+  validationMaxLength: contact.validationMaxLength || 'Maximum {num} characters allowed.',
+  validationNameFormat: contact.validationNameFormat || 'Only letters and spaces are allowed.',
+  validationNameLength: contact.validationNameLength || 'Name must be at least 2 characters.',
+  validationPhonePakistan: contact.validationPhonePakistan || 'Please enter a valid Pakistani phone number (e.g., +923XXXXXXXXX or 03XXXXXXXXX).',
+  submitting: contact.submitting || 'Submitting...',
+  submitButton: contact.submitButton || 'Submit',
+  errorOops: contact.errorOops || 'Oops! Something went wrong. Please try again later.',
+  errorNetwork: contact.errorNetwork || 'Could not reach server. Please check your connection.',
+  errorCorrect: contact.errorCorrect || 'Please correct the errors above.',
+  // These translations will be passed to the client-side script
+};
 ---
 
 <section
@@ -32,7 +51,7 @@ const {
   <div class='relative p-5 lg:p-8 bg-white rounded-[20px] shadow-[0px_0px_60px_0px_rgba(121,78,255,0.12)] w-full'>
     <h3 class='mb-8 text-2xl font-extrabold text-slate-800'>{contact.formTitle}</h3>
 
-    <form id='contact-form' action={formEndpoint} method='POST' class='grid grid-cols-1 gap-4 lg:grid-cols-2'>
+    <form id='contact-form' action={formEndpoint} method='POST' class='grid grid-cols-1 gap-4 lg:grid-cols-2' novalidate>
       <div>
         <label for='first-name' class='block mb-1.5 text-base font-semibold'>
           {contact.firstName}<span class='text-red-500'>*</span>
@@ -45,8 +64,12 @@ const {
           required
           autocomplete='given-name'
           aria-required='true'
+          aria-invalid='false'
+          aria-describedby='first-name-error'
+          maxlength='50'
           class='w-full p-4 placeholder-[#797C8890] transition duration-150 ease-in-out rounded-lg shadow-sm outline outline-neutral-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent'
         />
+        <div id='first-name-error' class='text-red-500 text-sm mt-1 min-h-[1rem]' aria-live='polite'></div>
       </div>
 
       <div>
@@ -61,8 +84,12 @@ const {
           required
           autocomplete='family-name'
           aria-required='true'
+          aria-invalid='false'
+          aria-describedby='last-name-error'
+          maxlength='50'
           class='w-full p-4 placeholder-[#797C8890] transition duration-150 ease-in-out rounded-lg shadow-sm outline outline-neutral-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent'
         />
+        <div id='last-name-error' class='text-red-500 text-sm mt-1 min-h-[1rem]' aria-live='polite'></div>
       </div>
 
       <div>
@@ -77,10 +104,11 @@ const {
           required
           autocomplete='email'
           aria-required='true'
-          pattern='^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
-          title='Please enter a valid email address'
+          aria-invalid='false'
+          aria-describedby='email-error'
           class='w-full p-4 placeholder-[#797C8890] transition duration-150 ease-in-out rounded-lg shadow-sm outline outline-neutral-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent'
         />
+        <div id='email-error' class='text-red-500 text-sm mt-1 min-h-[1rem]' aria-live='polite'></div>
       </div>
 
       <div>
@@ -91,8 +119,12 @@ const {
           name='phone'
           placeholder='+92 311 2222222'
           autocomplete='tel'
+          aria-invalid='false'
+          aria-describedby='phone-error'
+          maxlength='20'
           class='w-full p-4 placeholder-[#797C8890] transition duration-150 ease-in-out rounded-lg shadow-sm outline outline-neutral-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent'
         />
+        <div id='phone-error' class='text-red-500 text-sm mt-1 min-h-[1rem]' aria-live='polite'></div>
       </div>
 
       <div class='lg:col-span-2'>
@@ -100,7 +132,7 @@ const {
           >{contact.reason}<span class='text-red-500'>*</span></label
         >
         <div class='relative' id='reason-dropdown'>
-          <input type='hidden' id='reason' name='reason' value='' required aria-required='true' />
+          <input type='hidden' id='reason' name='reason' value='' required aria-required='true' aria-invalid='false' aria-describedby='reason-error' />
           <button
             type='button'
             id='reason-button'
@@ -182,21 +214,35 @@ const {
         <textarea
           id='message'
           name='message'
-          rows='5'
+          rows='4'
           placeholder={contact.messagePlaceholder}
           required
           aria-required='true'
-          class='w-full p-4 placeholder-[#797C8890] transition duration-150 ease-in-out rounded-lg shadow-sm outline outline-neutral-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent resize-vertical'
+          aria-invalid='false'
+          aria-describedby='message-error'
+          minlength='10'
+          maxlength='1000'
+          class='w-full p-4 placeholder-[#797C8890] transition duration-150 ease-in-out rounded-lg shadow-sm outline outline-neutral-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent'
         ></textarea>
+        <div id='message-error' class='text-red-500 text-sm mt-1 min-h-[1rem]' aria-live='polite'></div>
+        <div class='text-xs text-gray-500 mt-1 text-right pr-1'><span id='message-char-count'>0</span> / 1000</div>
       </div>
 
       <div class='lg:col-span-2'>
+        <div class='opacity-0 absolute left-[-5000px]' aria-hidden='true'>
+          <input type='text' id='form-honeypot' name='form-honeypot' tabindex='-1' autocomplete='off' />
+        </div>
+        
         <button
-          id='submit-button'
           type='submit'
-          class='px-6 py-3 w-full font-bold text-white bg-[#794EFF] rounded-xl transition duration-150 ease-in-out cursor-pointer hover:bg-violet-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-500 disabled:opacity-50 disabled:cursor-not-allowed'
+          id='submit-button'
+          class='w-full p-4 text-lg font-semibold text-white bg-violet-600 rounded-lg shadow-md hover:bg-violet-700 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 transition duration-150 ease-in-out disabled:opacity-50 flex items-center justify-center'
         >
-          {contact.submitButton}
+          <svg class='animate-spin -ml-1 mr-3 h-5 w-5 text-white hidden' id='submit-spinner' xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24'>
+            <circle class='opacity-25' cx='12' cy='12' r='10' stroke='currentColor' stroke-width='4'></circle>
+            <path class='opacity-75' fill='currentColor' d='M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z'></path>
+          </svg>
+          <span id='submit-button-text'>{contact.submitButton}</span>
         </button>
         <p id='form-status' class='mt-4 text-sm text-center' aria-live='polite'></p>
       </div>
@@ -210,29 +256,193 @@ const {
   .placeholder-text {
     color: #797c8890;
   }
-</style>;
+  /* Ensure error divs with fixed height don't cause large gaps when empty */
+  [id$='-error']:empty {
+    /* display: none; /* JS will handle display block/none */
+  }
+  .min-h-\[1rem\] { min-height: 1rem; } /* Ensure error message divs maintain height */
+</style>
 
-<script is:inline>
+<script define:vars={{ clientTranslations }} is:inline>
+  // DOM elements
   const form = document.getElementById('contact-form');
+  const successModal = document.getElementById('success-modal');
+  const modalConfirmButton = successModal.querySelector('button');
   const submitButton = document.getElementById('submit-button');
   const formStatus = document.getElementById('form-status');
-  const successModal = document.getElementById('success-modal');
-  const modalConfirmButton = document.getElementById('success-modal-confirm-button');
-
-  // Custom Dropdown Logic
-  const reasonDropdown = document.getElementById('reason-dropdown');
+  const firstNameInput = document.getElementById('first-name');
+  const lastNameInput = document.getElementById('last-name');
+  const emailInput = document.getElementById('email');
+  const phoneInput = document.getElementById('phone');
+  const reasonHiddenInput = document.getElementById('reason');
+  const messageTextarea = document.getElementById('message');
   const reasonButton = document.getElementById('reason-button');
   const reasonOptions = document.getElementById('reason-options');
-  const reasonHiddenInput = document.getElementById('reason');
+  const messageCharCount = document.getElementById('message-char-count');
   const reasonSelectedText = document.getElementById('reason-selected-text');
 
+  // Form validation helpers
+  const errorElements = {};
+  const submitSpinner = document.getElementById('submit-spinner');
+  const submitButtonText = document.getElementById('submit-button-text');
+  const formHoneypot = document.getElementById('form-honeypot');
+  
+  // Get error elements for each input
+  const formFields = ['first-name', 'last-name', 'email', 'phone', 'reason', 'message'];
+  formFields.forEach(field => {
+    errorElements[field] = document.getElementById(`${field}-error`);
+  });
+  
+  // Validation functions
+  const validators = {
+    // Check if field has a value
+    required: (value) => {
+      return value.trim() !== '';
+    },
+    // Check if name has only alphabetic characters and spaces
+    nameFormat: (value) => {
+      return /^[A-Za-z\s]+$/.test(value);
+    },
+    // Check if name has at least 2 characters
+    nameMinLength: (value) => {
+      return value.trim().length >= 2;
+    },
+    // Check if email is valid with proper format (example@domain.com)
+    email: (value) => {
+      return /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i.test(value);
+    },
+    // Check if phone is valid Pakistani format (+923XXXXXXXXX or 03XXXXXXXXX)
+    phone: (value) => {
+      if (value.trim() === '') return true; // Phone is optional
+      const cleanNumber = value.replace(/\s+/g, '');
+      return /^(\+923|03)\d{9}$/.test(cleanNumber);
+    },
+    // Check if text is at least minLength characters
+    minLength: (value, minLength) => {
+      return value.trim().length >= minLength;
+    },
+    // Check if text is at most maxLength characters
+    maxLength: (value, maxLength) => {
+      return value.trim().length <= maxLength;
+    }
+  };
+  
+  // Set field validity and error message
+  function setFieldValidity(field, valid, message = '') {
+    const input = document.getElementById(field);
+    const errorElement = errorElements[field];
+    
+    if (input && errorElement) {
+      input.setAttribute('aria-invalid', !valid);
+      errorElement.textContent = valid ? '' : message;
+      
+      if (!valid) {
+        input.classList.add('border-red-500');
+        errorElement.classList.remove('hidden');
+      } else {
+        input.classList.remove('border-red-500');
+        errorElement.classList.add('hidden');
+      }
+    }
+  }
+  
+  // Validate field and show error if invalid
+  function validateField(field) {
+    const input = document.getElementById(field);
+    if (!input) return true;
+    
+    const value = input.value;
+    let isValid = true;
+    let errorMessage = '';
+    
+    // Required field validation
+    if (input.hasAttribute('required') && !validators.required(value)) {
+      isValid = false;
+      errorMessage = clientTranslations.validationRequired;
+    } 
+    // First name and last name validation
+    else if ((field === 'first-name' || field === 'last-name') && value.trim()) {
+      // Check minimum length of 2 characters
+      if (!validators.nameMinLength(value)) {
+        isValid = false;
+        errorMessage = clientTranslations.validationNameLength;
+      } 
+      // Check for alphabetic characters and spaces only
+      else if (!validators.nameFormat(value)) {
+        isValid = false;
+        errorMessage = clientTranslations.validationNameFormat;
+      }
+    } 
+    // Email validation with proper format
+    else if (field === 'email' && value.trim() && !validators.email(value)) {
+      isValid = false;
+      errorMessage = clientTranslations.validationEmail;
+    } 
+    // Pakistani phone number validation
+    else if (field === 'phone' && value.trim() && !validators.phone(value)) {
+      isValid = false;
+      errorMessage = clientTranslations.validationPhonePakistan;
+    }
+    // Message minimum length validation (10 characters)
+    else if (field === 'message' && !validators.minLength(value, 10)) {
+      isValid = false;
+      errorMessage = clientTranslations.validationMinLength.replace('{num}', '10');
+    }
+    // Max length validation
+    else if (input.hasAttribute('maxlength') && !validators.maxLength(value, parseInt(input.getAttribute('maxlength')))) {
+      isValid = false;
+      errorMessage = clientTranslations.validationMaxLength.replace('{num}', input.getAttribute('maxlength'));
+    }
+    
+    setFieldValidity(field, isValid, errorMessage);
+    return isValid;
+  }
+  
+  // Validate all fields
+  function validateForm() {
+    let isValid = true;
+    
+    // Validate each input
+    formFields.forEach(field => {
+      if (!validateField(field)) {
+        isValid = false;
+      }
+    });
+    
+    return isValid;
+  }
+  
+  // Character counter for message
+  if (messageTextarea && messageCharCount) {
+    messageTextarea.addEventListener('input', () => {
+      const count = messageTextarea.value.length;
+      messageCharCount.textContent = count;
+      
+      // Update message validation
+      validateField('message');
+    });
+  }
+  
+  // Setup keyboard navigation and accessibility for dropdown
   if (reasonButton && reasonOptions && reasonHiddenInput && reasonSelectedText) {
+    // Initialize dropdown
+    reasonSelectedText.textContent = reasonSelectedText.textContent.trim() || clientTranslations.reasonPlaceholder;
+    reasonSelectedText.classList.add('placeholder-text');
+    
+    // Toggle dropdown
     reasonButton.addEventListener('click', () => {
       const isExpanded = reasonButton.getAttribute('aria-expanded') === 'true';
       reasonButton.setAttribute('aria-expanded', !isExpanded);
       reasonOptions.classList.toggle('hidden');
+      
+      // Focus first item when opening
+      if (!isExpanded) {
+        const firstItem = reasonOptions.querySelector('li');
+        if (firstItem) firstItem.focus();
+      }
     });
 
+    // Handle option selection
     reasonOptions.addEventListener('click', (event) => {
       let targetElement = event.target;
       // Traverse up the DOM tree until a list item (li) with data-value is found
@@ -246,49 +456,132 @@ const {
 
         reasonHiddenInput.value = selectedValue;
         reasonSelectedText.textContent = selectedText;
-        reasonSelectedText.classList.remove('placeholder-text'); // Remove placeholder styling
+        reasonSelectedText.classList.remove('placeholder-text');
+        
+        // Update validity
+        validateField('reason');
 
         reasonButton.setAttribute('aria-expanded', 'false');
         reasonOptions.classList.add('hidden');
+        reasonButton.focus();
 
-        // Add styling for the placeholder text
-        document.head.insertAdjacentHTML(
-          'beforeend',
-          `
-          <style>
-            .placeholder-text {
-              color: #797C8890;
-            }
-          </style>
-        `
-        );
-
-        // Optional: Add visual indication for selected item
+        // Visual indication for selected item
         reasonOptions.querySelectorAll('li').forEach((li) => li.classList.remove('bg-violet-200'));
         targetElement.classList.add('bg-violet-200');
+      }
+    });
+    
+    // Keyboard navigation for dropdown
+    reasonOptions.addEventListener('keydown', (event) => {
+      const items = Array.from(reasonOptions.querySelectorAll('li[role="option"]'));
+      const currentIndex = items.findIndex(item => document.activeElement === item);
+      
+      switch (event.key) {
+        case 'ArrowDown':
+          event.preventDefault();
+          if (currentIndex < items.length - 1) {
+            items[currentIndex + 1].focus();
+          }
+          break;
+        case 'ArrowUp':
+          event.preventDefault();
+          if (currentIndex > 0) {
+            items[currentIndex - 1].focus();
+          } else {
+            reasonButton.focus();
+          }
+          break;
+        case 'Enter':
+        case ' ':
+          event.preventDefault();
+          if (document.activeElement.hasAttribute('data-value')) {
+            document.activeElement.click();
+          }
+          break;
+        case 'Escape':
+          event.preventDefault();
+          reasonButton.setAttribute('aria-expanded', 'false');
+          reasonOptions.classList.add('hidden');
+          reasonButton.focus();
+          break;
       }
     });
 
     // Close dropdown when clicking outside
     document.addEventListener('click', (event) => {
+      const reasonDropdown = document.getElementById('reason-dropdown');
       if (reasonDropdown && !reasonDropdown.contains(event.target)) {
         reasonButton.setAttribute('aria-expanded', 'false');
         reasonOptions.classList.add('hidden');
       }
     });
+    
+    // Make options focusable
+    reasonOptions.querySelectorAll('li[role="option"]').forEach(option => {
+      option.setAttribute('tabindex', '0');
+    });
   }
 
-  // Existing Form Submission Logic
+  // Add input event listeners for real-time validation
+  formFields.forEach(field => {
+    const input = document.getElementById(field);
+    if (input) {
+      input.addEventListener('blur', () => {
+        validateField(field);
+      });
+      
+      if (field !== 'message') { // Message has its own input handler for character counting
+        input.addEventListener('input', () => {
+          validateField(field);
+        });
+      }
+    }
+  });
+
+  // Enhanced Form Submission Logic with validation and honeypot
   if (form && successModal && modalConfirmButton && submitButton && formStatus) {
     form.addEventListener('submit', async (event) => {
       event.preventDefault();
-
+      
+      // Check if the honeypot field is empty (not filled by bots)
+      if (formHoneypot && formHoneypot.value !== '') {
+        console.log('Honeypot detection triggered');
+        return false; // Silently reject the submission
+      }
+      
+      // Validate all form fields before submission
+      const isValid = validateForm();
+      
+      if (!isValid) {
+        formStatus.textContent = clientTranslations.errorCorrect;
+        formStatus.classList.add('text-red-500');
+        
+        // Find the first invalid field and focus it
+        for (const field of formFields) {
+          const input = document.getElementById(field);
+          if (input && input.getAttribute('aria-invalid') === 'true') {
+            input.focus();
+            break;
+          }
+        }
+        
+        return false;
+      }
+      
+      // Disable the button and show loading state
       submitButton.disabled = true;
-      submitButton.textContent = 'Submitting...';
+      submitSpinner.classList.remove('hidden');
+      submitButtonText.textContent = clientTranslations.submitting;
       formStatus.textContent = '';
+      formStatus.classList.remove('text-red-500');
 
       const formData = new FormData(form);
       const formAction = form.action;
+      
+      // Don't send the honeypot field
+      if (formHoneypot) {
+        formData.delete('form-honeypot');
+      }
 
       try {
         const response = await fetch(formAction, {
@@ -301,61 +594,62 @@ const {
         });
 
         if (response.ok) {
+          // Reset form and form state
           form.reset();
           formStatus.textContent = '';
           
+          // Reset character count
+          if (messageCharCount) {
+            messageCharCount.textContent = '0';
+          }
+          
           // Reset the dropdown to placeholder state
           if (reasonSelectedText && reasonHiddenInput) {
-            reasonSelectedText.textContent = reasonSelectedText.getAttribute('data-placeholder') || contact.reasonPlaceholder || 'Select an option';
+            reasonSelectedText.textContent = clientTranslations.reasonPlaceholder;
             reasonSelectedText.classList.add('placeholder-text');
             reasonHiddenInput.value = '';
           }
           
+          // Show success modal
           successModal.classList.remove('hidden');
           successModal.classList.add('flex');
-
           modalConfirmButton.focus();
         } else {
           console.error('Submission failed:', response.status, response.statusText);
-          let errorMessage = 'Oops! Something went wrong. Please try again later.';
-          try {
-            const errorData = await response.json();
-            errorMessage = errorData.message || errorMessage;
-          } catch (e) {
-            console.error('Could not parse error response:', e);
-          }
-          formStatus.textContent = errorMessage;
-          formStatus.style.color = 'red';
-          submitButton.disabled = false;
-          submitButton.textContent = 'Submit';
+          formStatus.textContent = clientTranslations.errorOops;
+          formStatus.classList.add('text-red-500');
         }
       } catch (error) {
-        console.error('Network error:', error);
-        formStatus.textContent = 'Could not reach server. Please check your connection.';
-        formStatus.style.color = 'red';
+        console.error('Error:', error);
+        formStatus.textContent = clientTranslations.errorNetwork;
+        formStatus.classList.add('text-red-500');
+      } finally {
+        // Reset button state
         submitButton.disabled = false;
-        submitButton.textContent = 'Submit';
+        submitSpinner.classList.add('hidden');
+        submitButtonText.textContent = clientTranslations.submitButton;
       }
     });
 
+    // Close modal on button click
     modalConfirmButton.addEventListener('click', () => {
       successModal.classList.add('hidden');
       successModal.classList.remove('flex');
-      submitButton.disabled = false;
-      submitButton.textContent = 'Submit';
+      submitButton.focus(); // Return focus to submit button for better accessibility
     });
 
-    successModal.addEventListener('click', (event) => {
-      if (event.target === successModal) {
+    // Close modal on Escape key press
+    successModal.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
         successModal.classList.add('hidden');
         successModal.classList.remove('flex');
-        submitButton.disabled = false;
-        submitButton.textContent = 'Submit';
+        submitButton.focus(); // Return focus to submit button
       }
     });
 
-    document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape' && !successModal.classList.contains('hidden')) {
+    // Close modal on click outside
+    successModal.addEventListener('click', (e) => {
+      if (e.target === successModal) {
         successModal.classList.add('hidden');
         successModal.classList.remove('flex');
         submitButton.disabled = false;
