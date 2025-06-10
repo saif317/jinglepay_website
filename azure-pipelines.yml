@@ -136,6 +136,9 @@ jobs:
   pool:
     vmImage: 'ubuntu-latest'
   steps:
+  # Checkout the repository first to make source code available for Cache task
+  - checkout: self
+    displayName: 'Checkout Astro repo'
   # Install Node for Astro with caching
   - task: NodeTool@0
     inputs:
@@ -206,12 +209,17 @@ jobs:
 - job: BuildGatsby
   displayName: 'Build Gatsby Website'
   dependsOn: CommonSetup
-  # Only run this job if Gatsby needs to be built
   condition: eq(dependencies.CommonSetup.outputs['GatsbyChanges.shouldBuildGatsby'], 'true')
   timeoutInMinutes: 20
   pool:
     vmImage: 'ubuntu-latest'
   steps:
+  # Checkout the repositories first to make source code available for Cache task
+  - checkout: self
+    displayName: 'Checkout main repo'
+  - checkout: gatsbyRepo
+    path: gatsby
+    displayName: 'Checkout Gatsby repo'
   # Install Node for Gatsby
   - task: NodeTool@0
     inputs:
