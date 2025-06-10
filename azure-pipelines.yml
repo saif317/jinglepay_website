@@ -16,6 +16,14 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
+# --- Download previous build metadata (if available) ---
+  - task: DownloadPipelineArtifact@2
+    inputs:
+      artifactName: 'gatsby-metadata'
+      targetPath: '$(Build.ArtifactStagingDirectory)'
+    continueOnError: true
+    displayName: 'Download previous build metadata'
+
 # --- Explicitly Checkout Self (Astro Repo) ---
   - checkout: self # Checkout the repo this yaml file is in
     path: s       # Checkout into the 's' subdirectory of $(Pipeline.Workspace)
@@ -23,6 +31,40 @@ steps:
 # --- Checkout Gatsby Repo ---
   - checkout: gatsbyRepo # Use the alias defined in resources
     path: gatsby # Checkout Gatsby repo into a 'gatsby' subdirectory within the agent's work folder
+    
+# --- Check for changes in Gatsby Repo ---
+  - bash: |
+      # Store current commit hash
+      cd $(Pipeline.Workspace)/gatsby
+      CURRENT_COMMIT=$(git rev-parse HEAD)
+      echo "Current Gatsby commit: $CURRENT_COMMIT"
+      
+      # Try to get the last build commit
+      LAST_COMMIT=""
+      if [ -f "$(Build.ArtifactStagingDirectory)/last-gatsby-commit.txt" ]; then
+        LAST_COMMIT=$(cat "$(Build.ArtifactStagingDirectory)/last-gatsby-commit.txt")
+        echo "Last built Gatsby commit: $LAST_COMMIT"
+      fi
+      
+      # Determine if we need to build
+      if [ "$CURRENT_COMMIT" != "$LAST_COMMIT" ] || [ -z "$LAST_COMMIT" ]; then
+        echo "##vso[task.setvariable variable=shouldBuildGatsby]true"
+        echo "Changes detected in Gatsby repo - will build"
+      else
+        echo "##vso[task.setvariable variable=shouldBuildGatsby]false"
+        echo "No changes in Gatsby repo - skipping build"
+      fi
+      
+      # Save current commit for next time
+      echo "$CURRENT_COMMIT" > "$(Build.ArtifactStagingDirectory)/last-gatsby-commit.txt"
+    displayName: "Check Gatsby Repo for Changes"
+    
+  # Save the commit hash for future builds
+  - task: PublishPipelineArtifact@1
+    inputs:
+      targetPath: '$(Build.ArtifactStagingDirectory)/last-gatsby-commit.txt'
+      artifactName: 'gatsby-metadata'
+    displayName: 'Save Gatsby commit for next build'
 
 # --- Astro Steps ---
   - task: NodeTool@0
@@ -65,21 +107,25 @@ steps:
 
 # --- Gatsby Steps ---
   - task: NodeTool@0 # Install Node again if needed, or ensure version compatibility
+    condition: eq(variables['shouldBuildGatsby'], 'true')
     inputs:
       versionSpec: '18.x' # Or the Node version required by Gatsby
     displayName: 'Install Node.js for Gatsby'
 
   - script: |
       npm install
+    condition: eq(variables['shouldBuildGatsby'], 'true')
     displayName: 'Install Gatsby dependencies'
     workingDirectory: $(Pipeline.Workspace)/gatsby # Path where Gatsby repo was checked out
 
   - script: |
       npx gatsby build --prefix-paths
+    condition: eq(variables['shouldBuildGatsby'], 'true')
     displayName: 'Build Gatsby project'
     workingDirectory: $(Pipeline.Workspace)/gatsby # Path where Gatsby repo was checked out
 
   - task: CopyFiles@2
+    condition: eq(variables['shouldBuildGatsby'], 'true')
     inputs:
       SourceFolder: '$(Pipeline.Workspace)/gatsby/public' # Gatsby output folder relative to checkout path
       Contents: '**'
@@ -106,7 +152,7 @@ steps:
     displayName: 'Deploy Astro to DEV S3 bucket (Root)'
 
   - task: S3Upload@1
-    condition: eq(variables['Build.SourceBranchName'], 'develop') # Condition based on Astro repo branch
+    condition: and(eq(variables['Build.SourceBranchName'], 'develop'), eq(variables['shouldBuildGatsby'], 'true'))
     inputs:
       awsCredentials: 'AWS_DEV'
       regionName: 'me-central-1'
@@ -129,7 +175,7 @@ steps:
     displayName: 'Deploy Astro to PROD S3 bucket (Root)'
 
   - task: S3Upload@1
-    condition: eq(variables['Build.SourceBranchName'], 'main') # Condition based on Astro repo branch
+    condition: and(eq(variables['Build.SourceBranchName'], 'main'), eq(variables['shouldBuildGatsby'], 'true'))
     inputs:
       awsCredentials: 'AWS_PROD'
       regionName: 'me-central-1'
