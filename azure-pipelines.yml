@@ -239,7 +239,7 @@ jobs:
   # Cache Gatsby cache folder for faster builds
   - task: Cache@2
     inputs:
-      key: 'gatsby-cache | "$(Agent.OS)" | $(GATSBY_BUILD_DIRECTORY) | $(Build.SourceVersion)'
+      key: 'gatsby-cache | "$(Agent.OS)" | "$(GATSBY_BUILD_DIRECTORY)" | $(Build.SourceVersion)'
       path: $(GATSBY_CACHE_FOLDER)
     displayName: 'Cache Gatsby build cache'
     
