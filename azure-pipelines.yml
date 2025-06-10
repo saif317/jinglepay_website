@@ -236,6 +236,11 @@ jobs:
       path: $(NODE_CACHE_FOLDER)
     displayName: 'Cache npm dependencies for Gatsby'
 
+  # Create Gatsby cache directory
+  - bash: |
+      mkdir -p $(GATSBY_CACHE_FOLDER)
+    displayName: 'Create Gatsby cache directory'
+    
   # Cache Gatsby cache folder for faster builds
   - task: Cache@2
     inputs:
