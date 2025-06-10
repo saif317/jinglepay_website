@@ -3,7 +3,7 @@
 
 resources:
   repositories:
-    - repository: gatsbyRepo 
+    - repository: gatsbyRepo
       type: git
       name: JinglePay/jp_website 
       ref: main
@@ -65,7 +65,7 @@ jobs:
     inputs:
       artifactName: 'gatsby-metadata'
       targetPath: '$(Build.ArtifactStagingDirectory)'
-    continueOnError: false
+    continueOnError: true
     displayName: 'Download previous metadata'
 
   # Checkout repositories
@@ -77,42 +77,56 @@ jobs:
   - checkout: gatsbyRepo
     path: gatsby
     displayName: 'Checkout Gatsby repo'
-    fetchDepth: 1  # Optimized git fetch depth
+    fetchDepth: 1
+    continueOnError: true  # Don't fail the entire pipeline if Gatsby repo can't be checked out
     
   # Check for Gatsby changes
   - bash: |
-      # Store current commit hash
-      cd $(Pipeline.Workspace)/gatsby
-      CURRENT_COMMIT=$(git rev-parse HEAD)
-      echo "Current Gatsby commit: $CURRENT_COMMIT"
-      
-      # Try to get the last build commit
-      LAST_COMMIT=""
       if [ -f "$(Build.ArtifactStagingDirectory)/last-gatsby-commit.txt" ]; then
-        LAST_COMMIT=$(cat "$(Build.ArtifactStagingDirectory)/last-gatsby-commit.txt")
-        echo "Last built Gatsby commit: $LAST_COMMIT"
-      fi
-      
-      # Determine if we need to build
-      if [ "$CURRENT_COMMIT" != "$LAST_COMMIT" ] || [ -z "$LAST_COMMIT" ]; then
-        echo "##vso[task.setvariable variable=shouldBuildGatsby;isOutput=true]true"
-        echo "Changes detected in Gatsby repo - will build"
+        LAST_GATSBY_COMMIT=$(cat "$(Build.ArtifactStagingDirectory)/last-gatsby-commit.txt")
+        
+        # Check if Gatsby repo checkout was successful
+        if [ -d "$(Pipeline.Workspace)/gatsby" ]; then
+          CURRENT_GATSBY_COMMIT=$(git -C $(Pipeline.Workspace)/gatsby rev-parse HEAD)
+          
+          if [ "$LAST_GATSBY_COMMIT" != "$CURRENT_GATSBY_COMMIT" ]; then
+            echo "Gatsby repository has changed. Will rebuild."
+            echo "##vso[task.setvariable variable=shouldBuildGatsby;isOutput=true]true"
+          else
+            echo "Gatsby repository has not changed. No need to rebuild."
+            echo "##vso[task.setvariable variable=shouldBuildGatsby;isOutput=true]false"
+          fi
+        else
+          echo "Gatsby repository checkout failed. Will try to build anyway."
+          echo "##vso[task.setvariable variable=shouldBuildGatsby;isOutput=true]true"
+        fi
       else
-        echo "##vso[task.setvariable variable=shouldBuildGatsby;isOutput=true]false"
-        echo "No changes in Gatsby repo - skipping build"
+        echo "No previous Gatsby commit metadata found. Will build."
+        echo "##vso[task.setvariable variable=shouldBuildGatsby;isOutput=true]true"
       fi
-      
-      # Save current commit for next time
-      echo "$CURRENT_COMMIT" > "$(Build.ArtifactStagingDirectory)/last-gatsby-commit.txt"
-    displayName: "Check Gatsby Repo for Changes"
-    name: GatsbyChanges # Name this step so we can reference its output
+    name: GatsbyChanges
+    displayName: 'Check for Gatsby changes'
+
+  # Create and save the commit hash for future builds
+  - bash: |
+      # Create the metadata file if Gatsby repo checkout was successful
+      if [ -d "$(Pipeline.Workspace)/gatsby" ] && [ -d "$(Pipeline.Workspace)/gatsby/.git" ]; then
+        CURRENT_GATSBY_COMMIT=$(git -C $(Pipeline.Workspace)/gatsby rev-parse HEAD)
+        echo "$CURRENT_GATSBY_COMMIT" > "$(Build.ArtifactStagingDirectory)/last-gatsby-commit.txt"
+        echo "Saved Gatsby commit: $CURRENT_GATSBY_COMMIT"
+      else
+        echo "WARNING: Gatsby repo not available or not a git repository, creating placeholder commit file"
+        echo "initial-commit-$(date +%s)" > "$(Build.ArtifactStagingDirectory)/last-gatsby-commit.txt"
+      fi
+    displayName: 'Create Gatsby commit metadata'
+    continueOnError: false
     
   # Save the commit hash for future builds
   - task: PublishPipelineArtifact@1
     inputs:
-      targetPath: '$(Build.ArtifactStagingDirectory)/last-gatsby-commit.txt'
       artifactName: 'gatsby-metadata'
-    displayName: 'Save Gatsby commit for next build'
+      targetPath: '$(Build.ArtifactStagingDirectory)/last-gatsby-commit.txt'
+    displayName: 'Save Gatsby commit metadata'
 
 # --- Astro Build Job ---
 - job: BuildAstro
