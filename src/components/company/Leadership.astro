@@ -45,33 +45,30 @@ const teamMembers = [amir, sohali, rashid, chris, ritesh, rick].map((icon, index
     {
       boardMembers.map((member, index) => (
         <div
-          class={`flex flex-col ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'} items-center gap-x-12 gap-y-8`}
+          class={`flex flex-col ${index % 2 !== 0 ? 'md:flex-row' : 'md:flex-row-reverse'} items-center gap-x-12 gap-y-8 mx-auto max-w-[1000px]`}
         >
-          <div class='flex-shrink-0 w-full xl:max-w-[475px] 2xl:max-w-[550px] 3xl:max-w-[650px] 4xl:max-w-[800px] md:w-2/5 xl:w-full'>
-            <Image
-              src={member.image}
-              alt={member.name}
-              class='object-cover w-full rounded-xl'
-              widths={[300, 600]}
-              sizes='(max-width: 768px) 80vw, 40vw'
-              decoding={index === 0 ? 'sync' : 'async'}
-              loading={index === 0 ? 'eager' : 'lazy'}
-              quality='max'
-            />
-          </div>
-          <div class='flex-grow md:w-3/5'>
-            <p class='mb-4 text-xl font-bold xl:text-2xl 3xl:text-3xl 4xl:text-4xl text-zinc-400'>{member.title}</p>
-            <h3 class='mb-2 text-3xl font-extrabold xl:text-3xl 3xl:text-4xl 4xl:text-5xl text-slate-800'>
-              {member.name}
-            </h3>
-            <p class='text-xl text-gray-500 xl:text-2xl 3xl:text-3xl 4xl:text-4xl'>{member.description}</p>
+          <Image
+            src={member.image}
+            alt={member.name}
+            class='object-cover w-full max-w-[399px] max-h-[434px] rounded-xl aspect-[358/390] md:aspect-[399/434]'
+            widths={[358, 399]}
+            sizes='(max-width: 768px) 358px, 399px'
+            decoding={index === 0 ? 'sync' : 'async'}
+            loading={index === 0 ? 'eager' : 'lazy'}
+            quality='max'
+          />
+
+          <div class='w-full max-w-[399px] md:w-3/5 md:max-w-none'>
+            <p class='mb-4 text-xl font-bold xl:text-2xl text-zinc-400'>{member.title}</p>
+            <h3 class='mb-2 text-3xl font-extrabold xl:text-3xl text-slate-800'>{member.name}</h3>
+            <p class='text-xl text-gray-500 xl:text-2xl'>{member.description}</p>
           </div>
         </div>
       ))
     }
   </section>
 
-  <section class='flex flex-col gap-y-12'>
+  <section class='flex flex-col gap-y-12 max-w-[1200px] mx-auto'>
     <div class='max-w-[700px] lg:max-w-[900px] mx-auto flex flex-col gap-y-4 items-center'>
       <h2 class='text-3xl font-extrabold text-center'>{leadership.team.title}</h2>
       <p class='text-xl text-center text-zinc-900'>{leadership.team.description}</p>
@@ -79,21 +76,23 @@ const teamMembers = [amir, sohali, rashid, chris, ritesh, rick].map((icon, index
     <div class='grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3'>
       {
         teamMembers.map((member) => (
-          <div class='flex flex-col h-full'>
+          <div class='flex flex-col mx-auto h-full'>
             <div class='flex-grow'>
               <Image
                 src={member.image}
                 alt={member.name}
-                class='rounded-xl w-full object-cover aspect-[3/3.5] mb-4 shadow-sm'
-                widths={[300, 600]}
-                sizes='(max-width: 640px) 90vw, (max-width: 1024px) 45vw, 30vw'
+                class='rounded-xl w-full max-w-[358px] sm:max-w-[348px] object-cover aspect-[358/379] sm:aspect-[348/379] mb-4 shadow-sm mx-auto'
+                widths={[348, 358]}
+                sizes='(max-width: 640px) 358px, 348px'
                 decoding='async'
                 loading='lazy'
                 quality='max'
               />
-              <p class='text-sm text-[#6A30FF] mb-2'>{member.title}</p>
-              <h3 class='text-lg font-semibold text-[#1F2937]'>{member.name}</h3>
-              <p class='mb-1 text-xl text-gray-500'>{member.description}</p>
+              <div class='w-full max-w-[358px] mx-auto'>
+                <p class='text-sm text-[#6A30FF] mb-2'>{member.title}</p>
+                <h3 class='text-lg font-semibold text-[#1F2937]'>{member.name}</h3>
+                <p class='mb-1 text-xl text-gray-500'>{member.description}</p>
+              </div>
             </div>
             {member.linkedin && (
               <a
