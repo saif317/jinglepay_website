@@ -150,7 +150,7 @@ jobs:
     inputs:
       key: 'npm | "$(Agent.OS)" | $(ASTRO_BUILD_DIRECTORY)/package-lock.json | $(Build.SourceVersion)'
       restoreKeys: | 
-        npm | "$(Agent.OS)" | $(ASTRO_BUILD_DIRECTORY)
+        npm | "$(Agent.OS)" | "$(ASTRO_BUILD_DIRECTORY)"
         npm | "$(Agent.OS)"
       path: $(NODE_CACHE_FOLDER)
     displayName: 'Cache npm dependencies for Astro'
@@ -231,7 +231,7 @@ jobs:
     inputs:
       key: 'npm | "$(Agent.OS)" | $(GATSBY_BUILD_DIRECTORY)/package-lock.json'
       restoreKeys: | 
-        npm | "$(Agent.OS)" | $(GATSBY_BUILD_DIRECTORY)
+        npm | "$(Agent.OS)" | "$(GATSBY_BUILD_DIRECTORY)"
         npm | "$(Agent.OS)"
       path: $(NODE_CACHE_FOLDER)
     displayName: 'Cache npm dependencies for Gatsby'
