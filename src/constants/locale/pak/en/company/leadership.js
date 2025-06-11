@@ -4,32 +4,40 @@ export default {
     'Our visionary leaders at Jingle Pay guide our team with expertise and innovation, upholding high standards of governance and financial excellence.',
   boardMembers: [
     {
+      name: 'Alex Holmes',
+      title: 'Director',
+      description:
+        'Former Chairman & CEO of MoneyGram, where he led a high-stakes turnaround—digitizing a 200-country remittance network, pioneering blockchain integrations, and driving a $2B exit. Under his leadership, MoneyGram became a fintech force, culminating in a landmark F1 global brand partnership and strategic sale to Madison Dearborn.',
+    },
+    {
       name: 'Amir Fardghassemi',
       title: 'Founder & CEO',
       description:
-        '15+ years in FinTech, 2x founder with successful exits, ex-hedge fund manager trading $2.5B+ annually, and former investments in notable stock listed companies such as Twitter, Japan Post Bank, Ferrari, Shake Shack.',
+        'Founder & CEO, Jingle Pay. 15+ years in FinTech, 2x founder with successful exits. Former hedge fund manager with $2.5B+ in annual traded volumes. Strategic investor in Twitter, Shake Shack, Ferrari & more. Brings governance leadership, capital markets expertise, & exit strategy insight',
     },
     {
       name: 'Arya Bolurfrushan',
       title: 'Director',
       description:
-        'Former CFO of RAK Petroleum and Goldman Sachs Strategic Committee member; serial entrepreneur and founder of G42-backed AI firm AAICO.',
+        'Former CFO of RAK Petroleum and member of Goldman Sachs Strategic Committee. Serial entrepreneur and founder of AAICO, a G42-backed AI company. Brings deep financial leadership, strategic governance, and AI innovation expertise.',
     },
     {
-      name: 'Farooq Ahmed Khan',
+      name: 'Atif Bajwa',
       title: 'Director',
-      description: 'Group Head of Corporate, Investment Banking & International Business at Bank Alfalah.',
+      description:
+        'Current President of Bank Al Falah with 40+ years in global banking leadership, ex-CEO of major banks, senior roles at Citibank and ABN AMRO.',
     },
     {
       name: 'Maher Haddad',
       title: 'Director',
       description:
-        'Global strategy leader at MoneyGram; formerly led go-to-market initiatives at American Express across the Middle East.',
+        'Global business leader with MoneyGram and American Express in the Middle East. Expert in payments, remittances, and regional market expansion.',
     },
     {
       name: 'Faisal Rashid',
       title: 'Director',
-      description: 'Head of Financial Institutions, International Banking & Remittances at Bank Alfalah.',
+      description:
+        'Head of Financial Institutions, International Banking & Home Remittance Business at Bank Alfalah Limited. Extensive expertise in banking partnerships, international transactions, and remittance services.',
     },
   ],
   teamMembers: [
