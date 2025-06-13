@@ -405,7 +405,7 @@ jobs:
     - BuildGatsby
   variables:
     gatsbySucceeded: $[dependencies.BuildGatsby.outputs['setGatsbyStatus.GatsbyBuildSucceeded']]
-  condition: and(eq(variables['Build.SourceBranchName'], 'main'), succeeded('BuildAstro'), or(succeeded('BuildGatsby'), and(ne(dependencies.BuildGatsby.result, 'Failed'), ne(dependencies.BuildGatsby.result, 'Canceled'))))
+  condition: and(eq(variables['Build.SourceBranchName'], 'main'), succeeded('BuildAstro'), or(succeeded('BuildGatsby'), and(ne(variables['BuildGatsby.result'], 'Failed'), ne(variables['BuildGatsby.result'], 'Canceled'))))
   pool:
     vmImage: 'ubuntu-latest'
   steps:
