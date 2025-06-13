@@ -324,7 +324,7 @@ jobs:
 
   # Download Gatsby artifacts if they were built
   - task: DownloadBuildArtifacts@1
-    condition: succeeded('BuildGatsby')
+    condition: eq(dependencies.BuildGatsby.result, 'Succeeded')
     inputs:
       buildType: 'current'
       downloadType: 'single'
@@ -335,7 +335,7 @@ jobs:
 
   # Deploy Gatsby to DEV S3 bucket
   - task: S3Upload@1
-    condition: succeeded('BuildGatsby')
+    condition: eq(dependencies.BuildGatsby.result, 'Succeeded')
     inputs:
       awsCredentials: 'AWS_DEV'
       regionName: 'me-central-1'
@@ -360,7 +360,7 @@ jobs:
       # Only invalidate Gatsby paths if Gatsby was built and deployed
       aws cloudfront create-invalidation --distribution-id $(DEV_CLOUDFRONT_ID) --paths "/are/en/*"
     displayName: 'Invalidate DEV CloudFront cache for Gatsby'
-    condition: succeeded('BuildGatsby')
+    condition: eq(dependencies.BuildGatsby.result, 'Succeeded')
     env:
       AWS_ACCESS_KEY_ID: $(AWS_DEV_ACCESS_KEY_ID)
       AWS_SECRET_ACCESS_KEY: $(AWS_DEV_SECRET_ACCESS_KEY)
@@ -430,7 +430,7 @@ jobs:
 
   # Download Gatsby artifacts if they were built
   - task: DownloadBuildArtifacts@1
-    condition: succeeded('BuildGatsby')
+    condition: eq(dependencies.BuildGatsby.result, 'Succeeded')
     inputs:
       buildType: 'current'
       downloadType: 'single'
@@ -441,7 +441,7 @@ jobs:
 
   # Deploy Gatsby to PROD S3 bucket
   - task: S3Upload@1
-    condition: succeeded('BuildGatsby')
+    condition: eq(dependencies.BuildGatsby.result, 'Succeeded')
     inputs:
       awsCredentials: 'AWS_PROD'
       regionName: 'me-central-1'
@@ -466,7 +466,7 @@ jobs:
       # Only invalidate Gatsby paths if Gatsby was built and deployed
       aws cloudfront create-invalidation --distribution-id $(PROD_CLOUDFRONT_ID) --paths "/are/en/*"
     displayName: 'Invalidate PROD CloudFront cache for Gatsby'
-    condition: succeeded('BuildGatsby')
+    condition: eq(dependencies.BuildGatsby.result, 'Succeeded')
     env:
       AWS_ACCESS_KEY_ID: $(AWS_PROD_ACCESS_KEY_ID)
       AWS_SECRET_ACCESS_KEY: $(AWS_PROD_SECRET_ACCESS_KEY)
