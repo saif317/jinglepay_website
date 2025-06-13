@@ -209,7 +209,9 @@ jobs:
 - job: BuildGatsby
   displayName: 'Build Gatsby Website'
   dependsOn: CommonSetup
-  condition: eq(dependencies.CommonSetup.outputs['GatsbyChanges.shouldBuildGatsby'], 'true')
+  variables:
+    shouldBuildGatsby: $[dependencies.CommonSetup.outputs['GatsbyChanges.shouldBuildGatsby']]
+  condition: eq(variables['shouldBuildGatsby'], 'true')
   timeoutInMinutes: 20
   pool:
     vmImage: 'ubuntu-latest'
