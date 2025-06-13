@@ -326,7 +326,7 @@ jobs:
       contentType: ''
       contentEncoding: ''
       createBucket: false
-      filesAcl: 'public-read'
+      # filesAcl parameter removed - modern S3 buckets use bucket policies instead of ACLs
       # Use AWS CLI with efficient parameters
       overwrite: true
       useAwsCliV2: true
@@ -358,7 +358,7 @@ jobs:
       contentType: ''
       contentEncoding: ''
       createBucket: false
-      filesAcl: 'public-read'
+      # filesAcl parameter removed - modern S3 buckets use bucket policies instead of ACLs
       # Use AWS CLI with efficient parameters
       overwrite: true
       useAwsCliV2: true
@@ -434,7 +434,7 @@ jobs:
       contentType: ''
       contentEncoding: ''
       createBucket: false
-      filesAcl: 'public-read'
+      # filesAcl parameter removed - modern S3 buckets use bucket policies instead of ACLs
       # Use AWS CLI with efficient parameters
       overwrite: true
       useAwsCliV2: true
@@ -466,7 +466,7 @@ jobs:
       contentType: ''
       contentEncoding: ''
       createBucket: false
-      filesAcl: 'public-read'
+      # filesAcl parameter removed - modern S3 buckets use bucket policies instead of ACLs
       # Use AWS CLI with efficient parameters
       overwrite: true
       useAwsCliV2: true
