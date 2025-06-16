@@ -64,6 +64,14 @@ jobs:
   # Download previous Gatsby commit metadata
   - task: DownloadPipelineArtifact@2
     inputs:
+      source: 'specific'
+      project: '$(System.TeamProject)'
+      pipeline: '$(System.DefinitionId)'
+      runVersion: 'latestFromBranch'
+      runBranch: '$(Build.SourceBranch)'
+      preferTriggeringPipeline: true
+      allowPartiallySucceededBuilds: true
+      allowFailedBuilds: false
       artifactName: 'gatsby-metadata'
       targetPath: '$(Build.ArtifactStagingDirectory)'
     continueOnError: true
