@@ -45,6 +45,7 @@ variables:
   
   # AWS specific settings
   AWS_REGION: 'me-central-1'
+  DEV_CLOUDFRONT_ID: 'E3O0CTCPKLOA30'
   
   # Enable system diagnostics
   SYSTEM_DEBUG: false
