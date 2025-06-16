@@ -373,8 +373,8 @@ jobs:
     displayName: 'Invalidate DEV CloudFront cache for Gatsby'
     condition: eq(variables['gatsbySucceeded'], 'true')
     env:
-      AWS_ACCESS_KEY_ID: $(AWS_DEV_ACCESS_KEY_ID)
-      AWS_SECRET_ACCESS_KEY: $(AWS_DEV_SECRET_ACCESS_KEY)
+      AWS_ACCESS_KEY_ID: $(AWS_ACCESS_KEY_ID)
+      AWS_SECRET_ACCESS_KEY: $(AWS_SECRET_ACCESS_KEY)
       AWS_DEFAULT_REGION: me-central-1
     continueOnError: false
 
@@ -385,8 +385,8 @@ jobs:
     displayName: 'Invalidate DEV CloudFront cache for Astro'
     condition: succeededOrFailed()
     env:
-      AWS_ACCESS_KEY_ID: $(AWS_DEV_ACCESS_KEY_ID)
-      AWS_SECRET_ACCESS_KEY: $(AWS_DEV_SECRET_ACCESS_KEY)
+      AWS_ACCESS_KEY_ID: $(AWS_ACCESS_KEY_ID)
+      AWS_SECRET_ACCESS_KEY: $(AWS_SECRET_ACCESS_KEY)
       AWS_DEFAULT_REGION: me-central-1
     continueOnError: false
     
