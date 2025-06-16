@@ -366,29 +366,12 @@ jobs:
     displayName: 'Deploy Gatsby to DEV S3 bucket (are/en)'
     continueOnError: false
     
-  # Invalidate CloudFront cache for Gatsby content
+  # DEV environment serves directly from S3, no CloudFront invalidation needed
+  # Log deployment completion message
   - script: |
-      # Only invalidate Gatsby paths if Gatsby was built and deployed
-      aws cloudfront create-invalidation --distribution-id $(DEV_CLOUDFRONT_ID) --paths "/are/en/*"
-    displayName: 'Invalidate DEV CloudFront cache for Gatsby'
-    condition: eq(variables['gatsbySucceeded'], 'true')
-    env:
-      AWS_ACCESS_KEY_ID: $(AWS_DEV_ACCESS_KEY_ID)
-      AWS_SECRET_ACCESS_KEY: $(AWS_DEV_SECRET_ACCESS_KEY)
-      AWS_DEFAULT_REGION: me-central-1
-    continueOnError: false
-
-  # Invalidate CloudFront cache if needed
-  - script: |
-      # Create invalidation for Astro paths
-      aws cloudfront create-invalidation --distribution-id $(DEV_CLOUDFRONT_ID) --paths "/" "/index.html" "/assets/*" "/en/*" "/ur/*" "/ar/*"
-    displayName: 'Invalidate DEV CloudFront cache for Astro'
+      echo "##vso[task.logissue type=info]DEV environment serves directly from S3, no CloudFront invalidation needed"
+    displayName: 'Log S3 Deployment Info'
     condition: succeededOrFailed()
-    env:
-      AWS_ACCESS_KEY_ID: $(AWS_DEV_ACCESS_KEY_ID)
-      AWS_SECRET_ACCESS_KEY: $(AWS_DEV_SECRET_ACCESS_KEY)
-      AWS_DEFAULT_REGION: me-central-1
-    continueOnError: false
     
   # Log deployment metrics
   - script: |
