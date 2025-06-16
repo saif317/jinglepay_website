@@ -369,7 +369,7 @@ jobs:
   # DEV environment serves directly from S3, no CloudFront invalidation needed
   # Log deployment completion message
   - script: |
-      echo "##vso[task.logissue type=info]DEV environment serves directly from S3, no CloudFront invalidation needed"
+      echo "##vso[task.logissue type=warning]DEV environment serves directly from S3, no CloudFront invalidation needed"
     displayName: 'Log S3 Deployment Info'
     condition: succeededOrFailed()
     
