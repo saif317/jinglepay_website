@@ -37,7 +37,7 @@ const socialLinks = [
                   {section.links.map((link) => {
                     return (
                       <li>
-                        {link.text !== 'Terms & Conditions' && link.text !== 'Schedule of Charges' ? (
+                        {link.text !== 'Terms & Conditions' && link.text !== 'Schedule of Charges' && link.text !== 'شرائط و ضوابط' && link.text !== 'چارجز کا شیڈول' ? (
                           <Link
                             href={link.href}
                             class='text-sm font-normal no-underline transition-colors duration-200 text-zinc-400 hover:text-white sm:text-base'
