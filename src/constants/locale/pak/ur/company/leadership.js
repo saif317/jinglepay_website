@@ -48,6 +48,13 @@ export default {
       description: 'جِنگل پے کے چیئرمین۔ منی گرام میں اہم عہدوں پر فائز رہے۔ APAC ریجن کی قیادت کر رہے ہیں۔',
     },
     {
+      name: 'سہالی احمد',
+      title: 'سی بی او',
+      linkedin: 'https://www.linkedin.com/in/sohail-ahmad-8b629314b/',
+      description:
+        'ویسٹرن یونین اور منی گرام میں اہم کردار ادا کیے۔ APAC/MENAP ریجن کی قیادت میں 30 سال سے زائد کا تجربہ۔',
+    },
+    {
       name: 'راشد محمد',
       title: 'سی سی او',
       linkedin: 'https://www.linkedin.com/in/muhammad-rashid/',
@@ -59,13 +66,6 @@ export default {
       linkedin: 'https://www.linkedin.com/in/christianfarioli/',
       description:
         'پہلے اوریکل میں کام کیا، جہاں انہوں نے کئی مہمات کے ذریعے علاقائی بینکوں کو ڈیجیٹل ترقی میں مشورے دیے۔',
-    },
-    {
-      name: 'سہالی احمد',
-      title: 'سی بی او',
-      linkedin: 'https://www.linkedin.com/in/sohail-ahmad-8b629314b/',
-      description:
-        'ویسٹرن یونین اور منی گرام میں اہم کردار ادا کیے۔ APAC/MENAP ریجن کی قیادت میں 30 سال سے زائد کا تجربہ۔',
     },
     {
       name: 'ریتیش کمار',

@@ -300,15 +300,30 @@ jobs:
     displayName: 'Set Gatsby build status'
 
 # --- DEV Deployment Job ---
+  # Job: DeployToDev
+  #
+  # Deploys the Astro and Gatsby websites to the DEV S3 bucket.
+  #
+  # This job is triggered when the `develop` branch is pushed to the repository.
+  # It depends on the `BuildAstro` and `BuildGatsby` jobs, and uses the artifacts
+  # produced by those jobs to deploy to the DEV S3 bucket.
+  #
+  # The job will log a message indicating that the DEV environment serves directly
+  # from S3, and will not perform CloudFront invalidation.
+  #
+  # The job will also log deployment metrics, including the deployment completion
+  # time and the total pipeline duration.
+
 - job: DeployToDev
   displayName: 'Deploy to Development Environment'
+
   timeoutInMinutes: 15
   dependsOn:
     - BuildAstro
     - BuildGatsby
   variables:
     gatsbySucceeded: $[dependencies.BuildGatsby.outputs['setGatsbyStatus.GatsbyBuildSucceeded']]
-  condition: and(eq(variables['Build.SourceBranchName'], 'develop'), succeeded('BuildAstro'), or(succeeded('BuildGatsby'), eq(variables['BuildGatsby.result'], 'Skipped')))
+  condition: and(eq(variables['Build.SourceBranchName'], 'develop'), succeeded('BuildAstro'), or(succeeded('BuildGatsby'), ne(coalesce(variables['shouldBuildGatsby'], 'true'), 'true')))
   pool:
     vmImage: 'ubuntu-latest'
   steps:
