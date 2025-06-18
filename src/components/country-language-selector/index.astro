@@ -11,9 +11,20 @@ const currentLanguage = currentCountry.languages.find((l) => l.code === lang) ||
 
 const getCountryLink = (newCountryPath: string) => {
   if (newCountryPath === country) return '#';
-  else if (newCountryPath === 'uae') return 'https://jinglepay.com/homepage/AE/';
-  else if (newCountryPath === 'bhr') return '/bhr';
-  else return '/' + [newCountryPath, lang, pathname.split('/').slice(3).join('/')].join('/');
+  
+  // Find the target country from COUNTRIES constant
+  const targetCountry = COUNTRIES.find((c) => c.path === newCountryPath);
+  
+  if (!targetCountry) return '#'; // Should never happen, but just in case
+  
+  // Check if current language is supported in target country
+  const isCurrentLangSupported = targetCountry.languages.some((l) => l.code === lang);
+  
+  // Use current language if supported, otherwise use target country's default language
+  const languageToUse = isCurrentLangSupported ? lang : targetCountry.languages[0].code;
+  
+  // Construct URL consistently for all countries
+  return '/' + [targetCountry.path, languageToUse, ''].join('/');
 };
 
 const getLanguageLink = (newLangCode: string) => {
