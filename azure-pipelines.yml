@@ -320,10 +320,10 @@ jobs:
   timeoutInMinutes: 15
   dependsOn:
     - BuildAstro
-    - BuildGatsby
   variables:
     gatsbySucceeded: $[dependencies.BuildGatsby.outputs['setGatsbyStatus.GatsbyBuildSucceeded']]
-  condition: and(eq(variables['Build.SourceBranchName'], 'develop'), succeeded('BuildAstro'), or(succeeded('BuildGatsby'), ne(coalesce(variables['shouldBuildGatsby'], 'true'), 'true')))
+  # Always run DEV deployment for develop branch
+  condition: eq(variables['Build.SourceBranchName'], 'develop')
   pool:
     vmImage: 'ubuntu-latest'
   steps:
