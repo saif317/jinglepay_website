@@ -323,7 +323,7 @@ jobs:
     - BuildGatsby
   variables:
     gatsbySucceeded: $[dependencies.BuildGatsby.outputs['setGatsbyStatus.GatsbyBuildSucceeded']]
-  # condition: and(eq(variables['Build.SourceBranchName'], 'develop'), succeeded('BuildAstro'), or(succeeded('BuildGatsby'), ne(coalesce(variables['shouldBuildGatsby'], 'true'), 'true')))
+  condition: and(eq(variables['Build.SourceBranchName'], 'develop'), succeeded('BuildAstro'), or(succeeded('BuildGatsby'), ne(coalesce(variables['shouldBuildGatsby'], 'true'), 'true')))
   pool:
     vmImage: 'ubuntu-latest'
   steps:
@@ -338,6 +338,8 @@ jobs:
 
   # Deploy Astro to DEV S3 bucket
   - task: S3Upload@1
+    # Temporary: Always run this task regardless of pipeline conditions
+    condition: always()
     inputs:
       awsCredentials: 'AWS_DEV'
       regionName: 'me-central-1'

@@ -232,7 +232,7 @@ const { translations = {} } = Astro.locals;
 >
   <h2 class='text-lg lg:text-xl'>{translations.featuredIn}</h2>
 
-  <div class='w-full logo-carousel-container' id='logoCarouselContainer'>
+  <div class='w-full logo-carousel-container' style='direction: ltr;' id='logoCarouselContainer'>
     <div class='flex logo-carousel-track' id='logoCarouselTrack'>
       {
         logos.map((logo) => (
