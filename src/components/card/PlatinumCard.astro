@@ -1,0 +1,80 @@
+---
+// Card features that would normally come from a CMS or data file
+const cardFeatures = [
+  'Zero annual fees for life',
+  'Free international cash withdrawals',
+  'Contactless and Apple/Google Pay enabled',
+  'No foreign exchange fees',
+  'Virtual card for online shopping',
+  'Instant card freezing in-app'
+];
+---
+
+<section class="card-section py-16 bg-gray-900 text-white">
+  <div class="container mx-auto px-4">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+      <div class="text-content">
+        <h2 class="text-3xl md:text-4xl font-bold mb-8">Free Platinum MasterCard Debit Card</h2>
+        <ul class="card-features space-y-4">
+          {cardFeatures.map(feature => (
+            <li class="flex items-start">
+              <span class="mr-3 mt-1">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#794eff]" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                </svg>
+              </span>
+              <span class="text-lg">{feature}</span>
+            </li>
+          ))}
+        </ul>
+        
+        <div class="mt-10">
+          <button class="px-6 py-3 bg-[#794eff] text-white rounded-lg font-medium hover:bg-[#6b3cde] transition">
+            Order Your Card
+          </button>
+        </div>
+      </div>
+      
+      <div class="card-image">
+        <div class="card-container relative max-w-md mx-auto">
+          <!-- Main card -->
+          <div class="card relative z-30 transform hover:-rotate-6 transition-transform duration-300">
+            <img 
+              src="/images/mastercard-platinum.png" 
+              alt="JinglePay Platinum MasterCard" 
+              class="w-full max-w-md mx-auto rounded-2xl shadow-2xl"
+            />
+          </div>
+          
+          <!-- Card shadow/reflection effects -->
+          <div class="card-shadow absolute top-4 -right-4 w-full h-full bg-[#8f6ef5] rounded-2xl z-20 transform rotate-6"></div>
+          <div class="card-reflection absolute -bottom-4 -left-4 w-full h-full bg-[#6b3cde] rounded-2xl z-10 transform -rotate-3"></div>
+          
+          <!-- Card highlights/features -->
+          <div class="absolute -top-8 -right-8 w-20 h-20 bg-white rounded-full flex items-center justify-center z-40 card-badge">
+            <div class="text-[#794eff] font-bold text-center">
+              <div class="text-sm">FREE</div>
+              <div class="text-xs">Forever</div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Additional card benefits -->
+        <div class="flex justify-center mt-8 space-x-8">
+          <div class="benefit text-center">
+            <div class="text-xl font-bold text-[#794eff]">0%</div>
+            <div class="text-sm text-gray-300">Annual Fee</div>
+          </div>
+          <div class="benefit text-center">
+            <div class="text-xl font-bold text-[#794eff]">0%</div>
+            <div class="text-sm text-gray-300">FX Fee</div>
+          </div>
+          <div class="benefit text-center">
+            <div class="text-xl font-bold text-[#794eff]">100%</div>
+            <div class="text-sm text-gray-300">Secure</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

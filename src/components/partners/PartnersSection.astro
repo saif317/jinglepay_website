@@ -1,0 +1,136 @@
+---
+// Partner data that would normally come from a CMS or data file
+const partners = [
+  {
+    name: 'Dubai Bank',
+    logo: '/images/partners/partner1.png',
+    type: 'Banking'
+  },
+  {
+    name: 'Abu Dhabi Financial',
+    logo: '/images/partners/partner2.png',
+    type: 'Financial'
+  },
+  {
+    name: 'UAE Exchange',
+    logo: '/images/partners/partner3.png',
+    type: 'Exchange'
+  },
+  {
+    name: 'Emirates Pay',
+    logo: '/images/partners/partner4.png',
+    type: 'Payment'
+  },
+  {
+    name: 'Sharjah Commerce',
+    logo: '/images/partners/partner5.png',
+    type: 'Commerce'
+  },
+  {
+    name: 'Gulf Digital',
+    logo: '/images/partners/partner6.png',
+    type: 'Technology'
+  },
+  {
+    name: 'DIFC Fintech',
+    logo: '/images/partners/partner7.png',
+    type: 'Fintech'
+  },
+  {
+    name: 'Al Etihad Credit Bureau',
+    logo: '/images/partners/partner8.png',
+    type: 'Credit'
+  }
+];
+
+// Partner categories for filtering
+const categories = ['All', 'Banking', 'Financial', 'Exchange', 'Payment', 'Commerce', 'Technology', 'Fintech', 'Credit'];
+---
+
+<section class="partners py-16 bg-gray-50">
+  <div class="container mx-auto px-4">
+    <div class="text-center mb-12">
+      <h2 class="text-3xl font-bold mb-4">Our Trusted Partners</h2>
+      <p class="text-gray-600 max-w-2xl mx-auto">
+        We collaborate with leading financial institutions and technology providers to bring you the best possible service and experience.
+      </p>
+    </div>
+    
+    <!-- Partner categories filter -->
+    <div class="partner-filters flex flex-wrap justify-center gap-2 mb-10">
+      {categories.map(category => (
+        <button 
+          class="filter-btn px-4 py-2 rounded-full text-sm font-medium transition-colors duration-200 ease-in-out hover:bg-[#794eff] hover:text-white focus:outline-none"
+          data-category={category === 'All' ? '*' : category}
+        >
+          {category}
+        </button>
+      ))}
+    </div>
+    
+    <!-- Partners logo grid -->
+    <div class="partners-logo-grid grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 items-center">
+      {partners.map(partner => (
+        <div class="partner-logo" data-category={partner.type}>
+          <div class="partner-card bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 h-full flex items-center justify-center">
+            <img 
+              src={partner.logo} 
+              alt={partner.name} 
+              class="max-h-12 max-w-full grayscale hover:grayscale-0 transition-all opacity-80 hover:opacity-100"
+              onError="this.onerror=null; this.src='/images/placeholder-logo.png';"
+            />
+          </div>
+        </div>
+      ))}
+    </div>
+    
+    <!-- Become a partner CTA -->
+    <div class="become-partner-cta mt-12 text-center">
+      <p class="text-lg mb-4">Interested in becoming a JinglePay partner?</p>
+      <a href="/partners" class="inline-flex items-center text-[#794eff] hover:underline font-medium">
+        Learn about our partnership opportunities
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+        </svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const partnerItems = document.querySelectorAll('.partner-logo');
+    
+    // Set "All" as default active filter
+    const allButton = document.querySelector('[data-category="*"]');
+    if (allButton) {
+      allButton.classList.add('bg-[#794eff]', 'text-white');
+    }
+    
+    // Handle filter button clicks
+    filterButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        // Remove active class from all buttons
+        filterButtons.forEach(btn => {
+          btn.classList.remove('bg-[#794eff]', 'text-white');
+        });
+        
+        // Add active class to clicked button
+        button.classList.add('bg-[#794eff]', 'text-white');
+        
+        // Get selected category
+        const selectedCategory = button.getAttribute('data-category');
+        
+        // Filter partner items
+        partnerItems.forEach(item => {
+          if (selectedCategory === '*' || item.getAttribute('data-category') === selectedCategory) {
+            item.style.display = 'block';
+          } else {
+            item.style.display = 'none';
+          }
+        });
+      });
+    });
+  });
+</script>

@@ -1,0 +1,54 @@
+---
+// These would normally come from a CMS or data file
+const partnerLogos = [
+  {
+    name: 'Emirates NBD',
+    logo: '/logos/emirates-nbd.svg',
+    width: 120
+  },
+  {
+    name: 'Mashreq Bank',
+    logo: '/logos/mashreq.svg',
+    width: 120
+  },
+  {
+    name: 'Dubai Economic Department',
+    logo: '/logos/dubai-economic.svg',
+    width: 130
+  },
+  {
+    name: 'Etisalat',
+    logo: '/logos/etisalat.svg',
+    width: 100
+  },
+  {
+    name: 'Du',
+    logo: '/logos/du.svg',
+    width: 80
+  },
+  {
+    name: 'Dubai Chamber',
+    logo: '/logos/dubai-chamber.svg',
+    width: 120
+  }
+];
+---
+
+<section class="trusted-by py-12 bg-gray-50">
+  <div class="container mx-auto px-4 text-center">
+    <h2 class="text-2xl font-semibold mb-8">Trusted By</h2>
+    <div class="partner-logos flex flex-wrap justify-center items-center gap-8 md:gap-12">
+      {partnerLogos.map(partner => (
+        <div class="partner-logo grayscale hover:grayscale-0 transition-all duration-300">
+          <img 
+            src={partner.logo} 
+            alt={partner.name} 
+            width={partner.width} 
+            height="auto"
+            class="h-12 w-auto object-contain"
+          />
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

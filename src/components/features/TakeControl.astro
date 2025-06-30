@@ -1,0 +1,39 @@
+---
+// Feature data that would normally come from a CMS or data file
+const features = [
+  {
+    icon: '/icons/secure.svg',
+    title: 'Ultra Secure',
+    description: 'Bank-level security with end-to-end encryption and biometric authentication to protect your money and data.'
+  },
+  {
+    icon: '/icons/fast.svg',
+    title: 'Lightning Fast',
+    description: 'Instant transfers to friends, family, and businesses, both locally and internationally.'
+  },
+  {
+    icon: '/icons/low-fees.svg',
+    title: 'Low Fees',
+    description: 'Save money with our competitive exchange rates and minimal transaction fees.'
+  }
+];
+---
+
+<section class="features py-16">
+  <div class="container mx-auto px-4">
+    <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">Take Full Control</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      {features.map(feature => (
+        <div class="feature-card bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 border border-gray-100">
+          <div class="feature-icon mb-6">
+            <div class="icon-wrapper bg-[#F5F3FF] p-3 rounded-full inline-block">
+              <img src={feature.icon} alt={feature.title} class="w-8 h-8" />
+            </div>
+          </div>
+          <h3 class="text-xl font-bold mb-4">{feature.title}</h3>
+          <p class="text-gray-600">{feature.description}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

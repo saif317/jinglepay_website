@@ -1,0 +1,67 @@
+---
+// Investor data that would normally come from a CMS or data file
+const investors = [
+  {
+    name: 'Venture Capital Partners',
+    logo: '/images/investors/investor1.png'
+  },
+  {
+    name: 'Global Fintech Fund',
+    logo: '/images/investors/investor2.png'
+  },
+  {
+    name: 'UAE Innovation Fund',
+    logo: '/images/investors/investor3.png'
+  },
+  {
+    name: 'Tech Growth Capital',
+    logo: '/images/investors/investor4.png'
+  },
+  {
+    name: 'Middle East Ventures',
+    logo: '/images/investors/investor5.png'
+  },
+  {
+    name: 'Digital Financial Group',
+    logo: '/images/investors/investor6.png'
+  }
+];
+---
+
+<section class="investors py-16">
+  <div class="container mx-auto px-4 text-center">
+    <h2 class="text-3xl font-bold mb-8">Backed by Global Investors</h2>
+    
+    <div class="investors-logo-grid grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 items-center">
+      {investors.map(investor => (
+        <div class="investor-logo flex items-center justify-center h-24">
+          <img 
+            src={investor.logo} 
+            alt={investor.name} 
+            class="max-h-12 max-w-full grayscale hover:grayscale-0 transition-all opacity-80 hover:opacity-100"
+            onError="this.onerror=null; this.src='/images/placeholder-logo.png';"
+          />
+        </div>
+      ))}
+    </div>
+    
+    <div class="mt-12">
+      <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+        JinglePay is proud to be supported by leading global investors who share our vision of transforming digital financial services in the UAE and beyond.
+      </p>
+    </div>
+    
+    <!-- Investment rounds -->
+    <div class="investment-rounds flex flex-wrap justify-center gap-8 mt-10">
+      <div class="round px-6 py-3 bg-gray-100 rounded-full">
+        <span class="font-semibold">Series B Funding: $50M</span>
+      </div>
+      <div class="round px-6 py-3 bg-gray-100 rounded-full">
+        <span class="font-semibold">Total Raised: $75M+</span>
+      </div>
+      <div class="round px-6 py-3 bg-gray-100 rounded-full">
+        <span class="font-semibold">Valuation: $350M</span>
+      </div>
+    </div>
+  </div>
+</section>

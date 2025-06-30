@@ -1,0 +1,119 @@
+---
+// Payment features that would normally come from a CMS or data file
+const paymentFeatures = [
+  {
+    title: 'Instant Transfers',
+    description: 'Send money instantly to anyone, anywhere in the world with just a tap.'
+  },
+  {
+    title: 'Multiple Payment Methods',
+    description: 'Use bank transfers, cards, or wallet balance for maximum convenience.'
+  },
+  {
+    title: 'Transparent Fees',
+    description: 'Know exactly what you\'re paying with our clear, upfront fee structure.'
+  },
+  {
+    title: 'Split Bills Easily',
+    description: 'Divide expenses with friends and family for dinners, trips, or gifts.'
+  }
+];
+
+// Payment screenshots
+const paymentScreenshots = [
+  {
+    url: '/images/payment-screen-1.png',
+    alt: 'JinglePay Money Transfer'
+  }
+];
+---
+
+<section class="borderless-payments py-16">
+  <div class="container mx-auto px-4">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+      <div class="payment-screens order-2 lg:order-1">
+        <!-- Payment screenshot mockup -->
+        <div class="phone-mockup flex justify-center items-center">
+          <div class="relative max-w-[300px] mx-auto">
+            <!-- Phone frame -->
+            <img 
+              src="/images/phone-mockup.png" 
+              alt="JinglePay Mobile App" 
+              class="w-full relative z-20"
+            />
+            
+            <!-- Payment screen inside the phone -->
+            <div class="absolute inset-0 flex items-center justify-center z-10">
+              <div class="screen-content w-[250px] h-[500px] overflow-hidden rounded-3xl">
+                <img 
+                  src={paymentScreenshots[0].url} 
+                  alt={paymentScreenshots[0].alt}
+                  class="w-full h-full object-cover"
+                />
+              </div>
+            </div>
+            
+            <!-- Animated payment illustration -->
+            <div class="absolute -top-10 -right-20 w-24 h-24 bg-[#794eff] rounded-full flex items-center justify-center z-30 payment-animation">
+              <div class="text-white font-bold text-lg">$</div>
+            </div>
+            <div class="absolute -bottom-10 -left-20 w-16 h-16 bg-[#6b3cde] rounded-full flex items-center justify-center z-30 payment-animation-delay">
+              <div class="text-white font-bold text-lg">£</div>
+            </div>
+            <div class="absolute top-1/4 -left-16 w-12 h-12 bg-[#8f6ef5] rounded-full flex items-center justify-center z-30 payment-animation-more-delay">
+              <div class="text-white font-bold text-lg">€</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="text-content order-1 lg:order-2">
+        <h2 class="text-3xl md:text-4xl font-bold mb-8">Borderless Payments with Single Tap</h2>
+        <div class="features-list space-y-6">
+          {paymentFeatures.map(feature => (
+            <div class="feature-item flex">
+              <div class="icon-wrapper mr-4">
+                <div class="w-6 h-6 bg-[#794eff] rounded-full flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                  </svg>
+                </div>
+              </div>
+              <div class="content">
+                <h3 class="text-lg font-semibold mb-1">{feature.title}</h3>
+                <p class="text-gray-600">{feature.description}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Animation for the payment bubbles */
+  .payment-animation {
+    animation: float 5s ease-in-out infinite;
+  }
+  
+  .payment-animation-delay {
+    animation: float 7s ease-in-out infinite 1s;
+  }
+  
+  .payment-animation-more-delay {
+    animation: float 6s ease-in-out infinite 2s;
+  }
+  
+  @keyframes float {
+    0% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-15px);
+    }
+    100% {
+      transform: translateY(0px);
+    }
+  }
+</style>

@@ -1,0 +1,136 @@
+---
+// App features that would normally come from a CMS or data file
+const appFeatures = [
+  {
+    title: 'Smart Money Management',
+    description: 'Track your spending habits and set budgets to keep your finances on track.'
+  },
+  {
+    title: 'Multiple Currencies',
+    description: 'Hold, exchange, and transfer money in multiple currencies with real-time rates.'
+  },
+  {
+    title: 'Bill Payments',
+    description: 'Pay all your utility bills, subscriptions, and more directly from the app.'
+  },
+  {
+    title: 'Secure Transactions',
+    description: 'Rest easy with our world-class security features protecting every transaction.'
+  }
+];
+
+// App screenshot URLs
+const appScreenshots = [
+  {
+    url: '/images/app-screen-1.png',
+    alt: 'JinglePay Dashboard'
+  },
+  {
+    url: '/images/app-screen-2.png',
+    alt: 'JinglePay Transfers'
+  },
+  {
+    url: '/images/app-screen-3.png',
+    alt: 'JinglePay Currency Exchange'
+  }
+];
+---
+
+<section class="app-showcase py-16 bg-gray-50">
+  <div class="container mx-auto px-4">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+      <div class="text-content">
+        <h2 class="text-3xl md:text-4xl font-bold mb-8">The Go-To App for Your Financial Needs</h2>
+        <div class="features-list space-y-6">
+          {appFeatures.map(feature => (
+            <div class="feature-item flex">
+              <div class="icon-wrapper mr-4">
+                <div class="w-6 h-6 bg-[#794eff] rounded-full flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                  </svg>
+                </div>
+              </div>
+              <div class="content">
+                <h3 class="text-lg font-semibold mb-1">{feature.title}</h3>
+                <p class="text-gray-600">{feature.description}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div class="app-screens relative">
+        <div class="phone-mockup flex justify-center items-center">
+          <div class="relative w-[280px]">
+            <!-- Main phone in the center -->
+            <img 
+              src="/images/phone-mockup.png" 
+              alt="JinglePay Mobile App" 
+              class="w-full relative z-20"
+            />
+            
+            <!-- App screens positioned within the phone frame -->
+            <div class="absolute inset-0 flex items-center justify-center z-10">
+              <div class="carousel relative w-[250px] h-[500px] overflow-hidden rounded-3xl">
+                {appScreenshots.map((screen, index) => (
+                  <img 
+                    src={screen.url} 
+                    alt={screen.alt}
+                    class={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${index === 0 ? 'opacity-100' : 'opacity-0'}`}
+                    data-screen-index={index}
+                  />
+                ))}
+              </div>
+            </div>
+            
+            <!-- Side phones (optional decorative elements) -->
+            <div class="absolute -left-20 top-10 w-[220px] opacity-40 -rotate-12 z-0 hidden md:block">
+              <img 
+                src="/images/phone-mockup.png" 
+                alt="JinglePay Mobile App" 
+                class="w-full"
+              />
+            </div>
+            <div class="absolute -right-20 top-20 w-[220px] opacity-40 rotate-12 z-0 hidden md:block">
+              <img 
+                src="/images/phone-mockup.png" 
+                alt="JinglePay Mobile App" 
+                class="w-full"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Simple carousel for app screenshots
+  document.addEventListener('DOMContentLoaded', () => {
+    const carousel = document.querySelector('.carousel');
+    if (!carousel) return;
+    
+    const screens = carousel.querySelectorAll('img');
+    if (screens.length <= 1) return;
+    
+    let currentIndex = 0;
+    
+    // Function to show the next screen
+    function showNextScreen() {
+      // Hide current screen
+      screens[currentIndex].classList.remove('opacity-100');
+      screens[currentIndex].classList.add('opacity-0');
+      
+      // Update index
+      currentIndex = (currentIndex + 1) % screens.length;
+      
+      // Show new screen
+      screens[currentIndex].classList.remove('opacity-0');
+      screens[currentIndex].classList.add('opacity-100');
+    }
+    
+    // Start automatic rotation
+    setInterval(showNextScreen, 3000);
+  });
+</script>

@@ -1,42 +1,77 @@
 ---
+// Common imports
+import Layout from '@layouts/Layout.astro';
+import { getStaticPathsWrapper } from '@util/getStaticPaths';
+
+// Pakistan page imports
 import FeatureCarousal from '@components/banners/FeatureCarousal.astro';
 import Featured from '@components/hero-section/Featured.astro';
 import HeroSection from '@components/hero-section/index.astro';
-import Layout from '@layouts/Layout.astro';
 import Benefits from '@components/benefits/index.astro';
 import Companies from '@components/companies/index.astro';
 import Security from '@components/security/index.astro';
 import StartBanking from '@components/start-banking/index.astro';
 import CTA from '@components/cta/index.astro';
 import Regulation from '@components/regulation/index.astro';
-import { getStaticPathsWrapper } from '@util/getStaticPaths';
+
+// UAE page imports
+import UAEHero from '@components/hero-section/UAEHero.astro';
+import TrustedByLogos from '@components/partners/TrustedByLogos.astro';
+import TakeControl from '@components/features/TakeControl.astro';
+import GoToApp from '@components/app/GoToApp.astro';
+import BorderlessPayments from '@components/payments/BorderlessPayments.astro';
+import PlatinumCard from '@components/card/PlatinumCard.astro';
+import UserTestimonials from '@components/testimonials/UserTestimonials.astro';
+import StatsSection from '@components/stats/StatsSection.astro';
+import InvestorSection from '@components/investors/InvestorSection.astro';
+import PartnersSection from '@components/partners/PartnersSection.astro';
+import GetStartedCTA from '@components/cta/GetStartedCTA.astro';
 
 export const getStaticPaths = getStaticPathsWrapper(
   [
     'pak',
-    //  'uae'
+    'are'
   ],
   {
     pak: ['en', 'ur'],
-    // uae: ['en', 'ar'],
+    are: ['en', 'ar'],
   }
 );
 ---
 
 <Layout>
-  <div style='background: linear-gradient(177deg, #FFF 9.08%, #F6F6F6 99.83%);'>
-    <HeroSection />
-    <FeatureCarousal />
-  </div>
-  <Featured />
-
-  <Benefits />
-
-  <div class='flex flex-col'>
-    <Companies />
-    <Regulation />
-    <!-- <Security /> -->
-    <StartBanking />
-    <CTA />
-  </div>
+  {/* Conditionally render country-specific content */}
+  {Astro.params.country === 'are' ? (
+    <>
+      {/* UAE Page Content */}
+      <UAEHero />
+      <TrustedByLogos />
+      <TakeControl />
+      <GoToApp />
+      <BorderlessPayments />
+      <PlatinumCard />
+      <UserTestimonials />
+      <StatsSection />
+      <InvestorSection />
+      <PartnersSection />
+      <GetStartedCTA />
+    </>
+  ) : (
+    <>
+      {/* Pakistan Page Content */}
+      <div style='background: linear-gradient(177deg, #FFF 9.08%, #F6F6F6 99.83%);'>
+        <HeroSection />
+        <FeatureCarousal />
+      </div>
+      <Featured />
+      <Benefits />
+      <div class='flex flex-col'>
+        <Companies />
+        <Regulation />
+        <Security />
+        <StartBanking />
+        <CTA />
+      </div>
+    </>
+  )}
 </Layout>

@@ -11,6 +11,15 @@ import StatsSection from '@components/stats/StatsSection.astro';
 import InvestorSection from '@components/investors/InvestorSection.astro';
 import PartnersSection from '@components/partners/PartnersSection.astro';
 import GetStartedCTA from '@components/cta/GetStartedCTA.astro';
+import { getStaticPathsWrapper } from '@util/getStaticPaths';
+
+// Define static paths for UAE with English and Arabic support
+export const getStaticPaths = getStaticPathsWrapper(
+  ['are'],
+  {
+    are: ['en', 'ar'],
+  }
+);
 
 // Middleware in Astro.js will inject translations and locale information
 const { translations, country, lang } = Astro.locals;

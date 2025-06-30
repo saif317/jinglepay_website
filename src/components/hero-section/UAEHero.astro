@@ -1,0 +1,141 @@
+---
+import DownloadAppButton from './DownloadAppButton.astro';
+
+const {
+  translations: { hero = {} },
+} = Astro.locals;
+
+// Default currency conversion values
+const defaultFrom = {
+  code: 'AED',
+  name: 'UAE Dirham',
+  flag: '/flags/ae.svg'
+};
+
+const defaultTo = {
+  code: 'INR',
+  name: 'Indian Rupee',
+  flag: '/flags/in.svg'
+};
+
+const popularCurrencies = [
+  { code: 'PKR', name: 'Pakistani Rupee', flag: '/flags/pk.svg' },
+  { code: 'PHP', name: 'Philippine Peso', flag: '/flags/ph.svg' },
+  { code: 'BDT', name: 'Bangladeshi Taka', flag: '/flags/bd.svg' },
+  { code: 'USD', name: 'US Dollar', flag: '/flags/us.svg' },
+  { code: 'GBP', name: 'British Pound', flag: '/flags/gb.svg' },
+  { code: 'EUR', name: 'Euro', flag: '/flags/eu.svg' }
+];
+---
+
+<section class="hero-section bg-gradient-to-r from-[#794eff] to-[#6b3cde] py-16 md:py-24 pt-[150px]">
+  <div class="container mx-auto px-4">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+      <div class="text-content">
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">Banking Without Borders</h1>
+        <p class="text-xl text-white/80 mb-8">Transfer money instantly, pay bills, and manage your finances - all in one app</p>
+        <div class="flex flex-wrap gap-4">
+          <DownloadAppButton store="app-store" />
+          <DownloadAppButton store="google-play" />
+        </div>
+      </div>
+      
+      <div class="currency-converter bg-white rounded-2xl p-6 shadow-xl">
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="text-xl font-bold">Send Money</h3>
+          <div class="text-sm text-gray-500">1 AED = 22.58 INR</div>
+        </div>
+        
+        <!-- From Currency -->
+        <div class="mb-6">
+          <label class="block text-sm font-medium text-gray-700 mb-2">You Send</label>
+          <div class="relative">
+            <div class="flex items-center border border-gray-300 rounded-lg p-3">
+              <div class="w-full">
+                <input type="number" class="w-full outline-none text-lg font-medium" value="1000">
+              </div>
+              
+              <div class="currency-selector flex items-center ml-3 cursor-pointer">
+                <div class="flag-icon mr-2">
+                  <img src={defaultFrom.flag} alt={defaultFrom.code} class="w-6 h-6 rounded-full">
+                </div>
+                <div class="currency-code font-medium">{defaultFrom.code}</div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Exchange Icon -->
+        <div class="flex justify-center mb-6">
+          <div class="bg-gray-100 p-2 rounded-full cursor-pointer">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
+            </svg>
+          </div>
+        </div>
+        
+        <!-- To Currency -->
+        <div class="mb-6">
+          <label class="block text-sm font-medium text-gray-700 mb-2">Recipient Gets</label>
+          <div class="relative">
+            <div class="flex items-center border border-gray-300 rounded-lg p-3">
+              <div class="w-full">
+                <input type="number" class="w-full outline-none text-lg font-medium" value="22580" disabled>
+              </div>
+              
+              <div class="currency-selector flex items-center ml-3 cursor-pointer">
+                <div class="flag-icon mr-2">
+                  <img src={defaultTo.flag} alt={defaultTo.code} class="w-6 h-6 rounded-full">
+                </div>
+                <div class="currency-code font-medium">{defaultTo.code}</div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Popular Currencies -->
+        <div class="mb-6">
+          <h4 class="text-sm font-medium text-gray-700 mb-3">Popular Currencies</h4>
+          <div class="flex flex-wrap gap-2">
+            {popularCurrencies.map(currency => (
+              <div class="currency-chip flex items-center bg-gray-100 rounded-full px-3 py-1 cursor-pointer hover:bg-gray-200 transition">
+                <img src={currency.flag} alt={currency.code} class="w-4 h-4 mr-2 rounded-full">
+                <span class="text-sm">{currency.code}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+        
+        <!-- Continue Button -->
+        <button class="w-full bg-[#794eff] text-white py-3 rounded-lg font-medium hover:bg-[#6b3cde] transition">
+          Continue
+        </button>
+        
+        <!-- Fee notice -->
+        <p class="text-xs text-gray-500 text-center mt-4">
+          Low fees • Fast transfers • Real-time rates
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  // This script would normally handle the currency conversion logic
+  // For now, it's just a placeholder
+  document.addEventListener('DOMContentLoaded', () => {
+    console.log('Currency converter initialized');
+    
+    // For a production implementation, we would:
+    // 1. Fetch real-time exchange rates from an API
+    // 2. Add event listeners for currency selection
+    // 3. Implement the currency conversion calculation
+    // 4. Handle form submission
+  });
+</script>
