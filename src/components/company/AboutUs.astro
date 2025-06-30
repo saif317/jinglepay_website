@@ -42,7 +42,7 @@ import OurStoryCarousel from './OurStoryCarousel.astro';
 ---
 
 <div id='mission'>
-  <p class='text-3xl font-light text-center text-black lg:text-4xl mb-15 lg:mb-[65px] leading-normal'>
+  <p class='text-3xl text-center text-black lg:text-4xl mb-15 lg:mb-[65px]'>
     {aboutUs.mission}
   </p>
 
@@ -71,7 +71,7 @@ import OurStoryCarousel from './OurStoryCarousel.astro';
       {
         images.map((img) => (
           <div class='swiper-slide'>
-            <div class='overflow-hidden relative rounded-xl shadow-sm'>
+            <div class='relative overflow-hidden shadow-sm rounded-xl'>
               <Image
                 src={img.src}
                 alt={img.alt}
