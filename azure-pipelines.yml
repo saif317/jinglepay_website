@@ -1,187 +1,517 @@
-# In the Astro site's repository (pipeline definition)
+# JinglePay Astro and Gatsby Website Build Pipeline
+# Optimized for conditional Gatsby builds and parallel execution
 
 resources:
   repositories:
-    - repository: gatsbyRepo # Alias for the Gatsby repository
-      type: git # Or github, azureRepos, etc.
-      name: JinglePay/jp_website # Project/Repository name (Adjust as needed)
-      ref: main # Or the branch you want to build from the Gatsby repo
+    - repository: gatsbyRepo
+      type: git
+      name: JinglePay/jp_website 
+      ref: main
 
 trigger:
   branches:
     include: 
       - main
       - develop
+  paths:
+    include:
+      # Astro website files
+      - 'src/**'
+      - 'public/**'
+      - 'astro.config.mjs'
+      - 'tailwind.config.cjs'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'tsconfig.json'
+      - 'azure-pipelines.yml'
+    exclude:
+      - README.md
+      - docs/**
+      - '**/*.md'
+      - '**/*.test.*'
+      - '**/__tests__/**'
 
-pool:
-  vmImage: 'ubuntu-latest'
+variables:
+  # Build paths
+  NODE_CACHE_FOLDER: $(Pipeline.Workspace)/.npm
+  ASTRO_BUILD_DIRECTORY: $(Pipeline.Workspace)/s
+  GATSBY_BUILD_DIRECTORY: $(Pipeline.Workspace)/gatsby
+  ARTIFACT_STAGING: $(Build.ArtifactStagingDirectory)
+  GATSBY_CACHE_FOLDER: $(Pipeline.Workspace)/.cache/gatsby
+  
+  # Environment-specific URLs
+  DEV_SITE_URL: 'http://jinglepay-website-dev.s3-website.me-central-1.amazonaws.com'
+  PROD_SITE_URL: 'https://jinglepay.com'
+  
+  # AWS specific settings
+  AWS_REGION: 'me-central-1'
+  DEV_CLOUDFRONT_ID: 'E3O0CTCPKLOA30'
+  
+  # Enable system diagnostics
+  SYSTEM_DEBUG: false
+  
+  # Optimize npm install
+  npm_config_cache: $(NODE_CACHE_FOLDER)
 
-steps:
-# --- Download previous build metadata (if available) ---
+jobs:
+# --- Common Setup Job ---
+- job: CommonSetup
+  displayName: 'Check Repository Changes'
+  timeoutInMinutes: 10
+  pool:
+    vmImage: 'ubuntu-latest'
+  steps:
+  # Download previous Gatsby commit metadata
   - task: DownloadPipelineArtifact@2
     inputs:
+      source: 'specific'
+      project: '$(System.TeamProject)'
+      pipeline: '$(System.DefinitionId)'
+      runVersion: 'latestFromBranch'
+      runBranch: '$(Build.SourceBranch)'
+      preferTriggeringPipeline: true
+      allowPartiallySucceededBuilds: true
+      allowFailedBuilds: false
       artifactName: 'gatsby-metadata'
       targetPath: '$(Build.ArtifactStagingDirectory)'
     continueOnError: true
-    displayName: 'Download previous build metadata'
+    displayName: 'Download previous metadata'
 
-# --- Explicitly Checkout Self (Astro Repo) ---
-  - checkout: self # Checkout the repo this yaml file is in
-    path: s       # Checkout into the 's' subdirectory of $(Pipeline.Workspace)
-
-# --- Checkout Gatsby Repo ---
-  - checkout: gatsbyRepo # Use the alias defined in resources
-    path: gatsby # Checkout Gatsby repo into a 'gatsby' subdirectory within the agent's work folder
+  # Checkout repositories
+  - checkout: self
+    path: s
+    displayName: 'Checkout Astro repo'
+    fetchDepth: 1  # Optimized git fetch depth
     
-# --- Check for changes in Gatsby Repo ---
+  - checkout: gatsbyRepo
+    path: gatsby
+    displayName: 'Checkout Gatsby repo'
+    fetchDepth: 1
+    continueOnError: true  # Don't fail the entire pipeline if Gatsby repo can't be checked out
+    
+  # Check for Gatsby changes
   - bash: |
-      # Store current commit hash
-      cd $(Pipeline.Workspace)/gatsby
-      CURRENT_COMMIT=$(git rev-parse HEAD)
-      echo "Current Gatsby commit: $CURRENT_COMMIT"
-      
-      # Try to get the last build commit
-      LAST_COMMIT=""
       if [ -f "$(Build.ArtifactStagingDirectory)/last-gatsby-commit.txt" ]; then
-        LAST_COMMIT=$(cat "$(Build.ArtifactStagingDirectory)/last-gatsby-commit.txt")
-        echo "Last built Gatsby commit: $LAST_COMMIT"
-      fi
-      
-      # Determine if we need to build
-      if [ "$CURRENT_COMMIT" != "$LAST_COMMIT" ] || [ -z "$LAST_COMMIT" ]; then
-        echo "##vso[task.setvariable variable=shouldBuildGatsby]true"
-        echo "Changes detected in Gatsby repo - will build"
+        LAST_GATSBY_COMMIT=$(cat "$(Build.ArtifactStagingDirectory)/last-gatsby-commit.txt")
+        
+        # Check if Gatsby repo checkout was successful
+        if [ -d "$(Pipeline.Workspace)/gatsby" ]; then
+          CURRENT_GATSBY_COMMIT=$(git -C $(Pipeline.Workspace)/gatsby rev-parse HEAD)
+          
+          if [ "$LAST_GATSBY_COMMIT" != "$CURRENT_GATSBY_COMMIT" ]; then
+            echo "Gatsby repository has changed. Will rebuild."
+            echo "##vso[task.setvariable variable=shouldBuildGatsby;isOutput=true]true"
+          else
+            echo "Gatsby repository has not changed. No need to rebuild."
+            echo "##vso[task.setvariable variable=shouldBuildGatsby;isOutput=true]false"
+          fi
+        else
+          echo "Gatsby repository checkout failed. Will try to build anyway."
+          echo "##vso[task.setvariable variable=shouldBuildGatsby;isOutput=true]true"
+        fi
       else
-        echo "##vso[task.setvariable variable=shouldBuildGatsby]false"
-        echo "No changes in Gatsby repo - skipping build"
+        echo "No previous Gatsby commit metadata found. Will build."
+        echo "##vso[task.setvariable variable=shouldBuildGatsby;isOutput=true]true"
       fi
-      
-      # Save current commit for next time
-      echo "$CURRENT_COMMIT" > "$(Build.ArtifactStagingDirectory)/last-gatsby-commit.txt"
-    displayName: "Check Gatsby Repo for Changes"
+    name: GatsbyChanges
+    displayName: 'Check for Gatsby changes'
+
+  # Create and save the commit hash for future builds
+  - bash: |
+      # Create the metadata file if Gatsby repo checkout was successful
+      if [ -d "$(Pipeline.Workspace)/gatsby" ] && [ -d "$(Pipeline.Workspace)/gatsby/.git" ]; then
+        CURRENT_GATSBY_COMMIT=$(git -C $(Pipeline.Workspace)/gatsby rev-parse HEAD)
+        echo "$CURRENT_GATSBY_COMMIT" > "$(Build.ArtifactStagingDirectory)/last-gatsby-commit.txt"
+        echo "Saved Gatsby commit: $CURRENT_GATSBY_COMMIT"
+      else
+        echo "WARNING: Gatsby repo not available or not a git repository, creating placeholder commit file"
+        echo "initial-commit-$(date +%s)" > "$(Build.ArtifactStagingDirectory)/last-gatsby-commit.txt"
+      fi
+    displayName: 'Create Gatsby commit metadata'
+    continueOnError: false
     
   # Save the commit hash for future builds
   - task: PublishPipelineArtifact@1
     inputs:
-      targetPath: '$(Build.ArtifactStagingDirectory)/last-gatsby-commit.txt'
       artifactName: 'gatsby-metadata'
-    displayName: 'Save Gatsby commit for next build'
+      targetPath: '$(Build.ArtifactStagingDirectory)/last-gatsby-commit.txt'
+    displayName: 'Save Gatsby commit metadata'
 
-# --- Astro Steps ---
+# --- Astro Build Job ---
+- job: BuildAstro
+  displayName: 'Build Astro Website'
+  dependsOn: CommonSetup
+  timeoutInMinutes: 15
+  pool:
+    vmImage: 'ubuntu-latest'
+  steps:
+  # Checkout the repository first to make source code available for Cache task
+  - checkout: self
+    displayName: 'Checkout Astro repo'
+  # Install Node for Astro with caching
   - task: NodeTool@0
     inputs:
       versionSpec: '22.x'
     displayName: 'Install Node.js for Astro'
-
+  
+  # Cache npm dependencies for Astro
+  - task: Cache@2
+    inputs:
+      key: 'npm | "$(Agent.OS)" | $(ASTRO_BUILD_DIRECTORY)/package-lock.json | $(Build.SourceVersion)'
+      restoreKeys: | 
+        npm | "$(Agent.OS)" | "$(ASTRO_BUILD_DIRECTORY)"
+        npm | "$(Agent.OS)"
+      path: $(NODE_CACHE_FOLDER)
+    displayName: 'Cache npm dependencies for Astro'
+    
   - script: |
-      npm install
+      npm ci --prefer-offline --no-audit --progress=false
     displayName: 'Install Astro dependencies'
-    workingDirectory: $(Pipeline.Workspace)/s # Default checkout path for self
+    workingDirectory: $(ASTRO_BUILD_DIRECTORY)
 
+  # Generate site configuration
   - bash: |
       echo "Determining Site URL based on branch: $(Build.SourceBranchName)"
       if [ "$(Build.SourceBranchName)" == "main" ]; then
-        SITE_URL="https://jinglepay.com" # Production URL
+        SITE_URL="$(PROD_SITE_URL)" # Production URL from variables
       else
-        SITE_URL="http://jinglepay-website-dev.s3-website.me-central-1.amazonaws.com" # Staging URL
+        SITE_URL="$(DEV_SITE_URL)" # Staging URL from variables
       fi
       
-      mkdir -p $(Pipeline.Workspace)/s/src
+      mkdir -p $(ASTRO_BUILD_DIRECTORY)/src
       
-      echo "export const siteBaseUrl = '${SITE_URL}';" > $(Pipeline.Workspace)/s/src/siteConfig.js
+      echo "export const siteBaseUrl = '${SITE_URL}';" > $(ASTRO_BUILD_DIRECTORY)/src/siteConfig.js
+      echo "export const buildTime = '$(date)';" >> $(ASTRO_BUILD_DIRECTORY)/src/siteConfig.js
+      echo "export const buildVersion = '$(Build.BuildNumber)';" >> $(ASTRO_BUILD_DIRECTORY)/src/siteConfig.js
       
-      cat $(Pipeline.Workspace)/s/src/siteConfig.js
+      cat $(ASTRO_BUILD_DIRECTORY)/src/siteConfig.js
     displayName: 'Generate Astro src/siteConfig.js'
-    workingDirectory: $(Pipeline.Workspace)/s
+    workingDirectory: $(ASTRO_BUILD_DIRECTORY)
 
+  # Build Astro project with optimizations
   - script: |
-      npm run build
+      NODE_ENV=production npm run build -- --verbose
     displayName: 'Build Astro project'
-    workingDirectory: $(Pipeline.Workspace)/s
+    workingDirectory: $(ASTRO_BUILD_DIRECTORY)
 
+  # Copy Astro build files to staging
   - task: CopyFiles@2
     inputs:
-      SourceFolder: '$(Pipeline.Workspace)/s/dist'
+      SourceFolder: '$(ASTRO_BUILD_DIRECTORY)/dist'
       Contents: '**'
-      TargetFolder: '$(Build.ArtifactStagingDirectory)/astro-dist'
+      TargetFolder: '$(ARTIFACT_STAGING)/astro-dist'
     displayName: 'Copy Astro build files'
 
-# --- Gatsby Steps ---
-  - task: NodeTool@0 # Install Node again if needed, or ensure version compatibility
-    condition: eq(variables['shouldBuildGatsby'], 'true')
+  # Publish Astro artifacts with compression
+  - task: PublishBuildArtifacts@1
     inputs:
-      versionSpec: '18.x' # Or the Node version required by Gatsby
+      PathtoPublish: '$(ARTIFACT_STAGING)/astro-dist'
+      ArtifactName: 'astro-website'
+      publishLocation: 'Container'
+      # Add artifact compression for efficiency
+      parallel: true
+      parallelCount: 8
+    displayName: 'Publish Astro build artifacts'
+    retryCountOnTaskFailure: 2
+
+# --- Gatsby Build Job ---
+- job: BuildGatsby
+  displayName: 'Build Gatsby Website'
+  dependsOn: CommonSetup
+  variables:
+    shouldBuildGatsby: $[dependencies.CommonSetup.outputs['GatsbyChanges.shouldBuildGatsby']]
+  condition: eq(variables['shouldBuildGatsby'], 'true')
+  timeoutInMinutes: 20
+  pool:
+    vmImage: 'ubuntu-latest'
+  steps:
+  # Checkout the repositories first to make source code available for Cache task
+  - checkout: self
+    displayName: 'Checkout main repo'
+  - checkout: gatsbyRepo
+    path: gatsby
+    displayName: 'Checkout Gatsby repo'
+  # Install Node for Gatsby
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '18.x'
     displayName: 'Install Node.js for Gatsby'
+  
+  # Cache npm dependencies for Gatsby
+  - task: Cache@2
+    inputs:
+      key: 'npm | "$(Agent.OS)" | $(GATSBY_BUILD_DIRECTORY)/package-lock.json'
+      restoreKeys: | 
+        npm | "$(Agent.OS)" | "$(GATSBY_BUILD_DIRECTORY)"
+        npm | "$(Agent.OS)"
+      path: $(NODE_CACHE_FOLDER)
+    displayName: 'Cache npm dependencies for Gatsby'
 
+  # Create Gatsby cache directory
+  - bash: |
+      mkdir -p $(GATSBY_CACHE_FOLDER)
+    displayName: 'Create Gatsby cache directory'
+    
+  # Cache Gatsby cache folder for faster builds
+  - task: Cache@2
+    inputs:
+      key: 'gatsby-cache | "$(Agent.OS)" | "$(GATSBY_BUILD_DIRECTORY)" | $(Build.SourceVersion)'
+      path: $(GATSBY_CACHE_FOLDER)
+    displayName: 'Cache Gatsby build cache'
+    
+  # Install Gatsby dependencies with optimizations
   - script: |
-      npm install
-    condition: eq(variables['shouldBuildGatsby'], 'true')
+      npm ci --prefer-offline --no-audit --progress=false
     displayName: 'Install Gatsby dependencies'
-    workingDirectory: $(Pipeline.Workspace)/gatsby # Path where Gatsby repo was checked out
+    workingDirectory: $(GATSBY_BUILD_DIRECTORY)
 
+  # Build Gatsby with optimizations (using cache)
   - script: |
-      npx gatsby build --prefix-paths
-    condition: eq(variables['shouldBuildGatsby'], 'true')
+      GATSBY_CPU_COUNT=logical_cores npx gatsby build --prefix-paths --no-color
+    env:
+      GATSBY_CACHE_FOLDER: $(GATSBY_CACHE_FOLDER)
     displayName: 'Build Gatsby project'
-    workingDirectory: $(Pipeline.Workspace)/gatsby # Path where Gatsby repo was checked out
+    workingDirectory: $(GATSBY_BUILD_DIRECTORY)
 
+  # Copy Gatsby build files to staging
   - task: CopyFiles@2
     condition: eq(variables['shouldBuildGatsby'], 'true')
     inputs:
-      SourceFolder: '$(Pipeline.Workspace)/gatsby/public' # Gatsby output folder relative to checkout path
+      SourceFolder: '$(GATSBY_BUILD_DIRECTORY)/public'
       Contents: '**'
-      TargetFolder: '$(Build.ArtifactStagingDirectory)/gatsby-dist'
+      TargetFolder: '$(ARTIFACT_STAGING)/gatsby-dist'
     displayName: 'Copy Gatsby build files'
 
-# --- Publish Artifacts ---
+  # Publish Gatsby artifacts with compression
   - task: PublishBuildArtifacts@1
     inputs:
-      PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-      ArtifactName: 'websites-output'
-    displayName: 'Publish build artifacts'
+      PathtoPublish: '$(ARTIFACT_STAGING)/gatsby-dist'
+      ArtifactName: 'gatsby-website'
+      publishLocation: 'Container'
+      # Add artifact compression for efficiency
+      parallel: true
+      parallelCount: 8
+    displayName: 'Publish Gatsby build artifacts'
+    retryCountOnTaskFailure: 2
+    
+  # Set a variable to indicate Gatsby build success
+  - script: |
+      echo "##vso[task.setvariable variable=GatsbyBuildSucceeded;isOutput=true]true"
+    name: setGatsbyStatus
+    displayName: 'Set Gatsby build status'
 
-# --- Deploy Steps (DEV) ---
+# --- DEV Deployment Job ---
+  # Job: DeployToDev
+  #
+  # Deploys the Astro and Gatsby websites to the DEV S3 bucket.
+  #
+  # This job is triggered when the `develop` branch is pushed to the repository.
+  # It depends on the `BuildAstro` and `BuildGatsby` jobs, and uses the artifacts
+  # produced by those jobs to deploy to the DEV S3 bucket.
+  #
+  # The job will log a message indicating that the DEV environment serves directly
+  # from S3, and will not perform CloudFront invalidation.
+  #
+  # The job will also log deployment metrics, including the deployment completion
+  # time and the total pipeline duration.
+
+- job: DeployToDev
+  displayName: 'Deploy to Development Environment'
+
+  timeoutInMinutes: 15
+  dependsOn:
+    - BuildAstro
+  variables:
+    gatsbySucceeded: $[dependencies.BuildGatsby.outputs['setGatsbyStatus.GatsbyBuildSucceeded']]
+  # Always run DEV deployment for develop branch
+  condition: eq(variables['Build.SourceBranchName'], 'develop')
+  pool:
+    vmImage: 'ubuntu-latest'
+  steps:
+  # Download Astro artifacts
+  - task: DownloadBuildArtifacts@1
+    inputs:
+      buildType: 'current'
+      downloadType: 'single'
+      artifactName: 'astro-website'
+      downloadPath: '$(ARTIFACT_STAGING)'
+    displayName: 'Download Astro artifacts'
+
+  # Deploy Astro to DEV S3 bucket
   - task: S3Upload@1
-    condition: eq(variables['Build.SourceBranchName'], 'develop') # Condition based on Astro repo branch
+    # Temporary: Always run this task regardless of pipeline conditions
+    condition: always()
     inputs:
       awsCredentials: 'AWS_DEV'
       regionName: 'me-central-1'
       bucketName: 'jinglepay-website-dev'
-      sourceFolder: '$(Build.ArtifactStagingDirectory)/astro-dist'
+      sourceFolder: '$(ARTIFACT_STAGING)/astro-website'
       targetFolder: ''
       flattenFolders: false
+      # Optimize upload parameters
+      globExpressions: '**'
+      contentType: ''
+      contentEncoding: ''
+      createBucket: false
+      # filesAcl parameter removed - modern S3 buckets use bucket policies instead of ACLs
+      # Use AWS CLI with efficient parameters
+      overwrite: true
+      useAwsCliV2: true
     displayName: 'Deploy Astro to DEV S3 bucket (Root)'
 
+  # Download Gatsby artifacts if they were built
+  - task: DownloadBuildArtifacts@1
+    condition: eq(variables['gatsbySucceeded'], 'true')
+    inputs:
+      buildType: 'current'
+      downloadType: 'single'
+      artifactName: 'gatsby-website'
+      downloadPath: '$(ARTIFACT_STAGING)'
+    displayName: 'Download Gatsby artifacts'
+    continueOnError: false
+
+  # Deploy Gatsby to DEV S3 bucket
   - task: S3Upload@1
-    condition: and(eq(variables['Build.SourceBranchName'], 'develop'), eq(variables['shouldBuildGatsby'], 'true'))
+    condition: eq(variables['gatsbySucceeded'], 'true')
     inputs:
       awsCredentials: 'AWS_DEV'
       regionName: 'me-central-1'
       bucketName: 'jinglepay-website-dev'
-      sourceFolder: '$(Build.ArtifactStagingDirectory)/gatsby-dist'
+      sourceFolder: '$(ARTIFACT_STAGING)/gatsby-website'
       targetFolder: 'are/en'
       flattenFolders: false
+      # Optimize upload parameters
+      globExpressions: '**'
+      contentType: ''
+      contentEncoding: ''
+      createBucket: false
+      # filesAcl parameter removed - modern S3 buckets use bucket policies instead of ACLs
+      # Use AWS CLI with efficient parameters
+      overwrite: true
+      useAwsCliV2: true
     displayName: 'Deploy Gatsby to DEV S3 bucket (are/en)'
+    continueOnError: false
+    
+  # DEV environment serves directly from S3, no CloudFront invalidation needed
+  # Log deployment completion message
+  - script: |
+      echo "##vso[task.logissue type=warning]DEV environment serves directly from S3, no CloudFront invalidation needed"
+    displayName: 'Log S3 Deployment Info'
+    condition: succeededOrFailed()
+    
+  # Log deployment metrics
+  - script: |
+      echo "##vso[task.logissue type=warning]DEV Deployment completed at $(date)"
+      echo "##vso[task.setvariable variable=DeployEndTime]$(date +%s)"
+      DURATION=$(($(date +%s) - $(Build.StartTime)))
+      echo "##vso[task.logissue type=warning]Total pipeline duration: $DURATION seconds"
+    displayName: 'Log DEV deployment metrics'
+    condition: succeededOrFailed()
 
-# --- Deploy Steps (PROD) ---
+# --- PROD Deployment Job ---
+- job: DeployToProd
+  displayName: 'Deploy to Production Environment'
+  timeoutInMinutes: 15
+  dependsOn:
+    - BuildAstro
+    - BuildGatsby
+  variables:
+    gatsbySucceeded: $[dependencies.BuildGatsby.outputs['setGatsbyStatus.GatsbyBuildSucceeded']]
+  condition: and(eq(variables['Build.SourceBranchName'], 'main'), succeeded('BuildAstro'), or(succeeded('BuildGatsby'), eq(variables['BuildGatsby.result'], 'Skipped')))
+  pool:
+    vmImage: 'ubuntu-latest'
+  steps:
+  # Download Astro artifacts
+  - task: DownloadBuildArtifacts@1
+    inputs:
+      buildType: 'current'
+      downloadType: 'single'
+      artifactName: 'astro-website'
+      downloadPath: '$(ARTIFACT_STAGING)'
+    displayName: 'Download Astro artifacts'
+
+  # Deploy Astro to PROD S3 bucket
   - task: S3Upload@1
-    condition: eq(variables['Build.SourceBranchName'], 'main') # Condition based on Astro repo branch
     inputs:
       awsCredentials: 'AWS_PROD'
       regionName: 'me-central-1'
       bucketName: 'jinglepay-website'
-      sourceFolder: '$(Build.ArtifactStagingDirectory)/astro-dist'
+      sourceFolder: '$(ARTIFACT_STAGING)/astro-website'
       targetFolder: ''
       flattenFolders: false
+      # Optimize upload parameters
+      globExpressions: '**'
+      contentType: ''
+      contentEncoding: ''
+      createBucket: false
+      # filesAcl parameter removed - modern S3 buckets use bucket policies instead of ACLs
+      # Use AWS CLI with efficient parameters
+      overwrite: true
+      useAwsCliV2: true
     displayName: 'Deploy Astro to PROD S3 bucket (Root)'
 
+  # Download Gatsby artifacts if they were built
+  - task: DownloadBuildArtifacts@1
+    condition: eq(variables['gatsbySucceeded'], 'true')
+    inputs:
+      buildType: 'current'
+      downloadType: 'single'
+      artifactName: 'gatsby-website'
+      downloadPath: '$(ARTIFACT_STAGING)'
+    displayName: 'Download Gatsby artifacts'
+    continueOnError: false
+
+  # Deploy Gatsby to PROD S3 bucket
   - task: S3Upload@1
-    condition: and(eq(variables['Build.SourceBranchName'], 'main'), eq(variables['shouldBuildGatsby'], 'true'))
+    condition: eq(variables['gatsbySucceeded'], 'true')
     inputs:
       awsCredentials: 'AWS_PROD'
       regionName: 'me-central-1'
       bucketName: 'jinglepay-website'
-      sourceFolder: '$(Build.ArtifactStagingDirectory)/gatsby-dist'
+      sourceFolder: '$(ARTIFACT_STAGING)/gatsby-website'
       targetFolder: 'are/en'
       flattenFolders: false
+      # Optimize upload parameters
+      globExpressions: '**'
+      contentType: ''
+      contentEncoding: ''
+      createBucket: false
+      # filesAcl parameter removed - modern S3 buckets use bucket policies instead of ACLs
+      # Use AWS CLI with efficient parameters
+      overwrite: true
+      useAwsCliV2: true
     displayName: 'Deploy Gatsby to PROD S3 bucket (are/en)'
+    continueOnError: false
+    
+  # Invalidate CloudFront cache for Gatsby content
+  - script: |
+      # Only invalidate Gatsby paths if Gatsby was built and deployed
+      aws cloudfront create-invalidation --distribution-id $(PROD_CLOUDFRONT_ID) --paths "/are/en/*"
+    displayName: 'Invalidate PROD CloudFront cache for Gatsby'
+    condition: eq(variables['gatsbySucceeded'], 'true')
+    env:
+      AWS_ACCESS_KEY_ID: $(AWS_PROD_ACCESS_KEY_ID)
+      AWS_SECRET_ACCESS_KEY: $(AWS_PROD_SECRET_ACCESS_KEY)
+      AWS_DEFAULT_REGION: me-central-1
+    continueOnError: false
+
+  # Invalidate CloudFront cache if needed
+  - script: |
+      # Create invalidation for Astro paths
+      aws cloudfront create-invalidation --distribution-id $(PROD_CLOUDFRONT_ID) --paths "/" "/index.html" "/assets/*" "/en/*" "/ur/*" "/ar/*"
+    displayName: 'Invalidate PROD CloudFront cache for Astro'
+    condition: succeededOrFailed()
+    env:
+      AWS_ACCESS_KEY_ID: $(AWS_PROD_ACCESS_KEY_ID)
+      AWS_SECRET_ACCESS_KEY: $(AWS_PROD_SECRET_ACCESS_KEY)
+      AWS_DEFAULT_REGION: me-central-1
+    continueOnError: false
+    
+  # Log deployment metrics
+  - script: |
+      echo "##vso[task.logissue type=warning]PROD Deployment completed at $(date)"
+      echo "##vso[task.setvariable variable=DeployEndTime]$(date +%s)"
+      DURATION=$(($(date +%s) - $(Build.StartTime)))
+      echo "##vso[task.logissue type=warning]Total pipeline duration: $DURATION seconds"
+    displayName: 'Log PROD deployment metrics'
+    condition: succeededOrFailed()

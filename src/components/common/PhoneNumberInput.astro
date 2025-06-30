@@ -24,7 +24,7 @@ type CountryDetails = {
 };
 
 const countryDetails: Record<string, CountryDetails> = {
-  PAK: { prefix: '+92', regex: /^\d{10}$/, placeholder: '300 1234567', flag: PakFlag },
+  PAK: { prefix: '+92', regex: /^3\d{9}$/, placeholder: '300 1234567', flag: PakFlag },
   ARE: { prefix: '+971', regex: /^\d{9}$/, placeholder: '50 123 4567', flag: UaeFlag },
 };
 
@@ -42,7 +42,9 @@ const currentCountry = countryDetails[countryParam] || countryDetails['ARE'];
     name='phoneNumber'
     placeholder={currentCountry.placeholder}
     class='flex-1 px-2 py-1.5 min-w-0 text-sm border-none outline-none sm:px-3 sm:text-base'
+    maxlength='10'
     required
+    id='phone-input'
   />
 
   <button
@@ -119,6 +121,30 @@ const currentCountry = countryDetails[countryParam] || countryDetails['ARE'];
   const validationRegex = new RegExp(clientCountryDetails.regex.source);
   if (prefixSpan) prefixSpan.textContent = countryCode;
   if (phoneInput) phoneInput.placeholder = clientCountryDetails.placeholder;
+  
+  // Function to validate Pakistan phone number
+  function validatePakistanNumber(number) {
+    // Strip spaces
+    const stripped = number.replace(/\s+/g, '');
+    // Pakistan numbers must be 10 digits and start with 3
+    return /^3\d{9}$/.test(stripped);
+  }
+
+  // Add input validation as user types
+  phoneInput?.addEventListener('input', function() {
+    const value = this.value.replace(/\s+/g, '');
+    
+    // For Pakistan numbers, only allow digits and ensure first digit is 3 if it exists
+    if (countryParam === 'PAK') {
+      // Only allow digits
+      this.value = this.value.replace(/[^0-9]/g, '');
+      
+      // Enforce max length
+      if (this.value.length > 10) {
+        this.value = this.value.slice(0, 10);
+      }
+    }
+  });
 
   button?.addEventListener('click', async (e) => {
     e.preventDefault();
@@ -126,7 +152,15 @@ const currentCountry = countryDetails[countryParam] || countryDetails['ARE'];
 
     const phoneNumber = phoneInput.value.replace(/\s+/g, '');
 
-    if (phoneNumber && validationRegex.test(phoneNumber)) {
+    // Validate based on country
+    let isValid = false;
+    if (countryParam === 'PAK') {
+      isValid = validatePakistanNumber(phoneNumber);
+    } else {
+      isValid = validationRegex.test(phoneNumber);
+    }
+
+    if (phoneNumber && isValid) {
       const submitButton = document.querySelector('#send-link-button');
 
       try {
@@ -181,7 +215,20 @@ const currentCountry = countryDetails[countryParam] || countryDetails['ARE'];
         }
       }
     } else {
-      showToast(qrModal.hint, 'error');
+      // Show specific error message for Pakistan numbers
+      if (countryParam === 'PAK') {
+        if (!phoneNumber) {
+          showToast('Please enter a mobile number', 'error');
+        } else if (phoneNumber.length !== 10) {
+          showToast('Pakistan mobile number must be 10 digits long', 'error');
+        } else if (phoneNumber[0] !== '3') {
+          showToast('Pakistan mobile number must start with 3', 'error');
+        } else {
+          showToast('Please enter a valid mobile number', 'error');
+        }
+      } else {
+        showToast(qrModal.hint || 'Please enter a valid mobile number', 'error');
+      }
     }
   });
 </script>
