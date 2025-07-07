@@ -29,9 +29,40 @@ export default defineConfig({
       status: 302,
       destination: '/?redirect_fix=1',
     },
+    // Specific redirects as provided by user
+    '/homepage/AE/terms-and-conditions/faq/': {
+      status: 301,
+      destination: '/are/en/terms-and-conditions/faq/',
+    },
     '/homepage/AE/terms-and-conditions/privacy-policy/': {
       status: 301,
       destination: '/are/en/terms-and-conditions/privacy-policy/',
+    },
+    '/homepage/AE/terms-and-conditions/jp-tac/': {
+      status: 301,
+      destination: '/are/en/terms-and-conditions/jp-tac/',
+    },
+    '/fraud-warnings/': {
+      status: 301,
+      destination: '/are/en/terms-and-conditions/mg-fraud-warning/',
+    },
+    '/address-update-policy/': {
+      status: 301,
+      destination: '/are/en/terms-and-conditions/address-update-policy/',
+    },
+    // General paths for the homepage
+    '/homepage/AE/terms-and-conditions/': {
+      status: 301,
+      destination: '/are/en/terms-and-conditions/',
+    },
+    '/homepage/AE/': {
+      status: 301,
+      destination: '/are/en/',
+    },
+    // General catch-all redirect for any homepage links
+    '/homepage/AE': {
+      status: 301,
+      destination: '/are/en/',
     },
   },
 });
