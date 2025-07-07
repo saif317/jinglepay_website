@@ -38,6 +38,10 @@ export default defineConfig({
       status: 301,
       destination: '/are/en/terms-and-conditions/privacy-policy/',
     },
+    '/homepage/AE/terms-and-conditions/joining-offer/': {
+      status: 301,
+      destination: '/are/en/terms-and-conditions/joining-offer/',
+    },
     '/homepage/AE/terms-and-conditions/jp-tac/': {
       status: 301,
       destination: '/are/en/terms-and-conditions/jp-tac/',
@@ -45,6 +49,10 @@ export default defineConfig({
     '/fraud-warnings/': {
       status: 301,
       destination: '/are/en/terms-and-conditions/mg-fraud-warning/',
+    },
+    '/30aed_campaign_nov22/': {
+      status: 301,
+      destination: '/are/en/terms-and-conditions/joining-offer/',
     },
     '/address-update-policy/': {
       status: 301,
