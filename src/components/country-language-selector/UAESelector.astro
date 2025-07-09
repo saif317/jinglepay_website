@@ -11,40 +11,48 @@ const currentLanguage = currentCountry.languages.find((l) => l.code === lang) ||
 
 const getCountryLink = (newCountryPath: string) => {
   if (newCountryPath === country) return '#';
-  
+
   // Find the target country from COUNTRIES constant
   const targetCountry = COUNTRIES.find((c) => c.path === newCountryPath);
-  
-  if (!targetCountry) return '#'; // Should never happen, but just in case
-  
+
+  if (!targetCountry) return '#';
+
   // Check if current language is supported in target country
   const isCurrentLangSupported = targetCountry.languages.some((l) => l.code === lang);
-  
+
   // Use current language if supported, otherwise use target country's default language
   const languageToUse = isCurrentLangSupported ? lang : targetCountry.languages[0].code;
-  
-  // Construct URL consistently for all countries
+
   return '/' + [targetCountry.path, languageToUse, ''].join('/');
 };
 
 const getLanguageLink = (newLangCode: string) => {
   return '/' + [country, newLangCode, pathname.split('/').slice(3).join('/')].join('/');
 };
+
+// Get alternate language for the current country
+const alternateLanguage = currentCountry.languages.find((l) => l.code !== currentLanguage.code);
 ---
 
-<div
-  class={`flex items-center bg-gray-100 px-2.5 py-2 gap-x-2.5 rounded-[12px] min-w-[154px] country-language-selector ${className}`}
->
+<div class={`flex gap-0.5 uae-country-selector ${className}`}>
+  <!-- Country selector with left rounded corners only -->
   <div class='relative country-selector'>
-    <button id='country-button' class='flex items-center cursor-pointer'>
-      <div class='flex items-center justify-center flag'>
-        {currentCountry.flag && <currentCountry.flag class='' />}
+    <button
+      id='country-button'
+      class='w-28 h-11 p-2 bg-[#F5F5F5] rounded-tl-xl rounded-bl-xl inline-flex justify-start items-center gap-2 cursor-pointer transition-all duration-200 hover:bg-[#EAEAEA]'
+    >
+      <div class='flex items-center justify-center w-6 h-6 overflow-hidden flag'>
+        {currentCountry.flag && <currentCountry.flag class='w-6 h-6' />}
       </div>
-      <span class='font-medium text-gray-500'>{currentCountry.name}</span>
+      <span class="text-[#121C26] text-base font-bold font-['DM_Sans'] leading-normal">{currentCountry.name}</span>
+      <!-- Dropdown arrow -->
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="ml-0.5">
+        <path d="M4 6L8 10L12 6" stroke="#121C26" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
     </button>
     <div
       id='country-dropdown'
-      class='hidden absolute left-0 z-20 mt-2 min-w-[150px] bg-white rounded-lg border border-gray-200 shadow-xl p-1.5 origin-top-left focus:outline-none transform transition-all duration-200'
+      class='hidden absolute left-0 z-20 mt-2 min-w-[150px] bg-white rounded-lg border border-gray-200 shadow-xl p-1.5 origin-top-left focus:outline-none transform transition-all duration-200 dropdown-menu'
     >
       <div class='py-1' role='menu' aria-orientation='vertical' aria-labelledby='country-button'>
         {
@@ -60,7 +68,6 @@ const getLanguageLink = (newLangCode: string) => {
                 </div>
               )}
               <span class='flex-grow'>{item.fullName}</span>
-              {/* Conditionally render checkmark for the selected country */}
               {item.path === currentCountry.path && (
                 <svg
                   xmlns='http://www.w3.org/2000/svg'
@@ -81,32 +88,36 @@ const getLanguageLink = (newLangCode: string) => {
       </div>
     </div>
   </div>
-  <div class='w-px h-6 bg-gray-300 divider'></div>
+  <!-- Language selector with right rounded corners only -->
   <div class='relative language-selector'>
     <a
-      href={getLanguageLink(currentCountry.languages.filter((lang) => lang.code !== currentLanguage.code)[0].code)}
-      class='flex items-center font-medium text-gray-500 transition-all duration-200 cursor-pointer language-toggle hover:text-blue-600'
+      href={getLanguageLink(alternateLanguage?.code || '')}
+      class='w-16 h-11 p-2 bg-[#F5F5F5] rounded-tr-xl rounded-br-xl inline-flex justify-start items-center cursor-pointer transition-all duration-200 hover:bg-[#EAEAEA]'
     >
-      <span>{currentCountry.languages.filter((lang) => lang.code !== currentLanguage.code)[0].name}</span>
+      <span class="w-14 h-4 text-center text-[#121C26] text-base font-bold font-['DM_Sans'] leading-normal"
+        >{alternateLanguage?.name || ''}</span
+      >
     </a>
   </div>
 </div>
 
 <style>
-  .country-language-selector {
-    /* display: inline-flex; */
+  .uae-country-selector {
     position: relative;
+    min-width: 180px;
   }
 
-  .flag {
-    margin-right: 0.5rem; /* Keep original flag margin from button */
+  .uae-country-selector .flag svg {
+    width: 24px;
+    height: 24px;
+    margin-right: 0;
   }
 
-  .divider {
-    margin: 0 0.5rem;
+  .uae-country-selector .divider {
+    margin: 0;
   }
 
-  /* Subtle bounce animation on dropdown open */
+  /* Animation for dropdown */
   #country-dropdown:not(.hidden) {
     animation: dropdown-open 0.2s ease-out forwards;
   }
@@ -122,27 +133,21 @@ const getLanguageLink = (newLangCode: string) => {
     }
   }
 
-  @media (max-width: 640px) {
-    .country-language-selector {
-      min-width: 130px;
-    }
+  /* Ensure dropdown has proper layering */
+  .country-selector {
+    position: relative;
+  }
+  
+  /* Add hover effects to dropdown items */
+  .dropdown-menu a:hover {
+    background-color: rgba(121, 78, 255, 0.1);
+    color: #794eff;
   }
 
-  /* UAE-specific styles */
-  .uae-selector {
-    background-color: transparent; /* Remove background for UAE */
-    padding: 0.5rem 0.75rem; /* Adjusted padding */
-    border-radius: 20px;
-    box-shadow: none;
-  }
-  
-  .uae-selector .flag svg {
-    width: 24px;
-    height: 24px;
-  }
-  
-  .uae-selector .language-toggle span {
-    font-weight: 600;
+  @media (max-width: 640px) {
+    .uae-country-selector {
+      min-width: 140px;
+    }
   }
 </style>
 
@@ -160,15 +165,17 @@ const getLanguageLink = (newLangCode: string) => {
 
       // Get the closest dropdown to this button
       // @ts-ignore
-      const dropdown = e.currentTarget.closest('.country-selector').querySelector('#country-dropdown');
+      const dropdown = e.currentTarget.closest('.country-selector')?.querySelector('#country-dropdown');
+      
+      // First hide all dropdowns
+      const allDropdowns = document.querySelectorAll('#country-dropdown');
+      allDropdowns.forEach((el) => {
+        if (el !== dropdown) el.classList.add('hidden');
+      });
 
       // Toggle this dropdown
       dropdown?.classList.toggle('hidden');
-
-      // Language is now a direct toggle so no need to handle dropdowns
     }
-
-    // Language toggle is now a direct link so no toggle function needed
 
     // Add events to all country buttons
     countryButtons.forEach((button) => {
@@ -192,7 +199,7 @@ const getLanguageLink = (newLangCode: string) => {
     // Type assertion to tell TypeScript that target is an Element
     const target = e.target as Element;
 
-    if (!target.closest('.country-language-selector')) {
+    if (!target.closest('.uae-country-selector')) {
       const countryDropdowns = document.querySelectorAll('[id="country-dropdown"]');
       countryDropdowns.forEach((el) => el.classList.add('hidden'));
     }
