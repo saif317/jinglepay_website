@@ -1,0 +1,68 @@
+---
+/**
+ * App Ratings Component
+ * 
+ * Displays app store ratings, reviews counts, and Trustpilot rating.
+ * Used in marketing sections to showcase social proof.
+ */
+
+export interface Props {
+  appStoreRating?: string;
+  appStoreReviews?: string;
+  googlePlayRating?: string;
+  googlePlayReviews?: string;
+}
+
+const {
+  appStoreRating = '4.8',
+  appStoreReviews = '152k',
+  googlePlayRating = '4.8',
+  googlePlayReviews = '1.3M',
+} = Astro.props;
+---
+
+<div class="space-y-3 w-full">
+  <!-- App ratings section -->
+  <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 w-full">
+    <!-- App Store rating -->
+    <div class="flex items-center" aria-label={`App Store Rating: ${appStoreRating} out of 5 stars from ${appStoreReviews} reviews`}>
+      <div 
+        class="bg-[#0A84FF] rounded-full w-6 h-6 flex items-center justify-center mr-2"
+        aria-hidden="true"
+      >
+        <span class="text-white text-xs">A</span>
+      </div>
+      <span class="font-semibold mr-1">{appStoreRating}</span>
+      <span class="text-sm text-gray-600">on App Store</span>
+      <span class="text-sm text-gray-500 ml-1">{appStoreReviews} reviews</span>
+    </div>
+    
+    <!-- Google Play rating -->
+    <div class="flex items-center" aria-label={`Google Play Rating: ${googlePlayRating} out of 5 stars from ${googlePlayReviews} reviews`}>
+      <div 
+        class="bg-[#00C853] rounded-full w-6 h-6 flex items-center justify-center mr-2"
+        aria-hidden="true"
+      >
+        <span class="text-white text-xs">G</span>
+      </div>
+      <span class="font-semibold mr-1">{googlePlayRating}</span>
+      <span class="text-sm text-gray-600">on Google Play</span>
+      <span class="text-sm text-gray-500 ml-1">{googlePlayReviews} reviews</span>
+    </div>
+  </div>
+  
+  <!-- Trustpilot -->
+  <div 
+    class="flex items-center"
+    aria-label="Excellent rating on Trustpilot with 5 out of 5 stars"
+  >
+    <span class="text-sm font-semibold mr-2">Excellent</span>
+    <div class="flex" aria-hidden="true">
+      <!-- Trustpilot Stars -->
+      {[...Array(5)].map(() => (
+        <div class="bg-[#00B67A] w-4 h-4 mx-0.5"></div>
+      ))}
+    </div>
+    <span class="text-sm text-gray-600 ml-2">Trustpilot</span>
+  </div>
+</div>

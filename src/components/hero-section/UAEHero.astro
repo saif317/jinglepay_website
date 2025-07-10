@@ -1,0 +1,54 @@
+---
+/**
+ * UAE Hero Section Component
+ * 
+ * This component serves as the main hero section for the UAE landing page,
+ * assembling modular components to create a cohesive user experience.
+ * It imports and arranges HeroContent, AppRatings, and TransferCalculator components.
+ */
+import { Image } from 'astro:assets';
+import HeroContent from './HeroContent.astro';
+import AppRatings from '../ratings/AppRatings.astro';
+import TransferCalculator from '../calculator/TransferCalculator.astro';
+
+const {
+  translations: { hero = {} },
+} = Astro.locals;
+
+// Mock data for calculator - will be replaced with interactive functionality
+const calculatorData = {
+  sendAmount: '1000',
+  sendCurrency: 'AED',
+  receiveAmount: '1000',
+  receiveCurrency: 'USD',
+  transferFee: '0.000 AED',
+  exchangeRate: '1.00 AED = 0.27 USD'
+};
+---
+
+<!-- Hero section with a two-column layout that stacks on mobile -->
+<section 
+  class="flex flex-col lg:flex-row justify-between items-center gap-5 pt-32 pb-16 px-4 sm:px-8 lg:px-16 max-w-7xl mx-auto"
+  aria-labelledby="hero-heading"
+>
+  <!-- Left Column: Text content and app ratings -->
+  <div class="w-full lg:w-[653px] flex flex-col justify-start items-start gap-5 lg:pr-12 mb-10 lg:mb-0">
+    <!-- Hero content (heading and description) -->
+    <HeroContent 
+      heading="Send money,"
+      highlightedText="Fee-free!"
+      description="Jingle Pay is simplifying all money! For everyday financial needs. Try our calculator to see how much you can save with us!"
+    />
+    
+    <!-- App ratings component -->
+    <AppRatings 
+      appStoreRating="4.8"
+      appStoreReviews="152k"
+      googlePlayRating="4.8"
+      googlePlayReviews="1.3M"
+    /> 
+  </div>
+  
+  <!-- Right Column: Calculator component -->
+  <TransferCalculator {...calculatorData} />
+</section>
