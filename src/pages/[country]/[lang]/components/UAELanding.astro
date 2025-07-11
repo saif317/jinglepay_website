@@ -2,6 +2,8 @@
 // UAE Landing Page Component
 import UAEHero from '@components/hero-section/UAEHero.astro';
 import UAEBanner from '@components/uae/UAEBanner.astro';
+import UAELinkCardBanner from '@components/uae/UAELinkCardBanner.astro';
+import UAERecipientsBanner from '@components/uae/UAERecipientsBanner.astro';
 ---
 
 <div>
@@ -15,6 +17,12 @@ import UAEBanner from '@components/uae/UAEBanner.astro';
     heading="Send money abroad instantly"
     description="Compare rates, choose your provider, and send money to your loved ones instantly with Jingle Pay."
   />
+
+  <!-- Second banner: Link card & add fund -->
+  <UAELinkCardBanner />
+
+  <!-- Third banner: Recipients & Split -->
+  <UAERecipientsBanner />
   
   <!-- Placeholder for additional UAE-specific components -->
   <div class='py-20 text-center'>
