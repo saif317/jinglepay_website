@@ -4,6 +4,7 @@ import UAEHero from '@components/hero-section/UAEHero.astro';
 import UAEBanner from '@components/uae/UAEBanner.astro';
 import UAELinkCardBanner from '@components/uae/UAELinkCardBanner.astro';
 import UAERecipientsBanner from '@components/uae/UAERecipientsBanner.astro';
+import Featured from '@components/hero-section/Featured.astro';
 ---
 
 <div>
@@ -13,9 +14,9 @@ import UAERecipientsBanner from '@components/uae/UAERecipientsBanner.astro';
   </div>
 
   <!-- UAE Banner Section with transaction cards -->
-  <UAEBanner 
-    heading="Send money abroad instantly"
-    description="Compare rates, choose your provider, and send money to your loved ones instantly with Jingle Pay."
+  <UAEBanner
+    heading='Send money abroad instantly'
+    description='Compare rates, choose your provider, and send money to your loved ones instantly with Jingle Pay.'
   />
 
   <!-- Second banner: Link card & add fund -->
@@ -23,7 +24,9 @@ import UAERecipientsBanner from '@components/uae/UAERecipientsBanner.astro';
 
   <!-- Third banner: Recipients & Split -->
   <UAERecipientsBanner />
-  
+
+  <Featured />
+
   <!-- Placeholder for additional UAE-specific components -->
   <div class='py-20 text-center'>
     <h2 class='mb-4 text-3xl font-bold text-gray-800'>More UAE Content Coming Soon</h2>
