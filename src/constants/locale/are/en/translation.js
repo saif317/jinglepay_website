@@ -1,5 +1,9 @@
 import footer from './footer.js';
 import navbar from './navbar.js';
+import investors from './investors.js';
+import partners from './partners.js';
+import regulation from './regulation.js';
+import cta from './cta.js';
 
 export default {
   title: 'Jingle Pay UAE - Simplifying All Money!',
@@ -8,8 +12,12 @@ export default {
   hero: {
     title: 'Your Money. Simplified.',
     subtitle: 'Experience seamless banking with the all-in-one money app designed for your lifestyle.',
-    downloadApp: 'Download App'
+    downloadApp: 'Download App',
   },
   featuredIn: 'Jingle Pay has been featured in:',
+  investors,
+  partners,
+  regulation,
+  cta,
   footer,
 };
