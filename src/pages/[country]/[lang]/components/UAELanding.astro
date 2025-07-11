@@ -1,6 +1,7 @@
 ---
 // UAE Landing Page Component
 import UAEHero from '@components/hero-section/UAEHero.astro';
+import UAEBanner from '@components/uae/UAEBanner.astro';
 ---
 
 <div>
@@ -8,10 +9,16 @@ import UAEHero from '@components/hero-section/UAEHero.astro';
     <UAEHero />
     <!-- UAE-specific hero section with calculator widget -->
   </div>
+
+  <!-- UAE Banner Section with transaction cards -->
+  <UAEBanner 
+    heading="Send money abroad instantly"
+    description="Compare rates, choose your provider, and send money to your loved ones instantly with Jingle Pay."
+  />
   
-  <!-- Placeholder for UAE-specific components that will be implemented as needed -->
-  <div class="py-20 text-center">
-    <h2 class="text-3xl font-bold text-gray-800 mb-4">UAE Landing Page</h2>
-    <p class="text-gray-600">Additional sections will be implemented according to the design.</p>
+  <!-- Placeholder for additional UAE-specific components -->
+  <div class='py-20 text-center'>
+    <h2 class='mb-4 text-3xl font-bold text-gray-800'>More UAE Content Coming Soon</h2>
+    <p class='text-gray-600'>Additional sections will be implemented according to the design.</p>
   </div>
 </div>
