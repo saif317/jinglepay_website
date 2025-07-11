@@ -1,0 +1,41 @@
+---
+/**
+ * UAE Card Features Section – Virtual Cards / Security / Numberless
+ */
+import { Image } from 'astro:assets';
+import virtualCardImg from '../../assets/uae/cards/virtual-cards.png';
+import securityImg from '../../assets/uae/cards/security.png';
+import numberlessImg from '../../assets/uae/cards/numberless.png';
+
+const features = [
+  {
+    img: virtualCardImg,
+    title: 'Virtual Cards',
+    desc: 'Unlock your freedom with a versatile debit card! Enjoy a joining bonus and earn cashback on every transaction.',
+  },
+  {
+    img: securityImg,
+    title: 'Security',
+    desc: 'Your personal data, money, and card details are stored securely with end-to-end encryption.',
+  },
+  {
+    img: numberlessImg,
+    title: 'Numberless',
+    desc: 'The cards only display your name – keeping your card details secure and further strengthening privacy.',
+  },
+];
+---
+
+<section class="w-full py-20 bg-[#F7F9FC] flex justify-center px-4">
+  <div class="max-w-7xl w-full grid gap-6 md:grid-cols-3">
+    {features.map((f) => (
+      <article class="bg-white rounded-xl shadow-[0px_120px_120px_-80px_rgba(76,86,115,0.08)] flex flex-col items-center p-6" tabindex="0">
+        <div class="bg-[#F3F5F6] w-full rounded-[44px] flex items-center justify-center overflow-hidden mb-6" style="min-height: 270px;">
+          <Image src={f.img} alt={f.title} class="object-contain max-h-60" loading="lazy" />
+        </div>
+        <h3 class="text-slate-800 text-2xl font-semibold mb-3 text-center">{f.title}</h3>
+        <p class="text-slate-800 text-base leading-relaxed text-center max-w-xs">{f.desc}</p>
+      </article>
+    ))}
+  </div>
+</section>

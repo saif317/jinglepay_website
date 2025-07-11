@@ -1,0 +1,25 @@
+---
+/**
+ * UAE Peer-to-Peer Payments Section
+ * Two-column layout: copy on the left, image on the right.
+ */
+import { Image } from 'astro:assets';
+import womanImg from '../../assets/uae/woman.jpg';
+---
+
+<section class="w-full py-20 bg-[#F3F5F6] flex justify-center px-4">
+  <div class="flex flex-col lg:flex-row items-center gap-14 max-w-6xl w-full">
+    <!-- Copy -->
+    <div class="flex-1 flex flex-col gap-9 max-w-md text-left">
+      <h2 class="text-3xl sm:text-4xl font-extrabold leading-tight text-gray-900">Peer-to-Peer Payments</h2>
+      <p class="text-xl leading-loose text-gray-900/90">
+        Instantly send money to friends using just their mobile numberfast, secure, and hassle-free!
+      </p>
+    </div>
+
+    <!-- Image -->
+    <div class="flex-1 flex justify-center">
+      <Image src={womanImg} alt="Happy woman sending money with Jingle Pay" class="w-full max-w-md rounded-[44px] border border-gray-100 object-cover" loading="lazy" />
+    </div>
+  </div>
+</section>
