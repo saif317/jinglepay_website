@@ -30,20 +30,20 @@ const exchangeRate = `1.00 ${sendCurrency} = ${exchangeData.quotations[0]?.trans
 ---
 
 <div
-  class='w-full lg:w-[484px] p-6 sm:p-8 bg-gray-100 rounded-2xl flex flex-col gap-5'
+  class='w-full lg:w-[484px] p-6 sm:p-8 bg-[#F3F5F6] rounded-2xl flex flex-col gap-5'
   aria-labelledby='calculator-heading'
 >
   <h2 id='calculator-heading' class='sr-only'>Money Transfer Calculator</h2>
   <!-- You send section -->
   <div class='w-full'>
-    <label for='send-amount' class='block mb-2 text-sm font-medium text-gray-900'>You send:</label>
-    <div class='flex items-center justify-between px-3 py-4 bg-white border border-gray-300 rounded-lg'>
+    <label for='send-amount' class="block mb-2 text-sm font-normal font-[Hero_New] text-black leading-tight">You send:</label>
+    <div class='flex items-center justify-between px-3 py-4 bg-[#F3F4F5] border border-[#C8C8C8] rounded-lg'>
       <input
         type='text'
         inputmode='decimal'
         id='send-amount'
         value={sendAmount}
-        class='text-xl font-normal text-gray-900 w-full max-w-[100px] focus:outline-none'
+        class="text-xl font-normal font-[Hero_New] text-black leading-relaxed w-full max-w-[100px] focus:outline-none"
         placeholder='0'
         aria-describedby='send-currency'
         data-calculator-send-input
@@ -53,7 +53,7 @@ const exchangeRate = `1.00 ${sendCurrency} = ${exchangeData.quotations[0]?.trans
         <div class='relative flex-shrink-0 w-6 h-6 send-currency-flag' aria-hidden='true'>
           <div class='absolute top-0 w-6 h-2 bg-green-800'></div>
           <!-- Green top -->
-          <div class='absolute w-6 h-2 bg-white top-2'></div>
+          <div class='absolute w-6 h-2 bg-[#F3F4F5] top-2'></div>
           <!-- White middle -->
           <div class='absolute bottom-0 w-6 h-2 bg-black'></div>
           <!-- Black bottom -->
@@ -63,7 +63,7 @@ const exchangeRate = `1.00 ${sendCurrency} = ${exchangeData.quotations[0]?.trans
         <button
           id='send-currency'
           type='button'
-          class='flex items-center gap-1 text-xl font-normal text-gray-900 transition-colors rounded hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2'
+          class="flex items-center gap-1 text-xl font-normal font-[Hero_New] text-black leading-relaxed transition-colors rounded hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
           aria-label={`Select send currency, currently ${sendCurrency}`}
           data-calculator-send-currency
           aria-haspopup='true'
@@ -88,23 +88,23 @@ const exchangeRate = `1.00 ${sendCurrency} = ${exchangeData.quotations[0]?.trans
         </button>
         <!-- Send Currency Dropdown -->
         <div
-          class='absolute right-0 z-10 hidden py-1 mt-2 bg-white rounded-lg shadow-lg top-full w-36'
+          class='absolute right-0 z-10 hidden py-1 mt-2 bg-[#F3F4F5] rounded-lg shadow-lg top-full w-36'
           data-send-currency-dropdown
           aria-labelledby='send-currency'
         >
-          <button class='w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-gray-100' data-currency='AED'>
+          <button class='w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-[#F3F5F6]' data-currency='AED'>
             <div class='flex items-center gap-2'>
               <span class='currency-flag'>🇦🇪</span>
               <span>AED</span>
             </div>
           </button>
-          <button class='w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-gray-100' data-currency='USD'>
+          <button class='w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-[#F3F5F6]' data-currency='USD'>
             <div class='flex items-center gap-2'>
               <span class='currency-flag'>🇺🇸</span>
               <span>USD</span>
             </div>
           </button>
-          <button class='w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-gray-100' data-currency='EUR'>
+          <button class='w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-[#F3F5F6]' data-currency='EUR'>
             <div class='flex items-center gap-2'>
               <span class='currency-flag'>🇪🇺</span>
               <span>EUR</span>
@@ -117,14 +117,14 @@ const exchangeRate = `1.00 ${sendCurrency} = ${exchangeData.quotations[0]?.trans
 
   <!-- Recipient receives section -->
   <div class='w-full'>
-    <label for='receive-amount' class='block mb-2 text-sm font-medium text-gray-900'>Recipient receives:</label>
-    <div class='flex items-center justify-between px-3 py-4 bg-white border border-gray-300 rounded-lg'>
+    <label for='receive-amount' class="block mb-2 text-sm font-normal font-[Hero_New] text-black leading-tight">Recipient receives:</label>
+    <div class='flex items-center justify-between px-3 py-4 bg-[#F3F4F5] border border-[#C8C8C8] rounded-lg'>
       <input
         type='text'
         inputmode='decimal'
         id='receive-amount'
         value={receiveAmount}
-        class='text-xl font-normal text-gray-900 w-full max-w-[100px] focus:outline-none'
+        class="text-xl font-normal font-[Hero_New] text-black leading-relaxed w-full max-w-[100px] focus:outline-none"
         placeholder='0'
         aria-describedby='receive-currency'
         data-calculator-receive-input
@@ -137,15 +137,15 @@ const exchangeRate = `1.00 ${sendCurrency} = ${exchangeData.quotations[0]?.trans
           aria-hidden='true'
         >
           <!-- White stripes - simplified version -->
-          <div class='absolute w-6 h-1 bg-white top-1'></div>
-          <div class='absolute w-6 h-1 bg-white top-3'></div>
-          <div class='absolute w-6 h-1 bg-white bottom-1'></div>
+          <div class='absolute w-6 h-1 bg-[#F3F4F5] top-1'></div>
+          <div class='absolute w-6 h-1 bg-[#F3F4F5] top-3'></div>
+          <div class='absolute w-6 h-1 bg-[#F3F4F5] bottom-1'></div>
           <!-- Red stripes would be in between but omitted for simplicity -->
         </div>
         <button
           id='receive-currency'
           type='button'
-          class='flex items-center gap-1 text-xl font-normal text-gray-900 transition-colors rounded hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2'
+          class="flex items-center gap-1 text-xl font-normal font-[Hero_New] text-black leading-relaxed transition-colors rounded hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
           aria-label={`Select receive currency, currently ${receiveCurrency}`}
           data-calculator-receive-currency
           aria-haspopup='true'
@@ -170,29 +170,29 @@ const exchangeRate = `1.00 ${sendCurrency} = ${exchangeData.quotations[0]?.trans
         </button>
         <!-- Receive Currency Dropdown -->
         <div
-          class='absolute right-0 z-10 hidden py-1 mt-2 bg-white rounded-lg shadow-lg top-full w-36'
+          class='absolute right-0 z-10 hidden py-1 mt-2 bg-[#F3F4F5] rounded-lg shadow-lg top-full w-36'
           data-receive-currency-dropdown
           aria-labelledby='receive-currency'
         >
-          <button class='w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-gray-100' data-currency='USD'>
+          <button class='w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-[#F3F5F6]' data-currency='USD'>
             <div class='flex items-center gap-2'>
               <span class='currency-flag'>🇺🇸</span>
               <span>USD</span>
             </div>
           </button>
-          <button class='w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-gray-100' data-currency='INR'>
+          <button class='w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-[#F3F5F6]' data-currency='INR'>
             <div class='flex items-center gap-2'>
               <span class='currency-flag'>🇮🇳</span>
               <span>INR</span>
             </div>
           </button>
-          <button class='w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-gray-100' data-currency='PKR'>
+          <button class='w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-[#F3F5F6]' data-currency='PKR'>
             <div class='flex items-center gap-2'>
               <span class='currency-flag'>🇵🇰</span>
               <span>PKR</span>
             </div>
           </button>
-          <button class='w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-gray-100' data-currency='GBP'>
+          <button class='w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-[#F3F5F6]' data-currency='GBP'>
             <div class='flex items-center gap-2'>
               <span class='currency-flag'>🇬🇧</span>
               <span>GBP</span>
@@ -207,15 +207,15 @@ const exchangeRate = `1.00 ${sendCurrency} = ${exchangeData.quotations[0]?.trans
   <div class='w-full space-y-3'>
     <!-- Transfer fee -->
     <div class='flex items-center justify-between'>
-      <p class='text-sm font-normal text-gray-900'>Transfer fee:</p>
-      <p class='font-mono text-sm font-normal text-gray-900'>{transferFee}</p>
+      <p class="text-sm font-normal font-[Hero_New] text-black leading-tight">Transfer fee:</p>
+      <p class="text-sm font-normal font-[Hero_New] text-black leading-tight" data-transfer-fee>{transferFee}</p>
     </div>
 
     <!-- Exchange rate -->
     <div class='flex items-center justify-between'>
-      <p class='text-sm font-normal text-gray-900'>Exchange rate:</p>
+      <p class="text-sm font-normal font-[Hero_New] text-black leading-tight">Exchange rate:</p>
       <div class='flex items-center gap-2'>
-        <p class='font-mono text-sm font-normal text-gray-900'>{exchangeRate}</p>
+        <p class="text-sm font-normal font-[Hero_New] text-black leading-tight" data-exchange-rate>{exchangeRate}</p>
         <!-- Info icon - Using proper SVG -->
         <button
           type='button'
@@ -246,7 +246,7 @@ const exchangeRate = `1.00 ${sendCurrency} = ${exchangeData.quotations[0]?.trans
   <!-- Send money button -->
   <button
     type='button'
-    class='flex items-center justify-center w-full px-5 py-3 mt-2 text-xl font-medium text-white transition-colors bg-gray-900 hover:bg-gray-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2'
+    class="flex items-center justify-center w-full px-5 py-3 mt-2 text-xl font-medium font-[Hero_New] leading-loose text-white transition-colors bg-[#121C26] hover:bg-[#283991] rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
     data-calculator-submit
   >
     Send money now
@@ -314,7 +314,7 @@ const exchangeRate = `1.00 ${sendCurrency} = ${exchangeData.quotations[0]?.trans
       green.className = 'w-6 h-2 absolute top-0 bg-green-800';
 
       const white = document.createElement('div');
-      white.className = 'w-6 h-2 absolute top-2 bg-white';
+      white.className = 'w-6 h-2 absolute top-2 bg-[#F3F4F5]';
 
       const black = document.createElement('div');
       black.className = 'w-6 h-2 absolute bottom-0 bg-black';
@@ -335,13 +335,13 @@ const exchangeRate = `1.00 ${sendCurrency} = ${exchangeData.quotations[0]?.trans
       flag.className = 'w-6 h-6 flex-shrink-0 relative bg-blue-900 overflow-hidden';
 
       const stripe1 = document.createElement('div');
-      stripe1.className = 'w-6 h-1 bg-white absolute top-1';
+      stripe1.className = 'w-6 h-1 bg-[#F3F4F5] absolute top-1';
 
       const stripe2 = document.createElement('div');
-      stripe2.className = 'w-6 h-1 bg-white absolute top-3';
+      stripe2.className = 'w-6 h-1 bg-[#F3F4F5] absolute top-3';
 
       const stripe3 = document.createElement('div');
-      stripe3.className = 'w-6 h-1 bg-white absolute bottom-1';
+      stripe3.className = 'w-6 h-1 bg-[#F3F4F5] absolute bottom-1';
 
       flag.appendChild(stripe1);
       flag.appendChild(stripe2);
@@ -368,10 +368,10 @@ const exchangeRate = `1.00 ${sendCurrency} = ${exchangeData.quotations[0]?.trans
       flag.className = 'w-6 h-6 flex-shrink-0 relative bg-blue-900';
 
       const cross1 = document.createElement('div');
-      cross1.className = 'absolute w-6 h-1 bg-white top-2.5 transform';
+      cross1.className = 'absolute w-6 h-1 bg-[#F3F4F5] top-2.5 transform';
 
       const cross2 = document.createElement('div');
-      cross2.className = 'absolute w-1 h-6 bg-white left-2.5 transform';
+      cross2.className = 'absolute w-1 h-6 bg-[#F3F4F5] left-2.5 transform';
 
       flag.appendChild(cross1);
       flag.appendChild(cross2);
@@ -386,7 +386,7 @@ const exchangeRate = `1.00 ${sendCurrency} = ${exchangeData.quotations[0]?.trans
       top.className = 'w-6 h-2 absolute top-0 bg-orange-500';
 
       const middle = document.createElement('div');
-      middle.className = 'w-6 h-2 absolute top-2 bg-white flex items-center justify-center';
+      middle.className = 'w-6 h-2 absolute top-2 bg-[#F3F4F5] flex items-center justify-center';
 
       const bottom = document.createElement('div');
       bottom.className = 'w-6 h-2 absolute bottom-0 bg-green-600';
@@ -402,7 +402,7 @@ const exchangeRate = `1.00 ${sendCurrency} = ${exchangeData.quotations[0]?.trans
       flag.className = 'w-6 h-6 flex-shrink-0 relative bg-green-700';
 
       const moon = document.createElement('div');
-      moon.className = 'w-2 h-2 absolute top-2 right-2 rounded-full bg-white';
+      moon.className = 'w-2 h-2 absolute top-2 right-2 rounded-full bg-[#F3F4F5]';
 
       flag.appendChild(moon);
       return flag;
