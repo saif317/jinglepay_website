@@ -1,0 +1,62 @@
+---
+// Carousel of UAE landing banners using Swiper
+import UAEBanner from '@components/uae/UAEBanner.astro';
+import UAELinkCardBanner from '@components/uae/UAELinkCardBanner.astro';
+import UAERecipientsBanner from '@components/uae/UAERecipientsBanner.astro';
+
+// Swiper styles
+import 'swiper/css/bundle';
+---
+
+<section class='swiper mySwiper'>
+  <div class='swiper-wrapper'>
+    <!-- Slide 1: Transaction cards banner -->
+    <div class='swiper-slide flex items-center justify-center w-full h-[650px] md:h-[750px] lg:h-[850px]'>
+      <UAEBanner
+        heading='Send money abroad instantly'
+        description='Compare rates, choose your provider, and send money to your loved ones instantly with Jingle Pay.'
+      />
+    </div>
+
+    <!-- Slide 2: Link card & add fund -->
+    <div class='swiper-slide flex items-center justify-center w-full h-[650px] md:h-[750px] lg:h-[850px]'>
+      <UAELinkCardBanner />
+    </div>
+
+    <!-- Slide 3: Recipients & Split -->
+    <div class='swiper-slide flex items-center justify-center w-full h-[650px] md:h-[750px] lg:h-[850px]'>
+      <UAERecipientsBanner />
+    </div>
+  </div>
+
+  <!-- Pagination dots -->
+  <div class='swiper-pagination'></div>
+
+  <!-- Swiper init script -->
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      try {
+        const { default: Swiper } = await import('swiper');
+        const { Autoplay, Pagination } = await import('swiper/modules');
+
+        new Swiper('.mySwiper', {
+          modules: [Autoplay, Pagination],
+          loop: true,
+          slidesPerView: 1,
+          spaceBetween: 0,
+          grabCursor: true,
+          // autoplay: {
+          //   delay: 4000,
+          //   disableOnInteraction: false,
+          // },
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+        });
+      } catch (error) {
+        console.error('Error initializing UAE banner Swiper:', error);
+      }
+    });
+  </script>
+</section>
