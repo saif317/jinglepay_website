@@ -1,7 +1,7 @@
 ---
 /**
  * Hero Content Component
- * 
+ *
  * Displays the main heading and descriptive text for a hero section.
  * Used as the primary text content in landing page hero sections.
  */
@@ -19,18 +19,15 @@ const {
 } = Astro.props;
 ---
 
-<div class="w-full flex flex-col justify-start items-start gap-5">
-  <h1 
-    id="hero-heading"
-    class="self-stretch text-4xl sm:text-5xl font-semibold font-['New_Hero','DM Sans',sans-serif] leading-tight sm:leading-[57.60px]"
-  >
-    <span class="text-zinc-800">{heading}</span>
-    <span class="text-[#794EFF]"> {highlightedText}</span>
-    <span class="text-zinc-800">anywhere, anytime</span><br />
-    <span class="text-zinc-800">& anyway you want</span>
+<div class='flex flex-col items-start justify-start w-full gap-5'>
+  <h1 id='hero-heading' class="self-stretch text-5xl font-semibold font-['Hero_New'] leading-[57.60px]">
+    <span class='text-zinc-800'>{heading}</span>
+    <span class='text-violet-500'> {highlightedText}</span>
+    <span class='text-zinc-800'>anywhere, anytime</span><br />
+    <span class='text-zinc-800'>& anyway you want</span>
   </h1>
-  
-  <p class="w-full max-w-[485px] text-neutral-500 text-xl font-normal font-['New_Hero','DM Sans',sans-serif] leading-7">
+
+  <p class='w-full max-w-[485px] text-neutral-500 text-xl font-normal font-[Hero_New] leading-7'>
     {description}
   </p>
 </div>
