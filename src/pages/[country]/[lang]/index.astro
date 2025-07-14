@@ -1,29 +1,25 @@
 ---
+import PakistanLanding from '@components/PakistanLanding.astro';
+import UAELanding from '@components/UAELanding.astro';
 import Layout from '@layouts/Layout.astro';
 import { getStaticPathsWrapper } from '@util/getStaticPaths';
-import PakistanLanding from './components/PakistanLanding.astro';
-import UAELanding from './components/UAELanding.astro';
 
 const { country } = Astro.params;
 
-export const getStaticPaths = getStaticPathsWrapper(
-  [
-    'pak',
-    'are'
-  ],
-  {
-    pak: ['en', 'ur'],
-    are: ['en', 'ar'],
-  }
-);
+export const getStaticPaths = getStaticPathsWrapper(['pak', 'are'], {
+  pak: ['en', 'ur'],
+  are: ['en', 'ar'],
+});
 ---
 
 <Layout>
-  {country === 'pak' ? (
-    <PakistanLanding />
-  ) : country === 'are' ? (
-    <UAELanding />
-  ) : (
-    <p class="p-10 text-center text-red-500">Unsupported country: {country}</p>
-  )}
+  {
+    country === 'pak' ? (
+      <PakistanLanding />
+    ) : country === 'are' ? (
+      <UAELanding />
+    ) : (
+      <p class='p-10 text-center text-red-500'>Unsupported country: {country}</p>
+    )
+  }
 </Layout>

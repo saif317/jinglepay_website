@@ -13,9 +13,9 @@ export default {
   benefits: {
     title: 'ما هو المستفيد بالنسبة لك؟',
     items: [
-      'أرسل المال محليًا أو دوليًا بدون أي رسوم<span class="font-bold">Zero Fee</span>',
-      'Request and receive money directly to your wallet',
-      '<span class="font-bold">Earn cashback</span> every time you use your Platinum MasterCard',
+      ' أرسل المال محليًا أو دوليًا بدون<span class="font-bold">Zero Fee</span>',
+      'اطلب واستلم المال مباشرة إلى محفظتك',
+      '<span class="font-bold">بطاقة ماستركارد البلاتينية</span> احصل على استرجاع نقدي في كل مرة تستخدم فيها',
     ],
   },
 };
