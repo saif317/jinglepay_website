@@ -7,7 +7,6 @@
  * Integrates with remittance exchange API for real-time conversion rates.
  */
 import { getRemittanceRates, getMockExchangeRate } from '../../helpers/remittance-exchange.js';
-import { getCountries } from '../../helpers/mock-countries-api.js';
 
 // Define props with defaults
 export interface Props {
@@ -21,9 +20,48 @@ const { initialSendAmount = 1000, initialSendCurrency = 'AED', initialReceiveCur
 // Get mock exchange rate data (will be replaced with real API in production)
 const exchangeData = getMockExchangeRate(initialSendCurrency, initialReceiveCurrency, initialSendAmount);
 
-// Get supported countries for send/receive dropdowns
-const sendCountries = await getCountries('send');
-const receiveCountries = await getCountries('receive');
+// Hardcoded supported countries for dropdowns
+const sendCountries = [
+  {
+    name: 'United Arab Emirates',
+    code: 'AE',
+    flag: 'ae',
+    currencies: [{ name: 'UAE Dirham', code: 'AED' }]
+  }
+];
+
+const receiveCountries = [
+  {
+    name: 'United States',
+    code: 'US',
+    flag: 'us',
+    currencies: [{ name: 'US Dollar', code: 'USD' }]
+  },
+  {
+    name: 'India',
+    code: 'IN',
+    flag: 'in',
+    currencies: [{ name: 'Indian Rupee', code: 'INR' }]
+  },
+  {
+    name: 'Pakistan',
+    code: 'PK',
+    flag: 'pk',
+    currencies: [{ name: 'Pakistani Rupee', code: 'PKR' }]
+  },
+  {
+    name: 'United Kingdom',
+    code: 'GB',
+    flag: 'gb',
+    currencies: [{ name: 'British Pound', code: 'GBP' }]
+  },
+  {
+    name: 'European Union',
+    code: 'EU',
+    flag: 'eu',
+    currencies: [{ name: 'Euro', code: 'EUR' }]
+  }
+];
 
 // Extract values from exchange data
 const sendAmount = initialSendAmount.toString();

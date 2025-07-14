@@ -62,35 +62,19 @@
  */
 import { encryptRequest, decryptResponse } from './encryption.js';
 
-// Import our mock API handler for development testing
-import { mockApiHandler, API_ENDPOINTS } from './mock-remittance-api.js';
-
 export const getRemittanceRates = async (country, exchangeRequest) => {
   try {
     console.log('Remittance API request:', country, exchangeRequest);
     
-    // Set up the API endpoint based on environment and country
-    let apiUrl;
-    if (import.meta.env.DEV) {
-      // Use local endpoints in development
-      apiUrl = country === 'BH' ? API_ENDPOINTS.BH : API_ENDPOINTS.UAE;
-      console.log('DEV mode - using simulated API at', apiUrl);
-    } else {
-      // Production endpoints
-      apiUrl = country === 'BH' 
-        ? 'https://bh-api.jinglepay.dev/api/v0/remittance/rates-review/' 
-        : 'https://api.jinglepay.dev/api/v0/remittance/rates-review/';
-    }
+    // Always use production endpoints, regardless of environment
+    const apiUrl = country === 'BH' 
+      ? 'https://bh-api.jinglepay.dev/api/v0/remittance/rates-review/' 
+      : 'https://api.jinglepay.dev/api/v0/remittance/rates-review/';
+    
+    console.log('Using production API at:', apiUrl);
     
     // Encrypt the request body
     const encryptedRequest = await encryptRequest(exchangeRequest);
-    
-    // In development mode, use our mock API handler directly instead of fetch
-    if (import.meta.env.DEV) {
-      console.log('Using mock API handler');
-      const responseText = await mockApiHandler(encryptedRequest);
-      return await decryptResponse(responseText);
-    }
     
     // In production, make a real API call
     const response = await fetch(apiUrl, {
