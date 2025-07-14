@@ -39,7 +39,7 @@ const {
     <Image
       src={bannerBgImage}
       alt='Modern architectural background with palm trees'
-      class='absolute top-[-12rem]'
+      class='absolute object-cover h-full'
       loading='eager'
     />
     <div class='absolute inset-0 bg-gradient-to-r from-black/10 to-black/5'></div>
@@ -49,22 +49,33 @@ const {
   <div class='relative z-10 h-full min-h-[600px]'>
     <!-- Person image absolute positioned within the container -->
     <!-- Circle backdrop -->
-    <div class='w-48 h-48 rounded-full absolute opacity-50 bg-neutral-100 left-[357px] bottom-[38px]'></div>
-    <div class='rounded-full opacity-50 w-72 h-72 bg-neutral-100 absolute left-[502px] bottom-[155px]'></div>
-    <div class='rounded-full opacity-50 w-72 h-72 bg-neutral-100 absolute left-[697px] bottom-[96px]'></div>
+    <div
+      class='w-48 h-48 rounded-full scale-50 sm:scale-70 md:scale-75 lg:scale-100 3xl:scale-125 absolute opacity-50 bg-neutral-100 left-[3rem] md:left-[9rem] lg:left-[12rem] xl:left-[357px] bottom-[38px] 3xl:left-[35rem] 4xl:left-[38rem]'
+    >
+    </div>
+    <div
+      class='rounded-full opacity-50 w-72 h-72 scale-50 sm:scale-70 md:scale-75 lg:scale-100 3xl:scale-125 bg-neutral-100 absolute left-[6rem] md:left-[12rem] lg:left-[18rem] xl:left-[502px] bottom-[155px] 3xl:left-[44rem] 4xl:left-[44rem]'
+    >
+    </div>
+    <div
+      class='rounded-full opacity-50 w-72 h-72 scale-50 sm:scale-70 md:scale-75 lg:scale-100 3xl:scale-125 bg-neutral-100 absolute left-[9rem] sm:left-[15rem] md:left-[18rem] lg:left-[27rem] xl:left-[697px] bottom-[96px] 3xl:left-[57rem] 4xl:left-[57rem]'
+    >
+    </div>
 
     <!-- Person image -->
     <Image
       src={personBgImage}
       alt='Person shopping with phone and shopping bags'
       loading='eager'
-      class='absolute bottom-0 -translate-x-1/2 left-1/2 max-h-[650px] max-w-[860px]'
+      class='absolute bottom-0 -translate-x-1/2 left-1/2 max-h-[400px] max-w-[600px] lg:max-h-[650px] lg:max-w-[860px]'
     />
 
     <!-- Cards Container - Flex layout instead of absolute positioning for better control -->
     <!-- Top row with side-by-side cards on tablet/desktop, stacked on mobile -->
     <!-- Left Card: Cash Withdrawal - Responsive sizing -->
-    <div class='absolute w-full bg-white shadow-lg rounded-2xl sm:w-auto top-[86px] left-[122px]'>
+    <div
+      class='absolute w-full sm:w-auto scale-50 sm:scale-70 md:scale-85 lg:scale-100 3xl:scale-125 bg-white shadow-lg rounded-2xl left-[-3rem] sm:top-[3rem] sm:left-0 lg:top-[86px] lg:left-[122px]'
+    >
       <div class='flex items-center p-3 sm:p-4 gap-x-10'>
         <div class='flex'>
           <div class='relative flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12'>
@@ -100,7 +111,9 @@ const {
     </div>
 
     <!-- Right Card: Request - With sticky header styling -->
-    <div class='absolute top-[60px] right-[120px] p-4 bg-white shadow-lg rounded-2xl'>
+    <div
+      class='absolute scale-50 sm:scale-70 md:scale-85 lg:scale-100 3xl:scale-125 right-[-3rem] top-[7rem] lg:top-[60px] lg:right-[120px] p-4 bg-white shadow-lg rounded-2xl sm:right-0 sm:top-[10rem]'
+    >
       <!-- Pull bar indicator -->
       <div class='absolute w-5 h-[3.40px] bg-stone-300 rounded-full -translate-x-1/2 top-2 left-1/2'></div>
 
@@ -154,7 +167,9 @@ const {
 
     <!-- Bottom row with Send card and Provider comparison -->
     <!-- Send Money Card - Left -->
-    <div class='absolute bottom-[75px] left-[174px] bg-white shadow-lg rounded-[16px] p-[16px]'>
+    <div
+      class='absolute scale-50 sm:scale-70 md:scale-85 lg:scale-100 3xl:scale-125 lg:bottom-[75px] lg:left-[174px] left-[-1rem] bottom-[11rem] bg-white shadow-lg rounded-[16px] p-[16px] sm:left-0'
+    >
       <div class='flex items-center justify-between mb-4'>
         <h3 id='send-card-title' class='text-neutral-900 text-sm font-semibold font-["Hero_New"] leading-tight'>
           Send
@@ -187,7 +202,10 @@ const {
     </div>
 
     <!-- Provider Comparison Cards - Right -->
-    <ul role='list' class='absolute right-[69px] bottom-[53px] flex flex-col space-y-2'>
+    <ul
+      role='list'
+      class='absolute scale-50 sm:scale-70 md:scale-85 lg:scale-100 3xl:scale-125 lg:right-[69px] lg:bottom-[53px] flex flex-col space-y-2 right-[-4rem] bottom-0 sm:right-0'
+    >
       <!-- MoneyGram -->
       <li class='flex items-center justify-between gap-x-[21px] px-6 py-2 bg-white shadow-md rounded-xl'>
         <div class='flex items-center gap-2'>
@@ -212,12 +230,5 @@ const {
         </div>
       </li>
     </ul>
-
-    <!-- Carousel Indicators - Fixed position at bottom -->
-    <div class='absolute z-30 flex items-center justify-center gap-2 -translate-x-1/2 bottom-4 left-1/2'>
-      <div class='w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-violet-500'></div>
-      <div class='w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-gray-300'></div>
-      <div class='w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-gray-300'></div>
-    </div>
   </div>
 </section>
