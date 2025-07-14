@@ -1,23 +1,26 @@
 export default {
   card1: {
-    title: "Experience the world's 1ˢᵗ remittance marketplace",
+    title: 'اكتشف أول سوق حوالات في العالم',
     content: {
-      line1: "Send money to 160+ countries in 99+ currencies with zero fees.",
-      line2: "Compare rates, track transfers in real time, and choose your payout method—bank, card, wallet, or cash pickup."
-    }
+      line1:
+        'أرسل المال إلى أكثر من 160 دولة بـ 99+ عملة بدون أي رسوم. قارن الأسعار، وتتبع التحويلات في الوقت الفعلي، واختر طريقة الاستلام المناسبة لك — إلى حساب بنكي، بطاقة، محفظة، أو استلام نقدي.',
+      line2: '',
+    },
   },
   card2: {
     title: {
-      line1: "No Fees.",
-      line2: "Not even hidden ones."
+      line1: 'لا رسوم.',
+      line2: 'ولا حتى الرسوم المخفية.',
     },
     content: {
-      line1: "Jingle Pay is fee-free for account openings, transfers, and requests.",
-      line2: "Any premium service fees are clearly shown upfront for full transparency."
-    }
+      line1:
+        'Jingle Pay مجاني لفتح الحسابات، والتحويلات، وطلبات الأموال. أي رسوم على الخدمات المميزة يتم عرضها بوضوح مسبقًا لضمان الشفافية الكاملة.',
+      line2: '',
+    },
   },
   card3: {
-    title: "Joining Bonus",
-    content: "Get a joining bonus of <span class=\"font-bold\">AED 30!</span> Download Jingle Pay and join 1000s of users in the most rewarding fintech app in UAE!"
-  }
+    title: 'مكافأة الانضمام',
+    content:
+      'احصل على مكافأة ترحيبية بقيمة 30 درهمًا! حمّل تطبيق Jingle Pay وانضم إلى آلاف المستخدمين في أكثر تطبيق مالي مكافئ في الإمارات!',
+  },
 };

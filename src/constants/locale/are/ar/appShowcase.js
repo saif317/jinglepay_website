@@ -1,11 +1,11 @@
 export default {
   heading: {
-    prefix: 'The go-to app for',
-    highlight: 'everyday finances.'
+    prefix: 'التطبيق المثالي لإدارة',
+    highlight: 'الشؤون المالية اليومية',
   },
   features: [
-    'No minimum balance is required.',
-    'Earn <span class="font-bold">+10% profit</span> on savings.',
-    'Multiple transactions are available, including utility bill payments, mobile top-ups, and fund transfers.'
-  ]
+    'لا توجد حد أدنى لرصيد الحساب.',
+    '<span class="font-bold">اربح +10٪ أرباح على مدخراتك.</span>',
+    'العديد من المعاملات متاحة، بما في ذلك دفع فواتير الخدمات، شحن رصيد الهاتف، وتحويل الأموال.',
+  ],
 };

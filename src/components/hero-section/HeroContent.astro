@@ -16,6 +16,9 @@ const {
   heading = 'Send money,',
   highlightedText = 'Fee-free!',
   description = 'Jingle Pay is simplifying all money! For everyday financial needs. Try our calculator to see how much you can save with us!',
+  anywhere = 'anywhere,',
+  anytime = 'anytime',
+  anyway = '& anyway you want',
 } = Astro.props;
 ---
 
@@ -26,9 +29,9 @@ const {
   >
     <span class='text-zinc-800'>{heading}</span>
     <span class='text-violet-500'> {highlightedText}</span>
-    <span class='text-zinc-800'>anywhere,</span><br />
-    <span class='text-zinc-800'>anytime</span><br />
-    <span class='text-zinc-800'>& anyway you want</span>
+    <span class='text-zinc-800'>{anywhere}</span><br />
+    <span class='text-zinc-800'>{anytime}</span><br />
+    <span class='text-zinc-800'>{anyway}</span>
   </h1>
 
   <p
