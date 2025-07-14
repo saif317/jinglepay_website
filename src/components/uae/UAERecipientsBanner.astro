@@ -1,0 +1,104 @@
+---
+/**
+ * UAE Recipients & Split Banner (Third Banner)
+ * Background close-up phone image with floating UI cards:
+ *   – Split card (top-left)
+ *   – Select Recipients card (right)
+ *   – 150+ Countries pill (bottom-left)
+ * Uses placeholder avatars / icons; replace as needed.
+ */
+import { Image } from 'astro:assets';
+import bgImg from '../../assets/uae-banners/banner3/7ba172c6d90b5d81fb38678d630cab3650375c52.jpg';
+---
+
+<section class='relative w-full min-h-[600px] overflow-hidden'>
+  <!-- Background -->
+  <Image
+    src={bgImg}
+    alt='Sending money on mobile'
+    class='absolute inset-0 z-0 object-cover w-full h-full backdrop-blur-sm'
+    loading='eager'
+  />
+
+  <!-- Subtle radial light overlay -->
+  <div
+    class='absolute inset-0 z-10 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.12)_0%,rgba(255,255,255,0)_60%)]'
+  >
+  </div>
+
+  <!-- Content Container (flex assists placement) -->
+  <div class='relative z-20 w-full h-full'>
+    <!-- Split card -->
+    <div class='absolute w-48 px-4 py-3 text-xs bg-white shadow-md top-16 left-24 rounded-2xl'>
+      <span class='block w-12 h-0.5 bg-gray-300 rounded mx-auto mb-2'></span>
+      <h3 class='mb-1 text-sm font-semibold text-gray-900'>Split</h3>
+      <label class='block text-[10px] font-semibold mb-1 text-gray-800'>Amount</label>
+      <div class='flex items-center justify-between border rounded-lg px-2 py-1 mb-2 text-[11px]'>
+        <span>1,000</span>
+        <span class='flex items-center gap-1'>🇦🇪 <span class='text-[10px]'>AED</span></span>
+      </div>
+      <div class='flex items-center gap-1 overflow-hidden'>
+        <!-- Placeholder avatar circles -->
+        {[...Array(4)].map((_, i) => <div class='w-6 h-6 bg-gray-300 rounded-full' aria-hidden='true' />)}
+        <div
+          class='flex items-center justify-center w-6 h-6 text-sm font-medium text-gray-600 bg-gray-200 rounded-full'
+        >
+          +
+        </div>
+      </div>
+    </div>
+
+    <!-- 150+ Countries pill -->
+    <div class='absolute flex flex-col gap-3 px-6 py-4 text-xs bg-white shadow-md bottom-20 left-24 rounded-2xl'>
+      <span class='text-sm font-semibold text-gray-900'>150+ Countries</span>
+      <div class='flex items-center gap-2'>
+        <!-- Flag placeholders -->
+        <span class='text-2xl'>🇦🇪</span>
+        <span class='text-2xl'>🇮🇳</span>
+        <span class='text-2xl'>🇵🇰</span>
+        <span class='text-2xl'>🇵🇭</span>
+        <div
+          class='flex items-center justify-center w-6 h-6 text-sm font-medium text-gray-600 bg-gray-200 rounded-full'
+        >
+          +
+        </div>
+      </div>
+    </div>
+
+    <!-- Select Recipients card -->
+    <div class='absolute p-4 text-xs bg-white shadow-md top-1/3 right-24 rounded-2xl w-80'>
+      <div class='flex items-center justify-between mb-4'>
+        <h3 class='text-sm font-semibold text-gray-900'>Select recipients</h3>
+        <button class='flex items-center gap-1 border border-gray-900 rounded-full px-2 py-1 text-[11px] font-semibold'>
+          <span>+</span>
+          <span>Add New</span>
+        </button>
+      </div>
+      <p class='mb-2 text-sm font-medium text-gray-900'>Recent</p>
+      <div class='flex gap-4'>
+        {
+          ['Arya', 'Dhruv', 'Rahul', 'Ravi'].map((name) => (
+            <div class='flex flex-col items-center w-16 gap-1' aria-label={`Recent recipient ${name}`}>
+              <div class='w-10 h-10 bg-gray-300 rounded-full ring-2 ring-gray-900' />
+              <span class='text-[10px] text-gray-900 font-medium truncate max-w-full'>{name}</span>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+
+    <!-- Central animated dollar icon (simple SVG) -->
+    <svg
+      class='absolute inset-0 w-40 h-40 m-auto text-cyan-400/80'
+      viewBox='0 0 24 24'
+      fill='none'
+      stroke='currentColor'
+      stroke-width='1.5'
+    >
+      <path
+        stroke-linecap='round'
+        stroke-linejoin='round'
+        d='M12 3v2m0 14v2m6-8H6m12 0a6 6 0 00-6-6H9a3 3 0 100 6h6a3 3 0 110 6H6'></path>
+    </svg>
+  </div>
+</section>

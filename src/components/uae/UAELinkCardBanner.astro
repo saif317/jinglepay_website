@@ -1,0 +1,70 @@
+---
+/**
+ * UAE Link Card & Add Fund Banner
+ *
+ * Second banner section for UAE landing page. Background lifestyle image on the left
+ * with overlay UI elements (bank tile on left, headline and add-fund card on right).
+ * Semantic, responsive, accessible HTML without copy-pasting Figma export.
+ */
+import { Image } from 'astro:assets';
+
+import bannerBg from '../../assets/uae-banners/banner2/guy-big.jpg';
+import bannerBgSmall from '../../assets/uae-banners/banner2/guy.jpg';
+import FABIcon from '../../assets/uae-banners/banner2/fab.svg';
+---
+
+<section class='relative w-full min-h-[600px] overflow-hidden'>
+  <!-- Background -->
+  <Image
+    src={bannerBgSmall}
+    alt='Customer linking card on mobile'
+    class='absolute object-cover h-full scale-[1.8] top-[12rem] 2xl:top-[4rem] 2xl:scale-[1.3]'
+    loading='eager'
+  />
+
+  <!-- Radial light overlay for subtle focus -->
+  <div
+    class='absolute inset-0 z-10 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.15)_0%,rgba(255,255,255,0)_60%)]'
+  >
+  </div>
+
+  <!-- Content Wrapper -->
+  <!-- Bank Tile -->
+  <div
+    class='flex-col w-full max-w-xs gap-1 px-6 py-4 bg-white shadow-md md:flex rounded-xl absolute scale-[0.7] lg:left-[2rem] lg:scale-100 left-[-2rem] top-[4rem]'
+    aria-label='Linked bank: First Abu Dhabi Bank (1 account)'
+  >
+    <div class='flex items-center gap-4'>
+      <FABIcon class='w-8 h-8' />
+      <div>
+        <p class='text-sm font-bold text-gray-900'>First Abu Dhabi Bank</p>
+        <p class='text-xs font-medium text-gray-700'>1 account</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right column (headline + add-fund card) -->
+  <div
+    class='flex flex-col items-start w-full max-w-md gap-6 ml-auto absolute right-[-2rem] lg:right-[2rem] lg:top-[15rem] top-[20rem] scale-[0.7] lg:scale-100'
+  >
+    <h2 class='text-3xl font-extrabold leading-tight md:text-5xl text-white/80'>Link your card &amp; add fund</h2>
+
+    <!-- Add fund card -->
+    <div class='w-full max-w-md p-6 bg-white shadow-lg rounded-2xl' role='group' aria-labelledby='add-fund-heading'>
+      <p id='add-fund-heading' class='mb-4 text-sm text-gray-700'>Enter an amount greater than AED&nbsp;50</p>
+
+      <!-- Amount input (static display style) -->
+      <div class='flex items-center justify-between px-4 py-3 mb-4 border rounded-lg'>
+        <span class='text-xl text-gray-800' aria-label='Amount'>1,000</span>
+        <div class='flex items-center gap-1' aria-label='Currency AED'>
+          <span class='text-2xl'>🇦🇪</span>
+          <span class='text-lg font-medium text-gray-800'>AED</span>
+        </div>
+      </div>
+      <div class='flex items-center justify-between text-xs text-gray-700'>
+        <span>Current Balance</span>
+        <span>0.00 AED</span>
+      </div>
+    </div>
+  </div>
+</section>

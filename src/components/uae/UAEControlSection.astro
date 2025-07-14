@@ -1,0 +1,72 @@
+---
+/**
+ * UAE Control Section ("Take full control" section)
+ * Two-column layout: phone mock-ups on the left and copy/bullets on the right.
+ * Background phone image assets live in src/assets/uae/phone.png
+ */
+import { Image } from 'astro:assets';
+import { Fragment } from 'astro/jsx-runtime';
+import phoneMock from '../../assets/uae/phone.png';
+
+const { control } = Astro.locals.translations;
+---
+
+<section class='flex flex-col items-center gap-12 py-16 md:flex-row md:justify-center md:gap-16'>
+  <!-- Left: device mock-ups -->
+  <div
+    class='relative bg-slate-100 rounded-2xl w-[300px] sm:w-[380px] md:w-[420px] lg:w-[500px] xl:w-[587px] aspect-[587/553] flex-shrink-0'
+  >
+    <!-- Outer phone silhouette for subtle depth -->
+    <div class='absolute inset-0 flex items-center justify-center'>
+      <Image src={phoneMock} alt='Jingle Pay app on phone' class='w-[75%] md:w-[68%] max-w-none' loading='lazy' />
+    </div>
+  </div>
+
+  <!-- Right: headline & copy -->
+  <div class='flex flex-col max-w-xl gap-5 text-left'>
+    <h2 class='text-3xl font-semibold leading-tight sm:text-4xl lg:text-5xl text-zinc-800'>
+      {control?.heading?.prefix || 'Take'}
+      <span class='text-violet-500'>{control?.heading?.highlight || 'full control'}</span>
+      {control?.heading?.suffix || 'of your finances with Jingle Pay'}
+    </h2>
+
+    <p class='text-lg leading-relaxed text-neutral-500 sm:text-xl'>
+      {
+        control?.description?.part1 ||
+          'Discover the future of banking with our innovative app—crafted specifically for those seeking affordable, transparent, and cutting-edge financial solutions.'
+      }<br /><br />
+      {
+        control?.description?.part2 ||
+          'Transform your financial journey with Jingle Pay! Experience the most effortless and rewarding way to manage your money – sign up today and unlock exclusive benefits!'
+      }
+    </p>
+
+    <p class='text-lg font-semibold text-black sm:text-xl'>{control?.benefits?.title || "What's in it for you?"}</p>
+
+    <ul class='space-y-2 text-lg list-disc list-inside text-neutral-500 sm:text-xl'>
+      <li>
+        {
+          control?.benefits?.items?.[0] ? (
+            <Fragment set:html={control.benefits.items[0]} />
+          ) : (
+            <Fragment>
+              <span class='font-bold'>Send money internationally or locally with Zero Fee</span>
+            </Fragment>
+          )
+        }
+      </li>
+      <li>{control?.benefits?.items?.[1] || 'Request and receive money directly to your wallet'}</li>
+      <li>
+        {
+          control?.benefits?.items?.[2] ? (
+            <Fragment set:html={control.benefits.items[2]} />
+          ) : (
+            <Fragment>
+              <span class='font-bold'>Earn cashback</span> every time you use your Platinum MasterCard
+            </Fragment>
+          )
+        }
+      </li>
+    </ul>
+  </div>
+</section>

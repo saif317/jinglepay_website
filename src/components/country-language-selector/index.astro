@@ -33,7 +33,7 @@ const getLanguageLink = (newLangCode: string) => {
 ---
 
 <div
-  class={`items-center bg-gray-100 px-2.5 py-2 gap-x-2.5 rounded-[12px] min-w-[154px] country-language-selector ${className}`}
+  class={`flex items-center bg-gray-100 px-2.5 py-2 gap-x-2.5 rounded-[12px] min-w-[154px] country-language-selector ${className}`}
 >
   <div class='relative country-selector'>
     <button id='country-button' class='flex items-center cursor-pointer'>
@@ -126,6 +126,23 @@ const getLanguageLink = (newLangCode: string) => {
     .country-language-selector {
       min-width: 130px;
     }
+  }
+
+  /* UAE-specific styles */
+  .uae-selector {
+    background-color: transparent; /* Remove background for UAE */
+    padding: 0.5rem 0.75rem; /* Adjusted padding */
+    border-radius: 20px;
+    box-shadow: none;
+  }
+  
+  .uae-selector .flag svg {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .uae-selector .language-toggle span {
+    font-weight: 600;
   }
 </style>
 

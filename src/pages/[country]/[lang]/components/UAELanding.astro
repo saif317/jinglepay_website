@@ -1,0 +1,51 @@
+---
+// UAE Landing Page Component
+import UAEHero from '@components/hero-section/UAEHero.astro';
+
+import Featured from '@components/hero-section/Featured.astro';
+import UAEControlSection from '@components/uae/UAEControlSection.astro';
+import UAEInfoCardsSection from '@components/uae/UAEInfoCardsSection.astro';
+import UAEAppShowcase from '@components/uae/UAEAppShowcase.astro';
+import UAEP2PSection from '@components/uae/UAEP2PSection.astro';
+import UAECardFeaturesSection from '@components/uae/UAECardFeaturesSection.astro';
+import UAEBenefitsSection from '@components/uae/UAEBenefitsSection.astro';
+import Companies from '@components/companies/index.astro';
+import Regulation from '@components/regulation/index.astro';
+import CTA from '@components/cta/index.astro';
+import UAEBannerCarousel from '@components/uae/UAEBannerCarousel.astro';
+---
+
+<div style='background: linear-gradient(177deg, #FFF 9.08%, #F6F6F6 99.83%);'>
+  <UAEHero />
+  <!-- UAE-specific hero section with calculator widget -->
+</div>
+
+<!-- UAE Banner Carousel Component -->
+<UAEBannerCarousel />
+
+<Featured />
+
+<!-- Control section: Take full control -->
+<UAEControlSection />
+
+<!-- Info cards section: marketplace / no fees / bonus -->
+<UAEInfoCardsSection />
+
+<!-- App showcase section: go-to app -->
+<UAEAppShowcase />
+
+<!-- P2P payments section -->
+<UAEP2PSection />
+
+<!-- Card features section -->
+<UAECardFeaturesSection />
+
+<!-- Benefits statistics section -->
+<UAEBenefitsSection />
+
+<!-- Companies -->
+<Companies />
+
+<Regulation />
+
+<CTA />

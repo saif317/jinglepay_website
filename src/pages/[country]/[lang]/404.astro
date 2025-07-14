@@ -4,8 +4,9 @@ import Link from '@components/common/Link.astro';
 import Layout from '@layouts/Layout.astro';
 import { getStaticPathsWrapper } from '@util/getStaticPaths';
 
-export const getStaticPaths = getStaticPathsWrapper(['pak'], {
+export const getStaticPaths = getStaticPathsWrapper(['pak', 'are'], {
   pak: ['en', 'ur'],
+  are: ['en', 'ar'],
 });
 ---
 

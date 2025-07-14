@@ -1,0 +1,75 @@
+---
+/**
+ * UAE Info Cards Section (Marketplace / No Fees / Joining Bonus)
+ * Three side-by-side cards on desktop, stacked on mobile.
+ */
+import { Fragment } from 'astro/jsx-runtime';
+
+const { infoCards } = Astro.locals.translations;
+---
+
+<section class="w-full py-16 flex flex-col items-center">
+  <div class="flex flex-col gap-12 md:flex-row md:gap-14 max-w-6xl w-full px-4">
+    <!-- Card 1 -->
+    <article class="flex-1 flex flex-col gap-4">
+      <header class="flex items-center gap-4">
+        <!-- Bag icon -->
+        <div class="w-10 h-10 flex items-center justify-center bg-black rounded-full">
+          <svg class="w-6 h-5 text-white" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M6 7h12l1 13H5L6 7zm2-2a4 4 0 0 1 8 0h-2a2 2 0 0 0-4 0H8z" />
+          </svg>
+        </div>
+        <h3 class="text-gray-900 text-2xl font-bold leading-7 max-w-xs">{infoCards?.card1?.title || "Experience the world's 1ˢᵗ remittance marketplace"}</h3>
+      </header>
+      <hr class="border-t border-zinc-800" />
+      <p class="text-neutral-500 text-xl leading-loose">
+        {infoCards?.card1?.content?.line1 || "Send money to 160+ countries in 99+ currencies with zero fees."}<br />
+        {infoCards?.card1?.content?.line2 || "Compare rates, track transfers in real time, and choose your payout method—bank, card, wallet, or cash pickup."}
+      </p>
+    </article>
+
+    <!-- Card 2 -->
+    <article class="flex-1 flex flex-col gap-4">
+      <header class="flex items-center gap-4">
+        <!-- Eye-off icon -->
+        <div class="w-10 h-10 flex items-center justify-center bg-black rounded-full">
+          <svg class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17.94 17.94A10.94 10.94 0 0 1 12 19c-5.52 0-10-3.58-11.94-8 1.03-2.38 2.77-4.38 4.94-5.66M1 1l22 22" />
+          </svg>
+        </div>
+        <h3 class="text-gray-900 text-2xl font-bold leading-7 max-w-xs">
+          {infoCards?.card2?.title?.line1 || "No Fees."}<br />
+          {infoCards?.card2?.title?.line2 || "Not even hidden ones."}
+        </h3>
+      </header>
+      <hr class="border-t border-zinc-800" />
+      <p class="text-neutral-500 text-xl leading-loose">
+        {infoCards?.card2?.content?.line1 || "Jingle Pay is fee-free for account openings, transfers, and requests."}<br />
+        {infoCards?.card2?.content?.line2 || "Any premium service fees are clearly shown upfront for full transparency."}
+      </p>
+    </article>
+
+    <!-- Card 3 -->
+    <article class="flex-1 flex flex-col gap-4">
+      <header class="flex items-center gap-4">
+        <!-- Gift icon -->
+        <div class="w-10 h-10 flex items-center justify-center bg-black rounded-full">
+          <svg class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M20 12v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8m16 0H4m16 0V8a2 2 0 0 0-2-2h-3.5M4 12V8a2 2 0 0 1 2-2h3.5m0 0A2.5 2.5 0 1 1 9 2.5 2.5 2.5 0 0 1 11.5 6m1 0A2.5 2.5 0 1 1 15 3.5 2.5 2.5 0 0 1 12.5 6" />
+          </svg>
+        </div>
+        <h3 class="text-gray-900 text-2xl font-bold leading-7 max-w-xs">{infoCards?.card3?.title || "Joining Bonus"}</h3>
+      </header>
+      <hr class="border-t border-zinc-800" />
+      <p class="text-neutral-500 text-xl leading-loose">
+        {infoCards?.card3?.content ? (
+          <Fragment set:html={infoCards.card3.content} />
+        ) : (
+          <Fragment>
+            Get a joining bonus of <span class="font-bold">AED 30!</span> Download Jingle Pay and join 1000s of users in the most rewarding fintech app in UAE!
+          </Fragment>
+        )}
+      </p>
+    </article>
+  </div>
+</section>

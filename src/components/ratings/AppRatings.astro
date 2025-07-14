@@ -1,0 +1,74 @@
+---
+/**
+ * App Ratings Component
+ *
+ * Displays app store ratings, reviews counts, and Trustpilot rating.
+ * Used in marketing sections to showcase social proof.
+ */
+
+export interface Props {
+  appStoreRating?: string;
+  appStoreReviews?: string;
+  googlePlayRating?: string;
+  googlePlayReviews?: string;
+}
+
+import AppStoreIcon from '@assets/uae/app_store.svg';
+import PlayStoreIcon from '@assets/uae/play-store.svg';
+import StarIcon from '@assets/uae/star.svg';
+import TrustpilotStars from '@assets/uae/trustpilot-5-starts.svg';
+import TrustpilotLogo from '@assets/uae/trustpilot.svg';
+
+const {
+  appStoreRating = '4.8',
+  appStoreReviews = '152k',
+  googlePlayRating = '4.8',
+  googlePlayReviews = '1.3M',
+} = Astro.props;
+---
+
+<div class='flex flex-col items-center w-full lg:items-start gap-y-4 lg:gap-y-5'>
+  <!-- App ratings section -->
+  <div class='flex flex-col items-center gap-3 xl:gap-4 xl:flex-row xl:items-center'>
+    <!-- App Store rating -->
+    <div
+      class='flex items-center'
+      aria-label={`App Store Rating: ${appStoreRating} out of 5 stars from ${appStoreReviews} reviews`}
+    >
+      <AppStoreIcon class='w-6 h-6 mr-2' aria-hidden='true' />
+      <span class='mr-1 font-semibold text-black'>{appStoreRating}</span>
+      <StarIcon class='inline-block w-3 h-3 mx-1' aria-hidden='true' />
+      <span class='text-sm text-neutral-500'>on App Store</span>
+      <span class='ml-1 text-sm text-neutral-400'>{appStoreReviews} reviews</span>
+    </div>
+
+    <!-- Google Play rating -->
+    <div
+      class='flex items-center'
+      aria-label={`Google Play Rating: ${googlePlayRating} out of 5 stars from ${googlePlayReviews} reviews`}
+    >
+      <PlayStoreIcon class='w-6 h-6 mr-2' aria-hidden='true' />
+      <span class='mr-1 font-semibold text-black'>{googlePlayRating}</span>
+      <StarIcon class='inline-block w-3 h-3 mx-1' aria-hidden='true' />
+      <span class='text-sm text-neutral-500'>on Google Play</span>
+      <span class='ml-1 text-sm text-neutral-400'>{googlePlayReviews} reviews</span>
+    </div>
+  </div>
+
+  <!-- Trustpilot -->
+  <div class='flex items-center' aria-label='Excellent rating on Trustpilot with 5 out of 5 stars'>
+    <span class='mr-2 text-sm font-semibold'>Excellent</span>
+    <TrustpilotStars class='w-auto h-4' aria-hidden='true' />
+    <TrustpilotLogo class='w-auto h-4 ml-2 trustpilot-logo' aria-hidden='true' />
+
+    <style>
+      /* Force Trustpilot logo paths/text to black */
+      /* Make only the original white text black, keep green star */
+      .trustpilot-logo :global(path[fill='#fff']),
+      .trustpilot-logo :global(path[fill='#FFFFFF']),
+      .trustpilot-logo :global(text) {
+        fill: #000;
+      }
+    </style>
+  </div>
+</div>

@@ -1,0 +1,207 @@
+---
+import { COUNTRIES } from '@constants';
+
+const { lang, country } = Astro.locals;
+const { pathname } = Astro.url;
+
+const { className } = Astro.props;
+
+const currentCountry = COUNTRIES.find((c) => c.path === country) || COUNTRIES[0];
+const currentLanguage = currentCountry.languages.find((l) => l.code === lang) || currentCountry.languages[0];
+
+const getCountryLink = (newCountryPath: string) => {
+  if (newCountryPath === country) return '#';
+
+  // Find the target country from COUNTRIES constant
+  const targetCountry = COUNTRIES.find((c) => c.path === newCountryPath);
+
+  if (!targetCountry) return '#';
+
+  // Check if current language is supported in target country
+  const isCurrentLangSupported = targetCountry.languages.some((l) => l.code === lang);
+
+  // Use current language if supported, otherwise use target country's default language
+  const languageToUse = isCurrentLangSupported ? lang : targetCountry.languages[0].code;
+
+  return '/' + [targetCountry.path, languageToUse, ''].join('/');
+};
+
+const getLanguageLink = (newLangCode: string) => {
+  return '/' + [country, newLangCode, pathname.split('/').slice(3).join('/')].join('/');
+};
+
+// Get alternate language for the current country
+const alternateLanguage = currentCountry.languages.find((l) => l.code !== currentLanguage.code);
+---
+
+<div class={`flex gap-0.5 uae-country-selector ${className}`}>
+  <!-- Country selector with left rounded corners only -->
+  <div class='relative country-selector'>
+    <button
+      id='country-button'
+      class='w-28 h-11 p-2 bg-[#F5F5F5] rounded-tl-xl rounded-bl-xl inline-flex justify-start items-center gap-2 cursor-pointer transition-all duration-200 hover:bg-[#EAEAEA]'
+    >
+      <div class='flex items-center justify-center w-6 h-6 overflow-hidden flag'>
+        {currentCountry.flag && <currentCountry.flag class='w-6 h-6' />}
+      </div>
+      <span class="text-[#121C26] text-base font-bold font-['DM_Sans'] leading-normal">{currentCountry.name}</span>
+      <!-- Dropdown arrow -->
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="ml-0.5">
+        <path d="M4 6L8 10L12 6" stroke="#121C26" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+    <div
+      id='country-dropdown'
+      class='hidden absolute left-0 z-20 mt-2 min-w-[150px] bg-white rounded-lg border border-gray-200 shadow-xl p-1.5 origin-top-left focus:outline-none transform transition-all duration-200 dropdown-menu'
+    >
+      <div class='py-1' role='menu' aria-orientation='vertical' aria-labelledby='country-button'>
+        {
+          COUNTRIES.map((item) => (
+            <a
+              href={getCountryLink(item.path)}
+              class={`flex gap-3 items-center px-3 py-2 text-sm font-medium rounded-md transition-all duration-200 ease-in-out hover:bg-[#794eff25] hover:text-[#794eff] ${item.path === currentCountry.path ? 'bg-[#794eff50] text-[#794eff] font-semibold' : 'text-gray-700'}`}
+              role='menuitem'
+            >
+              {item.flag && (
+                <div class='flex items-center justify-center w-6 h-6 overflow-hidden rounded-sm'>
+                  <item.flag class='object-cover w-full h-full' />
+                </div>
+              )}
+              <span class='flex-grow'>{item.fullName}</span>
+              {item.path === currentCountry.path && (
+                <svg
+                  xmlns='http://www.w3.org/2000/svg'
+                  viewBox='0 0 20 20'
+                  fill='currentColor'
+                  class='w-5 h-5 text-[#794eff]'
+                >
+                  <path
+                    fill-rule='evenodd'
+                    d='M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z'
+                    clip-rule='evenodd'
+                  />
+                </svg>
+              )}
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+  <!-- Language selector with right rounded corners only -->
+  <div class='relative language-selector'>
+    <a
+      href={getLanguageLink(alternateLanguage?.code || '')}
+      class='w-16 h-11 p-2 bg-[#F5F5F5] rounded-tr-xl rounded-br-xl inline-flex justify-start items-center cursor-pointer transition-all duration-200 hover:bg-[#EAEAEA]'
+    >
+      <span class="w-14 h-4 text-center text-[#121C26] text-base font-bold font-['DM_Sans'] leading-normal"
+        >{alternateLanguage?.name || ''}</span
+      >
+    </a>
+  </div>
+</div>
+
+<style>
+  .uae-country-selector {
+    position: relative;
+    min-width: 180px;
+  }
+
+  .uae-country-selector .flag svg {
+    width: 24px;
+    height: 24px;
+    margin-right: 0;
+  }
+
+  .uae-country-selector .divider {
+    margin: 0;
+  }
+
+  /* Animation for dropdown */
+  #country-dropdown:not(.hidden) {
+    animation: dropdown-open 0.2s ease-out forwards;
+  }
+
+  @keyframes dropdown-open {
+    0% {
+      opacity: 0;
+      transform: translateY(-5px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Ensure dropdown has proper layering */
+  .country-selector {
+    position: relative;
+  }
+  
+  /* Add hover effects to dropdown items */
+  .dropdown-menu a:hover {
+    background-color: rgba(121, 78, 255, 0.1);
+    color: #794eff;
+  }
+
+  @media (max-width: 640px) {
+    .uae-country-selector {
+      min-width: 140px;
+    }
+  }
+</style>
+
+<script>
+  // Function to initialize all dropdowns
+  function initializeDropdowns() {
+    // Select all dropdown buttons and containers
+    const countryButtons = document.querySelectorAll('[id="country-button"]');
+    const countryDropdowns = document.querySelectorAll('[id="country-dropdown"]');
+
+    // Function to toggle country dropdown
+    function toggleCountryDropdown(e: Event) {
+      e.stopPropagation();
+      e.preventDefault();
+
+      // Get the closest dropdown to this button
+      // @ts-ignore
+      const dropdown = e.currentTarget.closest('.country-selector')?.querySelector('#country-dropdown');
+      
+      // First hide all dropdowns
+      const allDropdowns = document.querySelectorAll('#country-dropdown');
+      allDropdowns.forEach((el) => {
+        if (el !== dropdown) el.classList.add('hidden');
+      });
+
+      // Toggle this dropdown
+      dropdown?.classList.toggle('hidden');
+    }
+
+    // Add events to all country buttons
+    countryButtons.forEach((button) => {
+      button.addEventListener('click', toggleCountryDropdown);
+      button.addEventListener('touchend', toggleCountryDropdown);
+    });
+  }
+
+  // Initialize dropdowns on page load
+  document.addEventListener('DOMContentLoaded', () => {
+    initializeDropdowns();
+  });
+
+  // Close all dropdowns when clicking outside
+  document.addEventListener('click', () => {
+    const countryDropdowns = document.querySelectorAll('[id="country-dropdown"]');
+    countryDropdowns.forEach((el) => el.classList.add('hidden'));
+  });
+
+  document.addEventListener('touchend', (e) => {
+    // Type assertion to tell TypeScript that target is an Element
+    const target = e.target as Element;
+
+    if (!target.closest('.uae-country-selector')) {
+      const countryDropdowns = document.querySelectorAll('[id="country-dropdown"]');
+      countryDropdowns.forEach((el) => el.classList.add('hidden'));
+    }
+  });
+</script>

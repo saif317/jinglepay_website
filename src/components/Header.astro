@@ -2,12 +2,17 @@
 // src/components/Header.astro
 import QRModalTriggerer from '@components/common/QRModalTriggerer.astro';
 import CountryLanguageSelector from '@components/country-language-selector/index.astro';
+import UAESelector from '@components/country-language-selector/UAESelector.astro';
 import Logo from '@assets/logos/jplogo.svg';
 import Link from '@components/common/Link.astro';
 
 const {
   translations: { navbar = {} },
+  country, // Get the current country from Astro.locals
 } = Astro.locals;
+
+// Check if we're on the UAE site
+const isUAE = country === 'are';
 ---
 
 <header
@@ -18,7 +23,9 @@ const {
     <Logo class='w-[60px] lg:w-[90px]' />
   </Link>
 
-  <ul class='rounded-[7px] bg-[#EEEEEE] flex-row items-center justify-center hidden px-4 gap-x-8 lg:flex'>
+  <ul
+    class={`flex-row items-center justify-center hidden px-4 gap-x-8 lg:flex ${isUAE ? '' : 'rounded-[7px] bg-[#EEEEEE]'}`}
+  >
     <li class='py-2'>
       <Link
         href='/company'
@@ -48,7 +55,7 @@ const {
         <QRModalTriggerer>
           <p
             id='header-download-lg'
-            class='hidden px-4 py-2 text-xs font-medium text-white transition-colors duration-300 bg-black lg:block rounded-xl lg:text-base hover:bg-gray-600'
+            class={`hidden py-2 text-xs font-medium text-white transition-colors duration-300 bg-black lg:block lg:text-base hover:bg-gray-600 rounded-xl ${isUAE ? 'px-8' : 'px-4'}`}
           >
             {navbar.downloadApp}
           </p>
@@ -58,11 +65,15 @@ const {
       <a
         id='header-download-sm'
         href='#download'
-        class='block px-4 py-2 text-xs font-medium text-white transition-colors duration-300 bg-black lg:hidden rounded-xl lg:text-base hover:bg-gray-600'
+        class={`block px-4 py-2 text-xs font-medium text-white transition-colors duration-300 bg-black lg:hidden lg:text-base hover:bg-gray-600 ${isUAE ? 'rounded-full' : 'rounded-xl'}`}
         >{navbar.downloadApp}</a
       >
 
-      <CountryLanguageSelector className='hidden lg:flex' />
+      {isUAE ? 
+        <UAESelector className="ml-auto" /> 
+      : 
+        <CountryLanguageSelector className="ml-auto" />
+      }
 
       <button id='menu-toggle' class='relative w-6 h-6 overflow-hidden cursor-pointer lg:hidden'>
         <!-- <div class='absolute top-0 left-0 w-6 h-6'></div> -->
@@ -98,7 +109,11 @@ const {
         >
       </li>
 
-      <CountryLanguageSelector className='flex lg:hidden' />
+      {isUAE ? 
+        <UAESelector className="flex lg:hidden" /> 
+      : 
+        <CountryLanguageSelector className="flex lg:hidden" />
+      }
     </ul>
   </nav>
 </header>

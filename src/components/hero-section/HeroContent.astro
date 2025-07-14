@@ -1,0 +1,39 @@
+---
+/**
+ * Hero Content Component
+ *
+ * Displays the main heading and descriptive text for a hero section.
+ * Used as the primary text content in landing page hero sections.
+ */
+
+export interface Props {
+  heading?: string;
+  highlightedText?: string;
+  description?: string;
+}
+
+const {
+  heading = 'Send money,',
+  highlightedText = 'Fee-free!',
+  description = 'Jingle Pay is simplifying all money! For everyday financial needs. Try our calculator to see how much you can save with us!',
+} = Astro.props;
+---
+
+<div class='flex flex-col items-center justify-start w-full gap-4 lg:items-start sm:gap-5'>
+  <h1
+    id='hero-heading'
+    class="self-stretch text-[36px] leading-[44px] sm:text-5xl sm:leading-[57.6px] font-semibold font-['Hero_New'] tracking-[-0.02em] text-center lg:text-start"
+  >
+    <span class='text-zinc-800'>{heading}</span>
+    <span class='text-violet-500'> {highlightedText}</span>
+    <span class='text-zinc-800'>anywhere,</span><br />
+    <span class='text-zinc-800'>anytime</span><br />
+    <span class='text-zinc-800'>& anyway you want</span>
+  </h1>
+
+  <p
+    class='w-full max-w-[485px] text-neutral-500 text-base sm:text-xl font-normal font-[Hero_New] leading-6 sm:leading-7 text-center lg:text-left'
+  >
+    {description}
+  </p>
+</div>

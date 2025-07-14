@@ -1,0 +1,55 @@
+---
+/**
+ * UAE App Showcase Section – "Go-to app for everyday finances"
+ * Displays 4 app screen mock-ups in front of a radial backdrop + marketing copy.
+ * Phone mock image(s) can be swapped later; currently uses placeholder.
+ */
+import { Image } from 'astro:assets';
+import { Fragment } from 'astro/jsx-runtime';
+import phone1 from '../../assets/uae/phone-set/phone1.png';
+import phone2 from '../../assets/uae/phone-set/phone2.png';
+import phone3 from '../../assets/uae/phone-set/phone3.png';
+import phone4 from '../../assets/uae/phone-set/phone4.png';
+
+const { appShowcase } = Astro.locals.translations;
+---
+
+<section class="w-full py-20 flex flex-col items-center">
+  <div class="flex flex-col items-center gap-16 lg:flex-row lg:items-center lg:justify-center max-w-6xl w-full px-4">
+    <!-- Phones stack -->
+    <div class="relative flex items-end justify-center gap-6 flex-shrink-0">
+      <!-- Radial backdrop -->
+      <div class="absolute -z-10 w-[380px] h-[380px] sm:w-[480px] sm:h-[480px] lg:w-[573px] lg:h-[508px] bg-gradient-radial from-[#F3F5F6] to-[#F3F5F6] rounded-full"></div>
+
+      <!-- Phone images (spacing and slight offsets for depth) -->
+      {[phone1, phone2, phone3, phone4].map((img, i) => (
+        <Image
+          src={img}
+          alt={`Jingle Pay app screen ${i + 1}`}
+          class={`w-32 sm:w-36 md:w-40 lg:w-44 xl:w-48 drop-shadow-[0_15px_250px_rgba(9,20,50,0.15)] ${i === 0 ? 'mb-4' : i === 3 ? 'mt-8' : ''}`}
+          loading="lazy"
+        />
+      ))}
+    </div>
+
+    <!-- Copy -->
+    <div class="max-w-md flex flex-col gap-4 text-left">
+      <h2 class="text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight text-zinc-800">
+        {appShowcase?.heading?.prefix || "The go-to app for"} <span class="text-zinc-900 font-bold">{appShowcase?.heading?.highlight || "everyday finances."}</span>
+      </h2>
+      <ul class="text-neutral-500 text-lg sm:text-xl leading-relaxed list-disc list-inside space-y-2 mt-4">
+        <li>{appShowcase?.features?.[0] || "No minimum balance is required."}</li>
+        <li>
+          {appShowcase?.features?.[1] ? (
+            <Fragment set:html={appShowcase.features[1]} />
+          ) : (
+            <Fragment>
+              Earn <span class="font-bold">+10% profit</span> on savings.
+            </Fragment>
+          )}
+        </li>
+        <li>{appShowcase?.features?.[2] || "Multiple transactions are available, including utility bill payments, mobile top-ups, and fund transfers."}</li>
+      </ul>
+    </div>
+  </div>
+</section>

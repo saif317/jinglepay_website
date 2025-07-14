@@ -1,0 +1,609 @@
+---
+/**
+ * Transfer Calculator Component
+ *
+ * A reusable calculator widget for money transfer calculations.
+ * Displays send/receive amounts, currency selection, fees, and exchange rates.
+ * Integrates with remittance exchange API for real-time conversion rates.
+ */
+import { getMockExchangeRate } from '../../helpers/remittance-exchange.js';
+
+// Define props with defaults
+export interface Props {
+  initialSendAmount?: number;
+  initialSendCurrency?: string;
+  initialReceiveCurrency?: string;
+}
+
+const { initialSendAmount = 1000, initialSendCurrency = 'AED', initialReceiveCurrency = 'USD' } = Astro.props;
+
+// Get mock exchange rate data (will be replaced with real API in production)
+const exchangeData = getMockExchangeRate(initialSendCurrency, initialReceiveCurrency, initialSendAmount);
+
+// Extract values from exchange data
+const sendAmount = initialSendAmount.toString();
+const sendCurrency = initialSendCurrency;
+const receiveAmount = exchangeData.receive.amount.toFixed(2);
+const receiveCurrency = initialReceiveCurrency;
+const transferFee = `${exchangeData.fee.amount.toFixed(3)} ${exchangeData.fee.currency}`;
+const exchangeRate = `1.00 ${sendCurrency} = ${exchangeData.quotations[0]?.transfer_fx_rate.toFixed(2)} ${receiveCurrency}`;
+---
+
+<div
+  class='w-full lg:w-[484px] p-4 sm:p-6 lg:p-8 bg-[#F3F5F6] rounded-2xl flex flex-col gap-5'
+  aria-labelledby='calculator-heading'
+>
+  <h2 id='calculator-heading' class='sr-only'>Money Transfer Calculator</h2>
+  <!-- You send section -->
+  <div class='w-full'>
+    <label for='send-amount' class="block mb-2 text-sm font-normal font-[Hero_New] text-black leading-tight">You send:</label>
+    <div class='flex items-center justify-between px-4 py-4 bg-[#F3F4F5] border border-[#C8C8C8] rounded-lg'>
+      <input
+        type='text'
+        inputmode='decimal'
+        id='send-amount'
+        value={sendAmount}
+        class="text-xl font-normal font-[Hero_New] text-black leading-relaxed w-full max-w-[100px] focus:outline-none"
+        placeholder='0'
+        aria-describedby='send-currency'
+        data-calculator-send-input
+      />
+      <div class='relative flex items-center gap-2'>
+        <!-- UAE Flag - Using a simple flag implementation -->
+        <div class='relative flex-shrink-0 w-6 h-6 send-currency-flag' aria-hidden='true'>
+          <div class='absolute top-0 w-6 h-2 bg-green-800'></div>
+          <!-- Green top -->
+          <div class='absolute w-6 h-2 bg-[#F3F4F5] top-2'></div>
+          <!-- White middle -->
+          <div class='absolute bottom-0 w-6 h-2 bg-black'></div>
+          <!-- Black bottom -->
+          <div class='w-1.5 h-6 absolute left-0 bg-red-600'></div>
+          <!-- Red left -->
+        </div>
+        <button
+          id='send-currency'
+          type='button'
+          class="flex items-center gap-1 text-xl font-normal font-[Hero_New] text-black leading-relaxed transition-colors rounded hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+          aria-label={`Select send currency, currently ${sendCurrency}`}
+          data-calculator-send-currency
+          aria-haspopup='true'
+          aria-expanded='false'
+        >
+          {sendCurrency}
+          <svg
+            xmlns='http://www.w3.org/2000/svg'
+            width='24'
+            height='24'
+            viewBox='0 0 24 24'
+            fill='none'
+            stroke='currentColor'
+            stroke-width='2'
+            stroke-linecap='round'
+            stroke-linejoin='round'
+            class='w-4 h-4'
+            aria-hidden='true'
+          >
+            <polyline points='6 9 12 15 18 9'></polyline>
+          </svg>
+        </button>
+        <!-- Send Currency Dropdown -->
+        <div
+          class='absolute right-0 z-10 hidden py-1 mt-2 bg-[#F3F4F5] rounded-lg shadow-lg top-full w-36'
+          data-send-currency-dropdown
+          aria-labelledby='send-currency'
+        >
+          <button class='w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-[#F3F5F6]' data-currency='AED'>
+            <div class='flex items-center gap-2'>
+              <span class='currency-flag'>🇦🇪</span>
+              <span>AED</span>
+            </div>
+          </button>
+          <button class='w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-[#F3F5F6]' data-currency='USD'>
+            <div class='flex items-center gap-2'>
+              <span class='currency-flag'>🇺🇸</span>
+              <span>USD</span>
+            </div>
+          </button>
+          <button class='w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-[#F3F5F6]' data-currency='EUR'>
+            <div class='flex items-center gap-2'>
+              <span class='currency-flag'>🇪🇺</span>
+              <span>EUR</span>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recipient receives section -->
+  <div class='w-full'>
+    <label for='receive-amount' class="block mb-2 text-sm font-normal font-[Hero_New] text-black leading-tight">Recipient receives:</label>
+    <div class='flex items-center justify-between px-4 py-4 bg-[#F3F4F5] border border-[#C8C8C8] rounded-lg'>
+      <input
+        type='text'
+        inputmode='decimal'
+        id='receive-amount'
+        value={receiveAmount}
+        class="text-xl font-normal font-[Hero_New] text-black leading-relaxed w-full max-w-[100px] focus:outline-none"
+        placeholder='0'
+        aria-describedby='receive-currency'
+        data-calculator-receive-input
+        readonly
+      />
+      <div class='relative flex items-center gap-2'>
+        <!-- US Flag - Using a simplified but recognizable flag -->
+        <div
+          class='relative flex-shrink-0 w-6 h-6 overflow-hidden bg-blue-900 receive-currency-flag'
+          aria-hidden='true'
+        >
+          <!-- White stripes - simplified version -->
+          <div class='absolute w-6 h-1 bg-[#F3F4F5] top-1'></div>
+          <div class='absolute w-6 h-1 bg-[#F3F4F5] top-3'></div>
+          <div class='absolute w-6 h-1 bg-[#F3F4F5] bottom-1'></div>
+          <!-- Red stripes would be in between but omitted for simplicity -->
+        </div>
+        <button
+          id='receive-currency'
+          type='button'
+          class="flex items-center gap-1 text-xl font-normal font-[Hero_New] text-black leading-relaxed transition-colors rounded hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+          aria-label={`Select receive currency, currently ${receiveCurrency}`}
+          data-calculator-receive-currency
+          aria-haspopup='true'
+          aria-expanded='false'
+        >
+          {receiveCurrency}
+          <svg
+            xmlns='http://www.w3.org/2000/svg'
+            width='24'
+            height='24'
+            viewBox='0 0 24 24'
+            fill='none'
+            stroke='currentColor'
+            stroke-width='2'
+            stroke-linecap='round'
+            stroke-linejoin='round'
+            class='w-4 h-4'
+            aria-hidden='true'
+          >
+            <polyline points='6 9 12 15 18 9'></polyline>
+          </svg>
+        </button>
+        <!-- Receive Currency Dropdown -->
+        <div
+          class='absolute right-0 z-10 hidden py-1 mt-2 bg-[#F3F4F5] rounded-lg shadow-lg top-full w-36'
+          data-receive-currency-dropdown
+          aria-labelledby='receive-currency'
+        >
+          <button class='w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-[#F3F5F6]' data-currency='USD'>
+            <div class='flex items-center gap-2'>
+              <span class='currency-flag'>🇺🇸</span>
+              <span>USD</span>
+            </div>
+          </button>
+          <button class='w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-[#F3F5F6]' data-currency='INR'>
+            <div class='flex items-center gap-2'>
+              <span class='currency-flag'>🇮🇳</span>
+              <span>INR</span>
+            </div>
+          </button>
+          <button class='w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-[#F3F5F6]' data-currency='PKR'>
+            <div class='flex items-center gap-2'>
+              <span class='currency-flag'>🇵🇰</span>
+              <span>PKR</span>
+            </div>
+          </button>
+          <button class='w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-[#F3F5F6]' data-currency='GBP'>
+            <div class='flex items-center gap-2'>
+              <span class='currency-flag'>🇬🇧</span>
+              <span>GBP</span>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Transfer details -->
+  <div class='w-full space-y-5'>
+    <!-- Transfer fee -->
+    <div class='flex items-center justify-between'>
+      <p class="text-sm font-normal font-[Hero_New] text-black leading-tight">Transfer fee:</p>
+      <p class="text-sm font-normal font-[Hero_New] text-black leading-tight" data-transfer-fee>{transferFee}</p>
+    </div>
+
+    <!-- Exchange rate -->
+    <div class='flex items-center justify-between'>
+      <p class="text-sm font-normal font-[Hero_New] text-black leading-tight">Exchange rate:</p>
+      <div class='flex items-center gap-2'>
+        <p class="text-sm font-normal font-[Hero_New] text-black leading-tight" data-exchange-rate>{exchangeRate}</p>
+        <!-- Info icon - Using proper SVG -->
+        <button
+          type='button'
+          aria-label='More information about exchange rate'
+          class='text-gray-900 hover:text-gray-700 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 rounded p-0.5'
+        >
+          <svg
+            xmlns='http://www.w3.org/2000/svg'
+            width='16'
+            height='16'
+            viewBox='0 0 24 24'
+            fill='none'
+            stroke='currentColor'
+            stroke-width='2'
+            stroke-linecap='round'
+            stroke-linejoin='round'
+            aria-hidden='true'
+          >
+            <circle cx='12' cy='12' r='10'></circle>
+            <line x1='12' y1='16' x2='12' y2='12'></line>
+            <line x1='12' y1='8' x2='12.01' y2='8'></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Send money button -->
+  <button
+    type='button'
+    class="flex items-center justify-center w-full px-5 py-3 mt-5 text-xl font-medium font-[Hero_New] leading-loose text-white transition-colors bg-[#121C26] hover:bg-[#283991] rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+    data-calculator-submit
+  >
+    Send money now
+  </button>
+</div>
+
+<script>
+  // Available currencies and their data
+  const currencies = {
+    AED: {
+      flag: '🇦🇪',
+      rates: { USD: 0.27, EUR: 0.25, GBP: 0.21, INR: 22.5, PKR: 77.5 },
+    },
+    USD: {
+      flag: '🇺🇸',
+      rates: { AED: 3.67, EUR: 0.92, GBP: 0.78, INR: 83.5, PKR: 279 },
+    },
+    EUR: {
+      flag: '🇪🇺',
+      rates: { AED: 4.0, USD: 1.09, GBP: 0.85, INR: 91.0, PKR: 302 },
+    },
+    GBP: {
+      flag: '🇬🇧',
+      rates: { AED: 4.76, USD: 1.28, EUR: 1.18, INR: 106.0, PKR: 360 },
+    },
+    INR: {
+      flag: '🇮🇳',
+      rates: { AED: 0.044, USD: 0.012, EUR: 0.011, GBP: 0.0094, PKR: 3.37 },
+    },
+    PKR: {
+      flag: '🇵🇰',
+      rates: { AED: 0.013, USD: 0.0036, EUR: 0.0033, GBP: 0.0028, INR: 0.3 },
+    },
+  };
+
+  // Initialize calculator functionality when DOM is loaded
+  document.addEventListener('DOMContentLoaded', () => {
+    // Get calculator elements
+    const sendInput = document.querySelector('[data-calculator-send-input]');
+    const sendCurrencyBtn = document.querySelector('[data-calculator-send-currency]');
+    const sendCurrencyDropdown = document.querySelector('[data-send-currency-dropdown]');
+    const receiveInput = document.querySelector('[data-calculator-receive-input]');
+    const receiveCurrencyBtn = document.querySelector('[data-calculator-receive-currency]');
+    const receiveCurrencyDropdown = document.querySelector('[data-receive-currency-dropdown]');
+    const submitButton = document.querySelector('[data-calculator-submit]');
+    const sendCurrencyFlag = document.querySelector('.send-currency-flag');
+    const receiveCurrencyFlag = document.querySelector('.receive-currency-flag');
+
+    // Flag elements for currency selectors
+    const flagElements = {
+      AED: createUAEFlag(),
+      USD: createUSFlag(),
+      EUR: createEUFlag(),
+      GBP: createUKFlag(),
+      INR: createINFlag(),
+      PKR: createPKFlag(),
+    };
+
+    // Helper functions to create flag elements
+    function createUAEFlag() {
+      const flag = document.createElement('div');
+      flag.className = 'w-6 h-6 flex-shrink-0 relative';
+
+      const green = document.createElement('div');
+      green.className = 'w-6 h-2 absolute top-0 bg-green-800';
+
+      const white = document.createElement('div');
+      white.className = 'w-6 h-2 absolute top-2 bg-[#F3F4F5]';
+
+      const black = document.createElement('div');
+      black.className = 'w-6 h-2 absolute bottom-0 bg-black';
+
+      const red = document.createElement('div');
+      red.className = 'w-1.5 h-6 absolute left-0 bg-red-600';
+
+      flag.appendChild(green);
+      flag.appendChild(white);
+      flag.appendChild(black);
+      flag.appendChild(red);
+
+      return flag;
+    }
+
+    function createUSFlag() {
+      const flag = document.createElement('div');
+      flag.className = 'w-6 h-6 flex-shrink-0 relative bg-blue-900 overflow-hidden';
+
+      const stripe1 = document.createElement('div');
+      stripe1.className = 'w-6 h-1 bg-[#F3F4F5] absolute top-1';
+
+      const stripe2 = document.createElement('div');
+      stripe2.className = 'w-6 h-1 bg-[#F3F4F5] absolute top-3';
+
+      const stripe3 = document.createElement('div');
+      stripe3.className = 'w-6 h-1 bg-[#F3F4F5] absolute bottom-1';
+
+      flag.appendChild(stripe1);
+      flag.appendChild(stripe2);
+      flag.appendChild(stripe3);
+
+      return flag;
+    }
+
+    function createEUFlag() {
+      const flag = document.createElement('div');
+      flag.className =
+        'w-6 h-6 flex-shrink-0 relative bg-blue-700 rounded-full overflow-hidden flex items-center justify-center';
+
+      const stars = document.createElement('div');
+      stars.className = 'text-yellow-400 text-xs';
+      stars.textContent = '★★★';
+
+      flag.appendChild(stars);
+      return flag;
+    }
+
+    function createUKFlag() {
+      const flag = document.createElement('div');
+      flag.className = 'w-6 h-6 flex-shrink-0 relative bg-blue-900';
+
+      const cross1 = document.createElement('div');
+      cross1.className = 'absolute w-6 h-1 bg-[#F3F4F5] top-2.5 transform';
+
+      const cross2 = document.createElement('div');
+      cross2.className = 'absolute w-1 h-6 bg-[#F3F4F5] left-2.5 transform';
+
+      flag.appendChild(cross1);
+      flag.appendChild(cross2);
+      return flag;
+    }
+
+    function createINFlag() {
+      const flag = document.createElement('div');
+      flag.className = 'w-6 h-6 flex-shrink-0 relative overflow-hidden';
+
+      const top = document.createElement('div');
+      top.className = 'w-6 h-2 absolute top-0 bg-orange-500';
+
+      const middle = document.createElement('div');
+      middle.className = 'w-6 h-2 absolute top-2 bg-[#F3F4F5] flex items-center justify-center';
+
+      const bottom = document.createElement('div');
+      bottom.className = 'w-6 h-2 absolute bottom-0 bg-green-600';
+
+      flag.appendChild(top);
+      flag.appendChild(middle);
+      flag.appendChild(bottom);
+      return flag;
+    }
+
+    function createPKFlag() {
+      const flag = document.createElement('div');
+      flag.className = 'w-6 h-6 flex-shrink-0 relative bg-green-700';
+
+      const moon = document.createElement('div');
+      moon.className = 'w-2 h-2 absolute top-2 right-2 rounded-full bg-[#F3F4F5]';
+
+      flag.appendChild(moon);
+      return flag;
+    }
+
+    // Mock exchange rate calculation (will be replaced with API call in production)
+    function calculateExchange() {
+      if (!sendInput || !receiveInput || !sendCurrencyBtn || !receiveCurrencyBtn) return;
+
+      const sendAmount = parseFloat(sendInput.value) || 0;
+      const fromCurrency = sendCurrencyBtn.textContent?.trim() || 'AED';
+      const toCurrency = receiveCurrencyBtn.textContent?.trim() || 'USD';
+
+      // Get exchange rate from our mock data
+      const rate = currencies[fromCurrency]?.rates[toCurrency] || 1;
+
+      // Calculate received amount
+      const receivedAmount = (sendAmount * rate).toFixed(2);
+      receiveInput.value = receivedAmount;
+
+      // Update exchange rate display
+      const exchangeRateElement = document.querySelector('[data-exchange-rate]');
+      if (exchangeRateElement) {
+        exchangeRateElement.textContent = `1.00 ${fromCurrency} = ${rate.toFixed(2)} ${toCurrency}`;
+      }
+
+      // Show fee as 0 (fee-free)
+      const feeElement = document.querySelector('[data-transfer-fee]');
+      if (feeElement) {
+        feeElement.textContent = `0.000 ${fromCurrency}`;
+      }
+    }
+
+    // Close all currency dropdowns
+    function closeAllDropdowns() {
+      if (sendCurrencyDropdown) sendCurrencyDropdown.classList.add('hidden');
+      if (receiveCurrencyDropdown) receiveCurrencyDropdown.classList.add('hidden');
+
+      if (sendCurrencyBtn) sendCurrencyBtn.setAttribute('aria-expanded', 'false');
+      if (receiveCurrencyBtn) receiveCurrencyBtn.setAttribute('aria-expanded', 'false');
+    }
+
+    // Handle clicks outside dropdowns
+    document.addEventListener('click', (e) => {
+      const isSendCurrencyClicked = e.target.closest('[data-calculator-send-currency]');
+      const isReceiveCurrencyClicked = e.target.closest('[data-calculator-receive-currency]');
+
+      if (!isSendCurrencyClicked && !isReceiveCurrencyClicked) {
+        closeAllDropdowns();
+      }
+    });
+
+    // Update calculation when send amount changes
+    sendInput?.addEventListener('input', () => {
+      calculateExchange();
+    });
+
+    // Toggle send currency dropdown
+    sendCurrencyBtn?.addEventListener('click', (e) => {
+      e.stopPropagation();
+
+      const isExpanded = sendCurrencyBtn.getAttribute('aria-expanded') === 'true';
+
+      // Close receive dropdown if open
+      if (receiveCurrencyDropdown) receiveCurrencyDropdown.classList.add('hidden');
+      if (receiveCurrencyBtn) receiveCurrencyBtn.setAttribute('aria-expanded', 'false');
+
+      // Toggle send dropdown
+      if (sendCurrencyDropdown) {
+        sendCurrencyDropdown.classList.toggle('hidden');
+        sendCurrencyBtn.setAttribute('aria-expanded', !isExpanded ? 'true' : 'false');
+      }
+    });
+
+    // Toggle receive currency dropdown
+    receiveCurrencyBtn?.addEventListener('click', (e) => {
+      e.stopPropagation();
+
+      const isExpanded = receiveCurrencyBtn.getAttribute('aria-expanded') === 'true';
+
+      // Close send dropdown if open
+      if (sendCurrencyDropdown) sendCurrencyDropdown.classList.add('hidden');
+      if (sendCurrencyBtn) sendCurrencyBtn.setAttribute('aria-expanded', 'false');
+
+      // Toggle receive dropdown
+      if (receiveCurrencyDropdown) {
+        receiveCurrencyDropdown.classList.toggle('hidden');
+        receiveCurrencyBtn.setAttribute('aria-expanded', !isExpanded ? 'true' : 'false');
+      }
+    });
+
+    // Handle currency selection in send dropdown
+    if (sendCurrencyDropdown) {
+      const currencyButtons = sendCurrencyDropdown.querySelectorAll('[data-currency]');
+      currencyButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          const currency = button.getAttribute('data-currency');
+          if (currency && sendCurrencyBtn) {
+            sendCurrencyBtn.textContent = currency;
+
+            // Update flag
+            if (sendCurrencyFlag) {
+              sendCurrencyFlag.innerHTML = '';
+              const flagClone = flagElements[currency]?.cloneNode(true);
+              if (flagClone) {
+                sendCurrencyFlag.appendChild(flagClone);
+              }
+            }
+
+            // Add dropdown icon back
+            const icon = document.createElement('svg');
+            icon.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+            icon.setAttribute('width', '24');
+            icon.setAttribute('height', '24');
+            icon.setAttribute('viewBox', '0 0 24 24');
+            icon.setAttribute('fill', 'none');
+            icon.setAttribute('stroke', 'currentColor');
+            icon.setAttribute('stroke-width', '2');
+            icon.setAttribute('stroke-linecap', 'round');
+            icon.setAttribute('stroke-linejoin', 'round');
+            icon.setAttribute('class', 'w-4 h-4');
+            icon.setAttribute('aria-hidden', 'true');
+
+            const polyline = document.createElement('polyline');
+            polyline.setAttribute('points', '6 9 12 15 18 9');
+            icon.appendChild(polyline);
+            sendCurrencyBtn.appendChild(icon);
+
+            // Hide dropdown and recalculate
+            sendCurrencyDropdown.classList.add('hidden');
+            sendCurrencyBtn.setAttribute('aria-expanded', 'false');
+            calculateExchange();
+          }
+        });
+      });
+    }
+
+    // Handle currency selection in receive dropdown
+    if (receiveCurrencyDropdown) {
+      const currencyButtons = receiveCurrencyDropdown.querySelectorAll('[data-currency]');
+      currencyButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          const currency = button.getAttribute('data-currency');
+          if (currency && receiveCurrencyBtn) {
+            receiveCurrencyBtn.textContent = currency;
+
+            // Update flag
+            if (receiveCurrencyFlag) {
+              receiveCurrencyFlag.innerHTML = '';
+              const flagClone = flagElements[currency]?.cloneNode(true);
+              if (flagClone) {
+                receiveCurrencyFlag.appendChild(flagClone);
+              }
+            }
+
+            // Add dropdown icon back
+            const icon = document.createElement('svg');
+            icon.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+            icon.setAttribute('width', '24');
+            icon.setAttribute('height', '24');
+            icon.setAttribute('viewBox', '0 0 24 24');
+            icon.setAttribute('fill', 'none');
+            icon.setAttribute('stroke', 'currentColor');
+            icon.setAttribute('stroke-width', '2');
+            icon.setAttribute('stroke-linecap', 'round');
+            icon.setAttribute('stroke-linejoin', 'round');
+            icon.setAttribute('class', 'w-4 h-4');
+            icon.setAttribute('aria-hidden', 'true');
+
+            const polyline = document.createElement('polyline');
+            polyline.setAttribute('points', '6 9 12 15 18 9');
+            icon.appendChild(polyline);
+            receiveCurrencyBtn.appendChild(icon);
+
+            // Hide dropdown and recalculate
+            receiveCurrencyDropdown.classList.add('hidden');
+            receiveCurrencyBtn.setAttribute('aria-expanded', 'false');
+            calculateExchange();
+          }
+        });
+      });
+    }
+
+    // Handle submit button click
+    submitButton?.addEventListener('click', () => {
+      if (!sendInput?.value) {
+        alert('Please enter an amount to send');
+        return;
+      }
+
+      const fromCurrency = sendCurrencyBtn?.textContent?.trim() || 'AED';
+      const toCurrency = receiveCurrencyBtn?.textContent?.trim() || 'USD';
+
+      // In a real implementation, this would navigate to a send money flow
+      // For now, we'll just show a confirmation dialog
+      alert(
+        `Your money transfer request has been received! You are sending ${sendInput.value} ${fromCurrency} and the recipient will receive ${receiveInput?.value} ${toCurrency}`
+      );
+    });
+
+    // Run initial calculation
+    calculateExchange();
+  });
+</script>

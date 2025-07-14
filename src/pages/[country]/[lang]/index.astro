@@ -1,42 +1,29 @@
 ---
-import FeatureCarousal from '@components/banners/FeatureCarousal.astro';
-import Featured from '@components/hero-section/Featured.astro';
-import HeroSection from '@components/hero-section/index.astro';
 import Layout from '@layouts/Layout.astro';
-import Benefits from '@components/benefits/index.astro';
-import Companies from '@components/companies/index.astro';
-import Security from '@components/security/index.astro';
-import StartBanking from '@components/start-banking/index.astro';
-import CTA from '@components/cta/index.astro';
-import Regulation from '@components/regulation/index.astro';
 import { getStaticPathsWrapper } from '@util/getStaticPaths';
+import PakistanLanding from './components/PakistanLanding.astro';
+import UAELanding from './components/UAELanding.astro';
+
+const { country } = Astro.params;
 
 export const getStaticPaths = getStaticPathsWrapper(
   [
     'pak',
-    //  'uae'
+    'are'
   ],
   {
     pak: ['en', 'ur'],
-    // uae: ['en', 'ar'],
+    are: ['en', 'ar'],
   }
 );
 ---
 
 <Layout>
-  <div style='background: linear-gradient(177deg, #FFF 9.08%, #F6F6F6 99.83%);'>
-    <HeroSection />
-    <FeatureCarousal />
-  </div>
-  <Featured />
-
-  <Benefits />
-
-  <div class='flex flex-col'>
-    <Companies />
-    <Regulation />
-    <!-- <Security /> -->
-    <StartBanking />
-    <CTA />
-  </div>
+  {country === 'pak' ? (
+    <PakistanLanding />
+  ) : country === 'are' ? (
+    <UAELanding />
+  ) : (
+    <p class="p-10 text-center text-red-500">Unsupported country: {country}</p>
+  )}
 </Layout>

@@ -3,16 +3,10 @@ import Layout from '@layouts/Layout.astro';
 import { getStaticPathsWrapper } from '@util/getStaticPaths';
 import Company from '@components/company/index.astro';
 
-export const getStaticPaths = getStaticPathsWrapper(
-  [
-    'pak',
-    //  'uae'
-  ],
-  {
-    pak: ['en', 'ur'],
-    // uae: ['en', 'ar'],
-  }
-);
+export const getStaticPaths = getStaticPathsWrapper(['pak', 'are'], {
+  pak: ['en', 'ur'],
+  are: ['en', 'ar'],
+});
 ---
 
 <Layout>
