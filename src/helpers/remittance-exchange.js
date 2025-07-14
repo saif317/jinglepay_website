@@ -60,36 +60,64 @@
  * @param {ExchangeRequest} exchangeRequest - Exchange request parameters
  * @returns {Promise<RemittanceExchangeResponse>} Exchange rate response
  */
+import { encryptRequest, decryptResponse } from './encryption.js';
+
+// Import our mock API handler for development testing
+import { mockApiHandler, API_ENDPOINTS } from './mock-remittance-api.js';
+
 export const getRemittanceRates = async (country, exchangeRequest) => {
   try {
-    let api = '';
-
-    // Determine API endpoint based on environment and country
+    console.log('Remittance API request:', country, exchangeRequest);
+    
+    // Set up the API endpoint based on environment and country
+    let apiUrl;
     if (import.meta.env.DEV) {
-      api = country === 'BH' ? '/remittance-exchange-bh' : '/remittance-exchange';
+      // Use local endpoints in development
+      apiUrl = country === 'BH' ? API_ENDPOINTS.BH : API_ENDPOINTS.UAE;
+      console.log('DEV mode - using simulated API at', apiUrl);
     } else {
-      api = country === 'BH' ? 'https://bh-api.jinglepay.dev' : 'https://api.jinglepay.dev';
+      // Production endpoints
+      apiUrl = country === 'BH' 
+        ? 'https://bh-api.jinglepay.dev/api/v0/remittance/rates-review/' 
+        : 'https://api.jinglepay.dev/api/v0/remittance/rates-review/';
     }
-
-    // In production, we would use encryption/decryption
-    // For now, sending directly without encryption as this is a mock implementation
-    const response = await fetch(`${api}/api/v0/remittance/rates-review/`, {
+    
+    // Encrypt the request body
+    const encryptedRequest = await encryptRequest(exchangeRequest);
+    
+    // In development mode, use our mock API handler directly instead of fetch
+    if (import.meta.env.DEV) {
+      console.log('Using mock API handler');
+      const responseText = await mockApiHandler(encryptedRequest);
+      return await decryptResponse(responseText);
+    }
+    
+    // In production, make a real API call
+    const response = await fetch(apiUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(exchangeRequest),
+      body: encryptedRequest,
     });
 
     if (!response.ok) {
       throw new Error(`API error: ${response.status}`);
     }
 
-    // In production, we would decrypt the response
-    // For now, just returning the JSON as this is a mock implementation
-    return await response.json();
+    // Decrypt the response body
+    const text = await response.text();
+    return await decryptResponse(text);
   } catch (error) {
     console.error('Error fetching remittance rates:', error);
+    
+    // Fall back to simple mock data on error
+    console.log('Falling back to simple mock data due to API error');
+    return getMockExchangeRate(
+      exchangeRequest.send.currency,
+      exchangeRequest.receive.currency,
+      exchangeRequest.send.amount
+    );
   }
 
   // Return empty object on error

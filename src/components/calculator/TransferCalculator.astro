@@ -6,7 +6,8 @@
  * Displays send/receive amounts, currency selection, fees, and exchange rates.
  * Integrates with remittance exchange API for real-time conversion rates.
  */
-import { getMockExchangeRate } from '../../helpers/remittance-exchange.js';
+import { getRemittanceRates, getMockExchangeRate } from '../../helpers/remittance-exchange.js';
+import { getCountries } from '../../helpers/mock-countries-api.js';
 
 // Define props with defaults
 export interface Props {
@@ -19,6 +20,10 @@ const { initialSendAmount = 1000, initialSendCurrency = 'AED', initialReceiveCur
 
 // Get mock exchange rate data (will be replaced with real API in production)
 const exchangeData = getMockExchangeRate(initialSendCurrency, initialReceiveCurrency, initialSendAmount);
+
+// Get supported countries for send/receive dropdowns
+const sendCountries = await getCountries('send');
+const receiveCountries = await getCountries('receive');
 
 // Extract values from exchange data
 const sendAmount = initialSendAmount.toString();
@@ -47,70 +52,26 @@ const exchangeRate = `1.00 ${sendCurrency} = ${exchangeData.quotations[0]?.trans
         placeholder='0'
         aria-describedby='send-currency'
         data-calculator-send-input
+        onInput="this.dispatchEvent(new CustomEvent('calculate', {bubbles: true})); console.log('Input changed:', this.value);"
       />
-      <div class='relative flex items-center gap-2'>
-        <!-- UAE Flag - Using a simple flag implementation -->
-        <div class='relative flex-shrink-0 w-6 h-6 send-currency-flag' aria-hidden='true'>
-          <div class='absolute top-0 w-6 h-2 bg-green-800'></div>
-          <!-- Green top -->
-          <div class='absolute w-6 h-2 bg-[#F3F4F5] top-2'></div>
-          <!-- White middle -->
-          <div class='absolute bottom-0 w-6 h-2 bg-black'></div>
-          <!-- Black bottom -->
-          <div class='w-1.5 h-6 absolute left-0 bg-red-600'></div>
-          <!-- Red left -->
+      <div class="flex items-center gap-2">
+        <!-- UAE Flag - Static implementation -->
+        <div class="relative flex-shrink-0 w-6 h-6 send-currency-flag" aria-hidden="true">
+          <div class="absolute top-0 w-6 h-2 bg-green-800"></div> <!-- Green top -->
+          <div class="absolute w-6 h-2 bg-[#F3F5F6] top-2"></div> <!-- White middle -->
+          <div class="absolute bottom-0 w-6 h-2 bg-black"></div> <!-- Black bottom -->
+          <div class="w-1.5 h-6 absolute left-0 bg-red-600"></div> <!-- Red left -->
         </div>
-        <button
-          id='send-currency'
-          type='button'
-          class="flex items-center gap-1 text-xl font-normal font-[Hero_New] text-black leading-relaxed transition-colors rounded hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
-          aria-label={`Select send currency, currently ${sendCurrency}`}
-          data-calculator-send-currency
-          aria-haspopup='true'
-          aria-expanded='false'
-        >
-          {sendCurrency}
-          <svg
-            xmlns='http://www.w3.org/2000/svg'
-            width='24'
-            height='24'
-            viewBox='0 0 24 24'
-            fill='none'
-            stroke='currentColor'
-            stroke-width='2'
-            stroke-linecap='round'
-            stroke-linejoin='round'
-            class='w-4 h-4'
-            aria-hidden='true'
-          >
-            <polyline points='6 9 12 15 18 9'></polyline>
-          </svg>
-        </button>
-        <!-- Send Currency Dropdown -->
+        <!-- Fixed currency text (no dropdown) -->
         <div
-          class='absolute right-0 z-10 hidden py-1 mt-2 bg-[#F3F4F5] rounded-lg shadow-lg top-full w-36'
-          data-send-currency-dropdown
-          aria-labelledby='send-currency'
+          id="send-currency"
+          class="text-xl font-normal font-[Hero_New] text-black leading-relaxed"
+          aria-label="Send currency: AED"
+          data-calculator-send-currency
         >
-          <button class='w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-[#F3F5F6]' data-currency='AED'>
-            <div class='flex items-center gap-2'>
-              <span class='currency-flag'>🇦🇪</span>
-              <span>AED</span>
-            </div>
-          </button>
-          <button class='w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-[#F3F5F6]' data-currency='USD'>
-            <div class='flex items-center gap-2'>
-              <span class='currency-flag'>🇺🇸</span>
-              <span>USD</span>
-            </div>
-          </button>
-          <button class='w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-[#F3F5F6]' data-currency='EUR'>
-            <div class='flex items-center gap-2'>
-              <span class='currency-flag'>🇪🇺</span>
-              <span>EUR</span>
-            </div>
-          </button>
+          <span data-send-currency-text>AED</span>
         </div>
+        <!-- No dropdown needed as AED is fixed -->
       </div>
     </div>
   </div>
@@ -151,7 +112,7 @@ const exchangeRate = `1.00 ${sendCurrency} = ${exchangeData.quotations[0]?.trans
           aria-haspopup='true'
           aria-expanded='false'
         >
-          {receiveCurrency}
+          <span data-receive-currency-text>{receiveCurrency}</span>
           <svg
             xmlns='http://www.w3.org/2000/svg'
             width='24'
@@ -168,36 +129,29 @@ const exchangeRate = `1.00 ${sendCurrency} = ${exchangeData.quotations[0]?.trans
             <polyline points='6 9 12 15 18 9'></polyline>
           </svg>
         </button>
-        <!-- Receive Currency Dropdown -->
+        <!-- Receive currency dropdown -->
         <div
-          class='absolute right-0 z-10 hidden py-1 mt-2 bg-[#F3F4F5] rounded-lg shadow-lg top-full w-36'
+          class="absolute right-0 z-10 hidden w-40 mt-2 origin-top-right bg-white border border-gray-200 rounded-md shadow-lg top-full"
           data-receive-currency-dropdown
-          aria-labelledby='receive-currency'
         >
-          <button class='w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-[#F3F5F6]' data-currency='USD'>
-            <div class='flex items-center gap-2'>
-              <span class='currency-flag'>🇺🇸</span>
-              <span>USD</span>
-            </div>
-          </button>
-          <button class='w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-[#F3F5F6]' data-currency='INR'>
-            <div class='flex items-center gap-2'>
-              <span class='currency-flag'>🇮🇳</span>
-              <span>INR</span>
-            </div>
-          </button>
-          <button class='w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-[#F3F5F6]' data-currency='PKR'>
-            <div class='flex items-center gap-2'>
-              <span class='currency-flag'>🇵🇰</span>
-              <span>PKR</span>
-            </div>
-          </button>
-          <button class='w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-[#F3F5F6]' data-currency='GBP'>
-            <div class='flex items-center gap-2'>
-              <span class='currency-flag'>🇬🇧</span>
-              <span>GBP</span>
-            </div>
-          </button>
+          {receiveCountries.map(country => (
+            country.currencies.map(currency => (
+              <button class='w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-[#F3F5F6]' data-currency={currency.code} data-country-code={country.code}>
+                <div class='flex items-center gap-2'>
+                  <span class='currency-flag'>{country.flag === 'us' ? '🇺🇸' : 
+                                              country.flag === 'in' ? '🇮🇳' : 
+                                              country.flag === 'pk' ? '🇵🇰' : 
+                                              country.flag === 'gb' ? '🇬🇧' : 
+                                              country.flag === 'eu' ? '🇪🇺' : 
+                                              country.flag === 'ae' ? '🇦🇪' : 
+                                              country.flag === 'bd' ? '🇧🇩' : 
+                                              country.flag === 'ph' ? '🇵🇭' : 
+                                              country.flag === 'lk' ? '🇱🇰' : '🏳️'}</span>
+                  <span>{currency.code}</span>
+                </div>
+              </button>
+            ))
+          ))}
         </div>
       </div>
     </div>
@@ -253,7 +207,49 @@ const exchangeRate = `1.00 ${sendCurrency} = ${exchangeData.quotations[0]?.trans
   </button>
 </div>
 
-<script>
+<!-- Remove the regular script and use Astro's client directive pattern -->
+<script is:inline>
+  // Direct script that will definitely run
+  document.addEventListener('DOMContentLoaded', function() {
+    const sendInput = document.querySelector('[data-calculator-send-input]');
+    
+    if (sendInput) {
+      console.log('FOUND INPUT, adding direct event handler');
+      
+      // Direct simple handler
+      sendInput.addEventListener('input', function() {
+        const value = this.value;
+        console.log('INPUT CHANGED TO:', value);
+        
+        // Update receive value with simple calculation
+        const receiveInput = document.querySelector('[data-calculator-receive-input]');
+        if (receiveInput) {
+          const rate = 0.27; // Default AED to USD rate
+          const receivedAmount = (parseFloat(value) * rate).toFixed(2);
+          receiveInput.value = receivedAmount;
+          console.log('UPDATED RECEIVE AMOUNT TO:', receivedAmount);
+        }
+      });
+    } else {
+      console.error('CRITICAL: Could not find send input!');
+    }
+  });
+</script>
+
+<script define:vars={{ initialSendAmount, initialSendCurrency, initialReceiveCurrency }}>
+  // Wait for DOM to be fully loaded and accessible
+  document.addEventListener('DOMContentLoaded', () => {
+    console.log('DOM fully loaded and parsed');
+    initCalculator();
+  });
+
+  // If DOMContentLoaded already fired, run initialization immediately
+  if (document.readyState === 'interactive' || document.readyState === 'complete') {
+    console.log('DOM already loaded, initializing now');
+    initCalculator();
+  }
+
+  function initCalculator() {
   // Available currencies and their data
   const currencies = {
     AED: {
@@ -282,8 +278,6 @@ const exchangeRate = `1.00 ${sendCurrency} = ${exchangeData.quotations[0]?.trans
     },
   };
 
-  // Initialize calculator functionality when DOM is loaded
-  document.addEventListener('DOMContentLoaded', () => {
     // Get calculator elements
     const sendInput = document.querySelector('[data-calculator-send-input]');
     const sendCurrencyBtn = document.querySelector('[data-calculator-send-currency]');
@@ -296,6 +290,49 @@ const exchangeRate = `1.00 ${sendCurrency} = ${exchangeData.quotations[0]?.trans
     const receiveCurrencyFlag = document.querySelector('.receive-currency-flag');
 
     // Flag elements for currency selectors
+  
+  // -----------------------------
+  // Remittance-exchange helpers
+  // -----------------------------
+  // Currency → ISO country code map (for API)
+  const currencyToCountry = {
+    AED: 'AE',
+    USD: 'US',
+    EUR: 'EU',
+    GBP: 'GB',
+    INR: 'IN',
+    PKR: 'PK',
+  };
+
+  /**
+   * Dynamically import helpers so Vite bundles them for the browser.
+   */
+  async function loadHelpers() {
+    return await import('../../helpers/remittance-exchange.js');
+  }
+
+  /**
+   * Fetch live rate + fee via API, fallback to mock on error.
+   */
+  async function fetchExchangeRate(from, to, amount) {
+    try {
+      const { getRemittanceRates } = await loadHelpers();
+      const res = await getRemittanceRates('AE', {
+        quotation_mode: 'SEND_AMOUNT',
+        receive: { country_code: currencyToCountry[to] || 'US', currency: to },
+        send: { amount, currency: from, country_code: 'AE' },
+      });
+      const best = res?.quotations?.find((q) => q.best_offer) || res?.quotations?.[0];
+      return { rate: best?.transfer_fx_rate || 1, fee: res?.fee?.amount ?? 0 };
+    } catch (err) {
+      console.warn('API error – using mock rate', err);
+      const { getMockExchangeRate } = await loadHelpers();
+      const mock = getMockExchangeRate(from, to, amount);
+      return { rate: mock.quotations[0].transfer_fx_rate, fee: mock.fee.amount };
+    }
+  }
+
+  
     const flagElements = {
       AED: createUAEFlag(),
       USD: createUSFlag(),
@@ -409,18 +446,24 @@ const exchangeRate = `1.00 ${sendCurrency} = ${exchangeData.quotations[0]?.trans
     }
 
     // Mock exchange rate calculation (will be replaced with API call in production)
-    function calculateExchange() {
+    async function calculateExchange() {
       if (!sendInput || !receiveInput || !sendCurrencyBtn || !receiveCurrencyBtn) return;
+      
+      // Show loading state
+      const calculatorForm = document.querySelector('.calculator-form');
+      if (calculatorForm) calculatorForm.classList.add('loading');
+      const loadingIndicator = document.querySelector('[data-loading-indicator]');
+      if (loadingIndicator) loadingIndicator.classList.remove('hidden');
 
-      const sendAmount = parseFloat(sendInput.value) || 0;
+      const sendAmountVal = parseFloat(sendInput.value) || 0;
       const fromCurrency = sendCurrencyBtn.textContent?.trim() || 'AED';
       const toCurrency = receiveCurrencyBtn.textContent?.trim() || 'USD';
 
-      // Get exchange rate from our mock data
-      const rate = currencies[fromCurrency]?.rates[toCurrency] || 1;
+      // Fetch live rate (fallback to mock)
+      const { rate, fee } = await fetchExchangeRate(fromCurrency, toCurrency, sendAmountVal);
 
       // Calculate received amount
-      const receivedAmount = (sendAmount * rate).toFixed(2);
+      const receivedAmount = (sendAmountVal * rate).toFixed(2);
       receiveInput.value = receivedAmount;
 
       // Update exchange rate display
@@ -429,11 +472,17 @@ const exchangeRate = `1.00 ${sendCurrency} = ${exchangeData.quotations[0]?.trans
         exchangeRateElement.textContent = `1.00 ${fromCurrency} = ${rate.toFixed(2)} ${toCurrency}`;
       }
 
-      // Show fee as 0 (fee-free)
+      // Update fee display
       const feeElement = document.querySelector('[data-transfer-fee]');
       if (feeElement) {
-        feeElement.textContent = `0.000 ${fromCurrency}`;
+        feeElement.textContent = `${fee.toFixed(3)} ${fromCurrency}`;
       }
+      
+      // Hide loading state
+      const calculatorForm = document.querySelector('.calculator-form');
+      if (calculatorForm) calculatorForm.classList.remove('loading');
+      const loadingIndicator = document.querySelector('[data-loading-indicator]');
+      if (loadingIndicator) loadingIndicator.classList.add('hidden');
     }
 
     // Close all currency dropdowns
@@ -455,27 +504,59 @@ const exchangeRate = `1.00 ${sendCurrency} = ${exchangeData.quotations[0]?.trans
       }
     });
 
-    // Update calculation when send amount changes
-    sendInput?.addEventListener('input', () => {
-      calculateExchange();
-    });
-
-    // Toggle send currency dropdown
-    sendCurrencyBtn?.addEventListener('click', (e) => {
-      e.stopPropagation();
-
-      const isExpanded = sendCurrencyBtn.getAttribute('aria-expanded') === 'true';
-
-      // Close receive dropdown if open
-      if (receiveCurrencyDropdown) receiveCurrencyDropdown.classList.add('hidden');
-      if (receiveCurrencyBtn) receiveCurrencyBtn.setAttribute('aria-expanded', 'false');
-
-      // Toggle send dropdown
-      if (sendCurrencyDropdown) {
-        sendCurrencyDropdown.classList.toggle('hidden');
-        sendCurrencyBtn.setAttribute('aria-expanded', !isExpanded ? 'true' : 'false');
+    // Multiple redundant ways to capture input changes
+    // Method 1: Add input event listener
+    if (sendInput) {
+      console.log('Attaching input handler to:', sendInput);
+      sendInput.addEventListener('input', function(e) {
+        console.log('Input value changed to:', this.value);
+        calculateExchange();
+      });
+      
+      // Method 2: Add keyup event listener as backup
+      sendInput.addEventListener('keyup', function(e) {
+        console.log('Key pressed in input:', this.value);
+        calculateExchange();
+      });
+      
+      // Method 3: Add change event listener as another backup
+      sendInput.addEventListener('change', function(e) {
+        console.log('Input change event:', this.value);
+        calculateExchange();
+      });
+      
+      // Manually trigger a calculation once to ensure initial state is correct
+      setTimeout(() => {
+        console.log('Initial calculation triggered');
+        calculateExchange();
+      }, 500);
+      
+    } else {
+      // Critical error fallback - try to find element by ID
+      console.error('CRITICAL ERROR: Could not find send input by data attribute!');
+      const inputById = document.getElementById('send-amount');
+      if (inputById) {
+        console.log('Found input by ID instead, attaching handlers');
+        inputById.addEventListener('input', calculateExchange);
+        inputById.addEventListener('keyup', calculateExchange);
+      } else {
+        console.error('FATAL: Could not find send input element by any method!');
       }
-    });
+    }
+
+    // Send currency is fixed to AED - no dropdown functionality needed
+    console.log('Send currency fixed to AED - no dropdown allowed');
+    
+    // Ensure any clicks on the send currency element do nothing
+    if (sendCurrencyBtn) {
+      sendCurrencyBtn.style.cursor = 'default';
+    }
+    
+    // Hide the send dropdown permanently if it somehow exists
+    if (sendCurrencyDropdown) {
+      sendCurrencyDropdown.classList.add('hidden');
+      sendCurrencyDropdown.setAttribute('aria-hidden', 'true');
+    }
 
     // Toggle receive currency dropdown
     receiveCurrencyBtn?.addEventListener('click', (e) => {
@@ -498,10 +579,12 @@ const exchangeRate = `1.00 ${sendCurrency} = ${exchangeData.quotations[0]?.trans
     if (sendCurrencyDropdown) {
       const currencyButtons = sendCurrencyDropdown.querySelectorAll('[data-currency]');
       currencyButtons.forEach((button) => {
-        button.addEventListener('click', () => {
+        button.addEventListener('click', async (e) => {
+          e.stopPropagation();
           const currency = button.getAttribute('data-currency');
           if (currency && sendCurrencyBtn) {
-            sendCurrencyBtn.textContent = currency;
+            const sendCurrencyText = sendCurrencyBtn.querySelector('[data-send-currency-text]');
+            if (sendCurrencyText) sendCurrencyText.textContent = currency;
 
             // Update flag
             if (sendCurrencyFlag) {
@@ -534,7 +617,7 @@ const exchangeRate = `1.00 ${sendCurrency} = ${exchangeData.quotations[0]?.trans
             // Hide dropdown and recalculate
             sendCurrencyDropdown.classList.add('hidden');
             sendCurrencyBtn.setAttribute('aria-expanded', 'false');
-            calculateExchange();
+            await calculateExchange();
           }
         });
       });
@@ -544,10 +627,12 @@ const exchangeRate = `1.00 ${sendCurrency} = ${exchangeData.quotations[0]?.trans
     if (receiveCurrencyDropdown) {
       const currencyButtons = receiveCurrencyDropdown.querySelectorAll('[data-currency]');
       currencyButtons.forEach((button) => {
-        button.addEventListener('click', () => {
+        button.addEventListener('click', async (e) => {
+          e.stopPropagation();
           const currency = button.getAttribute('data-currency');
           if (currency && receiveCurrencyBtn) {
-            receiveCurrencyBtn.textContent = currency;
+            const receiveCurrencyText = receiveCurrencyBtn.querySelector('[data-receive-currency-text]');
+            if (receiveCurrencyText) receiveCurrencyText.textContent = currency;
 
             // Update flag
             if (receiveCurrencyFlag) {
@@ -580,18 +665,21 @@ const exchangeRate = `1.00 ${sendCurrency} = ${exchangeData.quotations[0]?.trans
             // Hide dropdown and recalculate
             receiveCurrencyDropdown.classList.add('hidden');
             receiveCurrencyBtn.setAttribute('aria-expanded', 'false');
-            calculateExchange();
+            await calculateExchange();
           }
         });
       });
     }
 
     // Handle submit button click
-    submitButton?.addEventListener('click', () => {
+    submitButton?.addEventListener('click', async () => {
       if (!sendInput?.value) {
         alert('Please enter an amount to send');
         return;
       }
+
+      // Ensure we have the latest calculation
+      await calculateExchange();
 
       const fromCurrency = sendCurrencyBtn?.textContent?.trim() || 'AED';
       const toCurrency = receiveCurrencyBtn?.textContent?.trim() || 'USD';
@@ -604,6 +692,202 @@ const exchangeRate = `1.00 ${sendCurrency} = ${exchangeData.quotations[0]?.trans
     });
 
     // Run initial calculation
-    calculateExchange();
-  });
+    await calculateExchange();
+  } // End of initCalculator function
+</script>
+
+<!-- Add a completely separate script with client:load directive -->
+<script client:load>
+  console.log('Astro client:load script running!');
+  
+  // Currency → ISO country code map (for API)
+  const currencyToCountry = {
+    AED: 'AE',
+    USD: 'US',
+    EUR: 'EU',
+    GBP: 'GB',
+    INR: 'IN',
+    PKR: 'PK',
+  };
+  
+  // Currency dropdowns
+  const sendCurrencyBtn = document.querySelector('[data-calculator-send-currency]');
+  const receiveCurrencyBtn = document.querySelector('[data-calculator-receive-currency]');
+  const sendCurrencyDropdown = document.querySelector('[data-send-currency-dropdown]');
+  const receiveCurrencyDropdown = document.querySelector('[data-receive-currency-dropdown]');
+  const submitButton = document.querySelector('[data-calculator-submit]');
+  const sendCurrencyFlag = document.querySelector('.send-currency-flag');
+  const receiveCurrencyFlag = document.querySelector('.receive-currency-flag');
+  const transferFeeElement = document.querySelector('[data-transfer-fee]');
+  const exchangeRateElement = document.querySelector('[data-exchange-rate]');
+  const sendInput = document.querySelector('#send-amount');
+  const receiveInput = document.querySelector('#receive-amount');
+  
+  // Initialize calculation
+  calculateExchange();
+  
+  // API-backed conversion logic
+  async function calculateExchange() {
+    if (!sendInput || !receiveInput) {
+      console.error('Missing required DOM elements');
+      return;
+    }
+    
+    console.log('Calculating exchange...');
+    const sendAmount = parseFloat(sendInput.value) || 0;
+    const fromCurrency = sendCurrencyBtn?.querySelector('[data-send-currency-text]')?.textContent || 'AED';
+    const toCurrency = receiveCurrencyBtn?.querySelector('[data-receive-currency-text]')?.textContent || 'USD';
+    
+    try {
+      // Show loading state
+      document.body.classList.add('calculating');
+      
+      console.log(`Calling API for ${fromCurrency} to ${toCurrency}, amount: ${sendAmount}`);
+      // Call the remittance API
+      const { getRemittanceRates } = await import('/src/helpers/remittance-exchange.js');
+      // Using absolute path for browser imports
+      const res = await getRemittanceRates('AE', {
+        quotation_mode: 'SEND_AMOUNT',
+        receive: { country_code: currencyToCountry[toCurrency] || 'US', currency: toCurrency },
+        send: { amount: sendAmount, currency: fromCurrency, country_code: 'AE' },
+      });
+      
+      console.log('API response:', res);
+      const best = res?.quotations?.find((q) => q.best_offer) || res?.quotations?.[0];
+      const rate = best?.transfer_fx_rate || 1;
+      const fee = res?.fee?.amount || 0;
+      
+      // Update DOM
+      receiveInput.value = (sendAmount * rate).toFixed(2);
+      if (transferFeeElement) transferFeeElement.textContent = `${fee.toFixed(3)} ${fromCurrency}`;
+      if (exchangeRateElement) exchangeRateElement.textContent = `1.00 ${fromCurrency} = ${rate.toFixed(2)} ${toCurrency}`;
+      
+    } catch (err) {
+      console.warn('API error - using hardcoded rate', err);
+      // Fallback to hardcoded rates
+      const hardcodedRates = {
+        AED: { USD: 0.27, EUR: 0.25, GBP: 0.21, INR: 22.5, PKR: 77.5 },
+        USD: { AED: 3.67, EUR: 0.92, GBP: 0.78, INR: 83.5, PKR: 279 },
+        EUR: { AED: 4.0, USD: 1.09, GBP: 0.85, INR: 91.0, PKR: 302 },
+        GBP: { AED: 4.76, USD: 1.28, EUR: 1.18, INR: 106.0, PKR: 360 },
+        INR: { AED: 0.044, USD: 0.012, EUR: 0.011, GBP: 0.0094, PKR: 3.37 },
+        PKR: { AED: 0.013, USD: 0.0036, EUR: 0.0033, GBP: 0.0028, INR: 0.3 },
+      };
+      
+      const rate = hardcodedRates[fromCurrency]?.[toCurrency] || 0.27;
+      receiveInput.value = (sendAmount * rate).toFixed(2);
+      if (transferFeeElement) transferFeeElement.textContent = `0.000 ${fromCurrency}`;
+      if (exchangeRateElement) exchangeRateElement.textContent = `1.00 ${fromCurrency} = ${rate.toFixed(2)} ${toCurrency}`;
+    } finally {
+      // Hide loading state
+      document.body.classList.remove('calculating');
+    }
+  }
+  
+  // Set up input event handler
+  if (sendInput) {
+    sendInput.addEventListener('input', () => {
+      calculateExchange();
+    });
+  }
+  
+  // Set up currency dropdowns
+  function setupDropdowns() {
+    // Toggle send currency dropdown
+    sendCurrencyBtn?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isExpanded = sendCurrencyBtn.getAttribute('aria-expanded') === 'true';
+      
+      // Close other dropdown if open
+      if (receiveCurrencyDropdown) receiveCurrencyDropdown.classList.add('hidden');
+      if (receiveCurrencyBtn) receiveCurrencyBtn.setAttribute('aria-expanded', 'false');
+      
+      // Toggle this dropdown
+      if (sendCurrencyDropdown) {
+        sendCurrencyDropdown.classList.toggle('hidden');
+        sendCurrencyBtn.setAttribute('aria-expanded', !isExpanded ? 'true' : 'false');
+      }
+    });
+    
+    // Toggle receive currency dropdown
+    receiveCurrencyBtn?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isExpanded = receiveCurrencyBtn.getAttribute('aria-expanded') === 'true';
+      
+      // Close other dropdown if open
+      if (sendCurrencyDropdown) sendCurrencyDropdown.classList.add('hidden');
+      if (sendCurrencyBtn) sendCurrencyBtn.setAttribute('aria-expanded', 'false');
+      
+      // Toggle this dropdown
+      if (receiveCurrencyDropdown) {
+        receiveCurrencyDropdown.classList.toggle('hidden');
+        receiveCurrencyBtn.setAttribute('aria-expanded', !isExpanded ? 'true' : 'false');
+      }
+    });
+    
+    // Add click handlers to send currency options
+    if (sendCurrencyDropdown) {
+      const buttons = sendCurrencyDropdown.querySelectorAll('[data-currency]');
+      buttons.forEach(button => {
+        button.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const currency = button.getAttribute('data-currency');
+          if (currency) {
+            const currencyText = sendCurrencyBtn.querySelector('[data-send-currency-text]');
+            if (currencyText) currencyText.textContent = currency;
+            sendCurrencyDropdown.classList.add('hidden');
+            sendCurrencyBtn.setAttribute('aria-expanded', 'false');
+            calculateExchange();
+          }
+        });
+      });
+    }
+    
+    // Add click handlers to receive currency options
+    if (receiveCurrencyDropdown) {
+      const buttons = receiveCurrencyDropdown.querySelectorAll('[data-currency]');
+      buttons.forEach(button => {
+        button.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const currency = button.getAttribute('data-currency');
+          if (currency) {
+            const currencyText = receiveCurrencyBtn.querySelector('[data-receive-currency-text]');
+            if (currencyText) currencyText.textContent = currency;
+            receiveCurrencyDropdown.classList.add('hidden');
+            receiveCurrencyBtn.setAttribute('aria-expanded', 'false');
+            calculateExchange();
+          }
+        });
+      });
+    }
+    
+    // Close dropdowns when clicking elsewhere
+    document.addEventListener('click', () => {
+      if (sendCurrencyDropdown) sendCurrencyDropdown.classList.add('hidden');
+      if (receiveCurrencyDropdown) receiveCurrencyDropdown.classList.add('hidden');
+      if (sendCurrencyBtn) sendCurrencyBtn.setAttribute('aria-expanded', 'false');
+      if (receiveCurrencyBtn) receiveCurrencyBtn.setAttribute('aria-expanded', 'false');
+    });
+    
+    // Setup submit button
+    submitButton?.addEventListener('click', async () => {
+      if (!sendInput?.value) {
+        alert('Please enter an amount to send');
+        return;
+      }
+      
+      // Ensure latest calculation
+      await calculateExchange();
+      
+      const fromCurrency = sendCurrencyBtn?.querySelector('[data-send-currency-text]')?.textContent || 'AED';
+      const toCurrency = receiveCurrencyBtn?.querySelector('[data-receive-currency-text]')?.textContent || 'USD';
+      
+      alert(
+        `Your money transfer request has been received! You are sending ${sendInput.value} ${fromCurrency} and the recipient will receive ${receiveInput?.value} ${toCurrency}`
+      );
+    });
+  }
+  
+  // Initialize dropdowns
+  setupDropdowns();
 </script>
