@@ -1,42 +1,42 @@
 export default {
   copyrights:
-    'Jingle Pay is a digital platform offering financial services in the UAE, operating under applicable regulations. Users should stay informed about any relevant regulatory updates.',
+    'Jingle Pay هي منصة رقمية تقدم خدمات مصرفية بدون فروع في باكستان، وتعمل بموجب ترخيص الخدمات المصرفية بدون فروع الممنوح لبنك ألفلاح المحدود من قبل بنك الدولة الباكستاني (SBP). تلتزم Jingle Pay بلوائح البنك المركزي ولا تمتلك ترخيصًا منفصلًا. يُنصح المستخدمون بالبقاء على اطلاع بأي تحديثات تنظيمية ذات صلة.',
   nav: [
     {
-      title: 'Features',
+      title: 'سمات',
       links: [
-        { href: '#benefit-1', text: 'All-In-One Account' },
-        { href: '#benefit-2', text: 'International Transfers' },
-        { href: '#benefit-3', text: 'Peer-to-Peer Payments' },
-        { href: '#benefit-4', text: 'Card Payments' },
+        { href: '#benefit-1', text: 'حساب الكل في واحد' },
+        { href: '#benefit-2', text: 'المدفوعات من نظير إلى نظير' },
+        { href: '#benefit-3', text: 'تحويلات دولية' },
+        { href: '#benefit-4', text: 'دفعات البطاقات' },
       ],
     },
     {
-      title: 'Accounts',
+      title: 'حسابات',
       links: [
-        { href: '#benefit-1', text: 'Digital Account' },
-        { href: '#benefit-2', text: 'Savings' },
+        { href: '#benefit-1', text: 'حساب رقمي' },
+        { href: '#benefit-2', text: 'الدفعة' },
         { href: '#benefit-3', text: 'Multi-Currency' },
       ],
     },
     {
-      title: 'Company',
+      title: 'شركة',
       links: [
-        { href: '/company', text: 'About Us' },
-        { href: '/company#mission', text: 'Mission' },
-        { href: '/career', text: 'Careers' },
-        { href: '#', text: 'Press' },
-        { href: '/contact', text: 'Contact' },
+        { href: '/company', text: 'عن الشركة' },
+        { href: '/company#mission', text: 'الرسالة' },
+        { href: '/career', text: 'الوظائف' },
+        { href: '#', text: 'الпресс' },
+        { href: '/contact', text: 'اتصل بنا' },
       ],
     },
     {
-      title: 'Help',
+      title: 'المساعدة',
       links: [
-        { href: '/terms-and-conditions-uae.pdf', text: 'Terms & Conditions' },
-        { href: '/privacy-policy', text: 'Privacy Policy' },
-        { href: '/Schedule-of-Charges-UAE.pdf', text: 'Schedule of Charges' },
-        { href: '/faq', text: 'FAQs' },
-        { href: '/contact', text: 'Contact Us' },
+        { href: '/terms-and-conditions-uae.pdf', text: 'الشروط والأحكام' },
+        { href: '/privacy-policy', text: 'سياسة الخصوصية' },
+        { href: '/Schedule-of-Charges-UAE.pdf', text: 'جدول الرسوم' },
+        { href: '/faq', text: 'الأسئلة الشائعة' },
+        { href: '/contact', text: 'اتصل بنا' },
       ],
     },
   ],

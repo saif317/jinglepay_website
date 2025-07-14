@@ -1,9 +1,9 @@
 export default {
-  title: 'Regulated by',
+  title: 'تحت إشراف',
   description: [
-    'Jingle Pay is a digital platform providing branchless banking services in Pakistan. Jingle Pay operates under the branchless banking license issued to Bank Alfalah Limited by the State Bank of Pakistan (SBP). The services offered through Jingle Pay comply with the regulations and guidelines established by the SBP for branchless banking operations.',
-    'Please note that Jingle Pay, as a digital platform, does not hold a separate branchless banking license. Instead, it operates within the regulatory framework granted to Bank Alfalah Limited by the SBP. The platform is designed to provide convenient, secure, and compliant branchless banking services in Pakistan.',
-    'All services provided by Jingle Pay are subject to the regulations and oversight of the State Bank of Pakistan and the policies of Bank Alfalah Limited. Users are encouraged to stay informed about any relevant regulatory updates and requirements that may affect their use of the platform.',
+    'Jingle Pay هي منصة رقمية تقدم خدمات مصرفية بدون فروع في باكستان. تعمل Jingle Pay بموجب ترخيص الخدمات المصرفية بدون فروع الصادر لبنك ألفلاح المحدود من قبل بنك الدولة الباكستاني (SBP). وتلتزم الخدمات المقدمة من خلال Jingle Pay باللوائح والإرشادات التي وضعها بنك الدولة الباكستاني لعمليات الخدمات المصرفية بدون فروع.',
+    'يرجى ملاحظة أن Jingle Pay، بصفتها منصة رقمية، لا تمتلك ترخيصًا منفصلًا للخدمات المصرفية بدون فروع. بل تعمل ضمن الإطار التنظيمي الممنوح لبنك ألفلاح المحدود من قبل بنك الدولة الباكستاني. تم تصميم هذه المنصة لتوفير خدمات مصرفية بدون فروع تكون مريحة وآمنة ومتوافقة مع الأنظمة المعمول بها في باكستان.',
+    'جميع الخدمات التي تقدمها Jingle Pay تخضع للوائح وإشراف بنك الدولة الباكستاني، وكذلك لسياسات بنك ألفلاح المحدود. ويُنصح المستخدمون بالبقاء على اطلاع دائم بأي تحديثات أو متطلبات تنظيمية قد تؤثر على استخدامهم للمنصة.',
   ],
-  security: 'Security',
+  security: 'أمان بدرجة الأمان المصرفي',
 };

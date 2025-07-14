@@ -1,4 +1,4 @@
 export default {
-  heading: "Peer-to-Peer Payments",
-  description: "Instantly send money to friends using just their mobile numberfast, secure, and hassle-free!"
+  heading: 'المدفوعات من شخص إلى شخص',
+  description: 'أرسل المال فورًا إلى أصدقائك باستخدام رقم هاتفهم فقط – بسرعة، وأمان، ودون أي تعقيد!',
 };

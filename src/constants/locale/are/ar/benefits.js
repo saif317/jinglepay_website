@@ -1,22 +1,22 @@
 export default {
   statistics: {
     trusted: {
-      prefix: "Trusted by",
-      number: "+500,000",
-      suffix: "Users worldwide"
+      prefix: 'موثوق من قبل',
+      number: '+500,000',
+      suffix: 'مستخدمين حول العالم',
     },
     transactions: {
-      prefix: "With over",
-      number: "USD 2 Billion",
-      suffix: "processed in transactions"
-    }
+      prefix: 'مع أكثر من',
+      number: 'USD 2 Billion',
+      suffix: 'تمت معالجته في العمليات المالية',
+    },
   },
   zeroFees: {
-    title: "ZERO FEES"
+    title: 'بدون أي رسوم',
   },
   savings: {
-    title: "Savings generated for customers",
-    amount: "USD 5,000,000",
-    description: "Jingle Pay is democratizing access to financial services"
-  }
+    title: 'وفر للعملاء مبالغ مالية',
+    amount: 'USD 5,000,000',
+    description: 'Jingle Pay يعمل على ديمقراطية الوصول إلى الخدمات المالية',
+  },
 };

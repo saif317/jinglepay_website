@@ -1,7 +1,7 @@
 export default {
-  title: 'Are you ready to Jingle?',
-  subtitle: 'Spend, Send and Save your money, all in one place',
-  text: 'Empowering you with a financial super-app that simplifies your day-to-day financial needs.',
-  qrText: 'Get the Jingle Pay App',
-  downloadApp: 'Download App',
+  title: 'هل أنت مستعد لتجربة Jingle؟',
+  subtitle: 'أنفق، أرسل، وادخر أموالك – كل ذلك في مكان واحد',
+  text: 'نمنحك القوة من خلال تطبيق مالي متكامل يُبسّط احتياجاتك المالية اليومية.',
+  qrText: 'حمّل تطبيق Jingle Pay',
+  downloadApp: 'تحميل التطبيق',
 };

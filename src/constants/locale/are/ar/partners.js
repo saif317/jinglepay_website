@@ -1,6 +1,6 @@
 export default {
-  title: 'Partners',
+  title: 'الشركاء',
   description:
-    'We partner with leading financial institutions, global service providers, and innovative businesses to transform digital finance across MENAP. These collaborations fuel innovation, expand financial access, and deliver seamless, intelligent payment solutions—powering a smarter, more connected financial future.',
-  cta: 'Become a Partner',
+    'نحن نتعاون مع مؤسسات مالية رائدة، ومزودي خدمات عالميين، وشركات مبتكرة لتحويل التمويل الرقمي في منطقة الشرق الأوسط وشمال إفريقيا وباكستان (MENAP).  تُسهم هذه الشراكات في تعزيز الابتكار، وتوسيع الوصول المالي، وتقديم حلول دفع ذكية وسلسة — مما يدفع نحو مستقبل مالي أكثر ذكاءً وترابطاً.',
+  cta: 'كن شريكاً',
 };

@@ -11,6 +11,11 @@ import career from './career.js';
 // UAE component translations
 import uaeHero from './uaeHero.js';
 import control from './control.js';
+import benefits from './benefits.js';
+import cardFeatures from './cardFeatures.js';
+import infoCards from './infoCards.js';
+import p2p from './p2p.js';
+import appShowcase from './appShowcase.js';
 // Add other imports as translation files are created
 
 export default {
@@ -35,5 +40,10 @@ export default {
   // UAE component translations
   uaeHero,
   control,
+  benefits,
+  cardFeatures,
+  infoCards,
+  p2p,
+  appShowcase,
   // Add other component exports as translation files are created
 };

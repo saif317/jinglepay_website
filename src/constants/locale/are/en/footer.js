@@ -16,6 +16,7 @@ export default {
       links: [
         { href: '#benefit-1', text: 'Digital Account' },
         { href: '#benefit-2', text: 'Savings' },
+
         { href: '#benefit-3', text: 'Multi-Currency' },
       ],
     },
