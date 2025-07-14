@@ -8,6 +8,11 @@ import contact from './contact/index.js';
 import company from './company/company.js';
 import career from './career.js';
 
+// UAE component translations
+import uaeHero from './uaeHero.js';
+import control from './control.js';
+// Add other imports as translation files are created
+
 export default {
   title: 'Jingle Pay UAE - Simplifying All Money!',
   description: 'Jingle Pay is the go-to money app for your everyday financial needs in UAE.',
@@ -17,7 +22,7 @@ export default {
     subtitle: 'Experience seamless banking with the all-in-one money app designed for your lifestyle.',
     downloadApp: 'Download App',
   },
-  featuredIn: 'Jingle Pay has been featured in:',
+  featuredIn: ':في Jingle Pay تم عرض',
   investors,
   partners,
   regulation,
@@ -26,4 +31,9 @@ export default {
   contact,
   company,
   career,
+  
+  // UAE component translations
+  uaeHero,
+  control,
+  // Add other component exports as translation files are created
 };

@@ -5,10 +5,13 @@
  * Phone mock image(s) can be swapped later; currently uses placeholder.
  */
 import { Image } from 'astro:assets';
+import { Fragment } from 'astro/jsx-runtime';
 import phone1 from '../../assets/uae/phone-set/phone1.png';
 import phone2 from '../../assets/uae/phone-set/phone2.png';
 import phone3 from '../../assets/uae/phone-set/phone3.png';
 import phone4 from '../../assets/uae/phone-set/phone4.png';
+
+const { appShowcase } = Astro.locals.translations;
 ---
 
 <section class="w-full py-20 flex flex-col items-center">
@@ -32,12 +35,20 @@ import phone4 from '../../assets/uae/phone-set/phone4.png';
     <!-- Copy -->
     <div class="max-w-md flex flex-col gap-4 text-left">
       <h2 class="text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight text-zinc-800">
-        The go-to app for <span class="text-zinc-900 font-bold">everyday finances.</span>
+        {appShowcase?.heading?.prefix || "The go-to app for"} <span class="text-zinc-900 font-bold">{appShowcase?.heading?.highlight || "everyday finances."}</span>
       </h2>
       <ul class="text-neutral-500 text-lg sm:text-xl leading-relaxed list-disc list-inside space-y-2 mt-4">
-        <li>No minimum balance is required.</li>
-        <li>Earn <span class="font-bold">+10% profit</span> on savings.</li>
-        <li>Multiple transactions are available, including utility bill payments, mobile top-ups, and fund transfers.</li>
+        <li>{appShowcase?.features?.[0] || "No minimum balance is required."}</li>
+        <li>
+          {appShowcase?.features?.[1] ? (
+            <Fragment set:html={appShowcase.features[1]} />
+          ) : (
+            <Fragment>
+              Earn <span class="font-bold">+10% profit</span> on savings.
+            </Fragment>
+          )}
+        </li>
+        <li>{appShowcase?.features?.[2] || "Multiple transactions are available, including utility bill payments, mobile top-ups, and fund transfers."}</li>
       </ul>
     </div>
   </div>

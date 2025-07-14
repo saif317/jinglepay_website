@@ -7,23 +7,33 @@ import virtualCardImg from '../../assets/uae/cards/virtual-cards.png';
 import securityImg from '../../assets/uae/cards/security.png';
 import numberlessImg from '../../assets/uae/cards/numberless.png';
 
-const features = [
+const { cardFeatures } = Astro.locals.translations;
+
+// Images for features
+const featureImages = [
+  virtualCardImg,
+  securityImg,
+  numberlessImg
+];
+
+// Combine translations with images
+const features = (cardFeatures?.features || [
   {
-    img: virtualCardImg,
     title: 'Virtual Cards',
     desc: 'Unlock your freedom with a versatile debit card! Enjoy a joining bonus and earn cashback on every transaction.',
   },
   {
-    img: securityImg,
     title: 'Security',
     desc: 'Your personal data, money, and card details are stored securely with end-to-end encryption.',
   },
   {
-    img: numberlessImg,
     title: 'Numberless',
     desc: 'The cards only display your name – keeping your card details secure and further strengthening privacy.',
   },
-];
+]).map((feature, index) => ({
+  ...feature,
+  img: featureImages[index]
+}));
 ---
 
 <section class="w-full py-20 bg-[#F7F9FC] flex justify-center px-4">

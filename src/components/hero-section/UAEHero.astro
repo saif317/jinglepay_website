@@ -11,18 +11,16 @@ import HeroContent from './HeroContent.astro';
 import AppRatings from '../ratings/AppRatings.astro';
 import TransferCalculator from '../calculator/TransferCalculator.astro';
 
-const {
-  translations: { hero = {} },
-} = Astro.locals;
+const { uaeHero, calculator } = Astro.locals.translations;
 
-// Mock data for calculator - will be replaced with interactive functionality
+// Calculator data using translations
 const calculatorData = {
   sendAmount: '1000',
   sendCurrency: 'AED',
   receiveAmount: '1000',
   receiveCurrency: 'USD',
-  transferFee: '0.000 AED',
-  exchangeRate: '1.00 AED = 0.27 USD'
+  transferFee: calculator?.transferFee || '0.000 AED',
+  exchangeRate: calculator?.exchangeRate || '1.00 AED = 0.27 USD'
 };
 ---
 
@@ -35,9 +33,9 @@ const calculatorData = {
   <div class="w-full lg:w-[653px] flex flex-col justify-start items-center lg:items-start gap-4 sm:gap-5 lg:pr-12 mb-8 lg:mb-0 text-center lg:text-left">
     <!-- Hero content (heading and description) -->
     <HeroContent 
-      heading="Send money,"
-      highlightedText="Fee-free!"
-      description="Jingle Pay is simplifying all money! For everyday financial needs. Try our calculator to see how much you can save with us!"
+      heading={uaeHero?.heading || "Send money,"}
+      highlightedText={uaeHero?.highlightedText || "Fee-free!"}
+      description={uaeHero?.description || "Jingle Pay is simplifying all money! For everyday financial needs. Try our calculator to see how much you can save with us!"}
     />
     
     <!-- App ratings component -->

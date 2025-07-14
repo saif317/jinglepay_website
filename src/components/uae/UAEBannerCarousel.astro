@@ -6,6 +6,8 @@ import UAERecipientsBanner from '@components/uae/UAERecipientsBanner.astro';
 
 // Swiper styles
 import 'swiper/css/bundle';
+
+const { bannerCarousel } = Astro.locals.translations;
 ---
 
 <section class='swiper mySwiper'>
@@ -13,8 +15,8 @@ import 'swiper/css/bundle';
     <!-- Slide 1: Transaction cards banner -->
     <div class='flex items-center justify-center w-full swiper-slide'>
       <UAEBanner
-        heading='Send money abroad instantly'
-        description='Compare rates, choose your provider, and send money to your loved ones instantly with Jingle Pay.'
+        heading={bannerCarousel?.slides?.[0]?.heading || 'Send money abroad instantly'}
+        description={bannerCarousel?.slides?.[0]?.description || 'Compare rates, choose your provider, and send money to your loved ones instantly with Jingle Pay.'}
       />
     </div>
 
