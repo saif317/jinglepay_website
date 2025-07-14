@@ -9,8 +9,9 @@ resources:
 
 trigger:
   branches:
-    include: 
+    include:
       - main
+      - develop
 
 pool:
   vmImage: 'ubuntu-latest'
