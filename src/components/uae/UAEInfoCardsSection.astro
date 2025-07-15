@@ -11,16 +11,20 @@ import JoiningBonusIcon from '@assets/uae/wallet (2).svg';
 const { infoCards } = Astro.locals.translations;
 ---
 
-<section class='p-[120px]'>
+<section class='px-4 py-6 sm:p-8 md:p-[80px] lg:p-[90px] xl:p-[100px]'>
   <div class='mx-auto max-w-7xl'>
-    <div class='flex flex-col justify-between gap-[50px] md:flex-row'>
+    <div
+      class='flex flex-col justify-between gap-[30px] md:gap-[40px] lg:flex-row lg:gap-4 xl:gap-[30px] 2xl:gap-[50px]'
+    >
       <!-- Card 1: Remittance Marketplace -->
-      <div class='flex-1 min-w-[250px] flex flex-col'>
+      <div class='flex flex-col flex-1'>
         <!-- Header container: icon + title -->
         <div class='flex flex-row items-center gap-4 h-18'>
           <MarketplaceIcon class='flex-shrink-0 mt-1 w-9 h-9' />
-          <h3 class="text-gray-900 text-2xl font-bold font-['Hero_New'] leading-7" set:html={infoCards.card1.title}>
-          </h3>
+          <h3
+            class="text-gray-900 text-xl sm:text-2xl lg:text-lg xl:text-xl 2xl:text-2xl font-bold font-['Hero_New'] leading-7"
+            set:html={infoCards.card1.title}
+          />
         </div>
 
         <!-- Divider container -->
@@ -30,19 +34,24 @@ const { infoCards } = Astro.locals.translations;
 
         <!-- Content container -->
         <div class='pt-2'>
-          <p class="text-neutral-500 text-xl font-normal font-['DM_Sans']">
+          <p
+            class="text-neutral-500 text-base sm:text-lg lg:text-base xl:text-lg 2xl:text-xl font-normal font-['DM_Sans']"
+          >
             {infoCards.card1.content.line1}<br />{infoCards.card1.content.line2}
           </p>
         </div>
       </div>
 
       <!-- Card 2: No Fees -->
-      <div class='flex-1 min-w-[250px] flex flex-col'>
+      <div class='flex flex-col flex-1'>
         <!-- Header container: icon + title -->
         <div class='flex flex-row items-center gap-4 h-18'>
           <NoFeesIcon class='flex-shrink-0 mt-1 w-9 h-9' />
-          <h3 class="text-gray-900 text-2xl font-bold font-['Hero_New'] leading-7">
-            <span set:html={infoCards.card2.title.line1}></span> <br /><span set:html={infoCards.card2.title.line2}></span>
+          <h3
+            class="text-gray-900 text-xl sm:text-2xl lg:text-lg xl:text-xl 2xl:text-2xl font-bold font-['Hero_New'] leading-7"
+          >
+            <span set:html={infoCards.card2.title.line1} />
+            <br /><span set:html={infoCards.card2.title.line2} />
           </h3>
         </div>
 
@@ -53,18 +62,23 @@ const { infoCards } = Astro.locals.translations;
 
         <!-- Content container -->
         <div class='pt-2'>
-          <p class="text-neutral-500 text-xl font-normal font-['DM_Sans']">
+          <p
+            class="text-neutral-500 text-base sm:text-lg lg:text-base xl:text-lg 2xl:text-xl font-normal font-['DM_Sans']"
+          >
             {infoCards.card2.content.line1}<br />{infoCards.card2.content.line2}
           </p>
         </div>
       </div>
 
       <!-- Card 3: Joining Bonus -->
-      <div class='flex-1 min-w-[250px] flex flex-col'>
+      <div class='flex flex-col flex-1'>
         <!-- Header container: icon + title -->
         <div class='flex flex-row items-center gap-4 h-18'>
           <JoiningBonusIcon class='flex-shrink-0 mt-1 w-9 h-9' />
-          <h3 class="text-gray-900 text-2xl font-bold font-['Hero_New'] leading-7" set:html={infoCards.card3.title}></h3>
+          <h3
+            class="text-gray-900 text-xl sm:text-2xl lg:text-lg xl:text-xl 2xl:text-2xl font-bold font-['Hero_New'] leading-7"
+            set:html={infoCards.card3.title}
+          />
         </div>
 
         <!-- Divider container -->
@@ -74,8 +88,10 @@ const { infoCards } = Astro.locals.translations;
 
         <!-- Content container -->
         <div class='pt-2'>
-          <p class="text-neutral-500 text-xl font-normal font-['DM_Sans']" set:html={infoCards.card3.content}>
-          </p>
+          <p
+            class="text-neutral-500 text-base sm:text-lg lg:text-base xl:text-lg 2xl:text-xl font-normal font-['DM_Sans']"
+            set:html={infoCards.card3.content}
+          />
         </div>
       </div>
     </div>
