@@ -15,6 +15,16 @@ import person2 from '@assets/uae-banners/banner3/person2.jpg';
 import person3 from '@assets/uae-banners/banner3/person3.jpg';
 import person4 from '@assets/uae-banners/banner3/person4.jpg';
 import Plus from '@assets/uae-banners/banner3/plus.svg';
+import INFlag from '@assets/uae-banners/banner3/in.svg';
+import PAKFlag from '@assets/uae-banners/banner3/pak.svg';
+import AUSFlag from '@assets/uae-banners/banner3/aus.svg';
+import SAFlag from '@assets/uae-banners/banner3/sgp.svg';
+import MALFlag from '@assets/uae-banners/banner3/mal.svg';
+import AddUser from '@assets/uae-banners/banner3/add-user.svg';
+import recipient1 from '@assets/uae-banners/banner3/recipient1.jpg';
+import recipient2 from '@assets/uae-banners/banner3/recipient2.jpg';
+import recipient3 from '@assets/uae-banners/banner3/recipient3.jpg';
+import recipient4 from '@assets/uae-banners/banner3/recipient4.jpg';
 ---
 
 <section class='relative w-full min-h-[600px] overflow-hidden'>
@@ -33,7 +43,9 @@ import Plus from '@assets/uae-banners/banner3/plus.svg';
   </div>
 
   <!-- Split UI Container -->
-  <div class='overflow-hidden bg-white rounded-xl p-4 pt-[3.5px] absolute left-28 top-20'>
+  <div
+    class='overflow-hidden bg-white rounded-xl p-4 pt-[3.5px] absolute left-28 top-20 scale-75 lg:scale-100 3xl:scale-125'
+  >
     <div class='w-5 h-[3.40px] bg-stone-300 rounded mb-2.5 mx-auto'></div>
     <h3 class='text-black text-sm font-semibold font-["Hero_New"] leading-none pb-2.5'>Split</h3>
     <div class='flex flex-col gap-y-1'>
@@ -62,10 +74,72 @@ import Plus from '@assets/uae-banners/banner3/plus.svg';
     </div>
   </div>
 
-  <div class='pl-3.5 pr-5 py-3.5 bg-white rounded-2xl inline-flex flex-col justify-start items-start gap-3'>
-    <div class='flex flex-col justify-center items-center gap-3.5'>
-      <div class='inline-flex items-center justify-between'>
-        <div class='text-neutral-900 text-base font-semibold font-[New_Hero] leading-snug'>150+ Countries</div>
+  <div
+    class='scale-75 lg:scale-100 3xl:scale-125 pl-3.5 pr-5 py-3.5 bg-white rounded-2xl inline-flex flex-col justify-start items-start gap-3 absolute left-16 bottom-24'
+  >
+    <div class='flex flex-col justify-center items-start gap-3.5'>
+      <div class='inline-flex items-center'>
+        <div class='text-neutral-900 text-base font-semibold font-[Hero_New] leading-snug'>150+ Countries</div>
+      </div>
+
+      <div class='inline-flex justify-start items-center gap-3.5'>
+        <UAEIcon class='w-7 h-7 rounded-2xl' />
+        <INFlag class='w-7 h-7 rounded-2xl' />
+        <PAKFlag class='w-7 h-7 rounded-2xl' />
+        <AUSFlag class='w-7 h-7 rounded-2xl' />
+        <SAFlag class='w-7 h-7 rounded-2xl' />
+        <MALFlag class='w-7 h-7 rounded-2xl' />
+
+        <div
+          class='w-7 h-7 bg-zinc-300/25 rounded-full outline-[1.19px] outline-offset-[-1.19px] outline-neutral-300/50 inline-flex justify-center items-center'
+        >
+          <Plus />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div
+    class='scale-75 lg:scale-100 3xl:scale-125 absolute p-3.5 bg-white rounded-2xl inline-flex flex-col justify-start items-start gap-2 right-16 top-[40%]'
+  >
+    <div class='inline-flex flex-col items-start justify-start gap-4'>
+      <div class='inline-flex items-center self-stretch justify-between'>
+        <div class='justify-start text-black text-sm font-semibold font-[Hero_New] leading-tight'>
+          Select recipients
+        </div>
+        <div
+          class='px-1.5 py-1 rounded-[87.50px] outline-1 outline-offset-[-0.88px] outline-black flex justify-start items-center gap-1'
+        >
+          <div class='px-1.5 py-1 flex justify-start items-center gap-1'>
+            <AddUser class='w-3.5 h-3.5' />
+            <div class='text-center justify-start text-Dark text-xs font-semibold font-[Hero_New] leading-none'>
+              Add New
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class='self-stretch inline-flex flex-col justify-start items-start gap-3.5'>
+        <div class='justify-start text-neutral-900 text-sm font-medium font-[Hero_New] leading-tight'>Recent</div>
+
+        <div class='inline-flex items-center justify-start gap-4'>
+          <div class='inline-flex flex-col justify-start items-center gap-1.5'>
+            <Image class='w-10 h-10 rounded-3xl outline-2 outline-neutral-900' src={recipient1} alt='Recipient 1' />
+            <div class='justify-start text-neutral-900 text-xs font-medium font-[Hero_New] leading-3'>Arya Kapoor</div>
+          </div>
+          <div class='inline-flex flex-col justify-start items-center gap-1.5'>
+            <Image class='w-10 h-10 rounded-3xl outline-2 outline-neutral-900' src={recipient2} alt='Recipient 2' />
+            <div class='justify-start text-neutral-900 text-xs font-medium font-[Hero_New] leading-3'>Dhruv Raj</div>
+          </div>
+          <div class='inline-flex flex-col justify-start items-center gap-1.5'>
+            <Image class='w-10 h-10 rounded-3xl outline-2 outline-neutral-900' src={recipient3} alt='Recipient 3' />
+            <div class='justify-start text-neutral-900 text-xs font-medium font-[Hero_New] leading-3'>Rahul Mehta</div>
+          </div>
+          <div class='inline-flex flex-col justify-start items-center gap-1.5'>
+            <Image class='w-10 h-10 rounded-3xl outline-2 outline-neutral-900' src={recipient4} alt='Recipient 4' />
+            <div class='justify-start text-neutral-900 text-xs font-medium font-[Hero_New] leading-3'>Ravi Sinha</div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
