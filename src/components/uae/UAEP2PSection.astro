@@ -9,19 +9,29 @@ import womanImg from '../../assets/uae/woman.jpg';
 const { p2p } = Astro.locals.translations;
 ---
 
-<section class="w-full py-20 bg-[#F3F5F6] flex justify-center px-4">
-  <div class="flex flex-col lg:flex-row items-center gap-14 max-w-6xl w-full">
+<section class='flex justify-center w-full px-4 sm:px-6 md:px-8 lg:px-12 xl:px-[170px] py-10 sm:py-16 lg:py-20 xl:py-[114px]'>
+  <div class='flex flex-col-reverse items-center w-full max-w-6xl xl:flex-row gap-8 xl:gap-15'>
     <!-- Copy -->
-    <div class="flex-1 flex flex-col gap-9 max-w-md text-left">
-      <h2 class="text-3xl sm:text-4xl font-extrabold leading-tight text-gray-900">{p2p?.heading || "Peer-to-Peer Payments"}</h2>
-      <p class="text-xl leading-loose text-gray-900/90">
-        {p2p?.description || "Instantly send money to friends using just their mobile numberfast, secure, and hassle-free!"}
+    <div class='flex flex-col flex-1 w-full xl:max-w-md text-center xl:text-left gap-6 xl:gap-9'>
+      <h2 class='text-gray-900 text-2xl sm:text-3xl lg:text-3xl xl:text-4xl font-extrabold font-["Hero_New"]'>
+        {p2p?.heading || 'Peer-to-Peer Payments'}
+      </h2>
+      <p class='text-gray-900 text-base sm:text-lg lg:text-lg xl:text-xl font-normal font-["DM_Sans"]'>
+        {
+          p2p?.description ||
+            'Instantly send money to friends using just their mobile number- fast, secure, and hassle-free!'
+        }
       </p>
     </div>
 
     <!-- Image -->
-    <div class="flex-1 flex justify-center">
-      <Image src={womanImg} alt="Happy woman sending money with Jingle Pay" class="w-full max-w-md rounded-[44px] border border-gray-100 object-cover" loading="lazy" />
+    <div class='flex justify-center flex-1 w-full'>
+      <Image
+        src={womanImg}
+        alt='Happy woman sending money with Jingle Pay'
+        class='w-full max-w-[320px] sm:max-w-[400px] md:min-w-[460px] aspect-[585/508] rounded-[24px] sm:rounded-[44px] border border-gray-100 object-cover'
+        loading='lazy'
+      />
     </div>
   </div>
 </section>
