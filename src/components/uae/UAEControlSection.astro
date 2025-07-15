@@ -5,68 +5,60 @@
  * Background phone image assets live in src/assets/uae/phone.png
  */
 import { Image } from 'astro:assets';
-import { Fragment } from 'astro/jsx-runtime';
 import phoneMock from '../../assets/uae/phone.png';
 
-const { control } = Astro.locals.translations;
+// Import control localization directly for UAE in English
+import controlLocale from '../../constants/locale/are/en/control.js';
+
+// Define control type to help TypeScript recognize the structure
+type ControlLocale = {
+  heading: {
+    prefix: string;
+    highlight: string;
+    suffix: string;
+  };
+  description: {
+    part1: string;
+    part2: string;
+  };
+  benefits: {
+    title: string;
+    items: string[];
+  };
+};
+
+// Use either from translations (if exists) or from direct import as fallback
+const control = (Astro.locals.translations?.control || controlLocale) as ControlLocale;
 ---
 
-<section class='flex flex-col items-center gap-12 py-16 md:flex-row md:justify-center md:gap-16'>
-  <!-- Left: device mock-ups -->
+<div
+  class='flex flex-col xl:flex-row items-center xl:items-start self-stretch justify-center xl:justify-between gap-8 md:gap-10 lg:gap-12 xl:gap-16 2xl:gap-20 mt-8 md:mt-16 lg:mt-20 xl:mt-[108px] mx-4 md:mx-8 lg:mx-10 xl:mx-14 2xl:mx-20 3xl:mx-24'
+>
   <div
-    class='relative bg-slate-100 rounded-2xl w-[300px] sm:w-[380px] md:w-[420px] lg:w-[500px] xl:w-[587px] aspect-[587/553] flex-shrink-0'
+    class='relative bg-slate-100 rounded-[20px] w-full max-w-[450px] md:max-w-[500px] lg:max-w-[600px] xl:w-[500px] 2xl:w-[587px] 3xl:w-[650px] h-auto md:h-[420px] lg:h-[480px] xl:h-[520px] 2xl:h-[553px] 3xl:h-[600px] overflow-hidden flex items-center justify-center px-4 md:px-12 lg:px-16 xl:px-24 2xl:px-36 3xl:px-40 pt-4 md:pt-6 lg:pt-8 xl:pt-10 2xl:pt-[42px] 3xl:pt-14 flex-shrink-0'
   >
-    <!-- Outer phone silhouette for subtle depth -->
-    <div class='absolute inset-0 flex items-center justify-center'>
-      <Image src={phoneMock} alt='Jingle Pay app on phone' class='w-[75%] md:w-[68%] max-w-none' loading='lazy' />
+    <Image src={phoneMock} alt='Jingle Pay app on phone' loading='lazy' class='object-contain max-w-full max-h-full' />
+  </div>
+  <div class='inline-flex flex-col items-start justify-center gap-5'>
+    <div class='self-stretch justify-center'>
+      <span class='text-zinc-800 text-5xl font-semibold font-[Hero_New] leading-[57.60px]'>{control.heading.prefix} </span><span
+        class='text-violet-500 text-5xl font-semibold font-[Hero_New] leading-[57.60px]'>{control.heading.highlight}</span
+      ><span class='text-zinc-800 text-5xl font-semibold font-[Hero_New] leading-[57.60px]'>
+        {control.heading.suffix}</span
+      >
+    </div>
+    <div class='justify-start text-neutral-500 text-xl font-normal font-[Hero_New] leading-7'>
+      {control.description.part1}<br /><br />{control.description.part2}
+    </div>
+    <div class='justify-start text-black text-xl font-semibold font-[Hero_New] leading-7'>{control.benefits.title}</div>
+    <div class='self-stretch justify-start'>
+      <ul class='list-disc pl-5 space-y-3'>
+        {control.benefits.items.map((item: string) => (
+          <li class='text-neutral-500 text-xl font-medium font-[Hero_New] leading-10'>
+            <span set:html={item} />
+          </li>
+        ))}
+      </ul>
     </div>
   </div>
-
-  <!-- Right: headline & copy -->
-  <div class='flex flex-col max-w-xl gap-5 text-left'>
-    <h2 class='text-3xl font-semibold leading-tight sm:text-4xl lg:text-5xl text-zinc-800'>
-      {control?.heading?.prefix || 'Take'}
-      <span class='text-violet-500'>{control?.heading?.highlight || 'full control'}</span>
-      {control?.heading?.suffix || 'of your finances with Jingle Pay'}
-    </h2>
-
-    <p class='text-lg leading-relaxed text-neutral-500 sm:text-xl'>
-      {
-        control?.description?.part1 ||
-          'Discover the future of banking with our innovative app—crafted specifically for those seeking affordable, transparent, and cutting-edge financial solutions.'
-      }<br /><br />
-      {
-        control?.description?.part2 ||
-          'Transform your financial journey with Jingle Pay! Experience the most effortless and rewarding way to manage your money – sign up today and unlock exclusive benefits!'
-      }
-    </p>
-
-    <p class='text-lg font-semibold text-black sm:text-xl'>{control?.benefits?.title || "What's in it for you?"}</p>
-
-    <ul class='space-y-2 text-lg list-disc list-inside text-neutral-500 sm:text-xl'>
-      <li>
-        {
-          control?.benefits?.items?.[0] ? (
-            <Fragment set:html={control.benefits.items[0]} />
-          ) : (
-            <Fragment>
-              <span class='font-bold'>Send money internationally or locally with Zero Fee</span>
-            </Fragment>
-          )
-        }
-      </li>
-      <li>{control?.benefits?.items?.[1] || 'Request and receive money directly to your wallet'}</li>
-      <li>
-        {
-          control?.benefits?.items?.[2] ? (
-            <Fragment set:html={control.benefits.items[2]} />
-          ) : (
-            <Fragment>
-              <span class='font-bold'>Earn cashback</span> every time you use your Platinum MasterCard
-            </Fragment>
-          )
-        }
-      </li>
-    </ul>
-  </div>
-</section>
+</div>

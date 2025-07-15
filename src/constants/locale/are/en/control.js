@@ -11,9 +11,9 @@ export default {
   benefits: {
     title: 'What\'s in it for you?',
     items: [
-      '<span class="font-bold">Send money internationally or locally with Zero Fee</span>',
-      'Request and receive money directly to your wallet',
-      '<span class="font-bold">Earn cashback</span> every time you use your Platinum MasterCard'
+      'Send money internationally or locally with <span class="font-bold">Zero Fee</span>',
+      '<span class="font-bold">Request and receive money</span> directly to your wallet',
+      '<span class="font-bold">Earn cashback</span> every time you use your <span class="font-bold">Platinum MasterCard</span>'
     ]
   }
 };
