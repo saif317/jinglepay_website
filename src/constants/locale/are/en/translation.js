@@ -7,6 +7,7 @@ import cta from './cta.js';
 import contact from './contact/index.js';
 import company from './company/company.js';
 import career from './career.js';
+import infoCards from './infoCards.js';
 
 export default {
   title: 'Jingle Pay UAE - Simplifying All Money!',
@@ -26,4 +27,5 @@ export default {
   contact,
   company,
   career,
+  infoCards,
 };

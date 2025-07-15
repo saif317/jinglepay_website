@@ -1,6 +1,6 @@
 export default {
   card1: {
-    title: "Experience the world's 1ˢᵗ remittance marketplace",
+    title: "Experience the world's 1<sup>st</sup> remittance marketplace",
     content: {
       line1: "Send money to 160+ countries in 99+ currencies with zero fees.",
       line2: "Compare rates, track transfers in real time, and choose your payout method—bank, card, wallet, or cash pickup."
