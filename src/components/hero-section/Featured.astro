@@ -224,13 +224,29 @@ const logos = [
 ];
 
 const { translations = {} } = Astro.locals;
+const isUAE = Astro.url.pathname.startsWith('/ae/');
 ---
 
 <section
-  class='flex flex-col gap-y-4 items-center px-4 pt-12 pb-16 mx-auto w-full text-center md:pt-16 bg-[#F6F6F6]'
+  class='relative flex flex-col gap-y-4 items-center px-4 pt-12 pb-16 mx-auto w-full text-center md:pt-16 bg-[#F6F6F6]'
   id='featured-section'
 >
-  <h2 class='text-lg lg:text-xl'>{translations.featuredIn}</h2>
+  {isUAE && (
+    <>
+      <div
+        class='absolute top-[1.5rem] right-[-3.5rem] w-40 h-40 rounded-full opacity-40 bg-gradient-to-r from-sky-500/40 to-green-300/40 blur-xl'
+      >
+      </div>
+      <div
+        class='absolute bottom-[1.5rem] left-[-1.5rem] w-32 h-32 rounded-full opacity-20 bg-gradient-to-r from-sky-500 to-violet-500 blur-xl'
+      >
+      </div>
+    </>
+  )}
+
+  <h2 class='text-gray-900 text-xl lg:text-2xl font-extrabold font-[Hero_New] leading-7'>
+    {translations.featuredIn}
+  </h2>
 
   <div class='w-full logo-carousel-container' style='direction: ltr;' id='logoCarouselContainer'>
     <div class='flex logo-carousel-track' id='logoCarouselTrack'>
@@ -256,8 +272,8 @@ const { translations = {} } = Astro.locals;
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-    const container = document.getElementById('logoCarouselContainer');
-    const track = document.getElementById('logoCarouselTrack');
+    const container = document.getElementById('logoCarouselContainer') as HTMLElement | null;
+    const track = document.getElementById('logoCarouselTrack') as HTMLElement | null;
 
     if (!container || !track) {
       console.error('Carousel container or track not found!');
@@ -282,10 +298,12 @@ const { translations = {} } = Astro.locals;
     // Calculate the width of a single set of original logos
     originalItems.forEach((item) => {
       const style = window.getComputedStyle(item);
-      singleSetWidth += item.offsetWidth + parseFloat(style.marginLeft) + parseFloat(style.marginRight);
+      singleSetWidth += (item as HTMLElement).offsetWidth + parseFloat(style.marginLeft) + parseFloat(style.marginRight);
     });
 
     function cloneAndArrangeLogos() {
+      if (!track) return;
+      
       // Clear existing clones if any (e.g., on resize, though not handled here yet)
       const clones = track.querySelectorAll('.clone');
       clones.forEach((clone) => clone.remove());
@@ -296,12 +314,12 @@ const { translations = {} } = Astro.locals;
       // A common strategy is to ensure the track width is at least singleSetWidth + container.offsetWidth
       // Or simply, clone the set once or twice.
       let currentTrackWidth = singleSetWidth;
-      // Ensure singleSetWidth is calculated and positive before cloning
-      if (singleSetWidth > 0 && container.offsetWidth > 0) {
+      // Ensure container exists, singleSetWidth is calculated and positive before cloning
+      if (singleSetWidth > 0 && container && container.offsetWidth > 0) {
         while (currentTrackWidth < singleSetWidth + container.offsetWidth * 1.5) {
           // Ensure enough clones
           originalItems.forEach((item) => {
-            const clone = item.cloneNode(true);
+            const clone = item.cloneNode(true) as HTMLElement;
             clone.classList.add('clone');
             track.appendChild(clone);
             const style = window.getComputedStyle(clone);
@@ -312,7 +330,7 @@ const { translations = {} } = Astro.locals;
     }
 
     function animate() {
-      if (!isPaused && !isDragging) {
+      if (!isPaused && !isDragging && track) {
         currentX -= scrollSpeedPxPerFrame;
         // Only loop if singleSetWidth is positive (i.e., logos are present and measured)
         if (singleSetWidth > 0 && Math.abs(currentX) >= singleSetWidth) {
@@ -324,23 +342,22 @@ const { translations = {} } = Astro.locals;
     }
 
     // --- Event Listeners for Pause/Resume (Hover & Tap) ---
-    container.addEventListener('mouseenter', () => {
-      isPaused = true;
-    });
+    if (container) {
+      container.addEventListener('mouseenter', () => {
+        isPaused = true;
+      });
 
-    container.addEventListener('mouseleave', () => {
-      // If not currently dragging (e.g., mouse released outside), then resume autoplay
-      if (!isDragging) {
+      container.addEventListener('mouseleave', () => {
         isPaused = false;
-      }
-    });
+      });
+    }
 
     // `touchstart` on container is now primarily for initiating drag,
     // immediate pause is handled by onDragStart setting isPaused = true.
     // A simple tap (touchstart then touchend quickly without move) will also pause then resume.
 
     // `touchend` on container - if a drag didn't occur, this signals end of a tap
-    container.addEventListener('touchend', () => {
+    container.addEventListener('touchend', (event) => {
       // If isDragging is false, it means this touchend is not the end of a drag,
       // but potentially the end of a 'tap'. If it was a tap, and the finger is now up, we can allow autoplay to resume.
       if (!isDragging) {
@@ -350,28 +367,32 @@ const { translations = {} } = Astro.locals;
     });
 
     // --- Event Listeners for Drag/Swipe ---
-    function getEventX(event) {
-      return event.touches ? event.touches[0].clientX : event.clientX;
+    function getEventX(event: MouseEvent | TouchEvent): number {
+      return 'touches' in event ? event.touches[0].clientX : (event as MouseEvent).clientX;
     }
 
-    function onDragStart(event) {
+    function onDragStart(event: MouseEvent | TouchEvent) {
       isPaused = true; // Pause autoplay during drag
       isDragging = true;
       wasDragged = false; // Reset drag state when starting a new drag
       dragStartX = getEventX(event);
       dragInitialTrackX = currentX; // Use currentX as the source of truth for initial track position
 
-      track.style.transition = 'none'; // No CSS transitions during drag
-      container.classList.add('is-dragging');
-      container.style.cursor = 'grabbing';
+      if (track) {
+        track.style.transition = 'none'; // No CSS transitions during drag
+      }
+      if (container) {
+        container.classList.add('is-dragging');
+        container.style.cursor = 'grabbing';
+      }
       // Prevent default for touchstart to effectively override tap-pause if drag starts
-      if (event.type === 'touchstart') {
+      if (event.type === 'touchstart' && 'touches' in event) {
         // No explicit preventDefault here to allow link clicks if not dragging
         // but onDragMove will preventDefault if movement occurs
       }
     }
 
-    function onDragMove(event) {
+    function onDragMove(event: MouseEvent | TouchEvent) {
       if (!isDragging) return;
 
       const currentEventX = getEventX(event);
@@ -388,10 +409,12 @@ const { translations = {} } = Astro.locals;
       }
 
       currentX = dragInitialTrackX + deltaX;
-      track.style.transform = `translateX(${currentX}px)`;
+      if (track) {
+        track.style.transform = `translateX(${currentX}px)`;
+      }
     }
 
-    function onDragEnd(event) {
+    function onDragEnd(event: MouseEvent | TouchEvent) {
       // event can be mouseup or touchend
       if (!isDragging) return; // Only process if a drag was actually happening
 
@@ -399,9 +422,13 @@ const { translations = {} } = Astro.locals;
       const dragOccurred = wasDragged;
 
       isDragging = false;
-      container.classList.remove('is-dragging');
-      container.style.cursor = 'grab';
-      track.style.transition = ''; // Restore transitions if any (not strictly needed for RAF)
+      if (container) {
+        container.classList.remove('is-dragging');
+        container.style.cursor = 'grab';
+      }
+      if (track) {
+        track.style.transition = ''; // Restore transitions if any (not strictly needed for RAF)
+      }
 
       // Normalize currentX to keep it within one scroll cycle for loop consistency
       if (singleSetWidth > 0) {
@@ -410,15 +437,17 @@ const { translations = {} } = Astro.locals;
           currentX -= singleSetWidth;
         }
       }
-      track.style.transform = `translateX(${currentX}px)`; // Snap to normalized position
+      if (track) {
+        track.style.transform = `translateX(${currentX}px)`; // Snap to normalized position
+      }
 
       // Determine if autoplay should resume based on mouse position or if it was a touch end
       const eventType = event.type;
-      if (eventType === 'mouseup') {
+      if (eventType === 'mouseup' && container) {
         // Check if mouse is still over the container
         const rect = container.getBoundingClientRect();
-        const clientX = event.clientX;
-        const clientY = event.clientY;
+        const clientX = 'clientX' in event ? event.clientX : 0;
+        const clientY = 'clientY' in event ? event.clientY : 0;
         if (clientX >= rect.left && clientX <= rect.right && clientY >= rect.top && clientY <= rect.bottom) {
           // Mouse is still inside, isPaused remains true (due to mouseenter)
           // If user wants it to resume, they need to mouseleave and re-enter or just mouseleave.
@@ -432,32 +461,34 @@ const { translations = {} } = Astro.locals;
       }
     }
 
-    container.addEventListener('mousedown', onDragStart);
-    // For touchstart on container, we want to allow link clicks if no drag occurs.
-    // The drag is initiated by onDragStart. If it was a tap, touchend on container handles resume.
-    container.addEventListener('touchstart', onDragStart, { passive: false }); // passive: false allows preventDefault in onDragMove
+    if (container) {
+      container.addEventListener('mousedown', onDragStart);
+      // For touchstart on container, we want to allow link clicks if no drag occurs.
+      // The drag is initiated by onDragStart. If it was a tap, touchend on container handles resume.
+      container.addEventListener('touchstart', onDragStart, { passive: false }); // passive: false allows preventDefault in onDragMove
 
+      // Prevent link clicks after drag
+      container.addEventListener(
+        'click',
+        function (event: Event) {
+          if (wasDragged) {
+            event.preventDefault();
+            event.stopPropagation();
+            wasDragged = false; // Reset for the next interaction
+          }
+        },
+        true
+      ); // Use capture phase to intercept the event before it bubbles
+
+      // Initial cursor style
+      container.style.cursor = 'grab';
+    }
+    
     document.addEventListener('mousemove', onDragMove);
     document.addEventListener('touchmove', onDragMove, { passive: false });
 
     document.addEventListener('mouseup', onDragEnd);
     document.addEventListener('touchend', onDragEnd);
-
-    // Prevent link clicks after drag
-    container.addEventListener(
-      'click',
-      function (event) {
-        if (wasDragged) {
-          event.preventDefault();
-          event.stopPropagation();
-          wasDragged = false; // Reset for the next interaction
-        }
-      },
-      true
-    ); // Use capture phase to intercept the event before it bubbles
-
-    // Initial cursor style
-    container.style.cursor = 'grab';
 
     // --- Initial Setup & Start ---
     cloneAndArrangeLogos();
