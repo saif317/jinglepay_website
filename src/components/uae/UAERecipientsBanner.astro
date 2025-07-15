@@ -8,7 +8,13 @@
  * Uses placeholder avatars / icons; replace as needed.
  */
 import { Image } from 'astro:assets';
-import bgImg from '../../assets/uae-banners/banner3/7ba172c6d90b5d81fb38678d630cab3650375c52.jpg';
+import bgImg from '@assets/uae-banners/banner3/7ba172c6d90b5d81fb38678d630cab3650375c52.jpg';
+import UAEIcon from '@assets/uae-banners/banner3/uae.svg';
+import person1 from '@assets/uae-banners/banner3/person1.png';
+import person2 from '@assets/uae-banners/banner3/person2.jpg';
+import person3 from '@assets/uae-banners/banner3/person3.jpg';
+import person4 from '@assets/uae-banners/banner3/person4.jpg';
+import Plus from '@assets/uae-banners/banner3/plus.svg';
 ---
 
 <section class='relative w-full min-h-[600px] overflow-hidden'>
@@ -22,83 +28,45 @@ import bgImg from '../../assets/uae-banners/banner3/7ba172c6d90b5d81fb38678d630c
 
   <!-- Subtle radial light overlay -->
   <div
-    class='absolute inset-0 z-10 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.12)_0%,rgba(255,255,255,0)_60%)]'
+    class='absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.12)_0%,rgba(255,255,255,0)_60%)]'
   >
   </div>
 
-  <!-- Content Container (flex assists placement) -->
-  <div class='relative z-20 w-full h-full'>
-    <!-- Split card -->
-    <div class='absolute w-48 px-4 py-3 text-xs bg-white shadow-md top-16 left-24 rounded-2xl'>
-      <span class='block w-12 h-0.5 bg-gray-300 rounded mx-auto mb-2'></span>
-      <h3 class='mb-1 text-sm font-semibold text-gray-900'>Split</h3>
-      <label class='block text-[10px] font-semibold mb-1 text-gray-800'>Amount</label>
-      <div class='flex items-center justify-between border rounded-lg px-2 py-1 mb-2 text-[11px]'>
-        <span>1,000</span>
-        <span class='flex items-center gap-1'>🇦🇪 <span class='text-[10px]'>AED</span></span>
-      </div>
-      <div class='flex items-center gap-1 overflow-hidden'>
-        <!-- Placeholder avatar circles -->
-        {[...Array(4)].map((_, i) => <div class='w-6 h-6 bg-gray-300 rounded-full' aria-hidden='true' />)}
-        <div
-          class='flex items-center justify-center w-6 h-6 text-sm font-medium text-gray-600 bg-gray-200 rounded-full'
-        >
-          +
+  <!-- Split UI Container -->
+  <div class='overflow-hidden bg-white rounded-xl p-4 pt-[3.5px] absolute left-28 top-20'>
+    <div class='w-5 h-[3.40px] bg-stone-300 rounded mb-2.5 mx-auto'></div>
+    <h3 class='text-black text-sm font-semibold font-["Hero_New"] leading-none pb-2.5'>Split</h3>
+    <div class='flex flex-col gap-y-1'>
+      <span class="text-[8px] font-semibold font-['Inter'] leading-[10.40px]">Amount</span>
+
+      <div class='bg-white flex rounded outline-[0.22px] outline-black/50 py-1.5 px-2 gap-x-20 mb-4'>
+        <span class="text-xs font-medium font-['Inter'] leading-none">1,000</span>
+        <div class='inline-flex justify-start items-center gap-[2.69px]'>
+          <UAEIcon class='w-3.5 h-3.5' />
+          <span class="text-black text-xs font-normal font-['Inter'] leading-3">AED</span>
         </div>
       </div>
     </div>
 
-    <!-- 150+ Countries pill -->
-    <div class='absolute flex flex-col gap-3 px-6 py-4 text-xs bg-white shadow-md bottom-20 left-24 rounded-2xl'>
-      <span class='text-sm font-semibold text-gray-900'>150+ Countries</span>
-      <div class='flex items-center gap-2'>
-        <!-- Flag placeholders -->
-        <span class='text-2xl'>🇦🇪</span>
-        <span class='text-2xl'>🇮🇳</span>
-        <span class='text-2xl'>🇵🇰</span>
-        <span class='text-2xl'>🇵🇭</span>
-        <div
-          class='flex items-center justify-center w-6 h-6 text-sm font-medium text-gray-600 bg-gray-200 rounded-full'
-        >
-          +
-        </div>
+    <div class='inline-flex items-center justify-center gap-x-2'>
+      <Image src={person1} alt='Person 1' class='w-7 h-7 rounded-2xl' />
+      <Image src={person2} alt='Person 2' class='w-7 h-7 rounded-2xl' />
+      <Image src={person3} alt='Person 3' class='w-7 h-7 rounded-2xl' />
+      <Image src={person4} alt='Person 4' class='w-7 h-7 rounded-2xl' />
+
+      <div
+        class='w-7 h-7 bg-zinc-300/25 rounded-full outline-[1.19px] outline-offset-[-1.19px] outline-neutral-300/50 inline-flex justify-center items-center'
+      >
+        <Plus />
       </div>
     </div>
+  </div>
 
-    <!-- Select Recipients card -->
-    <div class='absolute p-4 text-xs bg-white shadow-md top-1/3 right-24 rounded-2xl w-80'>
-      <div class='flex items-center justify-between mb-4'>
-        <h3 class='text-sm font-semibold text-gray-900'>Select recipients</h3>
-        <button class='flex items-center gap-1 border border-gray-900 rounded-full px-2 py-1 text-[11px] font-semibold'>
-          <span>+</span>
-          <span>Add New</span>
-        </button>
-      </div>
-      <p class='mb-2 text-sm font-medium text-gray-900'>Recent</p>
-      <div class='flex gap-4'>
-        {
-          ['Arya', 'Dhruv', 'Rahul', 'Ravi'].map((name) => (
-            <div class='flex flex-col items-center w-16 gap-1' aria-label={`Recent recipient ${name}`}>
-              <div class='w-10 h-10 bg-gray-300 rounded-full ring-2 ring-gray-900' />
-              <span class='text-[10px] text-gray-900 font-medium truncate max-w-full'>{name}</span>
-            </div>
-          ))
-        }
+  <div class='pl-3.5 pr-5 py-3.5 bg-white rounded-2xl inline-flex flex-col justify-start items-start gap-3'>
+    <div class='flex flex-col justify-center items-center gap-3.5'>
+      <div class='inline-flex items-center justify-between'>
+        <div class='text-neutral-900 text-base font-semibold font-[New_Hero] leading-snug'>150+ Countries</div>
       </div>
     </div>
-
-    <!-- Central animated dollar icon (simple SVG) -->
-    <svg
-      class='absolute inset-0 w-40 h-40 m-auto text-cyan-400/80'
-      viewBox='0 0 24 24'
-      fill='none'
-      stroke='currentColor'
-      stroke-width='1.5'
-    >
-      <path
-        stroke-linecap='round'
-        stroke-linejoin='round'
-        d='M12 3v2m0 14v2m6-8H6m12 0a6 6 0 00-6-6H9a3 3 0 100 6h6a3 3 0 110 6H6'></path>
-    </svg>
   </div>
 </section>
