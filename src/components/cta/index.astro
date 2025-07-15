@@ -4,12 +4,16 @@ import QRModalTriggerer from '@components/common/QRModalTriggerer.astro';
 
 const {
   translations: { cta = {} },
+  country, // Get the current country from Astro.locals
 } = Astro.locals;
+
+// Check if we're on the UAE site
+const isUAE = country === 'are';
 ---
 
 <div class='my-[40px] lg:mt-[100px] lg:mb-[134px] px-4 sm:px-8 md:px-12 lg:px-16'>
   <div
-    class='text-white pt-[32px] pb-[40px] px-[12px] gap-y-[40px] flex flex-col items-center lg:gap-y-[45px] lg:pt-[47px] lg:pb-[33px] lg:px-[87px] bg-indigo-950 rounded-xl'
+    class={`text-white pt-[32px] pb-[40px] px-[12px] gap-y-[40px] flex flex-col items-center lg:gap-y-[45px] lg:pt-[47px] lg:pb-[33px] lg:px-[87px] ${isUAE ? 'bg-neutral-800' : 'bg-indigo-950'} rounded-xl`}
   >
     <div class='flex flex-col items-center text-center gap-y-4'>
       <span class='text-lg font-bold lg:text-2xl xl:text-3xl'>{cta.title}</span>
