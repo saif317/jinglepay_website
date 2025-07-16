@@ -18,6 +18,7 @@ const clientTranslations = {
   validationNameFormat: contact.validationNameFormat || 'Only letters and spaces are allowed.',
   validationNameLength: contact.validationNameLength || 'Name must be at least 2 characters.',
   validationPhonePakistan: contact.validationPhonePakistan || 'Please enter a valid Pakistani phone number (e.g., +923XXXXXXXXX or 03XXXXXXXXX).',
+  validationPhoneUAE: contact.validationPhoneUAE || 'Please enter a valid UAE phone number (e.g., +9715XXXXXXXX or 05XXXXXXXX).',
   submitting: contact.submitting || 'Submitting...',
   submitButton: contact.submitButton || 'Submit',
   errorOops: contact.errorOops || 'Oops! Something went wrong. Please try again later.',
@@ -274,6 +275,10 @@ const clientTranslations = {
   const lastNameInput = document.getElementById('last-name');
   const emailInput = document.getElementById('email');
   const phoneInput = document.getElementById('phone');
+  const region = window.location.pathname.split('/')[1];
+  if (phoneInput) {
+    phoneInput.placeholder = region === 'pak' ? '+92 311 2222222' : '+971 55 1234567';
+  }
   const reasonHiddenInput = document.getElementById('reason');
   const messageTextarea = document.getElementById('message');
   const reasonButton = document.getElementById('reason-button');
@@ -311,11 +316,14 @@ const clientTranslations = {
     email: (value) => {
       return /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i.test(value);
     },
-    // Check if phone is valid Pakistani format (+923XXXXXXXXX or 03XXXXXXXXX)
+    // Check if phone is valid format depending on region (Pakistan or UAE)
     phone: (value) => {
       if (value.trim() === '') return true; // Phone is optional
       const cleanNumber = value.replace(/\s+/g, '');
-      return /^(\+923|03)\d{9}$/.test(cleanNumber);
+      if (region === 'pak') {
+        return /^(\+923|03)\d{9}$/.test(cleanNumber);
+      }
+      return /^(\+971|0)5\d{8}$/.test(cleanNumber);
     },
     // Check if text is at least minLength characters
     minLength: (value, minLength) => {
@@ -381,7 +389,7 @@ const clientTranslations = {
     // Pakistani phone number validation
     else if (field === 'phone' && value.trim() && !validators.phone(value)) {
       isValid = false;
-      errorMessage = clientTranslations.validationPhonePakistan;
+      errorMessage = region === 'pak' ? clientTranslations.validationPhonePakistan : clientTranslations.validationPhoneUAE;
     }
     // Message minimum length validation (10 characters)
     else if (field === 'message' && !validators.minLength(value, 10)) {
