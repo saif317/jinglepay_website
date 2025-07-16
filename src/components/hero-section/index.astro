@@ -16,16 +16,24 @@ const {
       class='flex flex-col items-center justify-center w-full gap-4 sm:gap-6 lg:flex-row lg:items-stretch lg:max-w-[600px]'
     >
       <div class='hidden lg:block'>
-        <!-- <QRDownload class='w-full lg:w-auto' /> -->
+        <QRDownload class='w-full lg:w-auto' />
       </div>
       <div class='block lg:hidden'>
-        <a
+        <button
           id='cta-download-sm'
-          href='#download'
-          class='block px-8 py-4 text-base font-bold text-white transition-colors duration-300 bg-black lg:hidden rounded-[14px] lg:text-base hover:bg-gray-600'
-          >{hero.downloadApp}</a
-        >
+          type='button'
+          onclick='triggerAppRedirect(event)'
+          class='block w-full px-8 py-4 text-base font-bold text-white transition-colors duration-300 bg-black rounded-[14px] lg:text-base hover:bg-gray-600'
+        >{hero.downloadApp}</button>
       </div>
     </div>
   </div>
 </section>
+
+<!-- Load redirect utility and bind globally -->
+<script type="module">
+  import { triggerAppRedirect as tar } from '/src/util/handleAppRedirect.ts';
+  window.triggerAppRedirect = tar;
+</script>
+
+

@@ -7,6 +7,7 @@ import cta from './cta.js';
 import contact from './contact/index.js';
 import company from './company/company.js';
 import career from './career.js';
+import qrModal from './qrModal.js';
 import infoCards from './infoCards.js';
 
 export default {
@@ -27,5 +28,6 @@ export default {
   contact,
   company,
   career,
+  qrModal,
   infoCards,
 };

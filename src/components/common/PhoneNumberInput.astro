@@ -215,7 +215,7 @@ const currentCountry = countryDetails[countryParam] || countryDetails['ARE'];
         }
       }
     } else {
-      // Show specific error message for Pakistan numbers
+      // Show specific error message based on country code
       if (countryParam === 'PAK') {
         if (!phoneNumber) {
           showToast('Please enter a mobile number', 'error');
@@ -225,6 +225,14 @@ const currentCountry = countryDetails[countryParam] || countryDetails['ARE'];
           showToast('Pakistan mobile number must start with 3', 'error');
         } else {
           showToast('Please enter a valid mobile number', 'error');
+        }
+      } else if (countryParam === 'ARE') {
+        if (!phoneNumber) {
+          showToast('Please enter a mobile number', 'error');
+        } else if (phoneNumber.length !== 9) {
+          showToast('UAE mobile number must be 9 digits long', 'error');
+        } else {
+          showToast('Please enter a valid UAE mobile number', 'error');
         }
       } else {
         showToast(qrModal.hint || 'Please enter a valid mobile number', 'error');

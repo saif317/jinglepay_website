@@ -47,3 +47,14 @@ export function triggerAppRedirect(event: MouseEvent): void {
   }
   // If os is 'other', do nothing and let the default link behavior occur.
 }
+
+// Make available globally in browser for inline use
+if (typeof window !== 'undefined') {
+  (window as any).triggerAppRedirect = triggerAppRedirect;
+}
+
+declare global {
+  interface Window {
+    triggerAppRedirect?: (event: MouseEvent) => void;
+  }
+}
