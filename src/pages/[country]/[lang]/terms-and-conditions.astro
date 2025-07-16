@@ -1,0 +1,356 @@
+---
+import Layout from '@layouts/Layout.astro';
+import { getStaticPathsWrapper } from '@util/getStaticPaths';
+
+// Import MDX content for each language
+import EnContent from '../../../content/tac/are/en.mdx';
+import ArContent from '../../../content/tac/are/ar.mdx';
+
+export const getStaticPaths = getStaticPathsWrapper(['are'], {
+  are: ['en', 'ar'],
+});
+
+// Determine which MDX file to render based on `lang` route param
+const { lang } = Astro.params;
+const Content = lang === 'ar' ? ArContent : EnContent;
+
+// Sidebar sections for navigation
+const sections = [
+  { id: 'introduction', number: '1', title: 'Introduction' },
+  { id: 'definitions', number: '2', title: 'Definitions and Interpretations' },
+  { id: 'use-of-jingle-pay', number: '3', title: 'Use of Jingle Pay Mobile Application' },
+  { id: 'jingle-pay-prepaid-card', number: '4', title: 'Jingle Pay Prepaid Card ("The Card")' },
+  { id: 'using-the-account', number: '5', title: 'Using the Account, including the Card and Wallet' },
+  { id: 'loading-reloading', number: '6', title: 'Loading and Re-loading' },
+  { id: 'card-pin-security', number: '7', title: 'Card, PIN and Passcode Security' },
+  { id: 'unauthorized-transactions', number: '8', title: 'Unauthorized transactions' },
+  { id: 'account-fees', number: '9', title: 'Account Fees and Limits' },
+  { id: 'redeeming-funds', number: '10', title: 'Redeeming Unspent/Available Funds' },
+  { id: 'personal-data', number: '11', title: 'Personal Data associated with your Account' },
+  { id: 'using-account', number: '12', title: 'Using the Account, including the Card and Wallet' },
+  { id: 'disclaimers', number: '13', title: 'Disclaimers' },
+  { id: 'initiating-funds', number: '14', title: 'Initiating Funds Transfer' },
+  { id: 'funds-cancellation', number: '15', title: 'Funds Transfer cancellation' },
+  { id: 'due-diligence', number: '16', title: 'Due Diligence on Funds Transfer' },
+  { id: 'foreign-exchange', number: '17', title: 'Foreign Exchange Rate' },
+  { id: 'security', number: '18', title: 'Security' },
+  { id: 'communication', number: '19', title: 'Communication and Contact' },
+  { id: 'termination', number: '20', title: 'Term and Termination' },
+  { id: 'disclaimers-limitations', number: '22', title: 'Disclaimers and Limitations of Liability' },
+  { id: 'additional-transaction', number: '23', title: 'Additional Transaction Information' },
+];
+
+const isRtl = lang === 'ar';
+---
+
+<Layout>
+  <div class='min-h-screen py-10 mt-[10rem] bg-gray-50'>
+    <div class={`tac-container mx-auto max-w-7xl px-4 lg:px-8`}>
+      <!-- Mobile Dropdown for Table of Contents -->
+      <div class='mb-6 lg:hidden'>
+        <details class='bg-white border border-indigo-100 rounded-lg shadow-sm'>
+          <summary class='flex items-center justify-between p-5 font-semibold text-indigo-900 cursor-pointer'>
+            <span>Table of Contents</span>
+            <svg
+              xmlns='http://www.w3.org/2000/svg'
+              class='w-5 h-5'
+              fill='none'
+              viewBox='0 0 24 24'
+              stroke='currentColor'
+            >
+              <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'></path>
+            </svg>
+          </summary>
+          <nav class='p-5 pt-0 border-t border-indigo-100'>
+            <ul class='space-y-3'>
+              {
+                sections.map((section) => (
+                  <li>
+                    <a href={`#${section.id}`} class='flex items-start text-sm hover:text-primary-600 group'>
+                      <span class='mr-2 font-medium text-indigo-800 group-hover:text-primary-600'>
+                        {section.number}.
+                      </span>
+                      <span>{section.title}</span>
+                    </a>
+                  </li>
+                ))
+              }
+            </ul>
+          </nav>
+        </details>
+      </div>
+
+      <div class={`flex ${isRtl ? 'flex-row-reverse' : ''} gap-10`}>
+        <!-- Sidebar Navigation (Desktop) -->
+        <aside class='flex-shrink-0 hidden w-64 tac-sidebar lg:block'>
+          <div class='sticky p-5 bg-white border border-indigo-100 rounded-lg shadow-sm top-24'>
+            <h3 class='pb-2 mb-4 text-lg font-semibold text-indigo-900 border-b border-indigo-200'>In this document</h3>
+            <nav>
+              <ul class='space-y-3'>
+                {
+                  sections.map((section) => (
+                    <li>
+                      <a href={`#${section.id}`} class='flex items-start text-sm hover:text-primary-600 group'>
+                        <span class='mr-2 font-medium text-indigo-800 group-hover:text-primary-600'>
+                          {section.number}.
+                        </span>
+                        <span>{section.title}</span>
+                      </a>
+                    </li>
+                  ))
+                }
+              </ul>
+            </nav>
+          </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class='flex-1 p-4 bg-white border border-gray-100 shadow-sm tac-content rounded-xl md:p-8'>
+          <div class='prose max-w-none'>
+            <Content />
+          </div>
+        </main>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    /* Custom styling for terms and conditions page */
+    .tac-container {
+      font-family:
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        'Segoe UI',
+        Roboto,
+        Oxygen,
+        Ubuntu,
+        Cantarell,
+        sans-serif;
+    }
+
+    .tac-content :global(h1) {
+      font-size: 2rem;
+      font-weight: 600;
+      margin-bottom: 1.75rem;
+      color: #1a202c;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid #e2e8f0;
+    }
+
+    .tac-content :global(h2) {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-top: 2.5rem;
+      margin-bottom: 1.25rem;
+      color: #2d3748;
+      background-color: #f8fafc;
+      border-bottom: 1px solid #e2e8f0;
+      padding: 0.75rem 1rem;
+      border-radius: 0.375rem;
+    }
+
+    .tac-content :global(p) {
+      margin-bottom: 1.25rem;
+      line-height: 1.7;
+    }
+
+    .tac-content :global(table) {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.5rem 0;
+      box-shadow:
+        0 1px 3px 0 rgba(0, 0, 0, 0.1),
+        0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    }
+
+    .tac-content :global(table th),
+    .tac-content :global(table td) {
+      padding: 0.75rem 1rem;
+      text-align: left;
+      border: 1px solid #e2e8f0;
+    }
+
+    .tac-content :global(table th) {
+      background-color: #f1f5f9;
+      font-weight: 600;
+      color: #334155;
+    }
+
+    .tac-content :global(table td) {
+      background-color: white;
+    }
+
+    .tac-content :global(ol),
+    .tac-content :global(ul) {
+      padding-left: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .tac-content :global(li) {
+      margin-bottom: 0.5rem;
+      line-height: 1.7;
+    }
+
+    /* Style specifically for the definition lists */
+    .tac-content :global(table tr td:first-child) {
+      font-weight: 600;
+      width: 30%;
+      background-color: #f8fafc;
+    }
+
+    /* Special styling for definitions table */
+    .tac-content :global(.definitions-table) {
+      margin: 2rem 0;
+      background-color: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      padding: 1rem;
+      border: 1px solid #e2e8f0;
+    }
+
+    .tac-content :global(.definitions-table table) {
+      margin: 0;
+    }
+
+    .tac-content :global(.definitions-table table td:first-child) {
+      width: 25%;
+      color: #4a5568;
+      background-color: #f8fafc;
+      font-weight: 600;
+    }
+
+    /* Enhanced numbering for sections */
+    .tac-content :global(h2 a) {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* Style section numbers in content */
+    .tac-content :global(h2 a[id]) {
+      scroll-margin-top: 2rem;
+    }
+
+    /* Improve numbered list appearance */
+    .tac-content :global(ol) {
+      counter-reset: item;
+      list-style-type: none;
+      padding-left: 0;
+    }
+
+    .tac-content :global(ol > li) {
+      counter-increment: item;
+      position: relative;
+      padding-left: 2rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .tac-content :global(ol > li::before) {
+      content: counter(item) '.';
+      position: absolute;
+      left: 0;
+      font-weight: 600;
+      color: #4a5568;
+    }
+
+    /* Style for nested lists/subsections */
+    .tac-content :global(ol ol) {
+      counter-reset: subitem;
+      margin-top: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .tac-content :global(ol ol > li) {
+      counter-increment: subitem;
+      padding-left: 2.5rem;
+    }
+
+    .tac-content :global(ol ol > li::before) {
+      content: counter(item) '.' counter(subitem) '.';
+      left: 0;
+    }
+
+    /* Styling for alphabetical lists */
+    .tac-content :global(ol.alpha-list) {
+      list-style-type: lower-alpha;
+      padding-left: 1.5rem;
+    }
+
+    .tac-content :global(ol.alpha-list > li) {
+      padding-left: 0.5rem;
+    }
+
+    .tac-content :global(ol.alpha-list > li::before) {
+      content: none;
+    }
+
+    /* Print-friendly styles */
+    @media print {
+      .tac-sidebar,
+      details[summary='Table of Contents'] {
+        display: none !important;
+      }
+
+      .tac-content {
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border: none !important;
+        box-shadow: none !important;
+        background: none !important;
+      }
+
+      .tac-content :global(h1),
+      .tac-content :global(h2) {
+        page-break-after: avoid;
+        page-break-inside: avoid;
+      }
+
+      .tac-content :global(table) {
+        page-break-inside: avoid;
+      }
+    }
+  </style>
+</Layout>
+
+<script is:inline>
+  // Wait for the page to be fully loaded
+  window.addEventListener('load', function() {
+    // Handle sidebar navigation links
+    const sidebarLinks = document.querySelectorAll('.tac-sidebar a[href^="#"], details a[href^="#"]');
+    
+    if (sidebarLinks) {
+      sidebarLinks.forEach(function(link) {
+        link.onclick = function(e) {
+          // Prevent the default anchor link behavior
+          e.preventDefault();
+          e.stopPropagation();
+          
+          const targetId = this.getAttribute('href');
+          const targetElement = document.querySelector(targetId);
+          
+          if (targetElement) {
+            // Get the current path without hash
+            const currentPath = window.location.pathname;
+            
+            // Calculate position with header offset
+            const offsetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - 120;
+            
+            // Scroll to element
+            window.scrollTo({
+              top: offsetPosition,
+              behavior: 'smooth'
+            });
+            
+            // Update URL without navigation
+            if (history && history.pushState) {
+              history.pushState(null, null, currentPath + targetId);
+            }
+          }
+          
+          return false;
+        };
+      });
+    }
+  });
+</script>

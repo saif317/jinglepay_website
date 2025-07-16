@@ -33,7 +33,7 @@ export default {
     {
       title: 'Help',
       links: [
-        { href: '/terms-and-conditions-uae.pdf', text: 'Terms & Conditions' },
+        { href: '/are/en/terms-and-conditions', text: 'Terms & Conditions' },
         { href: '/privacy-policy', text: 'Privacy Policy' },
         { href: '/Schedule-of-Charges-UAE.pdf', text: 'Schedule of Charges' },
         { href: '/faq', text: 'FAQs' },

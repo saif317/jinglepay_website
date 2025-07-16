@@ -32,7 +32,7 @@ export default {
     {
       title: 'المساعدة',
       links: [
-        { href: '/terms-and-conditions-uae.pdf', text: 'الشروط والأحكام' },
+        { href: '/are/ar/terms-and-conditions', text: 'الشروط والأحكام' },
         { href: '/privacy-policy', text: 'سياسة الخصوصية' },
         { href: '/Schedule-of-Charges-UAE.pdf', text: 'جدول الرسوم' },
         { href: '/faq', text: 'الأسئلة الشائعة' },
