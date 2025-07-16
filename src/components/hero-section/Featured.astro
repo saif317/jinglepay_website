@@ -223,8 +223,8 @@ const logos = [
   // },
 ];
 
-const { translations = {} } = Astro.locals;
-const isUAE = Astro.url.pathname.startsWith('/ae/');
+const { translations = {}, country } = Astro.locals;
+const isUAE = country === 'are';
 ---
 
 <section
