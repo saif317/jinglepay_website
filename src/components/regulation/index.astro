@@ -7,6 +7,9 @@ import pci from '@assets/images/security/pci.png';
 const {
   translations: { regulation = {} },
 } = Astro.locals;
+
+// Get URL path to determine if we're on UAE website
+const pathname = Astro.url.pathname;
 ---
 
 <section id='regulation' class='p-4 mb-12 sm:p-8 md:p-12 lg:p-16'>
@@ -20,15 +23,17 @@ const {
       }
     </div>
 
-    <div class='security-section'>
-      <h2 class='mb-6 text-3xl font-bold text-gray-800'>{regulation.security}</h2>
-      <div class='flex flex-col items-center gap-4 lg:flex-row'>
-        {
-          [cis, nist, pci].map((icon) => {
-            return <Image src={icon} alt='Security feature' class='w-auto h-10' loading='lazy' decoding='async' />;
-          })
-        }
-      </div>
-    </div>
+    {
+      !pathname.includes('/are/') && (
+        <div class='security-section'>
+          <h2 class='mb-6 text-3xl font-bold text-gray-800'>{regulation.security}</h2>
+          <div class='flex flex-col items-center gap-4 lg:flex-row'>
+            {[cis, nist, pci].map((icon) => {
+              return <Image src={icon} alt='Security feature' class='w-auto h-10' loading='lazy' decoding='async' />;
+            })}
+          </div>
+        </div>
+      )
+    }
   </div>
 </section>

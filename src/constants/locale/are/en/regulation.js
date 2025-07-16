@@ -1,9 +1,9 @@
 export default {
   title: 'Regulated by',
   description: [
-    'Jingle Pay is a digital platform providing branchless banking services in Pakistan. Jingle Pay operates under the branchless banking license issued to Bank Alfalah Limited by the State Bank of Pakistan (SBP). The services offered through Jingle Pay comply with the regulations and guidelines established by the SBP for branchless banking operations.',
-    'Please note that Jingle Pay, as a digital platform, does not hold a separate branchless banking license. Instead, it operates within the regulatory framework granted to Bank Alfalah Limited by the SBP. The platform is designed to provide convenient, secure, and compliant branchless banking services in Pakistan.',
-    'All services provided by Jingle Pay are subject to the regulations and oversight of the State Bank of Pakistan and the policies of Bank Alfalah Limited. Users are encouraged to stay informed about any relevant regulatory updates and requirements that may affect their use of the platform.',
+    'Jingle Pay is a digital platform providing payment services in the United Arab Emirates. Jingle Pay Limited is authorized and regulated by the Dubai Financial Services Authority (DFSA) as "Providing and Arranging Payment Services" to carry out specified financial services.',
+    'As a licensed entity, Jingle Pay operates in accordance with the DFSA’s rules and regulatory framework, ensuring that its services meet the highest standards of compliance, security, and consumer protection within the UAE.',
+    'All services offered by Jingle Pay are subject to the oversight of the DFSA. Users are encouraged to stay up to date with relevant regulatory developments and ensure they understand any requirements that may apply to their use of the platform.',
   ],
   security: 'Security',
 };
