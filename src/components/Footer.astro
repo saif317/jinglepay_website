@@ -14,6 +14,9 @@ const {
   translations: { footer = {} },
 } = Astro.locals;
 
+// Extract country code from route params to conditionally render UAE-specific content
+const { country = '' } = Astro.params ?? {};
+
 // Define social media links (no changes needed here)
 const socialLinks = [
   { href: 'https://www.facebook.com/JinglePay/', icon: Facebook, alt: 'Facebook' },
@@ -87,7 +90,9 @@ const socialLinks = [
       </div>
 
       <div class='pt-8 border-t border-neutral-700 sm:pt-10 lg:pt-12 lg:text-start'>
-        <span class='block mb-4 text-xs font-normal text-neutral-500 sm:text-sm'>© Jingle Pay Ltd 2025</span>
+        {country !== 'are' && (
+          <span class='block mb-4 text-xs font-normal text-neutral-500 sm:text-sm'>© Jingle Pay Ltd 2025</span>
+        )}
         <p class='text-xs font-normal text-neutral-500 sm:text-sm'>{footer.copyrights}</p>
       </div>
     </div>
