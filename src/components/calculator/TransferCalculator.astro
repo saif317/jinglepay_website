@@ -90,8 +90,14 @@ const exchangeRate = `1.00 ${sendCurrency} = ${exchangeData.quotations[0]?.trans
         placeholder='0'
         aria-describedby='send-currency'
         data-calculator-send-input
-        onInput="this.dispatchEvent(new CustomEvent('calculate', {bubbles: true})); console.log('Input changed:', this.value);"
+        maxlength="6"
+        pattern="[0-9]+(\.[0-9]+)?"
+        onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode === 46"
+        aria-label="Enter amount (max 100,000 AED)"
       />
+      <div class="absolute -bottom-6 left-0 right-0">
+        <small class="hidden text-red-600 text-xs font-medium" data-validation-message></small>
+      </div>
       <div class="flex items-center gap-2">
         <!-- UAE Flag - Static implementation -->
         <div class="relative flex-shrink-0 w-6 h-6 send-currency-flag" aria-hidden="true">
@@ -544,25 +550,157 @@ const exchangeRate = `1.00 ${sendCurrency} = ${exchangeData.quotations[0]?.trans
     });
 
     // Multiple redundant ways to capture input changes
-    // Method 1: Add input event listener
+    // Simplified but stronger validation with enforced limits
     if (sendInput) {
       console.log('Attaching input handler to:', sendInput);
-      sendInput.addEventListener('input', function(e) {
-        console.log('Input value changed to:', this.value);
-        calculateExchange();
-      });
+      const validationMessage = document.querySelector('[data-validation-message]');
+      const MAX_LIMIT = 100000;
       
-      // Method 2: Add keyup event listener as backup
-      sendInput.addEventListener('keyup', function(e) {
-        console.log('Key pressed in input:', this.value);
+      // Direct validation function - simple, strict enforcement
+      const strictValidation = function(e) {
+        // Only allow digits and one decimal point
+        let value = this.value;
+        
+        // Immediately force to empty string if contains any non-numeric characters
+        if (!/^[0-9]*(\.[0-9]*)?$/.test(value)) {
+          // Get only the digits and decimal point
+          value = value.replace(/[^0-9.]/g, '');
+          
+          // Show validation message for non-numeric input
+          if (validationMessage) {
+            validationMessage.textContent = `Only numbers are allowed`;
+            validationMessage.classList.remove('hidden');
+            setTimeout(() => validationMessage.classList.add('hidden'), 2000);
+          }
+        }
+        
+        // Ensure only one decimal point
+        const parts = value.split('.');
+        if (parts.length > 2) {
+          value = parts[0] + '.' + parts.slice(1).join('');
+        }
+        
+        // Direct conversion to number and limit check
+        let numValue = parseFloat(value) || 0;
+        
+        // Hard enforce limit
+        if (numValue > MAX_LIMIT) {
+          numValue = MAX_LIMIT;
+          value = MAX_LIMIT.toString();
+          
+          // Show validation message
+          if (validationMessage) {
+            validationMessage.textContent = `Maximum amount is ${MAX_LIMIT.toLocaleString()} AED`;
+            validationMessage.classList.remove('hidden');
+            setTimeout(() => validationMessage.classList.add('hidden'), 3000);
+          }
+        }
+        
+        // Always update the value directly
+        this.value = value;
+        
+        // Calculate exchange
+        console.log('Input strictly validated to:', this.value);
         calculateExchange();
-      });
+      };
       
-      // Method 3: Add change event listener as another backup
-      sendInput.addEventListener('change', function(e) {
-        console.log('Input change event:', this.value);
-        calculateExchange();
-      });
+      // Block non-numeric keys from being pressed
+      sendInput.addEventListener('keydown', function(e) {
+        // Allow: backspace, delete, tab, escape, enter
+        if ([46, 8, 9, 27, 13].indexOf(e.keyCode) !== -1 ||
+            // Allow: Ctrl+A, Ctrl+C, Ctrl+V, Ctrl+X
+            (e.keyCode === 65 && e.ctrlKey === true) ||
+            (e.keyCode === 67 && e.ctrlKey === true) ||
+            (e.keyCode === 86 && e.ctrlKey === true) ||
+            (e.keyCode === 88 && e.ctrlKey === true) ||
+            // Allow: home, end, left, right
+            (e.keyCode >= 35 && e.keyCode <= 39) ||
+            // Allow decimal point
+            (e.keyCode === 190 || e.keyCode === 110)) {
+          // let it happen, don't do anything
+          return;
+        }
+        
+        // Only allow if it's a number or pressing the decimal key
+        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && 
+            (e.keyCode < 96 || e.keyCode > 105)) {
+          // Block the key press
+          e.preventDefault();
+          
+          // Show validation message
+          if (validationMessage) {
+            validationMessage.textContent = `Only numbers are allowed`;
+            validationMessage.classList.remove('hidden');
+            setTimeout(() => validationMessage.classList.add('hidden'), 1500);
+          }
+        }
+      }, true);
+      
+      // Add event listeners using capture phase for earliest possible intervention
+      sendInput.addEventListener('input', strictValidation, true);
+      
+      // Add keyup listener to catch keyboard entry
+      sendInput.addEventListener('keyup', strictValidation, true);
+      
+      // Block and sanitize paste of invalid values
+      sendInput.addEventListener('paste', function(e) {
+        // Always prevent the default paste
+        e.preventDefault();
+        
+        // Get pasted content
+        let pastedText;
+        if (window.clipboardData && window.clipboardData.getData) {
+          pastedText = window.clipboardData.getData('Text');
+        } else if (e.clipboardData && e.clipboardData.getData) {
+          pastedText = e.clipboardData.getData('text/plain');
+        }
+        
+        // Clean and validate the pasted text
+        if (pastedText) {
+          // Only allow digits and one decimal point
+          const originalLength = pastedText.length;
+          pastedText = pastedText.replace(/[^0-9.]/g, '');
+          
+          // Show message if non-numeric chars were removed
+          if (pastedText.length < originalLength && validationMessage) {
+            validationMessage.textContent = `Only numbers are allowed`;
+            validationMessage.classList.remove('hidden');
+            setTimeout(() => validationMessage.classList.add('hidden'), 2000);
+          }
+          
+          // Ensure only one decimal point
+          const parts = pastedText.split('.');
+          if (parts.length > 2) {
+            pastedText = parts[0] + '.' + parts.slice(1).join('');
+          }
+          
+          // Check against limit
+          const numValue = parseFloat(pastedText) || 0;
+          if (numValue > MAX_LIMIT) {
+            pastedText = MAX_LIMIT.toString();
+            
+            // Show validation message
+            if (validationMessage) {
+              validationMessage.textContent = `Maximum amount is ${MAX_LIMIT.toLocaleString()} AED`;
+              validationMessage.classList.remove('hidden');
+              setTimeout(() => validationMessage.classList.add('hidden'), 3000);
+            }
+          }
+          
+          // Insert cleaned text
+          this.value = pastedText;
+          calculateExchange();
+        }
+      }, true);
+      
+      // Also validate on blur for extra safety
+      sendInput.addEventListener('blur', strictValidation, true);
+      
+      // Immediate validation of initial value
+      strictValidation.call(sendInput);
+      
+      // One more change event listener as a final safety net
+      sendInput.addEventListener('change', strictValidation, true);
       
       // Manually trigger a calculation once to ensure initial state is correct
       setTimeout(() => {
@@ -958,9 +1096,48 @@ const exchangeRate = `1.00 ${sendCurrency} = ${exchangeData.quotations[0]?.trans
     
     // Handle form validation and redirect ONLY - NO API CALLS
     submitButton?.addEventListener('click', (e) => {
-      // Simple validation only
+      // Enhanced validation
       if (!sendInput?.value) {
-        alert('Please enter an amount to send');
+        const validationMessage = document.querySelector('[data-validation-message]');
+        if (validationMessage) {
+          validationMessage.textContent = 'Please enter an amount to send';
+          validationMessage.classList.remove('hidden');
+          setTimeout(() => validationMessage.classList.add('hidden'), 3000);
+        }
+        e.preventDefault();
+        e.stopPropagation();
+        return;
+      }
+      
+      // Validate input is numeric
+      const inputValue = sendInput.value;
+      const numericRegex = /^[0-9]+(\.[0-9]+)?$/;
+      
+      if (!numericRegex.test(inputValue)) {
+        const validationMessage = document.querySelector('[data-validation-message]');
+        if (validationMessage) {
+          validationMessage.textContent = 'Please enter a valid number';
+          validationMessage.classList.remove('hidden');
+          setTimeout(() => validationMessage.classList.add('hidden'), 3000);
+        }
+        e.preventDefault();
+        e.stopPropagation();
+        return;
+      }
+      
+      // Check if value exceeds limit
+      const numValue = parseFloat(inputValue) || 0;
+      const maxLimit = 100000;
+      
+      if (numValue > maxLimit) {
+        sendInput.value = maxLimit.toString();
+        const validationMessage = document.querySelector('[data-validation-message]');
+        if (validationMessage) {
+          validationMessage.textContent = `Maximum amount is ${maxLimit.toLocaleString()} AED`;
+          validationMessage.classList.remove('hidden');
+          setTimeout(() => validationMessage.classList.add('hidden'), 3000);
+        }
+        calculateExchange(); // Recalculate with the corrected value
         e.preventDefault();
         e.stopPropagation();
         return;
