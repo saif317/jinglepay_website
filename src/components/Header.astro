@@ -62,11 +62,12 @@ const isUAE = country === 'are';
         </QRModalTriggerer>
       </div>
 
-      <a
+      <button
         id='header-download-sm'
-        href='#download'
+        type='button'
+        onclick='console.log("Header download button clicked"); (function(e){const ua=navigator.userAgent;const isIOS=/iPhone|iPad|iPod/i.test(ua);const isAndroid=/Android/i.test(ua);console.log("OS detection:",{isIOS,isAndroid});if(isIOS){console.log("iOS detected, redirecting");window.location.href="https://apps.apple.com/pl/app/jingle-pay/id1493392189";}else if(isAndroid){console.log("Android detected, redirecting");window.location.href="https://play.google.com/store/apps/details?id=com.jinglepay&hl=en";}})(event);'
         class={`block px-4 py-2 text-xs font-medium text-white transition-colors duration-300 bg-black lg:hidden lg:text-base hover:bg-gray-600 ${isUAE ? 'rounded-full' : 'rounded-xl'}`}
-        >{navbar.downloadApp}</a
+        >{navbar.downloadApp}</button
       >
 
       {isUAE ? 
@@ -202,9 +203,6 @@ const isUAE = country === 'are';
     });
   });
 
-  const downloadSm = document.getElementById('header-download-sm');
-
-  if (downloadSm) {
-    downloadSm.addEventListener('click', triggerAppRedirect);
-  }
+  // Direct inline redirect now used on header-download-sm button
+  // No need for additional event listener
 </script>

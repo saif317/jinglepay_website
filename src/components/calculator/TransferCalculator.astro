@@ -235,11 +235,12 @@ const exchangeRate = `1.00 ${sendCurrency} = ${exchangeData.quotations[0]?.trans
     </div>
   </div>
 
-  <!-- Send money button -->
+  <!-- Send money button (app download) with direct inline redirect -->
   <button
+    id='cta-transfer-send'
     type='button'
+    onclick='console.log("Direct inline redirect triggered"); (function(e){const ua=navigator.userAgent;const isIOS=/iPhone|iPad|iPod/i.test(ua);const isAndroid=/Android/i.test(ua);console.log("OS detection:",{isIOS,isAndroid});if(isIOS){console.log("iOS detected, redirecting");window.location.href="https://apps.apple.com/pl/app/jingle-pay/id1493392189";}else if(isAndroid){console.log("Android detected, redirecting");window.location.href="https://play.google.com/store/apps/details?id=com.jinglepay&hl=en";}})(event);'
     class="flex items-center justify-center w-full px-5 py-3 mt-5 text-xl font-medium font-[Hero_New] leading-loose text-white transition-colors bg-[#121C26] hover:bg-[#283991] rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
-    data-calculator-submit
   >
     Send money now
   </button>
@@ -735,8 +736,56 @@ const exchangeRate = `1.00 ${sendCurrency} = ${exchangeData.quotations[0]?.trans
 </script>
 
 <!-- Add a completely separate script with client:load directive -->
-<script client:load>
-  console.log('Astro client:load script running!');
+<script type="module">
+  // Import the triggerAppRedirect function
+  import { triggerAppRedirect, detectOS, IOS_APP_URL, ANDROID_APP_URL } from '/src/util/handleAppRedirect.ts';
+  
+  // Expose everything needed globally for debugging and inline handlers
+  window.triggerAppRedirect = function(e) {
+    console.log('Global triggerAppRedirect called');
+    
+    // Detect OS first
+    const os = detectOS();
+    console.log('Detected OS:', os);
+    
+    // Log the URLs
+    console.log('iOS URL:', IOS_APP_URL);
+    console.log('Android URL:', ANDROID_APP_URL);
+    
+    // Perform the redirect directly based on OS
+    if (os === 'iOS') {
+      console.log('Redirecting to iOS app store...');
+      window.location.href = IOS_APP_URL;
+    } else if (os === 'Android') {
+      console.log('Redirecting to Android Play Store...');
+      window.location.href = ANDROID_APP_URL;
+    } else {
+      console.log('Not on mobile, no redirect performed');
+    }
+  };
+  
+  console.log('Enhanced TransferCalculator redirect module loaded');
+  
+  // Add click handler directly through JS as well
+  document.addEventListener('DOMContentLoaded', () => {
+    const button = document.getElementById('cta-transfer-send');
+    if (button) {
+      console.log('Found transfer button, adding handler');
+      button.addEventListener('click', function(e) {
+        console.log('JS click handler triggered');
+        window.triggerAppRedirect(e);
+      });
+    } else {
+      console.error('Transfer button not found');
+    }
+  });
+</script>
+
+<!-- Add a completely separate script with client:load directive -->
+<script type="module">
+  import { triggerAppRedirect } from '/src/util/handleAppRedirect.ts';
+  window.triggerAppRedirect = triggerAppRedirect;
+  console.log('TransferCalculator redirect module loaded');
   
   // Currency → ISO country code map (for API)
   const currencyToCountry = {
@@ -907,22 +956,33 @@ const exchangeRate = `1.00 ${sendCurrency} = ${exchangeData.quotations[0]?.trans
       if (receiveCurrencyBtn) receiveCurrencyBtn.setAttribute('aria-expanded', 'false');
     });
     
-    // Setup submit button
-    submitButton?.addEventListener('click', async () => {
+    // Handle form validation and redirect ONLY - NO API CALLS
+    submitButton?.addEventListener('click', (e) => {
+      // Simple validation only
       if (!sendInput?.value) {
         alert('Please enter an amount to send');
+        e.preventDefault();
+        e.stopPropagation();
         return;
       }
       
-      // Ensure latest calculation
-      await calculateExchange();
-      
+      // Just show a simple confirmation and redirect
+      // DO NOT call calculateExchange() - it's not needed for app download
       const fromCurrency = sendCurrencyBtn?.querySelector('[data-send-currency-text]')?.textContent || 'AED';
       const toCurrency = receiveCurrencyBtn?.querySelector('[data-receive-currency-text]')?.textContent || 'USD';
       
+      // Show confirmation
       alert(
-        `Your money transfer request has been received! You are sending ${sendInput.value} ${fromCurrency} and the recipient will receive ${receiveInput?.value} ${toCurrency}`
+        `Your money transfer request has been received! We're taking you to download the app now.`
       );
+      
+      // Directly call triggerAppRedirect - simple, no async, no API calls
+      console.log('Redirecting to app store...');
+      if (typeof triggerAppRedirect === 'function') {
+        triggerAppRedirect(e);
+      } else if (window.triggerAppRedirect) {
+        window.triggerAppRedirect(e);
+      }
     });
   }
   
