@@ -16,11 +16,11 @@ const isUAE = country === 'are';
 ---
 
 <header
-  class='flex fixed top-0 z-50 items-center justify-between px-5 lg:px-10 py-4 lg:py-8 w-full bg-white border-gray-200 transition-shadow duration-300 border-b-[1px] 2xl:px-30'
+  class='flex fixed top-0 z-50 items-center justify-between px-3 sm:px-5 lg:px-10 py-3 sm:py-4 lg:py-8 w-full bg-white border-gray-200 transition-shadow duration-300 border-b-[1px] 2xl:px-30'
   id='main-header'
 >
   <Link href='/' class=''>
-    <Logo class='w-[60px] lg:w-[90px]' />
+    <Logo class='w-[50px] sm:w-[60px] lg:w-[90px]' />
   </Link>
 
   <ul
@@ -50,7 +50,7 @@ const isUAE = country === 'are';
   </ul>
 
   <nav class='flex items-center'>
-    <div class='flex items-center gap-x-2 direction-ltr'>
+    <div class='flex items-center gap-x-1 sm:gap-x-2 direction-ltr'>
       <div class='hidden lg:block'>
         <QRModalTriggerer>
           <p
@@ -62,13 +62,16 @@ const isUAE = country === 'are';
         </QRModalTriggerer>
       </div>
 
-      <button
-        id='header-download-sm'
-        type='button'
-        onclick='console.log("Header download button clicked"); (function(e){const ua=navigator.userAgent;const isIOS=/iPhone|iPad|iPod/i.test(ua);const isAndroid=/Android/i.test(ua);console.log("OS detection:",{isIOS,isAndroid});if(isIOS){console.log("iOS detected, redirecting");window.location.href="https://apps.apple.com/pl/app/jingle-pay/id1493392189";}else if(isAndroid){console.log("Android detected, redirecting");window.location.href="https://play.google.com/store/apps/details?id=com.jinglepay&hl=en";}})(event);'
-        class={`block px-4 py-2 text-xs font-medium text-white transition-colors duration-300 bg-black lg:hidden lg:text-base hover:bg-gray-600 ${isUAE ? 'rounded-full' : 'rounded-xl'}`}
-        >{navbar.downloadApp}</button
-      >
+      <!-- Download button hidden on small screens (<380px) -->
+      <div class="hidden sm:block lg:hidden">
+        <button
+          id='header-download-sm'
+          type='button'
+          onclick='console.log("Header download button clicked"); (function(e){const ua=navigator.userAgent;const isIOS=/iPhone|iPad|iPod/i.test(ua);const isAndroid=/Android/i.test(ua);console.log("OS detection:",{isIOS,isAndroid});if(isIOS){console.log("iOS detected, redirecting");window.location.href="https://apps.apple.com/pl/app/jingle-pay/id1493392189";}else if(isAndroid){console.log("Android detected, redirecting");window.location.href="https://play.google.com/store/apps/details?id=com.jinglepay&hl=en";}})(event);'
+          class={`px-2 sm:px-4 py-2 text-[10px] sm:text-xs font-medium text-white transition-colors duration-300 bg-black hover:bg-gray-600 ${isUAE ? 'rounded-full' : 'rounded-xl'}`}
+          >{navbar.downloadApp}</button
+        >
+      </div>
 
       {isUAE ? 
         <UAESelector className="ml-auto" /> 
@@ -76,7 +79,7 @@ const isUAE = country === 'are';
         <CountryLanguageSelector className="ml-auto" />
       }
 
-      <button id='menu-toggle' class='relative w-6 h-6 overflow-hidden cursor-pointer lg:hidden'>
+      <button id='menu-toggle' class='relative w-6 h-6 overflow-hidden cursor-pointer lg:hidden ml-1'>
         <!-- <div class='absolute top-0 left-0 w-6 h-6'></div> -->
         <div class='w-4 h-0 left-[4px] top-[6px] absolute outline-2 outline-offset-[-1px] outline-[#794EFF]'></div>
         <div class='w-4 h-0 left-[4px] top-[12px] absolute outline-2 outline-offset-[-1px] outline-[#794EFF]'></div>
@@ -108,6 +111,16 @@ const isUAE = country === 'are';
           class='no-underline text-[#1c1c1c] text-xl font-semibold transition-colors duration-300 hover:text-[#794eff]'
           >{navbar.contactUs}</Link
         >
+      </li>
+      <li class='py-4'>
+        <a
+          id='header-download-menu'
+          href='#'
+          target='_blank'
+          class='no-underline px-6 py-3 text-lg font-semibold text-white bg-black rounded-full hover:bg-gray-600'
+        >
+          {navbar.downloadApp}
+        </a>
       </li>
 
       {isUAE ? 
@@ -203,6 +216,16 @@ const isUAE = country === 'are';
     });
   });
 
-  // Direct inline redirect now used on header-download-sm button
-  // No need for additional event listener
+  // Set correct store URL for download link inside mobile menu
+  const downloadLink = document.getElementById('header-download-menu') as HTMLAnchorElement | null;
+  if (downloadLink) {
+    const ua = navigator.userAgent;
+    const isIOS = /iPhone|iPad|iPod/i.test(ua);
+    downloadLink.href = isIOS
+      ? 'https://apps.apple.com/pl/app/jingle-pay/id1493392189'
+      : 'https://play.google.com/store/apps/details?id=com.jinglepay&hl=en';
+  }
+
+  // Direct inline redirect still used on header-download-sm button
+  // No additional listener needed for that one
 </script>
