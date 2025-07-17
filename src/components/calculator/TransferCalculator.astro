@@ -7,7 +7,7 @@
  * Integrates with remittance exchange API for real-time conversion rates.
  */
 
-import { getRemittanceRates } from '../../helpers/remittance-exchange.js';
+import { getRemittanceRates } from '@helpers/remittance-exchange.js';
 
 // Define CountryInfo interface for dynamic currency data
 interface CountryInfo {
@@ -179,17 +179,23 @@ const exchangeRate = `1.00 ${sendCurrency} = ${exchangeData.quotations[0]?.trans
         </button>
         <!-- Receive currency dropdown -->
         <div
-          class="absolute right-0 z-10 hidden w-40 mt-2 origin-top-right bg-white border border-gray-200 rounded-md shadow-lg top-full"
+          class='absolute right-0 z-10 hidden w-40 mt-2 origin-top-right bg-white border border-gray-200 rounded-md shadow-lg top-full'
           data-receive-currency-dropdown
         >
-          {Object.values(COUNTRIES).map(country => (
-            <button class='w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-[#F3F5F6]' data-currency={country.currency} data-country-code={country.code}>
-              <div class='flex items-center gap-2'>
-                <span class='currency-flag'>{country.unicode}</span>
-                <span>{country.currency}</span>
-              </div>
-            </button>
-          ))}
+          {
+            Object.values(COUNTRIES).map((country) => (
+              <button
+                class='w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-[#F3F5F6]'
+                data-currency={country.currency}
+                data-country-code={country.code}
+              >
+                <div class='flex items-center gap-2'>
+                  <span class='currency-flag'>{country.unicode}</span>
+                  <span>{country.currency}</span>
+                </div>
+              </button>
+            ))
+          }
         </div>
       </div>
     </div>
@@ -276,7 +282,6 @@ const exchangeRate = `1.00 ${sendCurrency} = ${exchangeData.quotations[0]?.trans
 </script>
 
 <script define:vars={{ initialSendAmount, initialSendCurrency, initialReceiveCurrency }}>
-  import { getRemittanceRates } from '../../helpers/remittance-exchange.js';
   // Wait for DOM to be fully loaded and accessible
   document.addEventListener('DOMContentLoaded', () => {
     console.log('DOM fully loaded and parsed');
@@ -288,8 +293,6 @@ const exchangeRate = `1.00 ${sendCurrency} = ${exchangeData.quotations[0]?.trans
     console.log('DOM already loaded, initializing now');
     initCalculator();
   }
-
-  import { getRemittanceRates } from '../../helpers/remittance-exchange.js';
 
   function initCalculator() {
     // Available currencies and their data
@@ -917,13 +920,13 @@ const exchangeRate = `1.00 ${sendCurrency} = ${exchangeData.quotations[0]?.trans
 <!-- Add a completely separate script with client:load directive -->
 <script type='module'>
   import { triggerAppRedirect } from '/src/util/handleAppRedirect.ts';
-  import { getRemittanceRates } from '../../helpers/remittance-exchange.js';
+  import { getRemittanceRates } from '/src/helpers/remittance-exchange.js';
   window.triggerAppRedirect = triggerAppRedirect;
   console.log('TransferCalculator redirect module loaded');
 
   // Currency to country code mapping
   let currencyToCountry = {};
-  
+
   // Fetch countries data from API
   async function fetchCountriesData() {
     console.log('Fetching countries data from API...');
@@ -932,24 +935,24 @@ const exchangeRate = `1.00 ${sendCurrency} = ${exchangeData.quotations[0]?.trans
       if (!response.ok) {
         throw new Error(`API request failed with status ${response.status}`);
       }
-      
+
       const data = await response.json();
       console.log('Countries data fetched:', data.length);
-      
+
       // Process the data
-      data.forEach(country => {
+      data.forEach((country) => {
         COUNTRIES[country.code] = {
           code: country.code,
           currency: country.currency,
           iso2_code: country.iso2_code || country.code,
           name: country.name,
-          unicode: country.unicode || '🏳️'
+          unicode: country.unicode || '🏳️',
         };
-        
+
         // Update currency to country mapping
         currencyToCountry[country.currency] = country.code;
       });
-      
+
       return data;
     } catch (error) {
       console.error('Failed to fetch countries data:', error);
@@ -960,15 +963,15 @@ const exchangeRate = `1.00 ${sendCurrency} = ${exchangeData.quotations[0]?.trans
         { code: 'GB', currency: 'GBP', iso2_code: 'GB', name: 'United Kingdom', unicode: '🇬🇧' },
         { code: 'EU', currency: 'EUR', iso2_code: 'EU', name: 'European Union', unicode: '🇪🇺' },
         { code: 'IN', currency: 'INR', iso2_code: 'IN', name: 'India', unicode: '🇮🇳' },
-        { code: 'PK', currency: 'PKR', iso2_code: 'PK', name: 'Pakistan', unicode: '🇵🇰' }
+        { code: 'PK', currency: 'PKR', iso2_code: 'PK', name: 'Pakistan', unicode: '🇵🇰' },
       ];
-      
+
       // Use fallback data
-      fallbackData.forEach(country => {
+      fallbackData.forEach((country) => {
         COUNTRIES[country.code] = country;
         currencyToCountry[country.currency] = country.code;
       });
-      
+
       return fallbackData;
     }
   }
@@ -1113,12 +1116,12 @@ const exchangeRate = `1.00 ${sendCurrency} = ${exchangeData.quotations[0]?.trans
           e.stopPropagation();
           const currency = button.getAttribute('data-currency');
           const countryCode = button.getAttribute('data-country-code');
-          
+
           if (currency) {
             // Update currency text
             const currencyText = receiveCurrencyBtn.querySelector('[data-receive-currency-text]');
             if (currencyText) currencyText.textContent = currency;
-            
+
             // Update flag with unicode
             if (receiveCurrencyFlag) {
               // Get the flag emoji from the button
@@ -1132,7 +1135,7 @@ const exchangeRate = `1.00 ${sendCurrency} = ${exchangeData.quotations[0]?.trans
                 receiveCurrencyFlag.style.lineHeight = '1.5rem';
               }
             }
-            
+
             // Close dropdown and recalculate
             receiveCurrencyDropdown.classList.add('hidden');
             receiveCurrencyBtn.setAttribute('aria-expanded', 'false');
@@ -1218,39 +1221,39 @@ const exchangeRate = `1.00 ${sendCurrency} = ${exchangeData.quotations[0]?.trans
   }
 
   // Initialize countries data and dropdowns
-  (async function() {
+  (async function () {
     // First fetch countries data from API
     await fetchCountriesData();
-    
+
     // Now update the dropdown with the fetched data
     if (receiveCurrencyDropdown) {
       receiveCurrencyDropdown.innerHTML = '';
-      Object.values(COUNTRIES).forEach(country => {
+      Object.values(COUNTRIES).forEach((country) => {
         const button = document.createElement('button');
         button.className = 'w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-[#F3F5F6]';
         button.dataset.currency = country.currency;
         button.dataset.countryCode = country.code;
-        
+
         const div = document.createElement('div');
         div.className = 'flex items-center gap-2';
-        
+
         const flagSpan = document.createElement('span');
         flagSpan.className = 'currency-flag';
         flagSpan.textContent = country.unicode;
-        
+
         const currencySpan = document.createElement('span');
         currencySpan.textContent = country.currency;
-        
+
         div.appendChild(flagSpan);
         div.appendChild(currencySpan);
         button.appendChild(div);
         receiveCurrencyDropdown.appendChild(button);
       });
     }
-    
+
     // Set up dropdown event handlers
     setupDropdowns();
-    
+
     console.log('Countries data loaded and dropdown populated');
   })();
 </script>

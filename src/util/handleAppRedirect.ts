@@ -1,5 +1,5 @@
-const IOS_APP_URL = 'https://apps.apple.com/pl/app/jingle-pay/id1493392189';
-const ANDROID_APP_URL = 'https://play.google.com/store/apps/details?id=com.jinglepay&hl=en';
+export const IOS_APP_URL = 'https://apps.apple.com/pl/app/jingle-pay/id1493392189';
+export const ANDROID_APP_URL = 'https://play.google.com/store/apps/details?id=com.jinglepay&hl=en';
 
 type OperatingSystem = 'iOS' | 'Android' | 'other';
 
@@ -7,7 +7,7 @@ type OperatingSystem = 'iOS' | 'Android' | 'other';
  * Detects the user's operating system based on the user agent string.
  * @returns {'iOS' | 'Android' | 'other'} The detected operating system.
  */
-function detectOS(): OperatingSystem {
+export function detectOS(): OperatingSystem {
   // Ensure this code runs only in the browser
   if (typeof window === 'undefined' || typeof navigator === 'undefined') {
     return 'other';
