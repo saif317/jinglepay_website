@@ -6,6 +6,7 @@
  * Displays send/receive amounts, currency selection, fees, and exchange rates.
  * Integrates with remittance exchange API for real-time conversion rates.
  */
+
 import { getRemittanceRates } from '../../helpers/remittance-exchange.js';
 
 // Define CountryInfo interface for dynamic currency data
@@ -275,6 +276,7 @@ const exchangeRate = `1.00 ${sendCurrency} = ${exchangeData.quotations[0]?.trans
 </script>
 
 <script define:vars={{ initialSendAmount, initialSendCurrency, initialReceiveCurrency }}>
+  import { getRemittanceRates } from '../../helpers/remittance-exchange.js';
   // Wait for DOM to be fully loaded and accessible
   document.addEventListener('DOMContentLoaded', () => {
     console.log('DOM fully loaded and parsed');
@@ -286,6 +288,8 @@ const exchangeRate = `1.00 ${sendCurrency} = ${exchangeData.quotations[0]?.trans
     console.log('DOM already loaded, initializing now');
     initCalculator();
   }
+
+  import { getRemittanceRates } from '../../helpers/remittance-exchange.js';
 
   function initCalculator() {
     // Available currencies and their data
@@ -335,18 +339,10 @@ const exchangeRate = `1.00 ${sendCurrency} = ${exchangeData.quotations[0]?.trans
     // Dynamic data will be fetched from APIs instead of using hardcoded constants
 
     /**
-     * Dynamically import helpers so Vite bundles them for the browser.
-     */
-    async function loadHelpers() {
-      return await import('../../helpers/remittance-exchange.js');
-    }
-
-    /**
      * Fetch live rate + fee via API.
      */
     async function fetchExchangeRate(from, to, amount) {
       try {
-        const { getRemittanceRates } = await loadHelpers();
         // Determine country code from currency using standard ISO patterns instead of hardcoded mapping
         // This is a temporary approach until full API implementation
         let toCountryCode = 'US'; // Default
@@ -921,6 +917,7 @@ const exchangeRate = `1.00 ${sendCurrency} = ${exchangeData.quotations[0]?.trans
 <!-- Add a completely separate script with client:load directive -->
 <script type='module'>
   import { triggerAppRedirect } from '/src/util/handleAppRedirect.ts';
+  import { getRemittanceRates } from '../../helpers/remittance-exchange.js';
   window.triggerAppRedirect = triggerAppRedirect;
   console.log('TransferCalculator redirect module loaded');
 
@@ -1010,8 +1007,6 @@ const exchangeRate = `1.00 ${sendCurrency} = ${exchangeData.quotations[0]?.trans
 
       console.log(`Calling API for ${fromCurrency} to ${toCurrency}, amount: ${sendAmount}`);
       // Call the remittance API
-      const { getRemittanceRates } = await import('../../helpers/remittance-exchange.js');
-      // Using absolute path for browser imports
       const res = await getRemittanceRates('AE', {
         quotation_mode: 'SEND_AMOUNT',
         receive: { country_code: currencyToCountry[toCurrency] || 'US', currency: toCurrency },
