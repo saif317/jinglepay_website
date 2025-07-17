@@ -873,7 +873,7 @@ const exchangeRate = `1.00 ${sendCurrency} = ${exchangeData.quotations[0]?.trans
 </script>
 
 <!-- Add a completely separate script with client:load directive -->
-<script>
+<script type="module">
   // Import the triggerAppRedirect function
   import { triggerAppRedirect, detectOS, IOS_APP_URL, ANDROID_APP_URL } from '@util/handleAppRedirect';
 
@@ -919,7 +919,7 @@ const exchangeRate = `1.00 ${sendCurrency} = ${exchangeData.quotations[0]?.trans
 </script>
 
 <!-- Add a completely separate script with client:load directive -->
-<script>
+<script type="module">
   import { triggerAppRedirect } from '@util/handleAppRedirect';
   import { getRemittanceRates } from '@helpers/remittance-exchange';
   window.triggerAppRedirect = triggerAppRedirect;
