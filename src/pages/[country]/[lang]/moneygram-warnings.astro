@@ -1,0 +1,226 @@
+---
+import Layout from '@layouts/Layout.astro';
+import { getStaticPathsWrapper } from '@util/getStaticPaths';
+
+export const getStaticPaths = getStaticPathsWrapper(['are'], {
+  are: ['en', 'ar'],
+});
+
+const { lang } = Astro.params;
+const isRtl = lang === 'ar';
+---
+
+<Layout>
+  <div class='py-10 mt-[10rem] mb-[10rem] 3xl:min-h-screen bg-gray-50'>
+    <div class={`mx-auto max-w-4xl px-4 lg:px-8 ${isRtl ? 'text-right' : 'text-left'}`}>
+      <!-- Header Section -->
+      <div class='p-8 mb-8 bg-white rounded-lg shadow-sm'>
+        <div class='mb-8 text-center'>
+          <h1 class='mb-2 text-3xl font-bold text-gray-900'>MoneyGram Warnings</h1>
+        </div>
+      </div>
+
+      <!-- Warning Content -->
+      <div class='p-8 bg-white rounded-lg shadow-sm'>
+        <div class='prose prose-lg max-w-none'>
+          <h2 class='pb-3 mb-6 text-2xl font-semibold text-gray-900 border-b border-gray-200'>
+            MoneyGram Non-US Agent, MGO, Mobile App Fraud Warning
+          </h2>
+
+          <div class='p-6 mb-8 border-l-4 border-red-500 rounded-r-lg bg-red-50'>
+            <div class='flex items-start'>
+              <div class='flex-shrink-0'>
+                <svg class='w-6 h-6 mt-1 text-red-500' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                  <path
+                    stroke-linecap='round'
+                    stroke-linejoin='round'
+                    stroke-width='2'
+                    d='M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z'
+                  ></path>
+                </svg>
+              </div>
+              <div class='ml-3'>
+                <p class='mb-1 text-sm font-medium text-red-800'>
+                  IMPORTANT INFORMATION – Fraud Warning About Your Money Transfer
+                </p>
+                <p class='text-sm text-red-700'>
+                  Keep your money safe. If any of the below apply, DO NOT SEND the money transfer.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class='space-y-6 leading-relaxed text-gray-700'>
+            <p class='text-lg font-medium text-red-600'>
+              It's a scam and someone is trying to steal your money. If you send money, it can be paid out quickly, and
+              you may not be able to get a refund.
+            </p>
+
+            <div class='space-y-4'>
+              <div class='p-4 rounded-lg bg-gray-50'>
+                <h3 class='mb-2 font-semibold text-gray-900'>#1</h3>
+                <p>Never transfer money to a stranger. Know who you are dealing with. A money transfer is like cash.</p>
+              </div>
+
+              <div class='p-4 rounded-lg bg-gray-50'>
+                <h3 class='mb-2 font-semibold text-gray-900'>#2 Never send money in the following situations:</h3>
+                <ul class='ml-4 space-y-2 list-disc list-inside'>
+                  <li>
+                    To make a charity donation or to pay an internet merchant for supplies during a pandemic, natural
+                    disaster, or other crisis
+                  </li>
+                  <li>To receive money (examples: lottery winnings, prize, job offer or loan)</li>
+                  <li>To pay a government taxing authority or the police</li>
+                  <li>To buy a car, puppy, another unique or high-value item, or to make an apartment deposit</li>
+                </ul>
+              </div>
+
+              <div class='p-4 rounded-lg bg-gray-50'>
+                <h3 class='mb-2 font-semibold text-gray-900'>#3</h3>
+                <p>
+                  Never send money without checking out the story. Reach out to that friend or family member you heard
+                  is in need first.
+                </p>
+              </div>
+
+              <div class='p-4 rounded-lg bg-gray-50'>
+                <h3 class='mb-2 font-semibold text-gray-900'>#4</h3>
+                <p>If it sounds too good to be true, it probably is.</p>
+              </div>
+
+              <div class='p-4 rounded-lg bg-gray-50'>
+                <h3 class='mb-2 font-semibold text-gray-900'>#5</h3>
+                <p>
+                  Never give your transaction reference number to anyone other than the person you intend to receive the
+                  money. Sellers and telemarketers can't take money transfer payments from people in the US for
+                  something they're selling through telemarketing.
+                </p>
+              </div>
+            </div>
+
+            <div class='p-6 mt-8 border border-blue-200 rounded-lg bg-blue-50'>
+              <h3 class='mb-3 font-semibold text-blue-900'>If you've lost money to a scam via MoneyGram:</h3>
+              <div class='space-y-2'>
+                <p class='text-blue-800'>
+                  Call MoneyGram at: <span class='px-2 py-1 font-mono bg-white rounded'>+971 4 547 7778</span>
+                </p>
+                <p class='text-blue-800'>
+                  Or visit:{' '}
+                  <a href='https://www.moneygram.com' class='text-blue-600 underline' target='_blank'>
+                    www.moneygram.com
+                  </a>{' '}
+                  to file a fraud report
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Arabic Section -->
+          <div class='pt-8 mt-12 border-t border-gray-200'>
+            <h2 class='pb-3 mb-6 text-2xl font-semibold text-right text-gray-900 border-b border-gray-200' dir='rtl'>
+              MoneyGram Non-US Agent, MGO، تحذير من الاحتيال على تطبيقات الجوّال
+            </h2>
+
+            <div class='text-right' dir='rtl'>
+              <p class='mb-4 text-gray-600'>تم التحديث في أبريل 2020</p>
+
+              <div class='p-6 mb-8 border-r-4 border-red-500 rounded-l-lg bg-red-50'>
+                <div class='flex items-start'>
+                  <div class='mr-3'>
+                    <p class='mb-1 text-sm font-medium text-red-800'>
+                      معلومات هامة – تحذير من الاحتيال فيما يتعلق بتحويل أموالك
+                    </p>
+                    <p class='text-sm text-red-700'>
+                      حافظ على سلامة أموالك. في حالة انطباق أي مما يلي، تجنب إرسال التحويل المالي.
+                    </p>
+                  </div>
+                  <div class='flex-shrink-0'>
+                    <svg class='w-6 h-6 mt-1 text-red-500' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                      <path
+                        stroke-linecap='round'
+                        stroke-linejoin='round'
+                        stroke-width='2'
+                        d='M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z'
+                      ></path>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+
+              <div class='space-y-6 leading-relaxed text-gray-700'>
+                <p class='text-lg font-medium text-red-600'>
+                  إنه احتيال ويحاول شخص ما سرقة أموالك. إذا أرسلت أموالًا، يمكن صرفها سريعًا، وقد لا يمكنك استردادها.
+                </p>
+
+                <div class='space-y-4'>
+                  <div class='p-4 rounded-lg bg-gray-50'>
+                    <h3 class='mb-2 font-semibold text-gray-900'>#1</h3>
+                    <p>لا تحوّل المال أبدًا إلى شخص غريب. اعرف من تتعامل معه. تحويل الأموال أشبه بالنقود.</p>
+                  </div>
+
+                  <div class='p-4 rounded-lg bg-gray-50'>
+                    <h3 class='mb-2 font-semibold text-gray-900'>#2 لا ترسل المال أبدًا في الحالات التالية:</h3>
+                    <ul class='mr-4 space-y-2 list-disc list-inside'>
+                      <li>
+                        لتقديم تبرع خيري أو الدفع لتاجر عبر الإنترنت للحصول على إمدادات أثناء وجود وباء، أو كارثة
+                        طبيعية، أو أي أزمة أخرى
+                      </li>
+                      <li>لاستلام أموال (أمثلة: أرباح يانصيب، أو جائزة، أو عرض وظيفي، أو قرض)</li>
+                      <li>للدفع لسلطة ضريبية حكومية أو الشرطة</li>
+                      <li>لشراء سيارة، أو جرو، أو سلعة أخرى فريدة أو عالية القيمة، أو لإيداع عربون شقة</li>
+                    </ul>
+                  </div>
+
+                  <div class='p-4 rounded-lg bg-gray-50'>
+                    <h3 class='mb-2 font-semibold text-gray-900'>#3</h3>
+                    <p>
+                      لا ترسل المال أبدًا دون التحقّق من القصة. تواصل مع ذلك الصديق أو فرد العائلة الذي سمعت عن حاجته
+                      للمال أولاً.
+                    </p>
+                  </div>
+
+                  <div class='p-4 rounded-lg bg-gray-50'>
+                    <h3 class='mb-2 font-semibold text-gray-900'>#4</h3>
+                    <p>إذا بدا الأمر صحيحًا، فمن المُحتمل أن يكون كذلك.</p>
+                  </div>
+
+                  <div class='p-4 rounded-lg bg-gray-50'>
+                    <h3 class='mb-2 font-semibold text-gray-900'>#5</h3>
+                    <p>
+                      لا تعطي الرقم المرجعي للمعاملة لأي أحد غير ذات الشخص المعني باستلام الأموال. لا يمكن للبائعين أو
+                      المسوقين عبر الهاتف أخذ دفعات تحويل الأموال من الأشخاص في الولايات المتحدة لشيء يشترونه من خلال
+                      التسويق الإلكتروني.
+                    </p>
+                  </div>
+                </div>
+
+                <div class='p-6 mt-8 border border-blue-200 rounded-lg bg-blue-50'>
+                  <h3 class='mb-3 font-semibold text-blue-900'>
+                    إذا كنت قد فقدت أموالًا عن طريق الاحتيال عبر MoneyGram:
+                  </h3>
+                  <div class='space-y-2'>
+                    <p class='text-blue-800'>
+                      اتصل بـ MoneyGram على: <span class='px-2 py-1 font-mono bg-white rounded'>+971 04 547 7778</span>
+                    </p>
+                    <p class='text-blue-800'>
+                      أو تفضل بزيارة الموقع: <a
+                        href='http://moneygram.ma/contactez-nous'
+                        class='text-blue-600 underline'
+                        target='_blank'>http://moneygram.ma/contactez-nous</a
+                      > لتقديم تقرير بالاحتيال
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Footer -->
+          <div class='pt-8 mt-12 border-t border-gray-200'>
+            <p class='text-sm text-center text-gray-500'>Copyright © 2023 Jingle Pay Limited. All rights reserved</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</Layout>

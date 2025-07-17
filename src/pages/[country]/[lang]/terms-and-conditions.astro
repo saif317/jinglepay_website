@@ -315,39 +315,39 @@ const isRtl = lang === 'ar';
 
 <script is:inline>
   // Wait for the page to be fully loaded
-  window.addEventListener('load', function() {
+  window.addEventListener('load', function () {
     // Handle sidebar navigation links
     const sidebarLinks = document.querySelectorAll('.tac-sidebar a[href^="#"], details a[href^="#"]');
-    
+
     if (sidebarLinks) {
-      sidebarLinks.forEach(function(link) {
-        link.onclick = function(e) {
+      sidebarLinks.forEach(function (link) {
+        link.onclick = function (e) {
           // Prevent the default anchor link behavior
           e.preventDefault();
           e.stopPropagation();
-          
+
           const targetId = this.getAttribute('href');
           const targetElement = document.querySelector(targetId);
-          
+
           if (targetElement) {
             // Get the current path without hash
             const currentPath = window.location.pathname;
-            
+
             // Calculate position with header offset
             const offsetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - 120;
-            
+
             // Scroll to element
             window.scrollTo({
               top: offsetPosition,
-              behavior: 'smooth'
+              behavior: 'smooth',
             });
-            
+
             // Update URL without navigation
             if (history && history.pushState) {
               history.pushState(null, null, currentPath + targetId);
             }
           }
-          
+
           return false;
         };
       });

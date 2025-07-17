@@ -1,0 +1,33 @@
+---
+import Layout from '@layouts/Layout.astro';
+import { getStaticPathsWrapper } from '@util/getStaticPaths';
+
+export const getStaticPaths = getStaticPathsWrapper(['are'], {
+  are: ['en', 'ar'],
+});
+
+const { lang } = Astro.params;
+---
+
+<Layout>
+  <div class='py-10 mt-[10rem] mb-[10rem] 3xl:min-h-screen bg-gray-50'>
+    <!-- Policy Content -->
+    <div class='p-8 bg-white rounded-lg shadow-sm'>
+      <div class='prose prose-lg max-w-none'>
+        <h2 class='pb-3 mb-6 text-2xl font-semibold text-gray-900 border-b border-gray-200'>
+          Customer Detailed Declaration
+        </h2>
+      </div>
+
+      <div class='space-y-6 leading-relaxed text-gray-700'>
+        <p class='text-lg'>
+          I the undersigned of this account confirm that the address provided here through the attached document belongs
+          to me and/or I am resident of this address therefore the declaration and the document I provided be accepted
+          as proof of my residential address. I expressly state that the information I have provided is true and correct
+          to the best of my knowledge and I understand that should I provide any false information or misrepresentation
+          here such may be used against me in accordance with the applicable laws.
+        </p>
+      </div>
+    </div>
+  </div>
+</Layout>
