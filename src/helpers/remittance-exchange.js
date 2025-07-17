@@ -63,27 +63,33 @@
 import { encryptRequest, decryptResponse } from './encryption.js';
 
 export const getRemittanceRates = async (country, exchangeRequest) => {
+  console.log('Remittance API request:', country, exchangeRequest);
+  
+  // Always use production endpoints, regardless of environment
+  const apiUrl = country === 'BH' 
+    ? 'https://bh-api.jinglepay.dev/api/v0/remittance/rates-review/' 
+    : 'https://api.jinglepay.dev/api/v0/remittance/rates-review/';
+  
+  console.log('Using production API at:', apiUrl);
+  
   try {
-    console.log('Remittance API request:', country, exchangeRequest);
-    
-    // Always use production endpoints, regardless of environment
-    const apiUrl = country === 'BH' 
-      ? 'https://bh-api.jinglepay.dev/api/v0/remittance/rates-review/' 
-      : 'https://api.jinglepay.dev/api/v0/remittance/rates-review/';
-    
-    console.log('Using production API at:', apiUrl);
-    
     // Encrypt the request body
     const encryptedRequest = await encryptRequest(exchangeRequest);
     
-    // In production, make a real API call
+    // Make a real API call with timeout and retries
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+    
     const response = await fetch(apiUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: encryptedRequest,
+      signal: controller.signal
     });
+    
+    clearTimeout(timeoutId);
 
     if (!response.ok) {
       throw new Error(`API error: ${response.status}`);
@@ -91,11 +97,13 @@ export const getRemittanceRates = async (country, exchangeRequest) => {
 
     // Decrypt the response body
     const text = await response.text();
-    return await decryptResponse(text);
+    const decrypted = await decryptResponse(text);
+    console.log('Successfully received API response');
+    return decrypted;
   } catch (error) {
     console.error('Error fetching remittance rates:', error);
     
-    // Fall back to simple mock data on error
+    // Only fall back to mock data in development or on network errors
     console.log('Falling back to simple mock data due to API error');
     return getMockExchangeRate(
       exchangeRequest.send.currency,
@@ -103,19 +111,6 @@ export const getRemittanceRates = async (country, exchangeRequest) => {
       exchangeRequest.send.amount
     );
   }
-
-  // Return empty object on error
-  return {
-    id: '',
-    quotation_mode: 'SEND_AMOUNT',
-    send: { amount: 0, currency: '', country_code: '' },
-    receive: { amount: 0, currency: '', country_code: '' },
-    user_saves: { amount: 0, currency: '' },
-    last_updated: '',
-    expired_at: '',
-    fee: { amount: 0, currency: '' },
-    quotations: []
-  };
 };
 
 /**

@@ -17,8 +17,28 @@ export interface Props {
 
 const { initialSendAmount = 1000, initialSendCurrency = 'AED', initialReceiveCurrency = 'USD' } = Astro.props;
 
-// Get mock exchange rate data (will be replaced with real API in production)
-const exchangeData = getMockExchangeRate(initialSendCurrency, initialReceiveCurrency, initialSendAmount);
+// Get initial exchange rate data using the real API
+let exchangeData;
+try {
+  // Use real API for both development and production
+  exchangeData = await getRemittanceRates('AE', {
+    quotation_mode: 'SEND_AMOUNT',
+    receive: { 
+      country_code: initialReceiveCurrency === 'INR' ? 'IN' : 
+                   initialReceiveCurrency === 'PKR' ? 'PK' : 'US', 
+      currency: initialReceiveCurrency 
+    },
+    send: { 
+      amount: initialSendAmount, 
+      currency: initialSendCurrency, 
+      country_code: 'AE' 
+    },
+  });
+} catch (error) {
+  // Only fallback to mock data if API fails
+  console.error('Error initializing with real API, using mock:', error);
+  exchangeData = getMockExchangeRate(initialSendCurrency, initialReceiveCurrency, initialSendAmount);
+}
 
 // Hardcoded supported countries for dropdowns
 const sendCountries = [
