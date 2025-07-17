@@ -55,9 +55,9 @@ const isRtl = lang === 'ar';
 
     <div class={`flex ${isRtl ? 'flex-row-reverse' : ''} gap-10`}>
       <!-- Sidebar Navigation (Desktop) -->
-      <aside class='flex-shrink-0 hidden w-64 tac-sidebar lg:block'>
+      <aside class='sticky flex-shrink-0 hidden w-64 tac-sidebar lg:block top-24'>
         <div
-          class='sticky top-24 p-5 bg-white border border-indigo-100 rounded-lg shadow-sm overflow-y-auto max-h-[calc(100vh-6rem)]'
+          class='p-5 bg-white border border-indigo-100 rounded-lg shadow-sm overflow-y-auto max-h-[calc(100vh-6rem)]'
         >
           <h3 class='pb-2 mb-4 text-lg font-semibold text-indigo-900 border-b border-indigo-200'>In this document</h3>
           <nav>
@@ -213,6 +213,11 @@ const isRtl = lang === 'ar';
     word-break: break-word;
   }
 
+  /* Ensure global main overflow allows sticky elements */
+  main {
+    overflow: visible !important;
+  }
+
   /* Enable scrolling for long sidebar lists */
   .tac-sidebar ul {
     overflow-y: auto;
@@ -303,6 +308,12 @@ const isRtl = lang === 'ar';
     .tac-content :global(table) {
       page-break-inside: avoid;
     }
+  }
+  /* override layout main overflow to allow sticky sidebar */
+</style>
+<style is:global>
+  main {
+    overflow: visible !important;
   }
 </style>
 
