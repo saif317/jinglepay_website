@@ -65,40 +65,99 @@ import { encryptRequest, decryptResponse } from './encryption.js';
 export const getRemittanceRates = async (country, exchangeRequest) => {
   console.log('Remittance API request:', country, exchangeRequest);
   
-  // Always use production endpoints, regardless of environment
+  // Determine if we're running in DEV environment
+  const isDev = typeof window !== 'undefined' && 
+    window.location && 
+    window.location.hostname && 
+    window.location.hostname.includes('jinglepay-website-dev');
+
+  // Select API endpoint based on country and environment
+  // For DEV environment, use a different approach
   const apiUrl = country === 'BH' 
     ? 'https://bh-api.jinglepay.dev/api/v0/remittance/rates-review/' 
     : 'https://api.jinglepay.dev/api/v0/remittance/rates-review/';
   
-  console.log('Using production API at:', apiUrl);
+  console.log('Environment check:', isDev ? 'DEV environment detected' : 'Production environment');  
+  console.log('Using API at:', apiUrl);
+  
+  // Create a feature flag that can be changed during the build process
+  // Set FORCE_REAL_API_IN_DEV to true to ensure real API is called in DEV
+  const FORCE_REAL_API_IN_DEV = true;
+
+  // If we're in DEV but the flag isn't enabled, clearly log this
+  if (isDev && !FORCE_REAL_API_IN_DEV) {
+    console.warn('⚠️ DEV environment detected but FORCE_REAL_API_IN_DEV is disabled.', 
+                'Using mock data instead of real API.', 
+                'Set FORCE_REAL_API_IN_DEV = true to use real API in DEV.');
+    // Use mock data when in DEV environment with the flag disabled
+    return getMockExchangeRate(
+      exchangeRequest.send.currency,
+      exchangeRequest.receive.currency,
+      exchangeRequest.send.amount
+    );
+  }
   
   try {
+    // Add timestamp to debugging
+    console.log(`API request initiated at ${new Date().toISOString()}`);
+    
     // Encrypt the request body
     const encryptedRequest = await encryptRequest(exchangeRequest);
+    console.log('Request encrypted successfully');
     
     // Make a real API call with timeout and retries
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+    const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout
     
-    const response = await fetch(apiUrl, {
+    // Log the request before sending
+    console.log('Sending request to API with the following options:', {
+      url: apiUrl,
+      method: 'POST',
+      bodyLength: encryptedRequest ? encryptedRequest.length : 0
+    });
+    
+    // In DEV environments, we may need different fetch options
+    const fetchOptions = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'Accept': 'application/json',
       },
       body: encryptedRequest,
-      signal: controller.signal
-    });
+      signal: controller.signal,
+    };
+    
+    // Add CORS settings only in browser environments
+    if (typeof window !== 'undefined') {
+      fetchOptions.mode = 'cors';
+      fetchOptions.headers['Origin'] = window.location.origin || 'https://jinglepay.com';
+      
+      // Only add credentials for same-origin or trusted domains
+      if (!isDev) {
+        fetchOptions.credentials = 'same-origin';
+      }
+    }
+    
+    // Log the full fetch options being used
+    console.log('Full fetch options:', JSON.stringify(fetchOptions));
+    
+    const response = await fetch(apiUrl, fetchOptions);
     
     clearTimeout(timeoutId);
+    
+    console.log(`API response received with status: ${response.status}`);
 
     if (!response.ok) {
-      throw new Error(`API error: ${response.status}`);
+      console.error('Non-OK response from API:', response.status, response.statusText);
+      throw new Error(`API error: ${response.status} - ${response.statusText}`);
     }
 
     // Decrypt the response body
     const text = await response.text();
+    console.log('Response body received, length:', text ? text.length : 0);
+    
     const decrypted = await decryptResponse(text);
-    console.log('Successfully received API response');
+    console.log('Successfully decrypted API response');
     return decrypted;
   } catch (error) {
     console.error('Error fetching remittance rates:', error);
