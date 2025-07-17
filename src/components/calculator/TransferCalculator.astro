@@ -1010,7 +1010,7 @@ const exchangeRate = `1.00 ${sendCurrency} = ${exchangeData.quotations[0]?.trans
 
       console.log(`Calling API for ${fromCurrency} to ${toCurrency}, amount: ${sendAmount}`);
       // Call the remittance API
-      const { getRemittanceRates } = await import('/src/helpers/remittance-exchange.js');
+      const { getRemittanceRates } = await import('../../helpers/remittance-exchange.js');
       // Using absolute path for browser imports
       const res = await getRemittanceRates('AE', {
         quotation_mode: 'SEND_AMOUNT',
