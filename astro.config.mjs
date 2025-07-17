@@ -2,6 +2,7 @@
 import { defineConfig } from 'astro/config';
 
 import tailwindcss from '@tailwindcss/vite';
+import { fileURLToPath } from 'url';
 
 import sitemap from '@astrojs/sitemap';
 
@@ -13,6 +14,14 @@ import expressiveCode from 'astro-expressive-code';
 export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
+    resolve: {
+      alias: {
+        '@': fileURLToPath(new URL('./src', import.meta.url)),
+        '@helpers': fileURLToPath(new URL('./src/helpers', import.meta.url)),
+        '@util': fileURLToPath(new URL('./src/util', import.meta.url)),
+        '@components': fileURLToPath(new URL('./src/components', import.meta.url)),
+      },
+    },
   },
 
   site: 'https://jinglepay.com/',

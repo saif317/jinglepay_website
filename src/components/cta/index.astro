@@ -42,8 +42,8 @@ const isUAE = country === 'are';
   </div>
 </div>
 
-<script type="module">
-  import { triggerAppRedirect } from '/src/util/handleAppRedirect.ts';
+<script>
+  import { triggerAppRedirect } from '@util/handleAppRedirect';
   document.addEventListener('DOMContentLoaded', () => {
     const btn = document.getElementById('cta-download-sm');
     if (btn) {

@@ -31,8 +31,8 @@ const {
 </section>
 
 <!-- Load redirect utility and bind globally -->
-<script type="module">
-  import { triggerAppRedirect as tar } from '/src/util/handleAppRedirect.ts';
+<script>
+  import { triggerAppRedirect as tar } from '@util/handleAppRedirect';
   window.triggerAppRedirect = tar;
 </script>
 

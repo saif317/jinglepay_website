@@ -282,6 +282,7 @@ const exchangeRate = `1.00 ${sendCurrency} = ${exchangeData.quotations[0]?.trans
 </script>
 
 <script define:vars={{ initialSendAmount, initialSendCurrency, initialReceiveCurrency }}>
+  import { getRemittanceRates } from '@helpers/remittance-exchange.js';
   // Wait for DOM to be fully loaded and accessible
   document.addEventListener('DOMContentLoaded', () => {
     console.log('DOM fully loaded and parsed');
@@ -872,9 +873,9 @@ const exchangeRate = `1.00 ${sendCurrency} = ${exchangeData.quotations[0]?.trans
 </script>
 
 <!-- Add a completely separate script with client:load directive -->
-<script type='module'>
+<script>
   // Import the triggerAppRedirect function
-  import { triggerAppRedirect, detectOS, IOS_APP_URL, ANDROID_APP_URL } from '/src/util/handleAppRedirect.ts';
+  import { triggerAppRedirect, detectOS, IOS_APP_URL, ANDROID_APP_URL } from '@util/handleAppRedirect';
 
   // Expose everything needed globally for debugging and inline handlers
   window.triggerAppRedirect = function (e) {
@@ -918,10 +919,12 @@ const exchangeRate = `1.00 ${sendCurrency} = ${exchangeData.quotations[0]?.trans
 </script>
 
 <!-- Add a completely separate script with client:load directive -->
-<script type='module'>
-  import { triggerAppRedirect } from '/src/util/handleAppRedirect.ts';
-  import { getRemittanceRates } from '/src/helpers/remittance-exchange.js';
+<script>
+  import { triggerAppRedirect } from '@util/handleAppRedirect';
+  import { getRemittanceRates } from '@helpers/remittance-exchange';
   window.triggerAppRedirect = triggerAppRedirect;
+  // Expose getRemittanceRates globally for inline scripts
+  window.getRemittanceRates = getRemittanceRates;
   console.log('TransferCalculator redirect module loaded');
 
   // Currency to country code mapping
