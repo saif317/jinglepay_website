@@ -32,7 +32,7 @@ const { benefits } = Astro.locals.translations;
         <Image
           src={globeImg}
           alt='Globe'
-          class='object-contain w-36 h-36 xs:w-48 xs:h-48 sm:w-64 sm:h-64 md:w-80 md:h-80'
+          class='object-cover overflow-visible w-[13rem] h-36 sm:w-[23rem] sm:h-64 md:w-[29rem] md:h-80'
           loading='lazy'
         />
       </div>
@@ -55,11 +55,13 @@ const { benefits } = Astro.locals.translations;
       <div class='grid h-full gap-4 sm:gap-6 lg:grid-cols-2'>
         <Image src={womanImg} alt='Woman paying' class='object-cover w-full h-full rounded-2xl' loading='lazy' />
 
-        <div class='relative flex flex-col items-center justify-start p-4 bg-white shadow-sm rounded-2xl sm:p-6'>
+        <div
+          class='relative flex flex-col items-center justify-start p-4 pb-0 shadow-sm sm:pb-0 bg-neutral-100 rounded-2xl sm:p-6'
+        >
           <h4 class='text-base font-black text-center xs:text-lg text-zinc-800 sm:text-xl'>
             {benefits?.zeroFees?.title || 'ZERO FEES'}
           </h4>
-          <div class='flex items-center justify-center flex-1 w-full'>
+          <div class='flex items-end justify-center flex-1 w-full'>
             <Image
               src={phoneImg}
               alt='Phone screenshot'
@@ -71,19 +73,17 @@ const { benefits } = Astro.locals.translations;
       </div>
 
       <!-- Bottom row: savings card + couple image -->
-      <div class='grid h-full gap-4 sm:gap-6 lg:grid-cols-2'>
-        <div class='flex flex-col justify-between p-4 bg-slate-100 rounded-2xl sm:p-6'>
-          <div>
-            <h4 class='mb-2 text-base font-black xs:text-lg text-zinc-800 sm:text-xl xs:mb-3 sm:mb-6'>
-              {benefits?.savings?.title || 'Savings generated for customers'}
-            </h4>
-            <h3 class='mb-1 text-xl font-black xs:text-2xl text-zinc-800 sm:text-3xl xs:mb-2 sm:mb-4'>
-              {benefits?.savings?.amount || 'USD 5,000,000'}
-            </h3>
-            <p class='text-sm leading-tight xs:text-base text-zinc-900 sm:text-lg xs:leading-normal sm:leading-relaxed'>
-              {benefits?.savings?.description || 'Jingle Pay is democratizing access to financial services'}
-            </p>
-          </div>
+      <div class='grid h-full gap-4 p-4 sm:gap-6 lg:grid-cols-2 bg-slate-100 rounded-2xl sm:p-6'>
+        <div class='flex flex-col justify-between'>
+          <h4 class='mb-2 text-base font-black xs:text-lg text-zinc-800 sm:text-xl xs:mb-3 sm:mb-6'>
+            {benefits?.savings?.title || 'Savings generated for customers'}
+          </h4>
+          <h3 class='mb-1 text-xl font-black xs:text-2xl text-zinc-800 sm:text-3xl xs:mb-2 sm:mb-4'>
+            {benefits?.savings?.amount || 'USD 5,000,000'}
+          </h3>
+          <p class='text-sm leading-tight xs:text-base text-zinc-900 sm:text-lg xs:leading-normal sm:leading-relaxed'>
+            {benefits?.savings?.description || 'Jingle Pay is democratizing access to financial services'}
+          </p>
         </div>
         <Image src={coupleImg} alt='Couple using app' class='object-cover w-full h-full rounded-2xl' loading='lazy' />
       </div>

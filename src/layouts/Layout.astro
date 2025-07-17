@@ -184,6 +184,12 @@ const fontFamily = lang === 'en' ? "'Hero New', sans-serif" : "'Bai Jamjuree', s
       return path.includes('terms-and-conditions');
     };
 
+    // Function to check if the current page is the privacy-policy page
+    const isPrivacyPolicyPage = () => {
+      const path = window.location.pathname;
+      return path.includes('privacy-policy');
+    };
+
     // Function to check if the current page is any homepage variant
     const isCurrentPageHomepage = () => {
       const path = window.location.pathname;
@@ -204,6 +210,7 @@ const fontFamily = lang === 'en' ? "'Hero New', sans-serif" : "'Bai Jamjuree', s
     // Check if we're on the homepage or a different page
     const isHomepage = isCurrentPageHomepage();
     const isTermsPage = isTermsAndConditionsPage();
+    const isPrivacyPage = isPrivacyPolicyPage();
 
     anchors.forEach((anchor) => {
       anchor.addEventListener('click', (e: Event) => {
@@ -211,8 +218,8 @@ const fontFamily = lang === 'en' ? "'Hero New', sans-serif" : "'Bai Jamjuree', s
 
         const hrefValue = (e.currentTarget as HTMLAnchorElement).getAttribute('href') || '';
 
-        // Special case for terms-and-conditions page - don't navigate, just scroll
-        if (isTermsPage && hrefValue.startsWith('#')) {
+        // Special case for terms-and-conditions and privacy-policy pages - don't navigate, just scroll
+        if ((isTermsPage || isPrivacyPage) && hrefValue.startsWith('#')) {
           const targetElement = document.querySelector(hrefValue);
           if (targetElement) {
             // Update URL without triggering navigation

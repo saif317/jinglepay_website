@@ -317,12 +317,8 @@ const isRtl = lang === 'ar';
           const targetId = this.getAttribute('href');
           const targetElement = document.querySelector(targetId);
           if (targetElement) {
-            const currentPath = window.location.pathname;
             const offsetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - 120;
             window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
-            if (history && history.pushState) {
-              history.pushState(null, null, currentPath + targetId);
-            }
           }
           return false;
         };
