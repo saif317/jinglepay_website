@@ -46,8 +46,9 @@ const alternateLanguage = currentCountry.languages.find((l) => l.code !== curren
       </div>
       <span class="text-[#121C26] text-base font-bold font-['DM_Sans'] leading-normal">{currentCountry.name}</span>
       <!-- Dropdown arrow -->
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="ml-0.5">
-        <path d="M4 6L8 10L12 6" stroke="#121C26" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <svg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg' class='ml-0.5'>
+        <path d='M4 6L8 10L12 6' stroke='#121C26' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'
+        ></path>
       </svg>
     </button>
     <div
@@ -92,9 +93,9 @@ const alternateLanguage = currentCountry.languages.find((l) => l.code !== curren
   <div class='relative language-selector'>
     <a
       href={getLanguageLink(alternateLanguage?.code || '')}
-      class='w-16 h-11 p-2 bg-[#F5F5F5] rounded-tr-xl rounded-br-xl inline-flex justify-start items-center cursor-pointer transition-all duration-200 hover:bg-[#EAEAEA]'
+      class='w-16 h-11 bg-[#F5F5F5] rounded-tr-xl rounded-br-xl flex justify-center items-center cursor-pointer transition-all duration-200 hover:bg-[#EAEAEA]'
     >
-      <span class="w-14 h-4 text-center text-[#121C26] text-base font-bold font-['DM_Sans'] leading-normal"
+      <span class="text-center text-[#121C26] text-base font-bold font-['DM_Sans']"
         >{alternateLanguage?.name || ''}</span
       >
     </a>
@@ -137,7 +138,7 @@ const alternateLanguage = currentCountry.languages.find((l) => l.code !== curren
   .country-selector {
     position: relative;
   }
-  
+
   /* Add hover effects to dropdown items */
   .dropdown-menu a:hover {
     background-color: rgba(121, 78, 255, 0.1);
@@ -166,7 +167,7 @@ const alternateLanguage = currentCountry.languages.find((l) => l.code !== curren
       // Get the closest dropdown to this button
       // @ts-ignore
       const dropdown = e.currentTarget.closest('.country-selector')?.querySelector('#country-dropdown');
-      
+
       // First hide all dropdowns
       const allDropdowns = document.querySelectorAll('#country-dropdown');
       allDropdowns.forEach((el) => {

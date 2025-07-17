@@ -1,6 +1,6 @@
 export default {
-  aboutUs: 'About Us',
-  services: 'Services',
-  contactUs: 'Contact Us',
-  downloadApp: 'Download App',
+  aboutUs: 'معلومات عنا',
+  services: 'خدمات',
+  contactUs: 'اتصل بنا',
+  downloadApp: 'تحميل التطبيق',
 };
