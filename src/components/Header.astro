@@ -19,35 +19,35 @@ const isUAE = country === 'are';
   class='flex fixed top-0 z-50 items-center justify-between px-3 sm:px-5 lg:px-10 py-3 sm:py-4 lg:py-8 w-full bg-white border-gray-200 transition-shadow duration-300 border-b-[1px] 2xl:px-30'
   id='main-header'
 >
-  <Link href='/' class=''>
-    <Logo class='w-[50px] sm:w-[60px] lg:w-[90px]' />
-  </Link>
+  <div class='flex items-center gap-x-16'>
+    <Link href='/' class=''>
+      <Logo class='w-[50px] sm:w-[60px] lg:w-[90px]' />
+    </Link>
 
-  <ul
-    class={`flex-row items-center justify-center hidden px-4 gap-x-8 lg:flex ${isUAE ? '' : 'rounded-[7px] bg-[#EEEEEE]'}`}
-  >
-    <li class='py-2'>
-      <Link
-        href='/company'
-        class='no-underline text-[#1c1c1c] text-md font-semibold transition-colors duration-300 hover:text-[#794eff]'
-        >{navbar.aboutUs}</Link
-      >
-    </li>
-    <li class='py-2'>
-      <Link
-        href='#benefits-section'
-        class='no-underline text-[#1c1c1c] text-md font-semibold transition-colors duration-300 hover:text-[#794eff]'
-        >{navbar.services}</Link
-      >
-    </li>
-    <li class='py-2'>
-      <Link
-        href='/contact'
-        class='no-underline text-[#1c1c1c] text-md font-semibold transition-colors duration-300 hover:text-[#794eff]'
-        >{navbar.contactUs}</Link
-      >
-    </li>
-  </ul>
+    <ul class={`flex-row items-center justify-center hidden gap-x-8 lg:flex ${isUAE ? '' : ''}`}>
+      <li class='py-2'>
+        <Link
+          href='/company'
+          class='no-underline text-[#1c1c1c] text-md font-semibold transition-colors duration-300 hover:text-[#794eff]'
+          >{navbar.aboutUs}</Link
+        >
+      </li>
+      <li class='py-2'>
+        <Link
+          href='#benefits-section'
+          class='no-underline text-[#1c1c1c] text-md font-semibold transition-colors duration-300 hover:text-[#794eff]'
+          >{navbar.services}</Link
+        >
+      </li>
+      <li class='py-2'>
+        <Link
+          href='/contact'
+          class='no-underline text-[#1c1c1c] text-md font-semibold transition-colors duration-300 hover:text-[#794eff]'
+          >{navbar.contactUs}</Link
+        >
+      </li>
+    </ul>
+  </div>
 
   <nav class='flex items-center'>
     <div class='flex items-center gap-x-1 sm:gap-x-2 direction-ltr'>
@@ -63,7 +63,7 @@ const isUAE = country === 'are';
       </div>
 
       <!-- Download button hidden on small screens (<380px) -->
-      <div class="hidden sm:block lg:hidden">
+      <div class='hidden sm:block lg:hidden'>
         <button
           id='header-download-sm'
           type='button'
@@ -73,13 +73,9 @@ const isUAE = country === 'are';
         >
       </div>
 
-      {isUAE ? 
-        <UAESelector className="ml-auto" /> 
-      : 
-        <CountryLanguageSelector className="ml-auto" />
-      }
+      {isUAE ? <UAESelector className='ml-auto' /> : <CountryLanguageSelector className='ml-auto' />}
 
-      <button id='menu-toggle' class='relative w-6 h-6 overflow-hidden cursor-pointer lg:hidden ml-1'>
+      <button id='menu-toggle' class='relative w-6 h-6 ml-1 overflow-hidden cursor-pointer lg:hidden'>
         <!-- <div class='absolute top-0 left-0 w-6 h-6'></div> -->
         <div class='w-4 h-0 left-[4px] top-[6px] absolute outline-2 outline-offset-[-1px] outline-[#794EFF]'></div>
         <div class='w-4 h-0 left-[4px] top-[12px] absolute outline-2 outline-offset-[-1px] outline-[#794EFF]'></div>
@@ -117,17 +113,13 @@ const isUAE = country === 'are';
           id='header-download-menu'
           href='#'
           target='_blank'
-          class='no-underline px-6 py-3 text-lg font-semibold text-white bg-black rounded-full hover:bg-gray-600'
+          class='px-6 py-3 text-lg font-semibold text-white no-underline bg-black rounded-full hover:bg-gray-600'
         >
           {navbar.downloadApp}
         </a>
       </li>
 
-      {isUAE ? 
-        <UAESelector className="flex lg:hidden" /> 
-      : 
-        <CountryLanguageSelector className="flex lg:hidden" />
-      }
+      {isUAE ? <UAESelector className='flex lg:hidden' /> : <CountryLanguageSelector className='flex lg:hidden' />}
     </ul>
   </nav>
 </header>
