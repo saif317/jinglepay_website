@@ -927,7 +927,8 @@ const exchangeRate = `1.00 ${sendCurrency} = ${exchangeData.quotations[0]?.trans
   window.getRemittanceRates = getRemittanceRates;
   console.log('TransferCalculator redirect module loaded');
 
-  // Currency to country code mapping
+  // Countries data mapping (populated later) and currency->country mapping
+  const COUNTRIES = {};
   let currencyToCountry = {};
 
   // Fetch countries data from API
@@ -939,7 +940,14 @@ const exchangeRate = `1.00 ${sendCurrency} = ${exchangeData.quotations[0]?.trans
         throw new Error(`API request failed with status ${response.status}`);
       }
 
-      const data = await response.json();
+      const raw = await response.text();
+      let data;
+      try {
+        data = JSON.parse(raw);
+      } catch (parseErr) {
+        console.error('Countries API returned non-JSON response, falling back:', parseErr);
+        throw parseErr;
+      }
       console.log('Countries data fetched:', data.length);
 
       // Process the data

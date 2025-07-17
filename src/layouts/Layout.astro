@@ -48,7 +48,7 @@ const fontFamily = lang === 'en' ? "'Hero New', sans-serif" : "'Bai Jamjuree', s
   </head>
   <body style={lang === 'ur' || lang === 'ar' ? 'direction: rtl' : 'direction: ltr'}>
     <Header />
-    <main>
+    <main class='min-h-screen mx-auto overflow-hidden max-w-[2100px]'>
       <slot />
     </main>
     <Footer />
@@ -177,13 +177,13 @@ const fontFamily = lang === 'en' ? "'Hero New', sans-serif" : "'Bai Jamjuree', s
   document.addEventListener('DOMContentLoaded', () => {
     // Handle smooth scrolling for anchor links
     const anchors = document.querySelectorAll('a[href^="#"], a[href*="#"]');
-    
+
     // Function to check if the current page is the terms-and-conditions page
     const isTermsAndConditionsPage = () => {
       const path = window.location.pathname;
       return path.includes('terms-and-conditions');
     };
-    
+
     // Function to check if the current page is any homepage variant
     const isCurrentPageHomepage = () => {
       const path = window.location.pathname;
@@ -217,7 +217,7 @@ const fontFamily = lang === 'en' ? "'Hero New', sans-serif" : "'Bai Jamjuree', s
           if (targetElement) {
             // Update URL without triggering navigation
             history.pushState({}, '', window.location.pathname + hrefValue);
-            
+
             // Scroll with offset for header
             window.scrollTo({
               top: targetElement.getBoundingClientRect().top + window.scrollY - 120,
@@ -226,7 +226,7 @@ const fontFamily = lang === 'en' ? "'Hero New', sans-serif" : "'Bai Jamjuree', s
             return;
           }
         }
-        
+
         // Case 1: Link to a different page with an anchor (e.g., /company#mission)
         if (hrefValue.includes('/') && hrefValue.includes('#')) {
           // This is a link to another page with an anchor

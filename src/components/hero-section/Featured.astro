@@ -228,21 +228,17 @@ const isUAE = country === 'are';
 ---
 
 <section
-  class='relative flex flex-col gap-y-4 items-center px-4 pt-12 pb-16 mx-auto w-full text-center md:pt-16 bg-[#F6F6F6]'
+  class='overflow-hidden relative flex flex-col gap-y-4 items-center px-4 pt-12 pb-16 mx-auto w-full text-center md:pt-16 bg-[#F6F6F6]'
   id='featured-section'
 >
-  {isUAE && (
-    <>
-      <div
-        class='absolute top-[1.5rem] right-[-3.5rem] w-40 h-40 rounded-full opacity-40 bg-gradient-to-r from-sky-500/40 to-green-300/40 blur-xl'
-      >
-      </div>
-      <div
-        class='absolute bottom-[1.5rem] left-[-1.5rem] w-32 h-32 rounded-full opacity-20 bg-gradient-to-r from-sky-500 to-violet-500 blur-xl'
-      >
-      </div>
-    </>
-  )}
+  {
+    isUAE && (
+      <>
+        <div class='absolute top-[1.5rem] right-[-3.5rem] w-40 h-40 rounded-full opacity-40 bg-gradient-to-r from-sky-500/40 to-green-300/40 blur-xl'></div>
+        <div class='absolute bottom-[1.5rem] left-[-1.5rem] w-32 h-32 rounded-full opacity-20 bg-gradient-to-r from-sky-500 to-violet-500 blur-xl'></div>
+      </>
+    )
+  }
 
   <h2 class='text-gray-900 text-xl lg:text-2xl font-extrabold font-[Hero_New] leading-7'>
     {translations.featuredIn}
@@ -298,12 +294,13 @@ const isUAE = country === 'are';
     // Calculate the width of a single set of original logos
     originalItems.forEach((item) => {
       const style = window.getComputedStyle(item);
-      singleSetWidth += (item as HTMLElement).offsetWidth + parseFloat(style.marginLeft) + parseFloat(style.marginRight);
+      singleSetWidth +=
+        (item as HTMLElement).offsetWidth + parseFloat(style.marginLeft) + parseFloat(style.marginRight);
     });
 
     function cloneAndArrangeLogos() {
       if (!track) return;
-      
+
       // Clear existing clones if any (e.g., on resize, though not handled here yet)
       const clones = track.querySelectorAll('.clone');
       clones.forEach((clone) => clone.remove());
@@ -483,7 +480,7 @@ const isUAE = country === 'are';
       // Initial cursor style
       container.style.cursor = 'grab';
     }
-    
+
     document.addEventListener('mousemove', onDragMove);
     document.addEventListener('touchmove', onDragMove, { passive: false });
 

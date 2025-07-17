@@ -1,7 +1,7 @@
 ---
 /**
  * UAE Hero Section Component
- * 
+ *
  * This component serves as the main hero section for the UAE landing page,
  * assembling modular components to create a cohesive user experience.
  * It imports and arranges HeroContent, AppRatings, and TransferCalculator components.
@@ -20,36 +20,35 @@ const calculatorData = {
   receiveAmount: '1000',
   receiveCurrency: 'USD',
   transferFee: calculator?.transferFee || '0.000 AED',
-  exchangeRate: calculator?.exchangeRate || '1.00 AED = 0.27 USD'
+  exchangeRate: calculator?.exchangeRate || '1.00 AED = 0.27 USD',
 };
 ---
 
 <!-- Hero section with a two-column layout that stacks on mobile -->
-<section 
-  class="flex flex-col lg:flex-row justify-between items-center gap-6 sm:gap-6 pt-20 sm:pt-28 lg:pt-32 pb-8 sm:pb-16 px-4 sm:px-6 lg:px-16 max-w-7xl mx-auto text-center lg:text-left"
-  aria-labelledby="hero-heading"
+<section
+  class='flex flex-col items-center justify-between gap-6 px-4 pt-20 pb-8 mx-auto text-center lg:flex-row sm:gap-6 sm:pt-28 lg:pt-32 sm:pb-16 sm:px-6 lg:px-16 max-w-7xl lg:text-left'
+  aria-labelledby='hero-heading'
 >
   <!-- Left Column: Text content and app ratings -->
-  <div class="w-full lg:w-[653px] flex flex-col justify-start items-center lg:items-start gap-4 sm:gap-5 lg:pr-12 mb-8 lg:mb-0 text-center lg:text-left">
+  <div
+    id='benefit-1'
+    class='w-full lg:w-[653px] flex flex-col justify-start items-center lg:items-start gap-4 sm:gap-5 lg:pr-12 mb-8 lg:mb-0 text-center lg:text-left'
+  >
     <!-- Hero content (heading and description) -->
-    <HeroContent 
-      heading={uaeHero?.heading || "Send money,"}
-      highlightedText={uaeHero?.highlightedText || "Fee-free!"}
-      description={uaeHero?.description || "Jingle Pay is simplifying all money! For everyday financial needs. Try our calculator to see how much you can save with us!"}
-      anywhere={uaeHero?.anywhere || "anywhere,"}
-      anytime={uaeHero?.anytime || "anytime"}
-      anyway={uaeHero?.anyway || "& anyway you want"}
+    <HeroContent
+      heading={uaeHero?.heading || 'Send money,'}
+      highlightedText={uaeHero?.highlightedText || 'Fee-free!'}
+      description={uaeHero?.description ||
+        'Jingle Pay is simplifying all money! For everyday financial needs. Try our calculator to see how much you can save with us!'}
+      anywhere={uaeHero?.anywhere || 'anywhere,'}
+      anytime={uaeHero?.anytime || 'anytime'}
+      anyway={uaeHero?.anyway || '& anyway you want'}
     />
-    
+
     <!-- App ratings component -->
-    <AppRatings 
-      appStoreRating="4.8"
-      appStoreReviews="152k"
-      googlePlayRating="4.8"
-      googlePlayReviews="1.3M"
-    /> 
+    <AppRatings appStoreRating='4.8' appStoreReviews='152k' googlePlayRating='4.8' googlePlayReviews='1.3M' />
   </div>
-  
+
   <!-- Right Column: Calculator component -->
   <TransferCalculator {...calculatorData} />
 </section>

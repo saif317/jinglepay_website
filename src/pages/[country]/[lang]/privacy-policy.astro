@@ -1,20 +1,38 @@
 ---
 import Layout from '@layouts/Layout.astro';
 import { getStaticPathsWrapper } from '@util/getStaticPaths';
-import PrivacyPolicy from '@components/privacy-policy/index.astro';
+import PrivacyPolicyUAE from '@components/privacy-policy/uae.astro';
+
+// Import MDX content for UAE languages
+import EnContent from '../../../content/privacy-policy/are/en.mdx';
+import ArContent from '../../../content/privacy-policy/are/ar.mdx';
+import PrivacyPolicyDefault from '@components/privacy-policy/index.astro';
+
+const { country, lang } = Astro.params;
+
+// Determine which MDX file to render based on `lang`
+const Content = lang === 'ar' ? ArContent : EnContent;
+
 
 export const getStaticPaths = getStaticPathsWrapper(
   [
     'pak',
-    //  'uae'
+    'are',
   ],
   {
     pak: ['en', 'ur'],
-    // uae: ['en', 'ar'],
+    are: ['en', 'ar'],
   }
 );
 ---
 
 <Layout>
-  <PrivacyPolicy />
+  {country === 'are' ? (
+    <PrivacyPolicyUAE lang={lang} Content={Content} />
+  ) : (
+    <PrivacyPolicyDefault />
+  )}
 </Layout>
+
+
+
