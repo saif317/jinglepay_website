@@ -1,0 +1,166 @@
+---
+import Layout from '@layouts/Layout.astro';
+import { getStaticPathsWrapper } from '@util/getStaticPaths';
+
+export const getStaticPaths = getStaticPathsWrapper(['are'], {
+  are: ['en', 'ar'],
+});
+
+const { lang } = Astro.params;
+const isRtl = lang === 'ar';
+---
+
+<Layout>
+  <div class='py-10 mt-[10rem] mb-[10rem] 3xl:min-h-screen bg-gray-50'>
+    <div class={`mx-auto max-w-4xl px-4 lg:px-8 ${isRtl ? 'text-right' : 'text-left'}`}>
+      <!-- Header Section -->
+      <div class='p-8 mb-8 bg-white rounded-lg shadow-sm'>
+        <div class='mb-8 text-center'>
+          <h1 class='mb-2 text-3xl font-bold text-gray-900'>Joining Offer</h1>
+          <p class='text-lg text-gray-600'>
+            Complete your Sign Up and get rewarded for 30 AED with all terms and conditions applied.
+          </p>
+        </div>
+      </div>
+
+      <!-- Offer Content -->
+      <div class='p-8 bg-white rounded-lg shadow-sm'>
+        <div class='prose prose-lg max-w-none'>
+          <!-- Campaign Header -->
+          <div class='p-6 mb-8 border-l-4 border-green-500 rounded-r-lg bg-green-50'>
+            <div class='flex items-start'>
+              <div class='flex-shrink-0'>
+                <svg class='w-6 h-6 mt-1 text-green-500' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                  <path
+                    stroke-linecap='round'
+                    stroke-linejoin='round'
+                    stroke-width='2'
+                    d='M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'></path>
+                </svg>
+              </div>
+              <div class='ml-3'>
+                <h2 class='mb-1 text-lg font-semibold text-green-800'>30 AED Incentive Campaign</h2>
+                <p class='text-sm text-green-700'>Terms and Conditions</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Welcome Message -->
+          <div class='p-6 mb-8 rounded-lg bg-blue-50'>
+            <p class='leading-relaxed text-gray-700'>
+              We're excited you chose to have a Jingle Pay account to simplify your money services 😊. Your 30 AED
+              reward will be deposited in your account in 15 days.
+            </p>
+          </div>
+
+          <!-- FAQ Section -->
+          <div class='space-y-8'>
+            <!-- Question 1 -->
+            <div class='p-6 rounded-lg bg-gray-50'>
+              <h3 class='mb-4 text-xl font-semibold text-gray-900'>1. What is the offer?</h3>
+              <p class='leading-relaxed text-gray-700'>
+                Complete your sign-up/onboarding and receive 30 AED to your Jingle Pay account.
+              </p>
+            </div>
+
+            <!-- Question 2 -->
+            <div class='p-6 rounded-lg bg-gray-50'>
+              <h3 class='mb-4 text-xl font-semibold text-gray-900'>2. What do I need to do to get my 30 AED?</h3>
+              <p class='mb-4 text-gray-700'>To receive the 30 AED reward, you need to:</p>
+              <ul class='ml-6 space-y-2 text-gray-700 list-disc'>
+                <li>Download the Jingle Pay app from the Apple App Store or Google Play Store</li>
+                <li>Complete your sign-up/onboarding</li>
+                <li>Receive 30 AED in your Jingle Pay account within 15 days</li>
+              </ul>
+            </div>
+
+            <!-- Question 3 -->
+            <div class='p-6 rounded-lg bg-gray-50'>
+              <h3 class='mb-4 text-xl font-semibold text-gray-900'>3. When will I receive my 30 AED?</h3>
+              <p class='leading-relaxed text-gray-700'>
+                After completing all the steps of your sign-up/onboarding, you will receive 30 AED within 15 days.
+              </p>
+            </div>
+
+            <!-- Question 4 -->
+            <div class='p-6 rounded-lg bg-gray-50'>
+              <h3 class='mb-4 text-xl font-semibold text-gray-900'>4. Who is this offer for?</h3>
+              <p class='leading-relaxed text-gray-700'>
+                This offer is for prospective Jingle Pay customers who have not completed their onboarding/sign-up
+                process yet. This offer is limited to the first 3000 customers. So, hurry up and sign up!
+              </p>
+            </div>
+
+            <!-- Question 5 -->
+            <div class='p-6 rounded-lg bg-gray-50'>
+              <h3 class='mb-4 text-xl font-semibold text-gray-900'>5. Why haven't I received my 30 AED?</h3>
+              <p class='leading-relaxed text-gray-700'>
+                If you have not received the 30 AED reward in 15 days, please contact our customer support team at
+                <a href='mailto:support@jinglepay.com' class='text-blue-600 underline'>support@jinglepay.com</a>
+                or via Live Chat in-app.
+              </p>
+            </div>
+
+            <!-- Question 6 - Terms -->
+            <div class='p-6 border border-gray-200 rounded-lg bg-gray-50'>
+              <h3 class='mb-4 text-xl font-semibold text-gray-900'>6. What are the offer's terms?</h3>
+
+              <div class='space-y-6 text-gray-700'>
+                <div>
+                  <h4 class='mb-2 font-semibold text-gray-900'>Eligible Participants:</h4>
+                  <p class='leading-relaxed'>
+                    Open only to individuals who: (1) are residents of the United Arab Emirates (2) are 18 years old and
+                    above (3) have completed all the steps of the onboarding/sign-up process.
+                  </p>
+                </div>
+
+                <div>
+                  <h4 class='mb-2 font-semibold text-gray-900'>Offer Period:</h4>
+                  <p class='leading-relaxed'>
+                    This offer starts on <span class='font-semibold'>25th November 2022</span> and valid till <span
+                      class='font-semibold'>28th February 2023</span
+                    >
+                  </p>
+                </div>
+
+                <div>
+                  <h4 class='mb-2 font-semibold text-gray-900'>How it works:</h4>
+                  <p class='leading-relaxed'>
+                    To qualify for the Reward, you must download the Jingle Pay application and complete your
+                    onboarding/sign-up process. After completing your sign-up, 30 AED will be sent to your Jingle Pay
+                    account within 15 days. Should you not qualify for completing the onboarding/sign-up process for any
+                    reason, you will not qualify for receiving the 30 AED reward. The reward is limited to the first
+                    3000 customers within the Offer Period; Rewards will no longer be available once the limit is
+                    reached. Given you can only sign-up once, there is a limit of one (1) reward per Jingle Pay account.
+                  </p>
+                </div>
+
+                <div>
+                  <h4 class='mb-2 font-semibold text-gray-900'>Miscellaneous:</h4>
+                  <p class='leading-relaxed'>
+                    Jingle Pay may provide an alternate reward of equal value if it is unable for any reason to fulfill
+                    the Reward. Jingle Pay reserves the right to cancel, suspend or modify this offer in part or in its
+                    entirety at any time without notice, for any reason in its sole discretion. Similar offers may run
+                    at the same time; qualification for this offer does not constitute qualification for any other
+                    offer. Jingle Pay is not responsible and/or liable if any e-mail, Reward, or offer-related materials
+                    or correspondence are lost, fraudulent, abusive, stolen, late, incomplete, illegible, interrupted,
+                    delayed, altered, defective, misdirected, tampered with, or irregular in any way or if any
+                    participant's e-mail address, Jingle Pay Account, or other contact information does not work, is
+                    deleted, or is changed without participant giving prior written notice to Jingle Pay. Jingle Pay is
+                    not responsible and/or liable if a user does not receive an award because they do not qualify for a
+                    Jingle Pay account (in line with our regulatory bodies). Jingle Pay reserves the right to review any
+                    account related to this offer, in its sole discretion, without notice, and delay or reverse
+                    completing of the Reward. An offer is void when an account is prohibited, fraudulent, abusive, not
+                    completed through legitimate channels or irregular in any way. Any questions relating to the offer
+                    will be resolved in Jingle Pay's sole discretion and its decisions related to the offer will be
+                    final and binding.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</Layout>

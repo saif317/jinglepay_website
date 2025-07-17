@@ -1,0 +1,174 @@
+---
+import Layout from '@layouts/Layout.astro';
+import { getStaticPathsWrapper } from '@util/getStaticPaths';
+
+export const getStaticPaths = getStaticPathsWrapper(['are'], {
+  are: ['en', 'ar'],
+});
+
+const { lang } = Astro.params;
+const isRtl = lang === 'ar';
+---
+
+<Layout>
+  <div class='py-10 mt-[10rem] mb-[10rem] 3xl:min-h-screen bg-gray-50'>
+    <div class={`mx-auto max-w-4xl px-4 lg:px-8 ${isRtl ? 'text-right' : 'text-left'}`}>
+      <!-- Header Section -->
+      <div class='p-8 mb-8 bg-white rounded-lg shadow-sm'>
+        <div class='mb-8 text-center'>
+          <h1 class='mb-2 text-3xl font-bold text-gray-900'>Referral Offer</h1>
+          <p class='text-lg text-gray-600'>
+            Complete your Sign Up and get rewarded for 20 AED with all terms and conditions applied.
+          </p>
+        </div>
+      </div>
+
+      <!-- Offer Content -->
+      <div class='p-8 bg-white rounded-lg shadow-sm'>
+        <div class='prose prose-lg max-w-none'>
+          <!-- Campaign Header -->
+          <div class='p-6 mb-8 border-l-4 border-blue-500 rounded-r-lg bg-blue-50'>
+            <div class='flex items-start'>
+              <div class='flex-shrink-0'>
+                <svg class='w-6 h-6 mt-1 text-blue-500' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                  <path
+                    stroke-linecap='round'
+                    stroke-linejoin='round'
+                    stroke-width='2'
+                    d='M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z'
+                  ></path>
+                </svg>
+              </div>
+              <div class='ml-3'>
+                <h2 class='mb-1 text-lg font-semibold text-blue-800'>20 AED Incentive Campaign</h2>
+                <p class='text-sm text-blue-700'>Terms and Conditions</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Welcome Message -->
+          <div class='p-6 mb-8 rounded-lg bg-green-50'>
+            <p class='leading-relaxed text-gray-700'>
+              We're excited you chose to have a Jingle Pay account to simplify your money services 😊. Your 20 AED
+              reward will be deposited in your account soon.
+            </p>
+          </div>
+
+          <!-- FAQ Section -->
+          <div class='space-y-8'>
+            <!-- Question 1 -->
+            <div class='p-6 rounded-lg bg-gray-50'>
+              <h3 class='mb-4 text-xl font-semibold text-gray-900'>1. What is the offer?</h3>
+              <p class='leading-relaxed text-gray-700'>
+                We're excited you chose to have a Jingle Pay account to simplify your money services 😊. Your 20 AED
+                reward will be deposited in your account soon.
+              </p>
+            </div>
+
+            <!-- Question 2 -->
+            <div class='p-6 rounded-lg bg-gray-50'>
+              <h3 class='mb-4 text-xl font-semibold text-gray-900'>2. What do I need to do to get my 20 AED?</h3>
+              <p class='mb-4 text-gray-700'>To receive the 20AED reward, you need to:</p>
+              <ul class='ml-6 space-y-2 text-gray-700 list-disc'>
+                <li>Make your first international money transfer using our world-first remittance marketplace</li>
+                <li>Be one of the first 1000 users to send money within campaign period</li>
+                <li>Receive 20 AEDs in your Jingle Pay account within 15 days</li>
+              </ul>
+            </div>
+
+            <!-- Question 3 -->
+            <div class='p-6 rounded-lg bg-gray-50'>
+              <h3 class='mb-4 text-xl font-semibold text-gray-900'>3. When will I receive my 20 AED?</h3>
+              <p class='leading-relaxed text-gray-700'>
+                After making your first successful international money transfer to the provided destination using our
+                world-first remittance marketplace, you will receive 20 AED within 15 days.
+              </p>
+            </div>
+
+            <!-- Question 4 -->
+            <div class='p-6 rounded-lg bg-gray-50'>
+              <h3 class='mb-4 text-xl font-semibold text-gray-900'>4. Who is this offer for?</h3>
+              <p class='leading-relaxed text-gray-700'>
+                This offer is for Jingle Pay users who have completed their onboarding and are making their first
+                international money transfer with our world-first remittance marketplace. This offer is limited time and
+                for first 1000 users. So, hurry up!
+              </p>
+            </div>
+
+            <!-- Question 5 -->
+            <div class='p-6 rounded-lg bg-gray-50'>
+              <h3 class='mb-4 text-xl font-semibold text-gray-900'>5. Why haven't I received my 20 AED?</h3>
+              <p class='leading-relaxed text-gray-700'>
+                If you have not received the 20AED reward in 15 days, please contact our customer support team at
+                <a href='mailto:support@jinglepay.com' class='text-blue-600 underline'>support@jinglepay.com</a>
+                or via Live Chat in-app.
+              </p>
+            </div>
+
+            <!-- Question 6 - Terms -->
+            <div class='p-6 border border-gray-200 rounded-lg bg-gray-50'>
+              <h3 class='mb-4 text-xl font-semibold text-gray-900'>6. What are the offer's terms?</h3>
+
+              <div class='space-y-6 text-gray-700'>
+                <div>
+                  <h4 class='mb-2 font-semibold text-gray-900'>Eligible Participants:</h4>
+                  <p class='leading-relaxed'>Open only to individuals who:</p>
+                  <ul class='mt-2 ml-6 space-y-1 list-disc'>
+                    <li>have completed their onboarding with Jingle Pay</li>
+                    <li>
+                      are making their first international money transfer using Jingle Pay's world-first remittance
+                      marketplace
+                    </li>
+                    <li>Within the 1st 1000 users making international money transfer</li>
+                  </ul>
+                </div>
+
+                <div>
+                  <h4 class='mb-2 font-semibold text-gray-900'>Offer Period:</h4>
+                  <p class='leading-relaxed'>
+                    This offer starts on <span class='font-semibold'>01 January 2023</span> and valid till <span
+                      class='font-semibold'>28th February 2023</span
+                    >
+                  </p>
+                </div>
+
+                <div>
+                  <h4 class='mb-2 font-semibold text-gray-900'>How it works:</h4>
+                  <p class='leading-relaxed'>
+                    To qualify for the Reward, you must make your first international money transfer using Jingle Pay's
+                    remittance marketplace. After successfully completing your international money transfer to the
+                    provided destination, 20AED will be credited to your Jingle Pay account within 15 days. Should your
+                    money transfer fail for any reason, you will not qualify for receiving the 20AED reward. This reward
+                    is limited to your first (1) international money transfer only.
+                  </p>
+                </div>
+
+                <div>
+                  <h4 class='mb-2 font-semibold text-gray-900'>Miscellaneous:</h4>
+                  <p class='leading-relaxed'>
+                    Jingle Pay may provide an alternate reward of equal value if it is unable for any reason to fulfill
+                    the Reward. Jingle Pay reserves the right to cancel, suspend or modify this offer in part or in its
+                    entirety at any time without notice, for any reason in its sole discretion. Similar offers may run
+                    at the same time; qualification for this offer does not constitute qualification for any other
+                    offer. Jingle Pay is not responsible and/or liable if any e-mail, Reward, or offer-related materials
+                    or correspondence are lost, fraudulent, abusive, stolen, late, incomplete, illegible, interrupted,
+                    delayed, altered, defective, misdirected, tampered with, or irregular in any way or if any
+                    participant's e-mail address, Jingle Pay Account, or other contact information does not work, is
+                    deleted, or is changed without participant giving prior written notice to Jingle Pay. Jingle Pay is
+                    not responsible and/or liable if a user does not receive an award because their international money
+                    transfer was not successful for any reason. Jingle Pay reserves the right to review any account
+                    related to this offer, in its sole discretion, without notice, and delay or reverse completing of
+                    the Reward. An offer is void when an account or a transaction is prohibited, fraudulent, abusive,
+                    not completed through legitimate channels or irregular in any way. Any questions relating to the
+                    offer will be resolved at Jingle Pay's sole discretion and its decisions related to the offer will
+                    be final and binding.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</Layout>

@@ -21,23 +21,33 @@ const sections = [
   { id: 'use-of-jingle-pay', number: '3', title: 'Use of Jingle Pay Mobile Application' },
   { id: 'jingle-pay-prepaid-card', number: '4', title: 'Jingle Pay Prepaid Card ("The Card")' },
   { id: 'using-the-account', number: '5', title: 'Using the Account, including the Card and Wallet' },
-  { id: 'loading-reloading', number: '6', title: 'Loading and Re-loading' },
+  { id: 'loading-and-reloading', number: '6', title: 'Loading and Re-loading' },
   { id: 'card-pin-security', number: '7', title: 'Card, PIN and Passcode Security' },
   { id: 'unauthorized-transactions', number: '8', title: 'Unauthorized transactions' },
   { id: 'account-fees', number: '9', title: 'Account Fees and Limits' },
   { id: 'redeeming-funds', number: '10', title: 'Redeeming Unspent/Available Funds' },
   { id: 'personal-data', number: '11', title: 'Personal Data associated with your Account' },
-  { id: 'using-account', number: '12', title: 'Using the Account, including the Card and Wallet' },
-  { id: 'disclaimers', number: '13', title: 'Disclaimers' },
-  { id: 'initiating-funds', number: '14', title: 'Initiating Funds Transfer' },
-  { id: 'funds-cancellation', number: '15', title: 'Funds Transfer cancellation' },
-  { id: 'due-diligence', number: '16', title: 'Due Diligence on Funds Transfer' },
-  { id: 'foreign-exchange', number: '17', title: 'Foreign Exchange Rate' },
-  { id: 'security', number: '18', title: 'Security' },
-  { id: 'communication', number: '19', title: 'Communication and Contact' },
-  { id: 'termination', number: '20', title: 'Term and Termination' },
-  { id: 'disclaimers-limitations', number: '22', title: 'Disclaimers and Limitations of Liability' },
-  { id: 'additional-transaction', number: '23', title: 'Additional Transaction Information' },
+  { id: 'disclaimers', number: '12', title: 'Disclaimers in relation to Account, including Card Issuance and Usage' },
+  { id: 'initiating-funds-transfer', number: '13', title: 'Initiating Funds Transfer Transaction' },
+  { id: 'loading-reloading', number: '14', title: 'Funds Transfer cancellation and refund' },
+  { id: 'due-diligence-funds-transfer', number: '15', title: 'Due Diligence on Funds Transfer' },
+  { id: 'foreign-exchange-rate', number: '16', title: 'Foreign Exchange Rate' },
+  { id: 'liability', number: '17', title: 'Liability' },
+  { id: 'indemnification', number: '18', title: 'Indemnification' },
+  { id: 'data-protection', number: '19', title: 'Data Protection' },
+  { id: 'intellectual-property', number: '20', title: 'Intellectual Property and Right to Use' },
+  { id: 'copyright-infringement', number: '21', title: 'Copyright Infringement' },
+  { id: 'force-majeure', number: '22', title: 'Events Outside Our Control' },
+  { id: 'privacy', number: '23', title: 'Privacy' },
+  { id: 'third-party-links', number: '24', title: 'Third Party Links' },
+  { id: 'suggestions', number: '25', title: 'Suggestions' },
+  { id: 'right-to-vary-terms', number: '26', title: 'Our rights to vary these terms' },
+  { id: 'general', number: '27', title: 'General' },
+  { id: 'communication-and-notices', number: '28', title: 'Communication and Notices' },
+  { id: 'law-jurisdiction', number: '29', title: 'Law, Jurisdiction' },
+  { id: 'changing-terms', number: '30', title: 'Changing the terms' },
+  { id: 'third-party-providers', number: '31', title: 'Third party providers' },
+  { id: 'pre-paid-cards', number: '32', title: 'Pre-Paid Cards' },
 ];
 
 const isRtl = lang === 'ar';
@@ -61,13 +71,13 @@ const isRtl = lang === 'ar';
               <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'></path>
             </svg>
           </summary>
-          <nav class='p-5 pt-0 border-t border-indigo-100'>
+          <nav class='p-5 pt-0 border-t border-indigo-100 overflow-y-auto max-h-96'>
             <ul class='space-y-3'>
               {
                 sections.map((section) => (
                   <li>
                     <a href={`#${section.id}`} class='flex items-start text-sm hover:text-primary-600 group'>
-                      <span class='mr-2 font-medium text-indigo-800 group-hover:text-primary-600'>
+                      <span class='mr-2 font-medium text-indigo-800 whitespace-nowrap group-hover:text-primary-600'>
                         {section.number}.
                       </span>
                       <span>{section.title}</span>
@@ -83,7 +93,7 @@ const isRtl = lang === 'ar';
       <div class={`flex ${isRtl ? 'flex-row-reverse' : ''} gap-10`}>
         <!-- Sidebar Navigation (Desktop) -->
         <aside class='flex-shrink-0 hidden w-64 tac-sidebar lg:block'>
-          <div class='sticky p-5 bg-white border border-indigo-100 rounded-lg shadow-sm top-24'>
+          <div class='sticky top-24 p-5 bg-white border border-indigo-100 rounded-lg shadow-sm overflow-y-auto max-h-[calc(100vh-6rem)]'>
             <h3 class='pb-2 mb-4 text-lg font-semibold text-indigo-900 border-b border-indigo-200'>In this document</h3>
             <nav>
               <ul class='space-y-3'>
@@ -91,7 +101,7 @@ const isRtl = lang === 'ar';
                   sections.map((section) => (
                     <li>
                       <a href={`#${section.id}`} class='flex items-start text-sm hover:text-primary-600 group'>
-                        <span class='mr-2 font-medium text-indigo-800 group-hover:text-primary-600'>
+                        <span class='mr-2 font-medium text-indigo-800 whitespace-nowrap group-hover:text-primary-600'>
                           {section.number}.
                         </span>
                         <span>{section.title}</span>
@@ -230,6 +240,26 @@ const isRtl = lang === 'ar';
     .tac-content :global(h2 a[id]) {
       scroll-margin-top: 2rem;
     }
+
+    /* Ensure long link text wraps and prevent horizontal overflow */
+    .tac-sidebar a,
+    details a {
+      white-space: normal;
+      word-break: break-word;
+    }
+
+    /* Enable scrolling for long sidebar lists */
+    .tac-sidebar ul {
+      overflow-y: auto;
+      max-height: calc(100vh - 12rem);
+    }
+
+    /* Maintain mobile dropdown list scrolling */
+    details nav {
+      overflow-y: auto;
+      max-height: 24rem;
+    }
+
 
     /* Improve numbered list appearance */
     .tac-content :global(ol) {
