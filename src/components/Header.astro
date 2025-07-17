@@ -19,109 +19,111 @@ const isUAE = country === 'are';
   class='flex fixed top-0 z-50 items-center justify-between px-3 sm:px-5 lg:px-10 py-3 sm:py-4 lg:py-8 w-full bg-white border-gray-200 transition-shadow duration-300 border-b-[1px] 2xl:px-30'
   id='main-header'
 >
-  <div class='flex items-center gap-x-16'>
-    <Link href='/' class=''>
-      <Logo class='w-[50px] sm:w-[60px] lg:w-[90px]' />
-    </Link>
+  <div class='flex justify-center w-full gap-[21rem]'>
+    <div class='flex items-center gap-x-16'>
+      <Link href='/' class=''>
+        <Logo class='w-[50px] sm:w-[60px] lg:w-[90px]' />
+      </Link>
 
-    <ul class={`flex-row items-center justify-center hidden gap-x-8 lg:flex ${isUAE ? '' : ''}`}>
-      <li class='py-2'>
-        <Link
-          href='/company'
-          class='no-underline text-[#1c1c1c] text-md font-semibold transition-colors duration-300 hover:text-[#794eff]'
-          >{navbar.aboutUs}</Link
-        >
-      </li>
-      <li class='py-2'>
-        <Link
-          href='#benefits-section'
-          class='no-underline text-[#1c1c1c] text-md font-semibold transition-colors duration-300 hover:text-[#794eff]'
-          >{navbar.services}</Link
-        >
-      </li>
-      <li class='py-2'>
-        <Link
-          href='/contact'
-          class='no-underline text-[#1c1c1c] text-md font-semibold transition-colors duration-300 hover:text-[#794eff]'
-          >{navbar.contactUs}</Link
-        >
-      </li>
-    </ul>
-  </div>
-
-  <nav class='flex items-center'>
-    <div class='flex items-center gap-x-1 sm:gap-x-2 direction-ltr'>
-      <div class='hidden lg:block'>
-        <QRModalTriggerer>
-          <p
-            id='header-download-lg'
-            class={`hidden py-2 text-xs font-medium text-white transition-colors duration-300 bg-black lg:block lg:text-base hover:bg-gray-600 rounded-xl ${isUAE ? 'px-8' : 'px-4'}`}
+      <ul class={`flex-row items-center justify-center hidden gap-x-8 lg:flex ${isUAE ? '' : ''}`}>
+        <li class='py-2'>
+          <Link
+            href='/company'
+            class='no-underline text-[#1c1c1c] text-md font-semibold transition-colors duration-300 hover:text-[#794eff]'
+            >{navbar.aboutUs}</Link
           >
-            {navbar.downloadApp}
-          </p>
-        </QRModalTriggerer>
-      </div>
-
-      <!-- Download button hidden on small screens (<380px) -->
-      <div class='hidden sm:block lg:hidden'>
-        <button
-          id='header-download-sm'
-          type='button'
-          onclick='console.log("Header download button clicked"); (function(e){const ua=navigator.userAgent;const isIOS=/iPhone|iPad|iPod/i.test(ua);const isAndroid=/Android/i.test(ua);console.log("OS detection:",{isIOS,isAndroid});if(isIOS){console.log("iOS detected, redirecting");window.location.href="https://apps.apple.com/pl/app/jingle-pay/id1493392189";}else if(isAndroid){console.log("Android detected, redirecting");window.location.href="https://play.google.com/store/apps/details?id=com.jinglepay&hl=en";}})(event);'
-          class={`px-2 sm:px-4 py-2 text-[10px] sm:text-xs font-medium text-white transition-colors duration-300 bg-black hover:bg-gray-600 ${isUAE ? 'rounded-full' : 'rounded-xl'}`}
-          >{navbar.downloadApp}</button
-        >
-      </div>
-
-      {isUAE ? <UAESelector className='ml-auto' /> : <CountryLanguageSelector className='ml-auto' />}
-
-      <button id='menu-toggle' class='relative w-6 h-6 ml-1 overflow-hidden cursor-pointer lg:hidden'>
-        <!-- <div class='absolute top-0 left-0 w-6 h-6'></div> -->
-        <div class='w-4 h-0 left-[4px] top-[6px] absolute outline-2 outline-offset-[-1px] outline-[#794EFF]'></div>
-        <div class='w-4 h-0 left-[4px] top-[12px] absolute outline-2 outline-offset-[-1px] outline-[#794EFF]'></div>
-        <div class='w-4 h-0 left-[4px] top-[18px] absolute outline-2 outline-offset-[-1px] outline-[#794EFF]'></div>
-      </button>
+        </li>
+        <li class='py-2'>
+          <Link
+            href='#benefits-section'
+            class='no-underline text-[#1c1c1c] text-md font-semibold transition-colors duration-300 hover:text-[#794eff]'
+            >{navbar.services}</Link
+          >
+        </li>
+        <li class='py-2'>
+          <Link
+            href='/contact'
+            class='no-underline text-[#1c1c1c] text-md font-semibold transition-colors duration-300 hover:text-[#794eff]'
+            >{navbar.contactUs}</Link
+          >
+        </li>
+      </ul>
     </div>
 
-    <ul id='menu-items' class='hidden fixed inset-0 z-[100] items-center justify-center w-screen h-screen bg-white'>
-      <button id='close-menu' class='cursor-pointer absolute top-6 right-6 text-2xl font-bold text-[#794eff]'>
-        ✕
-      </button>
-      <li class='py-4'>
-        <Link
-          href='/company'
-          class='no-underline text-[#1c1c1c] text-xl font-semibold transition-colors duration-300 hover:text-[#794eff]'
-          >{navbar.aboutUs}</Link
-        >
-      </li>
-      <li class='py-4'>
-        <Link
-          href='#benefits-section'
-          class='no-underline text-[#1c1c1c] text-xl font-semibold transition-colors duration-300 hover:text-[#794eff]'
-          >{navbar.services}</Link
-        >
-      </li>
-      <li class='py-4'>
-        <Link
-          href='/contact'
-          class='no-underline text-[#1c1c1c] text-xl font-semibold transition-colors duration-300 hover:text-[#794eff]'
-          >{navbar.contactUs}</Link
-        >
-      </li>
-      <li class='py-4'>
-        <a
-          id='header-download-menu'
-          href='#'
-          target='_blank'
-          class='px-6 py-3 text-lg font-semibold text-white no-underline bg-black rounded-full hover:bg-gray-600'
-        >
-          {navbar.downloadApp}
-        </a>
-      </li>
+    <nav class='flex items-center'>
+      <div class='flex items-center gap-x-1 sm:gap-x-2 direction-ltr'>
+        <div class='hidden lg:block'>
+          <QRModalTriggerer>
+            <p
+              id='header-download-lg'
+              class={`hidden py-2 text-xs font-medium text-white transition-colors duration-300 bg-black lg:block lg:text-base hover:bg-gray-600 rounded-xl ${isUAE ? 'px-8' : 'px-4'}`}
+            >
+              {navbar.downloadApp}
+            </p>
+          </QRModalTriggerer>
+        </div>
 
-      {isUAE ? <UAESelector className='flex lg:hidden' /> : <CountryLanguageSelector className='flex lg:hidden' />}
-    </ul>
-  </nav>
+        <!-- Download button hidden on small screens (<380px) -->
+        <div class='hidden sm:block lg:hidden'>
+          <button
+            id='header-download-sm'
+            type='button'
+            onclick='console.log("Header download button clicked"); (function(e){const ua=navigator.userAgent;const isIOS=/iPhone|iPad|iPod/i.test(ua);const isAndroid=/Android/i.test(ua);console.log("OS detection:",{isIOS,isAndroid});if(isIOS){console.log("iOS detected, redirecting");window.location.href="https://apps.apple.com/pl/app/jingle-pay/id1493392189";}else if(isAndroid){console.log("Android detected, redirecting");window.location.href="https://play.google.com/store/apps/details?id=com.jinglepay&hl=en";}})(event);'
+            class={`px-2 sm:px-4 py-2 text-[10px] sm:text-xs font-medium text-white transition-colors duration-300 bg-black hover:bg-gray-600 ${isUAE ? 'rounded-full' : 'rounded-xl'}`}
+            >{navbar.downloadApp}</button
+          >
+        </div>
+
+        {isUAE ? <UAESelector className='ml-auto' /> : <CountryLanguageSelector className='ml-auto' />}
+
+        <button id='menu-toggle' class='relative w-6 h-6 ml-1 overflow-hidden cursor-pointer lg:hidden'>
+          <!-- <div class='absolute top-0 left-0 w-6 h-6'></div> -->
+          <div class='w-4 h-0 left-[4px] top-[6px] absolute outline-2 outline-offset-[-1px] outline-[#794EFF]'></div>
+          <div class='w-4 h-0 left-[4px] top-[12px] absolute outline-2 outline-offset-[-1px] outline-[#794EFF]'></div>
+          <div class='w-4 h-0 left-[4px] top-[18px] absolute outline-2 outline-offset-[-1px] outline-[#794EFF]'></div>
+        </button>
+      </div>
+
+      <ul id='menu-items' class='hidden fixed inset-0 z-[100] items-center justify-center w-screen h-screen bg-white'>
+        <button id='close-menu' class='cursor-pointer absolute top-6 right-6 text-2xl font-bold text-[#794eff]'>
+          ✕
+        </button>
+        <li class='py-4'>
+          <Link
+            href='/company'
+            class='no-underline text-[#1c1c1c] text-xl font-semibold transition-colors duration-300 hover:text-[#794eff]'
+            >{navbar.aboutUs}</Link
+          >
+        </li>
+        <li class='py-4'>
+          <Link
+            href='#benefits-section'
+            class='no-underline text-[#1c1c1c] text-xl font-semibold transition-colors duration-300 hover:text-[#794eff]'
+            >{navbar.services}</Link
+          >
+        </li>
+        <li class='py-4'>
+          <Link
+            href='/contact'
+            class='no-underline text-[#1c1c1c] text-xl font-semibold transition-colors duration-300 hover:text-[#794eff]'
+            >{navbar.contactUs}</Link
+          >
+        </li>
+        <li class='py-4'>
+          <a
+            id='header-download-menu'
+            href='#'
+            target='_blank'
+            class='px-6 py-3 text-lg font-semibold text-white no-underline bg-black rounded-full hover:bg-gray-600'
+          >
+            {navbar.downloadApp}
+          </a>
+        </li>
+
+        {isUAE ? <UAESelector className='flex lg:hidden' /> : <CountryLanguageSelector className='flex lg:hidden' />}
+      </ul>
+    </nav>
+  </div>
 </header>
 
 <script>

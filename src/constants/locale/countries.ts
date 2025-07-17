@@ -23,7 +23,7 @@ export const COUNTRIES: readonly Country[] = [
     flag: UaeFlag,
     languages: [
       { code: 'ar', name: 'عربي' },
-      { code: 'en', name: 'English' },
+      { code: 'en', name: 'ENG' },
     ],
   },
   {
