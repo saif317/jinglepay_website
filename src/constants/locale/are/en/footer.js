@@ -29,9 +29,9 @@ export default {
       links: [
         { href: '/are/en/terms-and-conditions', text: 'Terms & Conditions' },
         { href: '/privacy-policy', text: 'Privacy Policy' },
-        { href: '/address-update-policy', text: 'Address Update Policy' },
-        { href: '/joining-offer', text: 'Joining Offer' },
-        { href: '/referral-offer', text: 'Referral Offer' },
+        // { href: '/address-update-policy', text: 'Address Update Policy' },
+        // { href: '/joining-offer', text: 'Joining Offer' },
+        // { href: '/referral-offer', text: 'Referral Offer' },
         { href: '/faq', text: 'FAQs' },
         { href: '/contact', text: 'Contact Us' },
       ],
