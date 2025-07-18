@@ -7,20 +7,18 @@
  * the remittance-exchange API.
  */
 
-let jose /** @type {typeof import('jose')} */;
+import * as jose from 'jose';
 
+/**
+ * Load the jose module synchronously (now part of the main bundle).
+ * Falls back to plain payloads only if WebCrypto is unavailable.
+ * @returns {typeof import('jose') | null}
+ */
 async function loadJose() {
   // Disable encryption if WebCrypto is not available (e.g. some browsers, localhost over http)
   if (typeof crypto === 'undefined' || !crypto.subtle || typeof crypto.subtle.importKey !== 'function') {
     console.warn('[encryption] WebCrypto API not available – falling back to plain payloads.');
     return null;
-  }
-  if (jose) return jose;
-  try {
-    jose = await import('jose');
-  } catch (err) {
-    console.warn('[encryption] `jose` module not found – falling back to plain payloads.');
-    jose = null;
   }
   return jose;
 }
