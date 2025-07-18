@@ -120,7 +120,8 @@ export const getRemittanceRates = async (country, exchangeRequest) => {
     const fetchOptions = {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
+        // Determine correct content type based on whether the request is encrypted (JWE) or plain JSON
+        'Content-Type': typeof encryptedRequest === 'string' && encryptedRequest.startsWith('ey') ? 'application/jose' : 'application/json',
         'Accept': 'application/json',
       },
       body: encryptedRequest,
