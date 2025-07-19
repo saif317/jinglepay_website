@@ -40,20 +40,20 @@ type ExchangeRequest = {
 };
 ---
 
-<div class='w-full max-w-md p-6 bg-white shadow-lg rounded-2xl' id='transfer-calculator'>
+<div class='w-full max-w-md p-6 bg-gray-100 shadow-lg rounded-2xl' id='transfer-calculator'>
   <!-- You send section -->
   <div class='mb-6'>
-    <label class="text-black text-sm font-normal font-['New_Hero'] leading-tight block mb-2"> You send: </label>
+    <label class="text-black text-sm font-normal font-['Hero_New'] leading-tight block mb-2"> You send: </label>
     <div class='relative'>
       <input
         type='number'
         value='1000'
         id='send-amount'
-        class="w-full text-black text-xl font-normal font-['New_Hero'] leading-relaxed bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 pr-20 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        class="border-stone-300 bg-white w-full text-black text-xl font-normal font-['Hero_New'] leading-relaxed border rounded-lg px-3 py-4 pr-20 focus:outline-none focus:ring-2 focus:ring-black"
       />
       <div class='absolute flex items-center gap-2 transform -translate-y-1/2 right-3 top-1/2'>
-        <span class="text-black text-xl font-normal font-['New_Hero'] leading-relaxed">🇦🇪</span>
-        <span class="text-black text-xl font-normal font-['New_Hero'] leading-relaxed">AED</span>
+        <span class="text-black text-xl font-normal font-['Hero_New'] leading-relaxed">🇦🇪</span>
+        <span class="text-black text-xl font-normal font-['Hero_New'] leading-relaxed">AED</span>
         <span class='text-gray-400'>▼</span>
       </div>
     </div>
@@ -61,7 +61,7 @@ type ExchangeRequest = {
 
   <!-- Recipient receives section -->
   <div class='mb-6'>
-    <label class="text-black text-sm font-normal font-['New_Hero'] leading-tight block mb-2">
+    <label class="text-black text-sm font-normal font-['Hero_New'] leading-tight block mb-2">
       Recipient receives:
     </label>
     <div class='relative'>
@@ -70,12 +70,16 @@ type ExchangeRequest = {
         value='270'
         id='receive-amount'
         readonly
-        class="w-full text-black text-xl font-normal font-['New_Hero'] leading-relaxed bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 pr-20 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        class="border-stone-300 bg-white w-full text-black text-xl font-normal font-['Hero_New'] leading-relaxed border rounded-lg px-3 py-4 pr-20 focus:outline-none focus:ring-2 focus:ring-black"
       />
       <div class='absolute flex items-center gap-2 transform -translate-y-1/2 right-3 top-1/2'>
-        <span class="text-black text-xl font-normal font-['New_Hero'] leading-relaxed">🇺🇸</span>
-        <span class="text-black text-xl font-normal font-['New_Hero'] leading-relaxed">USD</span>
-        <span class='text-gray-400'>▼</span>
+        <select
+          id='receive-currency-select'
+          class="bg-transparent border-none outline-none text-black text-xl font-normal font-['Hero_New'] leading-relaxed cursor-pointer appearance-none"
+        >
+          <option value='USD' data-flag='🇺🇸'>🇺🇸 USD</option>
+        </select>
+        <span class='text-gray-400 pointer-events-none'>▼</span>
       </div>
     </div>
   </div>
@@ -84,15 +88,15 @@ type ExchangeRequest = {
   <div class='mb-6 space-y-3'>
     <!-- Transfer fee -->
     <div class='flex items-center justify-between'>
-      <span class="text-black text-sm font-normal font-['New_Hero'] leading-tight"> Transfer fee: </span>
-      <span class="text-black text-sm font-normal font-['New_Hero'] leading-tight" id='transfer-fee'> 0.000 AED </span>
+      <span class="text-black text-sm font-normal font-['Hero_New'] leading-tight"> Transfer fee: </span>
+      <span class="text-black text-sm font-normal font-['Hero_New'] leading-tight" id='transfer-fee'> 0.000 AED </span>
     </div>
 
     <!-- Exchange rate -->
     <div class='flex items-center justify-between'>
-      <span class="text-black text-sm font-normal font-['New_Hero'] leading-tight"> Exchange rate: </span>
+      <span class="text-black text-sm font-normal font-['Hero_New'] leading-tight"> Exchange rate: </span>
       <div class='flex items-center gap-1'>
-        <span class="text-black text-sm font-normal font-['New_Hero'] leading-tight" id='exchange-rate'>
+        <span class="text-black text-sm font-normal font-['Hero_New'] leading-tight" id='exchange-rate'>
           1.00 AED = 0.27 USD
         </span>
         <span class='text-gray-400'>ℹ️</span>
@@ -102,7 +106,7 @@ type ExchangeRequest = {
 
   <!-- Send money button -->
   <button
-    class="w-full bg-gray-800 hover:bg-gray-900 text-white text-xl font-medium font-['New_Hero'] leading-loose py-4 rounded-lg transition-colors duration-200"
+    class="px-5 py-3 bg-gray-900 rounded-xl inline-flex justify-center items-center gap-2.5 w-full hover:bg-gray-900 text-white text-xl font-medium font-['Hero_New'] leading-loose transition-colors duration-200"
   >
     Send money now
   </button>
@@ -111,8 +115,165 @@ type ExchangeRequest = {
 <script>
   // API integration for real-time exchange rates
   const API_URL = 'https://api.jinglepay.dev/api/v0/remittance/rates-review/';
+  const COUNTRIES_API_URL = 'https://api.jinglepay.dev/api/v0/remittance/countries/';
 
-  let debounceTimer: ReturnType<typeof setTimeout>;
+  let debounceTimer;
+  let availableCountries: Countries = {};
+
+  // Types for countries API
+  type CountryInfo = { code: string; currency: string; iso2_code: string; name: string; unicode: string };
+  type Countries = { [key: string]: CountryInfo };
+
+  // Mock countries data for fallback
+  const MOCK_COUNTRIES: Countries = {
+    US: {
+      code: 'US',
+      currency: 'USD',
+      iso2_code: 'US',
+      name: 'United States',
+      unicode: '🇺🇸',
+    },
+    GB: {
+      code: 'GB',
+      currency: 'GBP',
+      iso2_code: 'GB',
+      name: 'United Kingdom',
+      unicode: '🇬🇧',
+    },
+    EU: {
+      code: 'EU',
+      currency: 'EUR',
+      iso2_code: 'EU',
+      name: 'European Union',
+      unicode: '🇪🇺',
+    },
+    CA: {
+      code: 'CA',
+      currency: 'CAD',
+      iso2_code: 'CA',
+      name: 'Canada',
+      unicode: '🇨🇦',
+    },
+    AU: {
+      code: 'AU',
+      currency: 'AUD',
+      iso2_code: 'AU',
+      name: 'Australia',
+      unicode: '🇦🇺',
+    },
+    IN: {
+      code: 'IN',
+      currency: 'INR',
+      iso2_code: 'IN',
+      name: 'India',
+      unicode: '🇮🇳',
+    },
+    PK: {
+      code: 'PK',
+      currency: 'PKR',
+      iso2_code: 'PK',
+      name: 'Pakistan',
+      unicode: '🇵🇰',
+    },
+    BD: {
+      code: 'BD',
+      currency: 'BDT',
+      iso2_code: 'BD',
+      name: 'Bangladesh',
+      unicode: '🇧🇩',
+    },
+    PH: {
+      code: 'PH',
+      currency: 'PHP',
+      iso2_code: 'PH',
+      name: 'Philippines',
+      unicode: '🇵🇭',
+    },
+    EG: {
+      code: 'EG',
+      currency: 'EGP',
+      iso2_code: 'EG',
+      name: 'Egypt',
+      unicode: '🇪🇬',
+    },
+  };
+
+  // Fetch available countries for the dropdown
+  async function fetchCountries() {
+    try {
+      const response = await fetch(COUNTRIES_API_URL);
+      if (!response.ok) {
+        throw new Error(`Countries API error: ${response.status}`);
+      }
+      const countries: Countries = await response.json();
+      availableCountries = countries;
+      populateCountryDropdown(countries);
+    } catch (error) {
+      console.error('Error fetching countries:', error);
+      // Use mock data if API fails
+      console.log('Using mock countries data as fallback');
+      availableCountries = MOCK_COUNTRIES;
+      populateCountryDropdown(MOCK_COUNTRIES);
+    }
+  }
+
+  // Populate the country dropdown with fetched data
+  function populateCountryDropdown(countries: Countries) {
+    const select = document.getElementById('receive-currency-select') as HTMLSelectElement;
+    if (!select || !countries || typeof countries !== 'object') return;
+
+    // Clear existing options
+    select.innerHTML = '';
+
+    // Iterate through countries object
+    Object.values(countries).forEach((country: CountryInfo) => {
+      const option = document.createElement('option');
+
+      const currency = country.currency;
+      const countryName = country.name;
+      const flag = country.unicode || getFlagEmoji(country.iso2_code);
+
+      if (currency) {
+        option.value = currency;
+        option.textContent = `${flag || '🏳️'} ${currency}`;
+        option.dataset.countryCode = country.iso2_code || country.code;
+        option.dataset.flag = flag || '🏳️';
+        option.dataset.countryName = countryName;
+        select.appendChild(option);
+      }
+    });
+
+    // Set USD as default if available
+    const usdOption = select.querySelector('option[value="USD"]');
+    if (usdOption) {
+      select.value = 'USD';
+    }
+  }
+
+  // Helper function to get flag emoji from country code
+  function getFlagEmoji(countryCode) {
+    if (!countryCode || countryCode.length !== 2) return '🏳️';
+
+    const flagMap = {
+      US: '🇺🇸',
+      GB: '🇬🇧',
+      EU: '🇪🇺',
+      CA: '🇨🇦',
+      AU: '🇦🇺',
+      IN: '🇮🇳',
+      PK: '🇵🇰',
+      BD: '🇧🇩',
+      PH: '🇵🇭',
+      EG: '🇪🇬',
+      AE: '🇦🇪',
+      SA: '🇸🇦',
+      KW: '🇰🇼',
+      QA: '🇶🇦',
+      BH: '🇧🇭',
+    };
+
+    return flagMap[countryCode.toUpperCase()] || '🏳️';
+  }
 
   // Encryption utility - inline implementation for client-side use
   async function encryptRequest(data: any): Promise<string> {
@@ -144,11 +305,17 @@ type ExchangeRequest = {
 
   async function fetchExchangeRate(sendAmount: string): Promise<any> {
     try {
+      // Get selected currency from dropdown
+      const currencySelect = document.getElementById('receive-currency-select') as HTMLSelectElement;
+      const selectedCurrency = currencySelect?.value || 'USD';
+      const selectedOption = currencySelect?.selectedOptions[0];
+      const countryCode = selectedOption?.dataset.countryCode || 'US';
+
       const requestData = {
         quotation_mode: 'SEND_AMOUNT',
         receive: {
-          country_code: 'US',
-          currency: 'USD',
+          country_code: countryCode,
+          currency: selectedCurrency,
         },
         send: {
           amount: parseFloat(sendAmount) || 1000,
@@ -176,11 +343,76 @@ type ExchangeRequest = {
       return data;
     } catch (error) {
       console.error('Error fetching exchange rate:', error);
-      // Return fallback data
+      // Return proper mock data matching RemittanceExchangeResponse type
+      const sendAmountNum = parseFloat(sendAmount) || 1000;
+
+      // Get selected currency and country from dropdown
+      const currencySelect = document.getElementById('receive-currency-select') as HTMLSelectElement;
+      const selectedCurrency = currencySelect?.value || 'USD';
+      const selectedOption = currencySelect?.selectedOptions[0];
+      const countryCode = selectedOption?.dataset.countryCode || 'US';
+
+      // Mock exchange rates for different currencies
+      const mockRates: { [key: string]: number } = {
+        USD: 0.27,
+        GBP: 0.21,
+        EUR: 0.25,
+        CAD: 0.37,
+        AUD: 0.41,
+        INR: 22.75,
+        PKR: 75.5,
+        BDT: 29.15,
+        PHP: 15.25,
+        EGP: 13.45,
+      };
+
+      const exchangeRate = mockRates[selectedCurrency] || 0.27;
+      const receiveAmountNum = sendAmountNum * exchangeRate;
+
       return {
-        receive: { amount: parseFloat(sendAmount) * 0.27 },
-        fee: { amount: 0, currency: 'AED' },
-        quotations: [{ transfer_fx_rate: 0.27 }],
+        id: 'mock-quote-' + Date.now(),
+        quotation_mode: 'SEND_AMOUNT',
+        send: {
+          amount: sendAmountNum,
+          currency: 'AED',
+          country_code: 'AE',
+        },
+        receive: {
+          amount: receiveAmountNum,
+          currency: selectedCurrency,
+          country_code: countryCode,
+        },
+        user_saves: {
+          amount: 0,
+          currency: 'AED',
+        },
+        last_updated: new Date().toISOString(),
+        expired_at: new Date(Date.now() + 300000).toISOString(), // 5 minutes from now
+        fee: {
+          amount: 0,
+          currency: 'AED',
+        },
+        quotations: [
+          {
+            id: 'mock-quotation-' + Date.now(),
+            provider: 'Mock Provider',
+            transfer_type: 'BANK_TRANSFER',
+            transfer_fx_rate: exchangeRate,
+            fee: {
+              amount: 0,
+              currency: 'AED',
+            },
+            expire_at: new Date(Date.now() + 300000),
+            best_offer: true,
+            receive: {
+              amount: receiveAmountNum,
+              currency: selectedCurrency,
+              country_code: countryCode,
+            },
+            operation: 'ENCRYPT',
+            transfer_channel_name: 'Standard Transfer',
+          },
+        ],
       };
     }
   }
@@ -200,7 +432,9 @@ type ExchangeRequest = {
 
     if (exchangeRateEl && data.quotations && data.quotations.length > 0) {
       const rate = data.quotations[0].transfer_fx_rate;
-      exchangeRateEl.textContent = `1.00 AED = ${rate.toFixed(2)} USD`;
+      const currencySelect = document.getElementById('receive-currency-select') as HTMLSelectElement;
+      const selectedCurrency = currencySelect?.value || 'USD';
+      exchangeRateEl.textContent = `1.00 AED = ${rate.toFixed(2)} ${selectedCurrency}`;
     }
   }
 
@@ -216,13 +450,36 @@ type ExchangeRequest = {
     }, 500);
   }
 
+  // Handle currency selection change
+  function handleCurrencyChange() {
+    const sendAmountEl = document.getElementById('send-amount') as HTMLInputElement;
+    const amount = sendAmountEl?.value || '1000';
+
+    // Update exchange rate when currency changes
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(async () => {
+      const data = await fetchExchangeRate(amount);
+      updateCalculator(data);
+    }, 300);
+  }
+
   // Initialize on page load
   document.addEventListener('DOMContentLoaded', () => {
+    // Fetch available countries
+    fetchCountries();
+
     const sendAmountEl = document.getElementById('send-amount');
+    const currencySelectEl = document.getElementById('receive-currency-select');
+
     if (sendAmountEl) {
       sendAmountEl.addEventListener('input', handleAmountChange);
-      // Initial load
-      handleAmountChange();
     }
+
+    if (currencySelectEl) {
+      currencySelectEl.addEventListener('change', handleCurrencyChange);
+    }
+
+    // Initial load
+    handleAmountChange();
   });
 </script>
