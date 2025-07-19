@@ -1,0 +1,228 @@
+---
+// Component for transfer calculator UI with API integration
+
+// Types for API
+type Payment = { amount: number; currency: string };
+type Transaction = Payment & { country_code: string };
+
+type Quotation = {
+  id: string;
+  provider: string;
+  transfer_type: string;
+  transfer_fx_rate: number;
+  fee: Payment;
+  expire_at: Date;
+  best_offer: boolean;
+  receive: Transaction;
+  operation: string;
+  transfer_channel_name: string;
+};
+
+type RemittanceExchangeResponse = {
+  id: string;
+  quotation_mode: 'SEND_AMOUNT';
+  send: Transaction;
+  receive: Transaction;
+  user_saves: Payment;
+  last_updated: string;
+  expired_at: string;
+  fee: Payment;
+  quotations: Quotation[];
+};
+
+type ExchangeRequest = {
+  quotation_mode: 'SEND_AMOUNT';
+  receive: {
+    country_code: string;
+    currency: string;
+  };
+  send: Transaction;
+};
+---
+
+<div class='w-full max-w-md p-6 bg-white shadow-lg rounded-2xl' id='transfer-calculator'>
+  <!-- You send section -->
+  <div class='mb-6'>
+    <label class="text-black text-sm font-normal font-['New_Hero'] leading-tight block mb-2"> You send: </label>
+    <div class='relative'>
+      <input
+        type='number'
+        value='1000'
+        id='send-amount'
+        class="w-full text-black text-xl font-normal font-['New_Hero'] leading-relaxed bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 pr-20 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      />
+      <div class='absolute flex items-center gap-2 transform -translate-y-1/2 right-3 top-1/2'>
+        <span class="text-black text-xl font-normal font-['New_Hero'] leading-relaxed">🇦🇪</span>
+        <span class="text-black text-xl font-normal font-['New_Hero'] leading-relaxed">AED</span>
+        <span class='text-gray-400'>▼</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recipient receives section -->
+  <div class='mb-6'>
+    <label class="text-black text-sm font-normal font-['New_Hero'] leading-tight block mb-2">
+      Recipient receives:
+    </label>
+    <div class='relative'>
+      <input
+        type='number'
+        value='270'
+        id='receive-amount'
+        readonly
+        class="w-full text-black text-xl font-normal font-['New_Hero'] leading-relaxed bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 pr-20 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      />
+      <div class='absolute flex items-center gap-2 transform -translate-y-1/2 right-3 top-1/2'>
+        <span class="text-black text-xl font-normal font-['New_Hero'] leading-relaxed">🇺🇸</span>
+        <span class="text-black text-xl font-normal font-['New_Hero'] leading-relaxed">USD</span>
+        <span class='text-gray-400'>▼</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Transfer details -->
+  <div class='mb-6 space-y-3'>
+    <!-- Transfer fee -->
+    <div class='flex items-center justify-between'>
+      <span class="text-black text-sm font-normal font-['New_Hero'] leading-tight"> Transfer fee: </span>
+      <span class="text-black text-sm font-normal font-['New_Hero'] leading-tight" id='transfer-fee'> 0.000 AED </span>
+    </div>
+
+    <!-- Exchange rate -->
+    <div class='flex items-center justify-between'>
+      <span class="text-black text-sm font-normal font-['New_Hero'] leading-tight"> Exchange rate: </span>
+      <div class='flex items-center gap-1'>
+        <span class="text-black text-sm font-normal font-['New_Hero'] leading-tight" id='exchange-rate'>
+          1.00 AED = 0.27 USD
+        </span>
+        <span class='text-gray-400'>ℹ️</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Send money button -->
+  <button
+    class="w-full bg-gray-800 hover:bg-gray-900 text-white text-xl font-medium font-['New_Hero'] leading-loose py-4 rounded-lg transition-colors duration-200"
+  >
+    Send money now
+  </button>
+</div>
+
+<script>
+  // API integration for real-time exchange rates
+  const API_URL = 'https://api.jinglepay.dev/api/v0/remittance/rates-review/';
+
+  let debounceTimer: ReturnType<typeof setTimeout>;
+
+  // Encryption utility - inline implementation for client-side use
+  async function encryptRequest(data: any): Promise<string> {
+    try {
+      // Import jose dynamically for client-side use
+      const { CompactEncrypt, importJWK } = await import('jose');
+
+      const PUBLIC_KEY_CONFIG = {
+        kty: 'RSA',
+        e: 'AQAB',
+        n: 'jiIRvCBjTToaYMHTUxnKoTdKGHdtuymLWl-s3oeiZ9tWXqMeOdbiCYMSzC-N8kkpu5sdmknkVROeKKVS3OvmyxBuZ6hDfwAyfdg0t8273JX6Z7fZH6tL7T2HHJ4ItQesTuhPmJR5_oGiPO5mDjC5SUd5otrbKqUAAy9fLtT5_l91uUc27bZGvkL9Tzi9EHNeA_LgnYRNohOygirKx1G-hdGVWoisVIdiIY7Hc_XaViCCNwhiEELN4iS4MOD4Suut7Y6V5l_PmSCnUcn6-R194edIKHd7TiiFQrkNab2gb16Qdu8fCO41OdRlF_ifvWWxtqHeW3eqRdDYwaBxDvlsnQ',
+      };
+
+      const rsaPublicKey = await importJWK(PUBLIC_KEY_CONFIG, 'RSA-OAEP-256');
+      const encryptedData = await new CompactEncrypt(new TextEncoder().encode(JSON.stringify(data)))
+        .setProtectedHeader({
+          alg: 'RSA-OAEP-256',
+          enc: 'A256CBC-HS512',
+          typ: 'JWE',
+        })
+        .encrypt(rsaPublicKey);
+
+      return encryptedData;
+    } catch (error) {
+      console.error('Encryption error:', error);
+      throw error;
+    }
+  }
+
+  async function fetchExchangeRate(sendAmount: string): Promise<any> {
+    try {
+      const requestData = {
+        quotation_mode: 'SEND_AMOUNT',
+        receive: {
+          country_code: 'US',
+          currency: 'USD',
+        },
+        send: {
+          amount: parseFloat(sendAmount) || 1000,
+          currency: 'AED',
+          country_code: 'AE',
+        },
+      };
+
+      // Encrypt the request data
+      const encryptedPayload = await encryptRequest(requestData);
+
+      const response = await fetch(API_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: encryptedPayload,
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error fetching exchange rate:', error);
+      // Return fallback data
+      return {
+        receive: { amount: parseFloat(sendAmount) * 0.27 },
+        fee: { amount: 0, currency: 'AED' },
+        quotations: [{ transfer_fx_rate: 0.27 }],
+      };
+    }
+  }
+
+  function updateCalculator(data: any) {
+    const receiveAmountEl = document.getElementById('receive-amount') as HTMLInputElement;
+    const transferFeeEl = document.getElementById('transfer-fee');
+    const exchangeRateEl = document.getElementById('exchange-rate');
+
+    if (receiveAmountEl && data.receive) {
+      receiveAmountEl.value = data.receive.amount.toFixed(2);
+    }
+
+    if (transferFeeEl && data.fee) {
+      transferFeeEl.textContent = `${data.fee.amount.toFixed(3)} ${data.fee.currency || 'AED'}`;
+    }
+
+    if (exchangeRateEl && data.quotations && data.quotations.length > 0) {
+      const rate = data.quotations[0].transfer_fx_rate;
+      exchangeRateEl.textContent = `1.00 AED = ${rate.toFixed(2)} USD`;
+    }
+  }
+
+  function handleAmountChange() {
+    const sendAmountEl = document.getElementById('send-amount') as HTMLInputElement;
+    const amount = sendAmountEl?.value || '1000';
+
+    // Debounce API calls
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(async () => {
+      const data = await fetchExchangeRate(amount);
+      updateCalculator(data);
+    }, 500);
+  }
+
+  // Initialize on page load
+  document.addEventListener('DOMContentLoaded', () => {
+    const sendAmountEl = document.getElementById('send-amount');
+    if (sendAmountEl) {
+      sendAmountEl.addEventListener('input', handleAmountChange);
+      // Initial load
+      handleAmountChange();
+    }
+  });
+</script>
