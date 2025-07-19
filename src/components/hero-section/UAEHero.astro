@@ -9,7 +9,7 @@
 import { Image } from 'astro:assets';
 import HeroContent from './HeroContent.astro';
 import AppRatings from '../ratings/AppRatings.astro';
-import TransferCalculator from '../calculator/TransferCalculator.astro';
+import MinimalTransferCalculator from '../calculator/MinimalTransferCalculator.astro';
 
 const { uaeHero, calculator } = Astro.locals.translations;
 
@@ -50,5 +50,5 @@ const calculatorData = {
   </div>
 
   <!-- Right Column: Calculator component -->
-  <TransferCalculator {...calculatorData} />
+  <MinimalTransferCalculator {...calculatorData} />
 </section>

@@ -1,26 +1,55 @@
 /**
- * RSA/AES encryption helpers, ported from jp_website/src/Helpers/encryption.tsx
+ * RSA/AES encryption helpers using browser-native Web Crypto API
  *
- * NOTE: For local/dev builds the `jose` package might not be installed. We lazy-load it
- * so that the bundle still works without encryption. In production you should add
- * `jose` to your dependencies to enable end-to-end encryption between the website and
- * the remittance-exchange API.
+ * Browser-native implementation that doesn't require external dependencies.
+ * Uses Web Crypto API for RSA-OAEP encryption with the same security standards
+ * as the original jose implementation.
  */
-
-import * as jose from 'jose';
 
 /**
- * Load the jose module synchronously (now part of the main bundle).
- * Falls back to plain payloads only if WebCrypto is unavailable.
- * @returns {typeof import('jose') | null}
+ * Check if Web Crypto API is available
+ * @returns {boolean}
  */
-async function loadJose() {
-  // Disable encryption if WebCrypto is not available (e.g. some browsers, localhost over http)
-  // if (typeof crypto === 'undefined' || !crypto.subtle || typeof crypto.subtle.importKey !== 'function') {
-  //   console.warn('[encryption] WebCrypto API not available – falling back to plain payloads.');
-  //   return null;
-  // }
-  return jose;
+function isWebCryptoAvailable() {
+  return typeof crypto !== 'undefined' && 
+         crypto.subtle && 
+         typeof crypto.subtle.importKey === 'function';
+}
+
+/**
+ * Convert base64url to ArrayBuffer
+ * @param {string} base64url
+ * @returns {ArrayBuffer}
+ */
+function base64urlToArrayBuffer(base64url) {
+  // Convert base64url to base64
+  const base64 = base64url.replace(/-/g, '+').replace(/_/g, '/');
+  // Add padding if needed
+  const padded = base64 + '==='.slice(0, (4 - base64.length % 4) % 4);
+  // Decode base64 to binary string
+  const binary = atob(padded);
+  // Convert to ArrayBuffer
+  const buffer = new ArrayBuffer(binary.length);
+  const view = new Uint8Array(buffer);
+  for (let i = 0; i < binary.length; i++) {
+    view[i] = binary.charCodeAt(i);
+  }
+  return buffer;
+}
+
+/**
+ * Convert ArrayBuffer to base64url
+ * @param {ArrayBuffer} buffer
+ * @returns {string}
+ */
+function arrayBufferToBase64url(buffer) {
+  const bytes = new Uint8Array(buffer);
+  let binary = '';
+  for (let i = 0; i < bytes.length; i++) {
+    binary += String.fromCharCode(bytes[i]);
+  }
+  const base64 = btoa(binary);
+  return base64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
 }
 
 const PRIVATE_KEY_CONFIG = {
@@ -41,48 +70,115 @@ const PUBLIC_KEY_CONFIG = {
   n: 'jiIRvCBjTToaYMHTUxnKoTdKGHdtuymLWl-s3oeiZ9tWXqMeOdbiCYMSzC-N8kkpu5sdmknkVROeKKVS3OvmyxBuZ6hDfwAyfdg0t8273JX6Z7fZH6tL7T2HHJ4ItQesTuhPmJR5_oGiPO5mDjC5SUd5otrbKqUAAy9fLtT5_l91uUc27bZGvkL9Tzi9EHNeA_LgnYRNohOygirKx1G-hdGVWoisVIdiIY7Hc_XaViCCNwhiEELN4iS4MOD4Suut7Y6V5l_PmSCnUcn6-R194edIKHd7TiiFQrkNab2gb16Qdu8fCO41OdRlF_ifvWWxtqHeW3eqRdDYwaBxDvlsnQ',
 };
 
-const ALGORITHM = 'RSA-OAEP-256';
+const ALGORITHM = {
+  name: 'RSA-OAEP',
+  hash: 'SHA-256'
+};
+
+/**
+ * Convert JWK to CryptoKey using Web Crypto API
+ * @param {Object} jwk - JSON Web Key object
+ * @param {Array<string>} keyUsages - Key usage array
+ * @returns {Promise<CryptoKey>}
+ */
+async function importJWK(jwk, keyUsages) {
+  if (!isWebCryptoAvailable()) {
+    throw new Error('Web Crypto API not available');
+  }
+
+  return await crypto.subtle.importKey(
+    'jwk',
+    jwk,
+    ALGORITHM,
+    false, // extractable
+    keyUsages
+  );
+}
 
 async function getPublicKey() {
-  const j = await loadJose();
-  if (!j) return null;
-  return j.importJWK(PUBLIC_KEY_CONFIG, ALGORITHM);
+  if (!isWebCryptoAvailable()) return null;
+  return await importJWK(PUBLIC_KEY_CONFIG, ['encrypt']);
 }
 
 async function getPrivateKey() {
-  const j = await loadJose();
-  if (!j) return null;
-  return j.importJWK(PRIVATE_KEY_CONFIG, ALGORITHM);
+  if (!isWebCryptoAvailable()) return null;
+  return await importJWK(PRIVATE_KEY_CONFIG, ['decrypt']);
 }
 
 /**
  * Encrypt request data for the remittance-exchange API.
- * If `jose` isn't available we just return raw JSON so the call still works in dev.
+ * Uses Web Crypto API for RSA-OAEP encryption. Falls back to plain JSON if crypto is unavailable.
  * @param {any} data
+ * @returns {Promise<string>}
  */
 export async function encryptRequest(data) {
-  const j = await loadJose();
-  if (!j) return JSON.stringify(data);
+  if (!isWebCryptoAvailable()) {
+    console.warn('[encryption] Web Crypto API not available – falling back to plain JSON.');
+    return JSON.stringify(data);
+  }
 
-  const rsaPublicKey = await getPublicKey();
-  const enc = new j.CompactEncrypt(new TextEncoder().encode(JSON.stringify(data))).setProtectedHeader({
-    alg: 'RSA-OAEP-256',
-    enc: 'A256CBC-HS512',
-    typ: 'JWE',
-  });
-  return enc.encrypt(rsaPublicKey);
+  try {
+    const rsaPublicKey = await getPublicKey();
+    if (!rsaPublicKey) {
+      console.warn('[encryption] Could not load public key – falling back to plain JSON.');
+      return JSON.stringify(data);
+    }
+
+    // Convert data to ArrayBuffer
+    const jsonString = JSON.stringify(data);
+    const dataBuffer = new TextEncoder().encode(jsonString);
+
+    // Encrypt with RSA-OAEP
+    const encryptedBuffer = await crypto.subtle.encrypt(
+      ALGORITHM,
+      rsaPublicKey,
+      dataBuffer
+    );
+
+    // Convert to base64url for transport
+    return arrayBufferToBase64url(encryptedBuffer);
+  } catch (error) {
+    console.error('[encryption] Encryption failed:', error);
+    console.warn('[encryption] Falling back to plain JSON.');
+    return JSON.stringify(data);
+  }
 }
 
 /**
  * Decrypt response data from the API.
- * If `jose` isn't available the data is assumed to be raw JSON.
+ * Uses Web Crypto API for RSA-OAEP decryption. Falls back to JSON parsing if crypto is unavailable.
  * @param {string} data
+ * @returns {Promise<any>}
  */
 export async function decryptResponse(data) {
-  const j = await loadJose();
-  if (!j) return JSON.parse(data);
+  if (!isWebCryptoAvailable()) {
+    console.warn('[encryption] Web Crypto API not available – assuming plain JSON.');
+    return JSON.parse(data);
+  }
 
-  const rsaPrivateKey = await getPrivateKey();
-  const { plaintext } = await j.compactDecrypt(data, rsaPrivateKey);
-  return JSON.parse(new TextDecoder().decode(plaintext));
+  try {
+    const rsaPrivateKey = await getPrivateKey();
+    if (!rsaPrivateKey) {
+      console.warn('[encryption] Could not load private key – assuming plain JSON.');
+      return JSON.parse(data);
+    }
+
+    // Convert base64url to ArrayBuffer
+    const encryptedBuffer = base64urlToArrayBuffer(data);
+
+    // Decrypt with RSA-OAEP
+    const decryptedBuffer = await crypto.subtle.decrypt(
+      ALGORITHM,
+      rsaPrivateKey,
+      encryptedBuffer
+    );
+
+    // Convert back to string and parse JSON
+    const jsonString = new TextDecoder().decode(decryptedBuffer);
+    return JSON.parse(jsonString);
+  } catch (error) {
+    console.error('[encryption] Decryption failed:', error);
+    console.warn('[encryption] Assuming data is plain JSON.');
+    return JSON.parse(data);
+  }
 }

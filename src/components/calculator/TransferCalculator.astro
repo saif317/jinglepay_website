@@ -21,39 +21,34 @@ export interface Props {
 const { initialSendAmount = 1000, initialSendCurrency = 'AED', initialReceiveCurrency = 'USD' } = Astro.props;
 
 // Get initial exchange rate data using the real API
-let exchangeData;
-try {
-  // Use real API for both development and production
-  exchangeData = await getRemittanceRates('AE', {
-    quotation_mode: 'SEND_AMOUNT',
-    receive: {
-      country_code: initialReceiveCurrency === 'INR' ? 'IN' : initialReceiveCurrency === 'PKR' ? 'PK' : 'US',
-      currency: initialReceiveCurrency,
-    },
-    send: {
-      amount: initialSendAmount,
-      currency: initialSendCurrency,
-      country_code: 'AE',
-    },
-  });
-} catch (error) {
-  // Log the error and provide default values
-  console.error('Error initializing with real API:', error);
-  // Use default values for exchange data
-  exchangeData = {
-    receive: { amount: initialSendAmount },
-    fee: { amount: 0, currency: initialSendCurrency },
-    quotations: [{ transfer_fx_rate: 1.0 }],
-  };
-}
+const exchangeData = await getRemittanceRates('AE', {
+  quotation_mode: 'SEND_AMOUNT',
+  receive: {
+    country_code: initialReceiveCurrency === 'INR' ? 'IN' : initialReceiveCurrency === 'PKR' ? 'PK' : 'US',
+    currency: initialReceiveCurrency,
+  },
+  send: {
+    amount: initialSendAmount,
+    currency: initialSendCurrency,
+    country_code: 'AE',
+  },
+});
 
-// Extract values from exchange data
+// Check if we got an API error
+const isApiError = exchangeData && exchangeData.__apiError === true;
+
+// Extract values from exchange data - handle API errors gracefully
 const sendAmount = initialSendAmount.toString();
 const sendCurrency = initialSendCurrency;
-const receiveAmount = exchangeData.receive.amount.toFixed(2);
+const receiveAmount = isApiError ? '0.00' : exchangeData.receive.amount.toFixed(2);
 const receiveCurrency = initialReceiveCurrency;
-const transferFee = `${exchangeData.fee.amount.toFixed(3)} ${exchangeData.fee.currency}`;
-const exchangeRate = `1.00 ${sendCurrency} = ${exchangeData.quotations[0]?.transfer_fx_rate.toFixed(2)} ${receiveCurrency}`;
+const transferFee = isApiError ? 'Error' : `${exchangeData.fee.amount.toFixed(3)} ${exchangeData.fee.currency}`;
+const exchangeRate = isApiError ? 'API Error' : `1.00 ${sendCurrency} = ${exchangeData.quotations[0]?.transfer_fx_rate.toFixed(2)} ${receiveCurrency}`;
+
+// Log error to console if present
+if (isApiError) {
+  console.error(`API Error during build: ${exchangeData.errorMessage}`);
+}
 ---
 
 <div
@@ -464,12 +459,15 @@ const exchangeRate = `1.00 ${sendCurrency} = ${exchangeData.quotations[0]?.trans
     await fetchCountriesData();
     setupDropdowns();
     
-    const sendInput = document.querySelector('[data-calculator-send-input]');
+    // No need for initial API call since data is loaded server-side
+    
+    const sendInput = document.querySelector('[data-calculator-send-input]') as HTMLInputElement;
     const submitButton = document.querySelector('#cta-transfer-send');
     
     if (sendInput) {
       sendInput.addEventListener('input', (e) => {
-        let value = e.target.value;
+        const target = e.target as HTMLInputElement;
+        let value = target.value;
         
         value = value.replace(/[^0-9.]/g, '');
         
@@ -482,7 +480,7 @@ const exchangeRate = `1.00 ${sendCurrency} = ${exchangeData.quotations[0]?.trans
           value = value.substring(0, 6);
         }
         
-        e.target.value = value;
+        target.value = value;
         
         const numValue = parseFloat(value);
         if (!isNaN(numValue) && numValue > 0) {
@@ -492,8 +490,9 @@ const exchangeRate = `1.00 ${sendCurrency} = ${exchangeData.quotations[0]?.trans
     }
     
     if (submitButton) {
-      submitButton.addEventListener('click', (e) => {
-        if (!sendInput?.value || parseFloat(sendInput.value) <= 0) {
+      submitButton.addEventListener('click', (e: Event) => {
+        const sendInputElement = sendInput as HTMLInputElement;
+        if (!sendInputElement?.value || parseFloat(sendInputElement.value) <= 0) {
           const validationMessage = document.querySelector('[data-validation-message]');
           if (validationMessage) {
             validationMessage.textContent = 'Please enter an amount to send';
@@ -504,12 +503,14 @@ const exchangeRate = `1.00 ${sendCurrency} = ${exchangeData.quotations[0]?.trans
           return;
         }
         
-        triggerAppRedirect(e);
+        triggerAppRedirect(e as any);
       });
     }
     
     console.log('Calculator initialized successfully');
   }
+
+
 
   // Expose functions globally
   window.calculatorUtils = {

@@ -63,7 +63,7 @@
 import { encryptRequest, decryptResponse } from './encryption.js';
 
 export const getRemittanceRates = async (country, exchangeRequest) => {
-  console.log('Remittance API request:', country, exchangeRequest);
+  console.log('[API] Starting remittance API request:', country, exchangeRequest);
 
   // Select API endpoint based on country
   const apiUrl =
@@ -71,22 +71,29 @@ export const getRemittanceRates = async (country, exchangeRequest) => {
       ? 'https://bh-api.jinglepay.dev/api/v0/remittance/rates-review/'
       : 'https://api.jinglepay.dev/api/v0/remittance/rates-review/';
 
-  console.log('Using API at:', apiUrl);
+  console.log('[API] Using API endpoint:', apiUrl);
 
   try {
     // Add timestamp to debugging
-    console.log(`API request initiated at ${new Date().toISOString()}`);
+    console.log(`[API] Request initiated at ${new Date().toISOString()}`);
 
     // Encrypt the request body
+    console.log('[API] Starting encryption of request body...');
     const encryptedRequest = await encryptRequest(exchangeRequest);
-    console.log('Request encrypted successfully');
+    console.log(
+      '[API] Request encrypted successfully. Type:',
+      typeof encryptedRequest,
+      'Length:',
+      encryptedRequest?.length
+    );
+    console.log('[API] Encrypted request preview:', encryptedRequest?.substring(0, 100) + '...');
 
     // Make a real API call with timeout and retries
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout
 
     // Log the request before sending
-    console.log('Sending request to API with the following options:', {
+    console.log('[API] Sending request to API with the following options:', {
       url: apiUrl,
       method: 'POST',
       bodyLength: encryptedRequest ? encryptedRequest.length : 0,
@@ -112,38 +119,52 @@ export const getRemittanceRates = async (country, exchangeRequest) => {
       fetchOptions.mode = 'cors';
       fetchOptions.headers['Origin'] = window.location.origin || 'https://jinglepay.com';
       fetchOptions.credentials = 'same-origin';
+      console.log('[API] Browser environment detected, adding CORS settings');
+    } else {
+      console.log('[API] Node.js environment detected, no CORS settings needed');
     }
 
     // Log the full fetch options being used
-    console.log('Full fetch options:', JSON.stringify(fetchOptions));
+    console.log('[API] Full fetch options:', JSON.stringify(fetchOptions, null, 2));
 
+    console.log('[API] Making fetch request...');
     const response = await fetch(apiUrl, fetchOptions);
 
     clearTimeout(timeoutId);
 
-    console.log(`API response received with status: ${response.status}`);
+    console.log(`[API] Response received with status: ${response.status}`);
+    console.log(`[API] Response headers:`, Object.fromEntries(response.headers.entries()));
 
     if (!response.ok) {
-      console.error('Non-OK response from API:', response.status, response.statusText);
+      console.error('[API] Non-OK response from API:', response.status, response.statusText);
       throw new Error(`API error: ${response.status} - ${response.statusText}`);
     }
 
     // Decrypt the response body
+    console.log('[API] Reading response body...');
     const text = await response.text();
-    console.log('Response body received, length:', text ? text.length : 0);
+    console.log('[API] Response body received, length:', text ? text.length : 0);
+    console.log('[API] Response body preview:', text?.substring(0, 200) + '...');
 
+    console.log('[API] Starting decryption of response...');
     const decrypted = await decryptResponse(text);
-    console.log('Successfully decrypted API response');
+    console.log('[API] Successfully decrypted API response:', decrypted);
     return decrypted;
   } catch (error) {
-    console.error('Error fetching remittance rates:', error);
+    console.error('[API] ERROR - Full error details:', {
+      message: error.message,
+      name: error.name,
+      stack: error.stack,
+      cause: error.cause,
+    });
 
-    // Only fall back to mock data in development or on network errors
-    console.log('Falling back to simple mock data due to API error');
-    return getMockExchangeRate(
-      exchangeRequest.send.currency,
-      exchangeRequest.receive.currency,
-      exchangeRequest.send.amount
-    );
+    // Return an error object without any mock data
+    // Just the minimum required for the component to know this is an error
+    return {
+      __apiError: true,
+      errorMessage: error.message || 'API Error',
+      errorTime: new Date().toISOString(),
+      errorType: error.name || 'Unknown',
+    };
   }
 };
