@@ -1,5 +1,9 @@
 ---
 // Component for transfer calculator UI with API integration
+import 'flag-icons/css/flag-icons.min.css';
+import ChevronDownIcon from '@assets/uae/chevron-down 1.svg';
+import InfoIcon from '@assets/uae/info.svg';
+import QRModalTriggerer from '@components/common/QRModalTriggerer.astro';
 
 // Types for API
 type Payment = { amount: number; currency: string };
@@ -56,14 +60,17 @@ type ExchangeRequest = {
         aria-describedby='send-amount-error'
       />
       <div class='absolute flex items-center gap-1 transform -translate-y-1/2 md:gap-2 right-2 md:right-3 top-1/2'>
-        <span class="text-black text-lg md:text-xl font-normal font-['Hero_New'] leading-relaxed">🇦🇪</span>
+        <span class='text-lg font-normal rounded-full fi fi-ae fis md:text-xl'></span>
         <span class="text-black text-lg md:text-xl font-normal font-['Hero_New'] leading-relaxed">AED</span>
-        <span class='text-sm text-gray-400'>▼</span>
+        <ChevronDownIcon class='w-4 h-4 opacity-0' />
       </div>
       <!-- Error tooltip -->
-      <div id='send-amount-error' class='absolute left-0 top-full mt-1 z-10 opacity-0 invisible transition-all duration-200 pointer-events-none'>
-        <div class='bg-red-600 text-white text-xs px-2 py-1 rounded shadow-lg whitespace-nowrap'>
-          <div class='absolute -top-1 left-3 w-2 h-2 bg-red-600 transform rotate-45'></div>
+      <div
+        id='send-amount-error'
+        class='absolute left-0 z-10 invisible mt-1 transition-all duration-200 opacity-0 pointer-events-none top-full'
+      >
+        <div class='px-2 py-1 text-xs text-white bg-red-600 rounded shadow-lg whitespace-nowrap'>
+          <div class='absolute w-2 h-2 transform rotate-45 bg-red-600 -top-1 left-3'></div>
           <span id='send-amount-error-text'></span>
         </div>
       </div>
@@ -84,19 +91,41 @@ type ExchangeRequest = {
         class="border-stone-300 bg-white w-full text-black text-lg md:text-xl font-normal font-['Hero_New'] leading-relaxed border rounded-lg px-3 py-3 md:py-4 pr-20 md:pr-24 focus:outline-none focus:ring-2 focus:ring-black"
       />
       <div class='absolute flex items-center gap-1 transform -translate-y-1/2 right-2 md:right-3 top-1/2'>
-        <select
-          id='receive-currency-select'
-          class="bg-transparent border-none outline-none text-black text-lg md:text-xl font-normal font-['Hero_New'] leading-relaxed cursor-pointer appearance-none pr-1"
-          aria-describedby='currency-error'
-        >
-          <option value='USD' data-flag='🇺🇸'>🇺🇸 USD</option>
-        </select>
-        <span class='text-sm text-gray-400 pointer-events-none'>▼</span>
+        <div class='relative currency-selector'>
+          <button
+            id='currency-button'
+            type='button'
+            class="bg-transparent border-none outline-none text-black text-lg md:text-xl font-normal font-['Hero_New'] leading-relaxed cursor-pointer flex items-center gap-1 pr-1 hover:text-[#794eff] transition-colors duration-200"
+            aria-describedby='currency-error'
+          >
+            <span id='selected-currency-display'>🇺🇸 USD</span>
+            <ChevronDownIcon class='w-4 h-4' />
+          </button>
+          <div
+            id='currency-dropdown'
+            class='hidden max-h-[180px] overflow-y-auto absolute right-0 z-20 mt-2 min-w-[120px] bg-white rounded-lg border border-gray-200 shadow-xl p-1.5 origin-top-right focus:outline-none transform transition-all duration-200 dropdown-menu'
+          >
+            <div class='py-1' role='menu' aria-orientation='vertical' aria-labelledby='currency-button'>
+              <button
+                type='button'
+                class='w-full flex items-center px-3 py-2 text-sm font-medium rounded-md transition-all duration-200 ease-in-out hover:bg-[#794eff25] hover:text-[#794eff] text-left text-gray-700'
+                data-currency='USD'
+                data-flag='🇺🇸'
+                role='menuitem'
+              >
+                <span class='flex-grow'>🇺🇸 USD</span>
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
       <!-- Error tooltip -->
-      <div id='currency-error' class='absolute left-0 top-full mt-1 z-10 opacity-0 invisible transition-all duration-200 pointer-events-none'>
-        <div class='bg-red-600 text-white text-xs px-2 py-1 rounded shadow-lg whitespace-nowrap'>
-          <div class='absolute -top-1 left-3 w-2 h-2 bg-red-600 transform rotate-45'></div>
+      <div
+        id='currency-error'
+        class='absolute left-0 z-10 invisible mt-1 transition-all duration-200 opacity-0 pointer-events-none top-full'
+      >
+        <div class='px-2 py-1 text-xs text-white bg-red-600 rounded shadow-lg whitespace-nowrap'>
+          <div class='absolute w-2 h-2 transform rotate-45 bg-red-600 -top-1 left-3'></div>
           <span id='currency-error-text'></span>
         </div>
       </div>
@@ -118,23 +147,25 @@ type ExchangeRequest = {
       <span class="text-black text-xs md:text-sm font-normal font-['Hero_New'] leading-tight flex-shrink-0">
         Exchange rate:
       </span>
-      <div class='flex items-center gap-1 text-right'>
+      <div class='flex items-center gap-2 text-right'>
         <span class="text-black text-xs md:text-sm font-normal font-['Hero_New'] leading-tight" id='exchange-rate'>
           1.00 AED = 0.27 USD
         </span>
-        <span class='text-xs text-gray-400'>ℹ️</span>
+        <InfoIcon class='w-4 h-4' />
       </div>
     </div>
   </div>
 
   <!-- Send money button -->
-  <button
-    id='send-money-btn'
-    class="w-full bg-black text-white text-base md:text-lg font-medium font-['Hero_New'] leading-normal py-3 md:py-4 rounded-lg hover:bg-gray-800 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 disabled:bg-gray-400 disabled:cursor-not-allowed"
-  >
-    <span id='btn-text'>Send money now</span>
-    <span id='btn-loading' class='hidden'>Processing...</span>
-  </button>
+  <QRModalTriggerer>
+    <button
+      id='send-money-btn'
+      class="w-full bg-black text-white text-base md:text-lg font-medium font-['Hero_New'] leading-normal py-3 md:py-4 rounded-lg hover:bg-gray-800 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 disabled:bg-gray-400 disabled:cursor-not-allowed"
+    >
+      <span id='btn-text'>Send money now</span>
+      <span id='btn-loading' class='hidden'>Processing...</span>
+    </button>
+  </QRModalTriggerer>
 </div>
 
 <script>
@@ -398,60 +429,94 @@ type ExchangeRequest = {
 
   // Populate the country dropdown with fetched data
   function populateCountryDropdown(countries: Countries) {
-    const select = document.getElementById('receive-currency-select') as HTMLSelectElement;
-    if (!select || !countries || typeof countries !== 'object') return;
+    const dropdownMenu = document.querySelector('#currency-dropdown .py-1');
+    if (!dropdownMenu || !countries || typeof countries !== 'object') return;
 
     // Clear existing options
-    select.innerHTML = '';
+    dropdownMenu.innerHTML = '';
 
     // Iterate through countries object
     Object.values(countries).forEach((country: CountryInfo) => {
-      const option = document.createElement('option');
-
       const currency = country.currency;
       const countryName = country.name;
-      const flag = country.unicode || getFlagEmoji(country.iso2_code);
+      const countryCode = country.iso2_code || country.code;
 
       if (currency) {
-        option.value = currency;
-        option.textContent = `${flag || '🏳️'} ${currency}`;
-        option.dataset.countryCode = country.iso2_code || country.code;
-        option.dataset.flag = flag || '🏳️';
-        option.dataset.countryName = countryName;
-        select.appendChild(option);
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className =
+          'w-full flex items-center px-3 py-2 text-sm font-medium rounded-md transition-all duration-200 ease-in-out hover:bg-[#794eff25] hover:text-[#794eff] text-left text-gray-700';
+        button.setAttribute('data-currency', currency);
+        button.setAttribute('data-country-code', countryCode);
+        button.setAttribute('data-country-name', countryName);
+        button.setAttribute('role', 'menuitem');
+
+        // Create flag icon using flag-icons
+        const flagIcon = createFlagIcon(countryCode);
+        button.appendChild(flagIcon);
+
+        const span = document.createElement('span');
+        span.className = 'flex-grow';
+        span.textContent = currency;
+        button.appendChild(span);
+
+        dropdownMenu.appendChild(button);
       }
     });
 
+    // Re-initialize dropdown event listeners for new options
+    initializeCurrencyDropdownOptions();
+
     // Set USD as default if available
-    const usdOption = select.querySelector('option[value="USD"]');
-    if (usdOption) {
-      select.value = 'USD';
+    const usdButton = dropdownMenu.querySelector('button[data-currency="USD"]');
+    if (usdButton) {
+      selectedCurrency = 'USD';
+
+      // Update display with flag icon
+      const displayEl = document.getElementById('selected-currency-display');
+      if (displayEl) {
+        // Clear existing content
+        displayEl.innerHTML = '';
+
+        // Add flag icon
+        const flagIcon = createFlagIcon('US');
+        displayEl.appendChild(flagIcon);
+
+        // Add currency text
+        const currencyText = document.createElement('span');
+        currencyText.textContent = 'USD';
+        displayEl.appendChild(currencyText);
+      }
+
+      // Mark as selected
+      usdButton.classList.add('selected');
     }
   }
 
-  // Helper function to get flag emoji from country code
-  function getFlagEmoji(countryCode) {
-    if (!countryCode || countryCode.length !== 2) return '🏳️';
+  // Helper function to get flag icon class from country code using flag-icons library
+  function getFlagIconClass(countryCode: string): string {
+    if (!countryCode || countryCode.length !== 2) return 'fi fi-xx rounded-full'; // Default flag for unknown countries
 
-    const flagMap = {
-      US: '🇺🇸',
-      GB: '🇬🇧',
-      EU: '🇪🇺',
-      CA: '🇨🇦',
-      AU: '🇦🇺',
-      IN: '🇮🇳',
-      PK: '🇵🇰',
-      BD: '🇧🇩',
-      PH: '🇵🇭',
-      EG: '🇪🇬',
-      AE: '🇦🇪',
-      SA: '🇸🇦',
-      KW: '🇰🇼',
-      QA: '🇶🇦',
-      BH: '🇧🇭',
+    // Convert country code to lowercase for flag-icons CSS classes
+    const code = countryCode.toLowerCase();
+
+    // Map some special cases that might have different codes
+    const codeMap: { [key: string]: string } = {
+      eu: 'eu', // European Union
+      gb: 'gb', // Great Britain
+      uk: 'gb', // UK -> GB mapping
     };
 
-    return flagMap[countryCode.toUpperCase()] || '🏳️';
+    const finalCode = codeMap[code] || code;
+    return `fi fi-${finalCode} rounded-full`;
+  }
+
+  // Helper function to create flag icon element
+  function createFlagIcon(countryCode: string): HTMLSpanElement {
+    const flagClass = getFlagIconClass(countryCode);
+    const flagElement = document.createElement('span');
+    flagElement.className = `${flagClass} fis inline-block w-5 h-5 mr-2`;
+    return flagElement;
   }
 
   // Encryption utility - inline implementation for client-side use
@@ -688,12 +753,98 @@ type ExchangeRequest = {
     }, VALIDATION_RULES.DEBOUNCE_DELAY);
   }
 
-  // Handle currency selection change
+  // Currency dropdown functionality
+  let selectedCurrency = 'USD';
+
+  // Initialize event listeners for currency dropdown options
+  function initializeCurrencyDropdownOptions() {
+    const currencyOptions = document.querySelectorAll('[data-currency]');
+    const currencyDropdown = document.getElementById('currency-dropdown');
+
+    // Handle currency selection
+    function selectCurrency(currency: string, countryCode: string) {
+      selectedCurrency = currency;
+
+      // Update display with flag icon
+      const displayEl = document.getElementById('selected-currency-display');
+      if (displayEl) {
+        // Clear existing content
+        displayEl.innerHTML = '';
+
+        // Add flag icon
+        const flagIcon = createFlagIcon(countryCode);
+        displayEl.appendChild(flagIcon);
+
+        // Add currency text
+        const currencyText = document.createElement('span');
+        currencyText.textContent = currency;
+        displayEl.appendChild(currencyText);
+      }
+
+      // Update selected state in dropdown
+      currencyOptions.forEach((option) => {
+        option.classList.remove('selected');
+        if (option.getAttribute('data-currency') === currency) {
+          option.classList.add('selected');
+        }
+      });
+
+      // Close dropdown
+      currencyDropdown?.classList.add('hidden');
+
+      // Trigger currency change handler
+      handleCurrencyChange();
+    }
+
+    // Add click listeners to all currency options
+    currencyOptions.forEach((option) => {
+      // Remove any existing listeners to avoid duplicates
+      const newOption = option.cloneNode(true) as Element;
+      option.parentNode?.replaceChild(newOption, option);
+
+      newOption.addEventListener('click', (e) => {
+        e.preventDefault();
+        const currency = newOption.getAttribute('data-currency') || 'USD';
+        const countryCode = newOption.getAttribute('data-country-code') || 'US';
+        selectCurrency(currency, countryCode);
+      });
+    });
+  }
+
+  function initializeCurrencyDropdown() {
+    const currencyButton = document.getElementById('currency-button');
+    const currencyDropdown = document.getElementById('currency-dropdown');
+
+    // Toggle dropdown
+    function toggleCurrencyDropdown(e: Event) {
+      e.stopPropagation();
+      e.preventDefault();
+      currencyDropdown?.classList.toggle('hidden');
+    }
+
+    // Add event listeners
+    if (currencyButton) {
+      currencyButton.addEventListener('click', toggleCurrencyDropdown);
+      currencyButton.addEventListener('touchend', toggleCurrencyDropdown);
+    }
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+      const target = e.target as Element;
+      if (!target.closest('.currency-selector')) {
+        currencyDropdown?.classList.add('hidden');
+      }
+    });
+
+    // Initialize options if they exist
+    initializeCurrencyDropdownOptions();
+  }
+
+  // Updated handleCurrencyChange to work with custom dropdown
   function handleCurrencyChange() {
     const sendAmountEl = document.getElementById('send-amount') as HTMLInputElement;
-    const currencySelect = document.getElementById('receive-currency-select') as HTMLSelectElement;
     const amount = sendAmountEl?.value || '1000';
-    const currency = currencySelect?.value;
+    const currency = selectedCurrency;
 
     // Clear previous errors
     clearErrors();
@@ -745,8 +896,10 @@ type ExchangeRequest = {
     // Fetch available countries
     fetchCountries();
 
+    // Initialize currency dropdown
+    initializeCurrencyDropdown();
+
     const sendAmountEl = document.getElementById('send-amount');
-    const currencySelectEl = document.getElementById('receive-currency-select');
 
     if (sendAmountEl) {
       sendAmountEl.addEventListener('input', handleAmountChange);
@@ -771,10 +924,6 @@ type ExchangeRequest = {
       });
     }
 
-    if (currencySelectEl) {
-      currencySelectEl.addEventListener('change', handleCurrencyChange);
-    }
-
     // Initial load with validation
     setTimeout(() => {
       handleAmountChange();
@@ -784,10 +933,9 @@ type ExchangeRequest = {
   // Add validation on form submission (if integrated with a form)
   function validateForm(): boolean {
     const sendAmountEl = document.getElementById('send-amount') as HTMLInputElement;
-    const currencySelectEl = document.getElementById('receive-currency-select') as HTMLSelectElement;
 
     const amount = sendAmountEl?.value || '';
-    const currency = currencySelectEl?.value || '';
+    const currency = selectedCurrency || '';
 
     const amountError = validateSendAmount(amount);
     const currencyError = validateCurrency(currency);
@@ -814,4 +962,66 @@ type ExchangeRequest = {
     clearErrors,
     showError,
   };
+
+  // Set correct store URL for download link inside mobile menu
+  const downloadLink = document.getElementById('send-money-btn') as HTMLButtonElement | null;
+  if (downloadLink) {
+    const ua = navigator.userAgent;
+    const isIOS = /iPhone|iPad|iPod/i.test(ua);
+    downloadLink.onclick = () => {
+      if (isIOS) {
+        window.open('https://apps.apple.com/pl/app/jingle-pay/id1493392189', '_blank');
+      } else {
+        window.open('https://play.google.com/store/apps/details?id=com.jinglepay&hl=en', '_blank');
+      }
+    };
+  }
 </script>
+
+<style>
+  /* Hide spinner controls for number inputs */
+  input[type='number']::-webkit-outer-spin-button,
+  input[type='number']::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  /* Firefox */
+  input[type='number'] {
+    -moz-appearance: textfield;
+  }
+
+  /* Currency selector dropdown styling */
+  .currency-selector {
+    position: relative;
+  }
+
+  /* Animation for dropdown */
+  #currency-dropdown:not(.hidden) {
+    animation: dropdown-open 0.2s ease-out forwards;
+  }
+
+  @keyframes dropdown-open {
+    0% {
+      opacity: 0;
+      transform: translateY(-5px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Add hover effects to dropdown items */
+  .currency-selector .dropdown-menu button:hover {
+    background-color: rgba(121, 78, 255, 0.1);
+    color: #794eff;
+  }
+
+  /* Selected state styling */
+  .currency-selector .dropdown-menu button.selected {
+    background-color: rgba(121, 78, 255, 0.3);
+    color: #794eff;
+    font-weight: 600;
+  }
+</style>
