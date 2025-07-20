@@ -1,11 +1,4 @@
-# In the Astro site's repository (pipeline definition)
-
-resources:
-  repositories:
-    - repository: gatsbyRepo # Alias for the Gatsby repository
-      type: git # Or github, azureRepos, etc.
-      name: JinglePay/jp_website # Project/Repository name (Adjust as needed)
-      ref: main # Or the branch you want to build from the Gatsby repo
+# Astro site pipeline definition
 
 trigger:
   branches:
@@ -21,9 +14,7 @@ steps:
   - checkout: self # Checkout the repo this yaml file is in
     path: s       # Checkout into the 's' subdirectory of $(Pipeline.Workspace)
 
-# --- Checkout Gatsby Repo ---
-  - checkout: gatsbyRepo # Use the alias defined in resources
-    path: gatsby # Checkout Gatsby repo into a 'gatsby' subdirectory within the agent's work folder
+
 
 # --- Astro Steps ---
   - task: NodeTool@0
@@ -64,32 +55,7 @@ steps:
       TargetFolder: '$(Build.ArtifactStagingDirectory)/astro-dist'
     displayName: 'Copy Astro build files'
 
-# --- Gatsby Steps ---
-  - task: NodeTool@0 # Install Node again if needed, or ensure version compatibility
-    condition: eq(variables['Build.SourceBranchName'], 'main')
-    inputs:
-      versionSpec: '18.x' # Or the Node version required by Gatsby
-    displayName: 'Install Node.js for Gatsby'
 
-  - script: |
-      npm install
-    condition: eq(variables['Build.SourceBranchName'], 'main')
-    displayName: 'Install Gatsby dependencies'
-    workingDirectory: $(Pipeline.Workspace)/gatsby # Path where Gatsby repo was checked out
-
-  - script: |
-      npx gatsby build --prefix-paths
-    condition: eq(variables['Build.SourceBranchName'], 'main')
-    displayName: 'Build Gatsby project'
-    workingDirectory: $(Pipeline.Workspace)/gatsby # Path where Gatsby repo was checked out
-
-  - task: CopyFiles@2
-    condition: eq(variables['Build.SourceBranchName'], 'main')
-    inputs:
-      SourceFolder: '$(Pipeline.Workspace)/gatsby/public' # Gatsby output folder relative to checkout path
-      Contents: '**'
-      TargetFolder: '$(Build.ArtifactStagingDirectory)/gatsby-dist'
-    displayName: 'Copy Gatsby build files'
 
 # --- Publish Artifacts ---
   - task: PublishBuildArtifacts@1
@@ -124,13 +90,4 @@ steps:
       flattenFolders: false
     displayName: 'Deploy Astro to PROD S3 bucket (Root)'
 
-  - task: S3Upload@1
-    condition: eq(variables['Build.SourceBranchName'], 'main') # Condition based on Astro repo branch
-    inputs:
-      awsCredentials: 'AWS_PROD'
-      regionName: 'me-central-1'
-      bucketName: 'jinglepay-website'
-      sourceFolder: '$(Build.ArtifactStagingDirectory)/gatsby-dist'
-      targetFolder: 'are/en'
-      flattenFolders: false
-    displayName: 'Deploy Gatsby to PROD S3 bucket (are/en)'
+
