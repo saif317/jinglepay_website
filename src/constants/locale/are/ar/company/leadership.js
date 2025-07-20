@@ -1,89 +1,89 @@
 export default {
-  title: 'Meet our board of directors',
+  title: 'تعرف على مجلس الإدارة',
   description:
-    'Our visionary leaders at Jingle Pay guide our team with expertise and innovation, upholding high standards of governance and financial excellence.',
+    'يقود فريقنا في Jingle Pay مجموعة من القادة أصحاب الرؤية، ممن يتمتعون بخبرة واسعة وابتكار عالي، ويحرصون على تطبيق أعلى معايير الحوكمة والتميز المالي.',
   boardMembers: [
     {
-      name: 'Alex Holmes',
-      title: 'Director',
+      name: 'أليكس هولمز',
+      title: 'عضو مجلس الإدارة',
       description:
-        'Former Chairman & CEO of MoneyGram, where he led a high-stakes turnaround—digitizing a 200-country remittance network, pioneering blockchain integrations, and driving a $2B exit. Under his leadership, MoneyGram became a fintech force, culminating in a landmark F1 global brand partnership and strategic sale to Madison Dearborn.',
+        'رئيس مجلس الإدارة والرئيس التنفيذي السابق لشركة MoneyGram، حيث قاد عملية تحول جريئة شملت رقمنة شبكة تحويلات إلى أكثر من 200 دولة، وقيادة ابتكارات في مجال البلوكشين، وتحقيق صفقة بيع بقيمة 2 مليار دولار. في عهده، أصبحت MoneyGram قوة في مجال التكنولوجيا المالية، وتُوج ذلك بشراكة عالمية بارزة مع الفورمولا 1 وبيع استراتيجي إلى Madison Dearborn.',
     },
     {
-      name: 'Amir Fardghassemi',
-      title: 'Founder & CEO',
+      name: 'عامر فردقاسمي',
+      title: 'المؤسس والرئيس التنفيذي',
       description:
-        'Founder & CEO, Jingle Pay. 15+ years in FinTech, 2x founder with successful exits. Former hedge fund manager with $2.5B+ in annual traded volumes. Strategic investor in Twitter, Shake Shack, Ferrari & more. Brings governance leadership, capital markets expertise, & exit strategy insight',
+        'مؤسس ورئيس تنفيذي لشركة Jingle Pay. أكثر من 15 عامًا من الخبرة في مجال التكنولوجيا المالية، أسس شركتين ناجحتين وتمت بهما صفقات خروج ناجحة. مدير صندوق تحوط سابق بتداولات سنوية تجاوزت 2.5 مليار دولار. مستثمر استراتيجي في شركات مثل تويتر، شيك شاك، وفيراري، ويتميز بريادة الحوكمة وخبرة أسواق المال والاستراتيجيات الناجحة للخروج.',
     },
     {
-      name: 'Arya Bolurfrushan',
-      title: 'Director',
+      name: 'آريا بولورفرشان',
+      title: 'عضو مجلس الإدارة',
       description:
-        'Former CFO of RAK Petroleum and member of Goldman Sachs Strategic Committee. Serial entrepreneur and founder of AAICO, a G42-backed AI company. Brings deep financial leadership, strategic governance, and AI innovation expertise.',
+        'المدير المالي السابق لشركة RAK Petroleum وعضو لجنة الاستراتيجيات في Goldman Sachs. رائد أعمال متسلسل ومؤسس AAICO، شركة تعتمد على الذكاء الاصطناعي ومدعومة من G42. يمتلك خبرة عميقة في القيادة المالية، الحوكمة الاستراتيجية، وابتكارات الذكاء الاصطناعي.',
     },
     {
-      name: 'Atif Bajwa',
-      title: 'Director',
+      name: 'عاطف باجوا',
+      title: 'عضو مجلس الإدارة',
       description:
-        'Current President of Bank Al Falah with 40+ years in global banking leadership, ex-CEO of major banks, senior roles at Citibank and ABN AMRO.',
+        'الرئيس الحالي لبنك الفلاح، يتمتع بأكثر من 40 عامًا في قيادة البنوك العالمية، والرئيس التنفيذي السابق لعدة بنوك كبرى، بأدوار عليا في Citibank وABN AMRO.',
     },
     {
-      name: 'Maher Haddad',
-      title: 'Director',
+      name: 'ماهر حداد',
+      title: 'عضو مجلس الإدارة',
       description:
-        'Global business leader with MoneyGram and American Express in the Middle East. Expert in payments, remittances, and regional market expansion.',
+        'قائد أعمال عالمي مع MoneyGram وAmerican Express في منطقة الشرق الأوسط، وخبير في المدفوعات والتحويلات المالية وتوسيع نطاق الأسواق الإقليمية.',
     },
     {
-      name: 'Faisal Rashid',
-      title: 'Director',
+      name: 'فيصل راشد',
+      title: 'عضو مجلس الإدارة',
       description:
-        'Head of Financial Institutions, International Banking & Home Remittance Business at Bank Alfalah Limited. Extensive expertise in banking partnerships, international transactions, and remittance services.',
+        'رئيس المؤسسات المالية والأعمال المصرفية الدولية والتحويلات المالية في بنك الفلاح المحدود. يمتلك خبرة كبيرة في شراكات البنوك، المعاملات الدولية، وخدمات التحويلات.',
     },
   ],
   teamMembers: [
     {
-      name: 'Amir Fardghassemi',
-      title: 'Founder and CEO',
+      name: 'عامر فردقاسمي',
+      title: 'المؤسس والرئيس التنفيذي',
       linkedin: 'https://www.linkedin.com/in/amir-fardghassemi-154b4136/',
-      description: 'FinTech leader with 15+ years’ experience, two successful exits, and a hedge fund background.',
+      description:
+        'رائد في مجال التكنولوجيا المالية مع خبرة تزيد عن 15 عامًا، ومسيرتين ناجحتين في ريادة الأعمال وصندوق تحوط سابق.',
     },
     {
-      name: 'Sohali Ahmad',
-      title: 'CBO',
+      name: 'سهيل أحمد',
+      title: 'الرئيس التنفيذي للأعمال',
       linkedin: 'https://www.linkedin.com/in/sohail-ahmad-8b629314b/',
-      description: '20+ years in remittances and payments; led MENAP & APAC at Western Union and MoneyGram.',
+      description:
+        'أكثر من 20 عامًا في مجال التحويلات والمدفوعات، قاد عمليات Western Union وMoneyGram في مناطق الشرق الأوسط وجنوب آسيا.',
     },
     {
-      name: 'Rashid Muhammad',
-      title: 'CCO',
+      name: 'رشيد محمد',
+      title: 'الرئيس التنفيذي للامتثال',
       linkedin: 'https://www.linkedin.com/in/muhammad-rashid/',
-      description: 'Compliance veteran with roles at Western Union, PwC, and Khushali Microfinance Bank.',
+      description: 'خبير في الامتثال، شغل مناصب في Western Union وPwC وبنك خُشالي للتمويل الأصغر.',
     },
     {
-      name: 'Prof. Christian Farioli ',
-      title: 'CMO',
+      name: 'البروفيسور كريستيان فاريولي',
+      title: 'الرئيس التنفيذي للتسويق',
       linkedin: 'https://www.linkedin.com/in/christianfarioli/',
-      description:
-        'Ex-Oracle digital strategist, marketing professor, and advisor to top banks on digital transformation.',
+      description: 'استراتيجي رقمي سابق في Oracle، أستاذ تسويق، ومستشار للبنوك الكبرى في التحول الرقمي.',
     },
     {
-      name: 'Ritesh Kumar',
-      title: 'CTO',
+      name: 'ريتيش كومار',
+      title: 'الرئيس التنفيذي للتكنولوجيا',
       linkedin: 'https://www.linkedin.com/in/ritesh-kumar-0b574755/',
-      description:
-        'Led engineering teams at Goldman Sachs and Delivery Hero; expert in scaling financial tech platforms.',
+      description: 'قاد فرق الهندسة في Goldman Sachs وDelivery Hero؛ خبير في تطوير وتوسعة منصات التكنولوجيا المالية.',
     },
     {
-      name: 'Rick Freitas',
-      title: 'Head of Product Design',
+      name: 'ريك فريتاس',
+      title: 'رئيس قسم تصميم المنتجات',
       linkedin: 'https://www.linkedin.com/in/rickfreitaslima/',
       description:
-        'Design leader with 15+ years in digital products and services, having worked at Delivery Hero, Property Finder, and Thoughtworks.',
+        'قائد تصميم ذو خبرة تزيد عن 15 عامًا في المنتجات الرقمية والخدمات، عمل في Delivery Hero وProperty Finder وThoughtworks.',
     },
   ],
   team: {
-    title: 'Our Team',
+    title: 'فريقنا',
     description:
-      'Jingle Pay’s management team consists of experienced leaders with 15+ years in banking, payments, and technology, dedicated to delivering secure, scalable, and user-friendly financial solutions.',
+      'يتكوّن فريق الإدارة في Jingle Pay من قادة ذوي خبرات عميقة تزيد عن 15 عامًا في قطاعات البنوك والمدفوعات والتكنولوجيا، ملتزمون بتقديم حلول مالية آمنة، وقابلة للتوسّع، وسهلة الاستخدام.',
   },
 };

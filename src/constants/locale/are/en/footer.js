@@ -15,6 +15,7 @@ export default {
       links: [
         { href: '/company', text: 'About Us' },
         { href: '/company#mission', text: 'Mission' },
+
         { href: '/career', text: 'Careers' },
         { href: '#featured-section', text: 'Press' },
         { href: '/contact', text: 'Contact' },
@@ -27,7 +28,7 @@ export default {
     {
       title: 'Help',
       links: [
-        { href: '/are/en/terms-and-conditions', text: 'Terms & Conditions' },
+        { href: '/terms-and-conditions', text: 'Terms & Conditions' },
         { href: '/privacy-policy', text: 'Privacy Policy' },
         // { href: '/address-update-policy', text: 'Address Update Policy' },
         // { href: '/joining-offer', text: 'Joining Offer' },

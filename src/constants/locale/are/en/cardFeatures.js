@@ -1,16 +1,16 @@
 export default {
   features: [
     {
-      title: 'Virtual Cards',
-      desc: 'Unlock your freedom with a versatile debit card! Enjoy a joining bonus and earn cashback on every transaction.'
+      title: 'بطاقات افتراضية',
+      desc: 'استمتع بحرية الإنفاق مع بطاقة خصم متعددة الاستخدامات! احصل على مكافأة ترحيبية واربح استردادًا نقديًا عند كل عملية شراء.',
     },
     {
-      title: 'Security',
-      desc: 'Your personal data, money, and card details are stored securely with end-to-end encryption.'
+      title: 'الأمان',
+      desc: 'نحمي بياناتك الشخصية وأموالك ومعلومات بطاقتك بأعلى مستويات الأمان من خلال التشفير من طرف إلى طرف.',
     },
     {
-      title: 'Numberless',
-      desc: 'The cards only display your name – keeping your card details secure and further strengthening privacy.'
-    }
-  ]
+      title: 'بطاقات بدون أرقام',
+      desc: 'تُعرض على البطاقة اسمك فقط — مما يحافظ على سرية تفاصيل بطاقتك ويعزز من خصوصيتك الرقمية.',
+    },
+  ],
 };

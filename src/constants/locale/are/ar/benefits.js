@@ -3,20 +3,20 @@ export default {
     trusted: {
       prefix: 'موثوق من قبل',
       number: '+500,000',
-      suffix: 'مستخدمين حول العالم',
+      suffix: 'مستخدم حول العالم',
     },
     transactions: {
       prefix: 'مع أكثر من',
-      number: 'USD 2 Billion',
-      suffix: 'تمت معالجته في العمليات المالية',
+      number: '2 مليار دولار أمريكي',
+      suffix: 'تمت معالجتها في المعاملات',
     },
   },
   zeroFees: {
     title: 'بدون أي رسوم',
   },
   savings: {
-    title: 'وفر للعملاء مبالغ مالية',
-    amount: 'USD 5,000,000',
-    description: 'Jingle Pay يعمل على ديمقراطية الوصول إلى الخدمات المالية',
+    title: 'وفّرنا لعملائنا أكثر من',
+    amount: '5,000,000 دولار أمريكي',
+    description: 'تعمل Jingle Pay على إتاحة الخدمات المالية للجميع بطريقة عادلة وميسّرة',
   },
 };

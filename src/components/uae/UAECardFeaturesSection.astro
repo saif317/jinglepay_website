@@ -77,8 +77,10 @@ const initialActiveIndex = 0;
                     loading='eager'
                   />
                 </div>
-                <h3 class='mb-2 text-xl font-semibold text-left sm:mb-3 sm:text-2xl text-slate-800'>{feature.title}</h3>
-                <p class='max-w-md text-sm leading-relaxed text-left sm:text-base text-slate-600'>{feature.desc}</p>
+                <h3 class='mb-2 text-xl font-semibold text-start sm:mb-3 sm:text-2xl text-slate-800'>
+                  {feature.title}
+                </h3>
+                <p class='max-w-md text-sm leading-relaxed text-start sm:text-base text-slate-600'>{feature.desc}</p>
               </article>
             </div>
           ))
@@ -94,7 +96,7 @@ const initialActiveIndex = 0;
         <!-- Left Arrow Button -->
         <button
           id='prevSlide'
-          class='p-2 rounded-[100px] outline-1 outline-offset-[-1px] outline-violet-500 inline-flex justify-start items-center gap-2.5 focus:outline-none z-20'
+          class='p-2 rounded-[100px] outline-1 outline-offset-[-1px] outline-violet-500 inline-flex justify-start items-center gap-2.5 focus:outline-none z-20 cursor-pointer'
           aria-label='Previous slide'
         >
           <svg
@@ -103,7 +105,7 @@ const initialActiveIndex = 0;
             viewBox='0 0 24 24'
             fill='none'
             xmlns='http://www.w3.org/2000/svg'
-            class='text-violet-500'
+            class='text-violet-500 rtl:scale-x-[-1]'
           >
             <path d='M19 12H5' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'
             ></path>
@@ -122,7 +124,7 @@ const initialActiveIndex = 0;
             features.map((feature: CardFeature, i: number) => (
               <button
                 class:list={[
-                  'rounded-full transition-colors',
+                  'carousel-dot rounded-full transition-colors cursor-pointer',
                   i === initialActiveIndex
                     ? 'w-4 h-4 sm:w-5 sm:h-5 bg-violet-500'
                     : 'w-3 h-3 sm:w-4 sm:h-4 bg-gray-300',
@@ -137,7 +139,7 @@ const initialActiveIndex = 0;
         <!-- Right Arrow Button -->
         <button
           id='nextSlide'
-          class='p-2 rounded-[100px] outline-1 outline-offset-[-1px] outline-violet-500 inline-flex justify-start items-center gap-2.5 focus:outline-none z-20'
+          class='p-2 rounded-[100px] outline-1 outline-offset-[-1px] outline-violet-500 inline-flex justify-start items-center gap-2.5 focus:outline-none z-20 cursor-pointer'
           aria-label='Next slide'
         >
           <svg
@@ -146,7 +148,7 @@ const initialActiveIndex = 0;
             viewBox='0 0 24 24'
             fill='none'
             xmlns='http://www.w3.org/2000/svg'
-            class='text-violet-500'
+            class='text-violet-500 rtl:scale-x-[-1]'
             style='transform: rotate(180deg);'
           >
             <path d='M19 12H5' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'
@@ -170,13 +172,37 @@ const initialActiveIndex = 0;
   document.addEventListener('DOMContentLoaded', () => {
     const track = document.getElementById('cardFeatureSlides');
     const slides = Array.from(document.querySelectorAll('.carousel-slide'));
+    const dots = Array.from(document.querySelectorAll('.carousel-dot'));
     const prevButton = document.getElementById('prevSlide');
     const nextButton = document.getElementById('nextSlide');
-    const dots = document.querySelectorAll('[data-slide-dot]');
-    const wrapper = document.querySelector('.carousel-wrapper');
 
-    let currentSlide = 0;
+    if (!track || slides.length === 0) {
+      console.error('Carousel elements not found');
+      return;
+    }
+
+    // RTL detection
+    const isRTL =
+      document.documentElement.dir === 'rtl' ||
+      document.body.dir === 'rtl' ||
+      getComputedStyle(document.documentElement).direction === 'rtl';
+
+    console.log('RTL mode detected:', isRTL);
+
     const slideCount = slides.length;
+    let currentSlide = 0;
+
+    // Drag and touch variables
+    let isDragging = false;
+    let startPos = 0;
+    let currentTranslate = 0;
+    let prevTranslate = 0;
+    let animationID = 0;
+    let dragStartTime = 0;
+    let dragEndTime = 0;
+
+    // Debug to console - helps troubleshoot
+    console.log('Carousel initialized with', slideCount, 'slides');
 
     // Setup initial slide size - should match the CSS width (responsive)
     let slideWidth = 500; // Default width
@@ -195,18 +221,6 @@ const initialActiveIndex = 0;
       }
       updateTrackPosition(); // Reposition after resize
     });
-
-    // Variables for drag handling
-    let isDragging = false;
-    let startPos = 0;
-    let currentTranslate = 0;
-    let prevTranslate = 0;
-    let animationID = 0;
-    let dragStartTime = 0;
-    let dragEndTime = 0;
-
-    // Debug to console - helps troubleshoot
-    console.log('Carousel initialized with', slideCount, 'slides');
 
     function updateSlideVisibility() {
       // Update all slides to reflect their position relative to current
@@ -241,7 +255,9 @@ const initialActiveIndex = 0;
 
     function setSliderPosition() {
       if (!track) return;
-      track.style.transform = `translateX(${currentTranslate}px)`;
+      // Reverse transform direction for RTL
+      const translateValue = isRTL ? -currentTranslate : currentTranslate;
+      track.style.transform = `translateX(${translateValue}px)`;
     }
 
     function updateDots() {
@@ -334,10 +350,19 @@ const initialActiveIndex = 0;
 
       if (isSignificantMovement || isFastSwipe) {
         // If moved enough distance or was a fast swipe
-        if (moveDistance > 0) {
-          goToSlide(currentSlide - 1);
+        // Reverse swipe logic for RTL
+        if (isRTL) {
+          if (moveDistance > 0) {
+            goToSlide(currentSlide + 1);
+          } else {
+            goToSlide(currentSlide - 1);
+          }
         } else {
-          goToSlide(currentSlide + 1);
+          if (moveDistance > 0) {
+            goToSlide(currentSlide - 1);
+          } else {
+            goToSlide(currentSlide + 1);
+          }
         }
       } else {
         // Snap back to current slide if movement wasn't enough
@@ -394,12 +419,13 @@ const initialActiveIndex = 0;
     updateTrackPosition();
     updateDots();
 
-    // Set up button event handlers
+    // Set up button event handlers with RTL support
     if (prevButton) {
       console.log('Previous button found, attaching handler');
       prevButton.addEventListener('click', () => {
         console.log('Previous button clicked');
-        goToSlide(currentSlide - 1);
+        // In RTL, "previous" visually means next slide
+        goToSlide(isRTL ? currentSlide + 1 : currentSlide - 1);
       });
     }
 
@@ -407,7 +433,8 @@ const initialActiveIndex = 0;
       console.log('Next button found, attaching handler');
       nextButton.addEventListener('click', () => {
         console.log('Next button clicked');
-        goToSlide(currentSlide + 1);
+        // In RTL, "next" visually means previous slide
+        goToSlide(isRTL ? currentSlide - 1 : currentSlide + 1);
       });
     }
 
@@ -419,15 +446,17 @@ const initialActiveIndex = 0;
       });
     });
 
-    // Keyboard navigation
+    // Keyboard navigation with RTL support
     document.addEventListener('keydown', (e) => {
       if (e.key === 'ArrowLeft') {
         console.log('Left arrow pressed');
-        goToSlide(currentSlide - 1);
+        // In RTL, left arrow should go to next slide
+        goToSlide(isRTL ? currentSlide + 1 : currentSlide - 1);
       }
       if (e.key === 'ArrowRight') {
         console.log('Right arrow pressed');
-        goToSlide(currentSlide + 1);
+        // In RTL, right arrow should go to previous slide
+        goToSlide(isRTL ? currentSlide - 1 : currentSlide + 1);
       }
     });
   });

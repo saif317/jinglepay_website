@@ -8,27 +8,25 @@ import contact from './contact/index.js';
 import company from './company/company.js';
 import career from './career.js';
 import qrModal from './qrModal.js';
-
-// UAE component translations
-import uaeHero from './uaeHero.js';
-import control from './control.js';
-import benefits from './benefits.js';
-import cardFeatures from './cardFeatures.js';
 import infoCards from './infoCards.js';
-import p2p from './p2p.js';
+import uaeHero from './uaeHero.js';
+import transferCalculator from './transferCalculator.js';
+import control from './control.js';
 import appShowcase from './appShowcase.js';
-// Add other imports as translation files are created
+import p2p from './p2p.js';
+import cardFeatures from './cardFeatures.js';
+import benefits from './benefits.js';
 
 export default {
-  title: 'Jingle Pay UAE - Simplifying All Money!',
-  description: 'Jingle Pay is the go-to money app for your everyday financial needs in UAE.',
+  title: 'Jingle Pay الإمارات - تبسيط كل ما يتعلق بالأموال!',
+  description: 'Jingle Pay هو التطبيق المالي المثالي لتلبية احتياجاتك اليومية في الإمارات.',
   navbar,
   hero: {
-    title: 'Your Money. Simplified.',
-    subtitle: 'Experience seamless banking with the all-in-one money app designed for your lifestyle.',
-    downloadApp: 'Download App',
+    title: 'أموالك... ببساطة.',
+    subtitle: 'اكتشف تجربة مصرفية سلسة مع تطبيق شامل مصمم خصيصًا ليتوافق مع نمط حياتك.',
+    downloadApp: 'تحميل التطبيق',
   },
-  featuredIn: ':في Jingle Pay تم عرض',
+  featuredIn: 'ظهرت Jingle Pay في:',
   investors,
   partners,
   regulation,
@@ -38,14 +36,12 @@ export default {
   company,
   career,
   qrModal,
-  
-  // UAE component translations
-  uaeHero,
-  control,
-  benefits,
-  cardFeatures,
   infoCards,
-  p2p,
+  uaeHero,
+  transferCalculator,
+  control,
   appShowcase,
-  // Add other component exports as translation files are created
+  p2p,
+  cardFeatures,
+  benefits,
 };

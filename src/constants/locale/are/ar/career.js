@@ -1,12 +1,12 @@
 export default {
-  title: 'Join our Team',
+  title: 'انضم إلى فريقنا',
   description:
-    'It’s time to leave your mark your impact. Showcase your unique talents and contribute meaningfully to your community and beyond.',
-  thanks: 'Thank you for your interest in joining our team! Currently, we don’t have any open positions.',
-  newsletter: 'Stay tuned',
-  newsletterDescription: 'Join our newsletter and stay updated with the new job openings at Jingle Pay!',
-  newsletterPlaceholder: 'example@company.com',
-  newsletterButton: 'Subscribe',
-  successTitle: 'Thank you for your subscribing!',
-  successMessage: "We'll let you know right away when we have job openings available!",
+    'حان الوقت لتترك بصمتك وتحقق تأثيرك. أظهر مواهبك الفريدة وساهم بشكل فعّال في خدمة مجتمعك وما هو أبعد منه.',
+  thanks: 'شكرًا لاهتمامك بالانضمام إلى فريقنا! حاليًا، لا توجد شواغر متاحة.',
+  newsletter: 'تابعنا',
+  newsletterDescription: 'اشترك في نشرتنا ليصلك كل جديد حول الوظائف المتاحة في Jingle Pay!',
+  newsletterPlaceholder: 'your@email.com',
+  newsletterButton: 'اشترك',
+  successTitle: 'شكرًا لاشتراكك!',
+  successMessage: 'سنقوم بإبلاغك فور توفّر وظائف جديدة لدينا!',
 };

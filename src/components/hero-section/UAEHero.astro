@@ -22,25 +22,19 @@ const calculatorData = {
   transferFee: calculator?.transferFee || '0.000 AED',
   exchangeRate: calculator?.exchangeRate || '1.00 AED = 0.27 USD',
 };
+
+const { lang } = Astro.locals;
 ---
 
 <!-- Hero section with a two-column layout that stacks on mobile -->
 <section
-  class='flex flex-col mx-auto items-center gap-y-8 lg:gap-x-12 xl:gap-x-0 justify-between text-center lg:flex-row lg:text-left pt-[85px] px-[16px] p-[48px] max-w-[24rem] sm:max-w-full sm:pt-[110px] lg:max-w-[950px] xl:max-w-[1100px] lg:pt-[200px] 2xl:max-w-[1250px]'
+  class={`flex flex-col mx-auto items-center gap-y-8 lg:gap-x-12 xl:gap-x-0 justify-between text-center lg:flex-row lg:text-left pt-[85px] px-[16px] p-[48px] max-w-[24rem] sm:max-w-full sm:pt-[110px] lg:max-w-[950px] xl:max-w-[1100px] lg:pt-[200px] 2xl:max-w-[1250px] ${lang === 'ar' ? 'direction-rtl' : 'direction-ltr'}`}
   aria-labelledby='hero-heading'
 >
   <!-- Left Column: Text content and app ratings -->
   <div id='benefit-1' class='flex flex-col items-center justify-start text-center lg:items-start lg:text-left'>
     <!-- Hero content (heading and description) -->
-    <HeroContent
-      heading={uaeHero?.heading || 'Send money,'}
-      highlightedText={uaeHero?.highlightedText || 'Fee-free!'}
-      description={uaeHero?.description ||
-        'Jingle Pay is simplifying all money! For everyday financial needs. Try our calculator to see how much you can save with us!'}
-      anywhere={uaeHero?.anywhere || 'anywhere,'}
-      anytime={uaeHero?.anytime || 'anytime'}
-      anyway={uaeHero?.anyway || '& anyway you want'}
-    />
+    <HeroContent />
 
     <!-- App ratings component -->
     <AppRatings appStoreRating='4.8' appStoreReviews='152k' googlePlayRating='4.8' googlePlayReviews='1.3M' />

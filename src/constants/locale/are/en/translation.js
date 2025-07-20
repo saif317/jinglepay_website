@@ -9,6 +9,16 @@ import company from './company/company.js';
 import career from './career.js';
 import qrModal from './qrModal.js';
 import infoCards from './infoCards.js';
+import uaeHero from './uaeHero.js';
+import transferCalculator from './transferCalculator.js';
+import control from './control.js';
+import appShowcase from './appShowcase.js';
+import p2p from './p2p.js';
+import cardFeatures from './cardFeatures.js';
+import benefits from './benefits.js';
+import investors from './investors.js';
+import partners from './partners.js';
+import regulation from './regulation.js';
 
 export default {
   title: 'Jingle Pay UAE - Simplifying All Money!',
@@ -30,4 +40,14 @@ export default {
   career,
   qrModal,
   infoCards,
+  uaeHero,
+  transferCalculator,
+  control,
+  appShowcase,
+  p2p,
+  cardFeatures,
+  benefits,
+  investors,
+  partners,
+  regulation,
 };

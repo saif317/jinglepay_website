@@ -7,9 +7,6 @@
 import { Image } from 'astro:assets';
 import phoneMock from '../../assets/uae/phone.png';
 
-// Import control localization directly for UAE in English
-import controlLocale from '../../constants/locale/are/en/control.js';
-
 // Define control type to help TypeScript recognize the structure
 type ControlLocale = {
   heading: {
@@ -28,7 +25,9 @@ type ControlLocale = {
 };
 
 // Use either from translations (if exists) or from direct import as fallback
-const control = (Astro.locals.translations?.control || controlLocale) as ControlLocale;
+const {
+  translations: { control = {} },
+} = Astro.locals;
 ---
 
 <div

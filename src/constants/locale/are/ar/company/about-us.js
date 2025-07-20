@@ -1,78 +1,75 @@
 export default {
-  mission: 'We’re creating a borderless financial future—where banking is inclusive, affordable, and built for all.',
+  mission: 'نرسم مستقبلًا ماليًا بلا حدود — حيث تصبح الخدمات المصرفية أكثر شمولًا، وأسهل في الوصول، ومُصممة للجميع.',
   stats: [
-    { value: '$2B+', label: 'Remitted globally' },
-    { value: '3M+', label: 'Transactions' },
-    { value: '+500k', label: 'Trusted Users' },
-    { value: '150 countries', label: 'Payout coverage' },
+    { value: '$2B+', label: 'تم تحويلها عالميًا' },
+    { value: '3M+', label: 'معاملة مالية' },
+    { value: '+500k', label: 'مستخدم موثوق' },
+    { value: '150 دولة', label: 'نطاق التغطية' },
   ],
   coreValues: {
-    title: 'What We Stand For',
+    title: 'قيمنا الأساسية',
     description:
-      'We’re here to do more than just offer services, we’re on a mission to empower people, build trust, and make managing money feel good. Our values guide everything we do:',
+      'نحن لا نقدم خدمات مالية فحسب — نحن نُمكّن الأفراد، نبني الثقة، ونجعل من إدارة الأموال تجربة مريحة ومُلهمة. هذه المبادئ تقود كل ما نقوم به:',
     items: [
       {
-        title: 'Integrity',
+        title: 'النزاهة',
         description:
-          'Our promise? Fair, human-centered financial services that fit into your life, all through the power of mobile.',
+          'نلتزم بتقديم حلول مالية عادلة، متمحورة حول الإنسان، تساعدك على تبسيط حياتك من خلال تجربة مصرفية عبر الهاتف المحمول.',
       },
       {
-        title: 'Honesty',
-        description: 'We keep it real. No hidden fees, no fluff, just smart choices that respect your time and money.',
+        title: 'الشفافية',
+        description: 'لا رسوم خفية، ولا تعقيدات — فقط حلول مالية واضحة تحترم وقتك وأموالك.',
       },
       {
-        title: 'Security',
-        description:
-          'Your peace of mind matters. That’s why we give you tools to stay in control, confidently and securely.',
+        title: 'الأمان',
+        description: 'راحتك أولويتنا. نوفر لك الأدوات اللازمة لتبقى على اطلاع وتحكم كامل بحساباتك بأمان وطمأنينة.',
       },
       {
-        title: 'Leadership',
-        description:
-          'We’re not just following trends we’re shaping the future of finance with smart technology and bold ideas.',
+        title: 'الريادة',
+        description: 'نحن لا نتبع التغيير — نحن نقوده. نبني مستقبل المال باستخدام التكنولوجيا الذكية والرؤية الجريئة.',
       },
       {
-        title: 'Respect',
-        description: 'Everyone deserves to be heard and treated equally. We listen, we learn, and we grow together.',
+        title: 'الاحترام',
+        description: 'نؤمن بحق الجميع في أن يُستَمع إليهم ويُعامَلوا بإنصاف. نتعلم من عملائنا وننمو معهم.',
       },
       {
-        title: 'Fun',
-        description:
-          'We believe money shouldn’t be boring. We’re here to make every interaction simple, enjoyable, and rewarding.',
+        title: 'المتعة',
+        description: 'المال لا يجب أن يكون معقدًا أو مملًا — نحن نجعل كل تجربة مصرفية ممتعة، بسيطة، ومجزية.',
       },
     ],
   },
   story: {
-    title: 'Our Story',
-    description: 'Born out of a desire to bridge financial gaps, we set out to redefine how money moves.',
+    title: 'قصتنا',
+    description:
+      'وُلدت فكرتنا من رغبة حقيقية في سد الفجوات المالية، ومنذ البداية كان هدفنا إعادة تعريف طريقة انتقال الأموال.',
     items: [
       {
         year: '2019',
         description:
-          'The company was founded, addressing gaps in the cross-border payment sector with innovative solutions.',
+          'تأسسنا بهدف معالجة النواقص في قطاع التحويلات المالية الدولية، من خلال حلول مبتكرة تركّز على المستخدم.',
         highlight: false,
       },
       {
         year: '2020',
         description:
-          'Launched our flagship product, enabling seamless international money transfers for users worldwide.',
+          'أطلقنا منتجنا الرئيسي، لنمنح المستخدمين حول العالم إمكانية تحويل الأموال عبر الحدود بسهولة وأمان.',
         highlight: false,
       },
       {
         year: '2021',
-        description:
-          'Secured our first major partnership with key financial institutions, enhancing service offerings and market credibility.',
+        description: 'عقدنا أول شراكة استراتيجية مع مؤسسات مالية رائدة، ما ساعد على تعزيز عروضنا وكسب ثقة السوق.',
         highlight: true,
       },
       {
         year: '2022',
         description:
-          'Achieved a significant user milestone, reaching [Number] users, reflecting growing demand and trust in our services.',
+          'تجاوزنا رقمًا قياسيًا في عدد المستخدمين، وبلغنا [العدد] مستخدم — ما يعكس مدى النمو والطلب على خدماتنا.',
         highlight: false,
       },
       {
         year: '2023',
         description:
-          'Expanded into new markets, including [Country/Region], significantly increasing our geographic footprint and customer base.',
+          'وسعنا تواجدنا الجغرافي في أسواق جديدة من بينها [البلد/المنطقة]، مما ساهم في توسيع قاعدة عملائنا وتعزيز حضورنا العالمي.',
         highlight: false,
       },
     ],

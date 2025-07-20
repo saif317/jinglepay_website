@@ -11,28 +11,14 @@ import PrivacyPolicyDefault from '@components/privacy-policy/index.astro';
 const { country, lang } = Astro.params;
 
 // Determine which MDX file to render based on `lang`
-const Content = lang === 'ar' ? ArContent : EnContent;
+const Content = lang === 'ar' ? EnContent : EnContent;
 
-
-export const getStaticPaths = getStaticPathsWrapper(
-  [
-    'pak',
-    'are',
-  ],
-  {
-    pak: ['en', 'ur'],
-    are: ['en', 'ar'],
-  }
-);
+export const getStaticPaths = getStaticPathsWrapper(['pak', 'are'], {
+  pak: ['en', 'ur'],
+  are: ['en', 'ar'],
+});
 ---
 
 <Layout>
-  {country === 'are' ? (
-    <PrivacyPolicyUAE lang={lang} Content={Content} />
-  ) : (
-    <PrivacyPolicyDefault />
-  )}
+  {country === 'are' ? <PrivacyPolicyUAE lang={lang} Content={Content} /> : <PrivacyPolicyDefault />}
 </Layout>
-
-
-

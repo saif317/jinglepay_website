@@ -5,6 +5,11 @@ import ChevronDownIcon from '@assets/uae/chevron-down 1.svg';
 import InfoIcon from '@assets/uae/info.svg';
 import QRModalTriggerer from '@components/common/QRModalTriggerer.astro';
 
+const {
+  translations: { transferCalculator = {} },
+  lang,
+} = Astro.locals;
+
 // Types for API
 type Payment = { amount: number; currency: string };
 type Transaction = Payment & { country_code: string };
@@ -47,7 +52,9 @@ type ExchangeRequest = {
 <div class='p-4 bg-gray-100 shadow-lg md:p-6 rounded-2xl w-full max-w-[484px]' id='transfer-calculator'>
   <!-- You send section -->
   <div class='mb-4 md:mb-6'>
-    <label class="text-black text-sm font-normal font-['Hero_New'] leading-tight block mb-2"> You send: </label>
+    <label class="text-black text-sm font-normal font-['Hero_New'] leading-tight block mb-2 text-start">
+      {transferCalculator.labels.youSend}
+    </label>
     <div class='relative'>
       <input
         type='number'
@@ -56,7 +63,7 @@ type ExchangeRequest = {
         min='1'
         max='500000'
         step='0.01'
-        class="border-stone-300 bg-white w-full text-black text-lg md:text-xl font-normal font-['Hero_New'] leading-relaxed border rounded-lg px-3 py-3 md:py-4 pr-16 md:pr-20 focus:outline-none focus:ring-2 focus:ring-black"
+        class={`border-stone-300 bg-white w-full text-black text-lg md:text-xl font-normal font-['Hero_New'] leading-relaxed border rounded-lg px-3 py-3 md:py-4 pr-16 md:pr-20 focus:outline-none focus:ring-2 focus:ring-black ${lang === 'ar' ? 'text-end' : 'text-start'}`}
         aria-describedby='send-amount-error'
       />
       <div class='absolute flex items-center gap-1 transform -translate-y-1/2 md:gap-2 right-2 md:right-3 top-1/2'>
@@ -79,8 +86,8 @@ type ExchangeRequest = {
 
   <!-- Recipient receives section -->
   <div class='mb-4 md:mb-6'>
-    <label class="text-black text-sm font-normal font-['Hero_New'] leading-tight block mb-2">
-      Recipient receives:
+    <label class="text-black text-sm font-normal font-['Hero_New'] leading-tight block mb-2 text-start">
+      {transferCalculator.labels.recipientReceives}
     </label>
     <div class='relative'>
       <input
@@ -88,7 +95,7 @@ type ExchangeRequest = {
         value='270'
         id='receive-amount'
         readonly
-        class="border-stone-300 bg-white w-full text-black text-lg md:text-xl font-normal font-['Hero_New'] leading-relaxed border rounded-lg px-3 py-3 md:py-4 pr-20 md:pr-24 focus:outline-none focus:ring-2 focus:ring-black"
+        class={`border-stone-300 bg-white w-full text-black text-lg md:text-xl font-normal font-['Hero_New'] leading-relaxed border rounded-lg px-3 py-3 md:py-4 pr-20 md:pr-24 focus:outline-none focus:ring-2 focus:ring-black ${lang === 'ar' ? 'text-end' : 'text-start'}`}
       />
       <div class='absolute flex items-center gap-1 transform -translate-y-1/2 right-2 md:right-3 top-1/2'>
         <div class='relative currency-selector'>
@@ -136,16 +143,18 @@ type ExchangeRequest = {
   <div class='mb-4 space-y-2 md:mb-6 md:space-y-3'>
     <!-- Transfer fee -->
     <div class='flex items-center justify-between'>
-      <span class="text-black text-xs md:text-sm font-normal font-['Hero_New'] leading-tight"> Transfer fee: </span>
+      <span class="text-black text-xs md:text-sm font-normal font-['Hero_New'] leading-tight">
+        {transferCalculator.labels.transferFee}:
+      </span>
       <span class="text-black text-xs md:text-sm font-normal font-['Hero_New'] leading-tight" id='transfer-fee'>
         0.000 AED
       </span>
     </div>
 
     <!-- Exchange rate -->
-    <div class='flex items-start justify-between gap-2'>
+    <div class='flex items-center justify-between'>
       <span class="text-black text-xs md:text-sm font-normal font-['Hero_New'] leading-tight flex-shrink-0">
-        Exchange rate:
+        {transferCalculator.labels.exchangeRate}
       </span>
       <div class='flex items-center gap-2 text-right'>
         <span class="text-black text-xs md:text-sm font-normal font-['Hero_New'] leading-tight" id='exchange-rate'>
@@ -162,13 +171,17 @@ type ExchangeRequest = {
       id='send-money-btn'
       class="w-full bg-black text-white text-base md:text-lg font-medium font-['Hero_New'] leading-normal py-3 md:py-4 rounded-lg hover:bg-gray-800 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 disabled:bg-gray-400 disabled:cursor-not-allowed"
     >
-      <span id='btn-text'>Send money now</span>
-      <span id='btn-loading' class='hidden'>Processing...</span>
+      <span id='btn-text'>{transferCalculator.button.sendNow}</span>
+      <span id='btn-loading' class='hidden'>{transferCalculator.button.processing}</span>
     </button>
   </QRModalTriggerer>
 </div>
 
-<script>
+<script define:vars={{ transferCalculator }}>
+  // Define locale strings for client-side script
+  // We need to define these separately from the component import because client scripts are processed differently
+  const locale = { errors: transferCalculator.errors };
+
   // API integration for real-time exchange rates
   const API_URL = 'https://api.jinglepay.dev/api/v0/remittance/rates-review/';
   const COUNTRIES_API_URL = 'https://api.jinglepay.dev/api/v0/remittance/countries/';
@@ -198,18 +211,18 @@ type ExchangeRequest = {
   // Validation functions
   function validateSendAmount(amount: string): ValidationError | null {
     if (!amount || amount.trim() === '') {
-      return { field: 'send-amount', message: 'Amount is required', code: 'REQUIRED' };
+      return { field: 'send-amount', message: locale.errors.requiredAmount, code: 'REQUIRED' };
     }
 
     const numAmount = parseFloat(amount);
     if (isNaN(numAmount)) {
-      return { field: 'send-amount', message: 'Please enter a valid number', code: 'INVALID_NUMBER' };
+      return { field: 'send-amount', message: locale.errors.invalidNumber, code: 'INVALID_NUMBER' };
     }
 
     if (numAmount < VALIDATION_RULES.MIN_AMOUNT) {
       return {
         field: 'send-amount',
-        message: `Minimum amount is ${VALIDATION_RULES.MIN_AMOUNT} AED`,
+        message: locale.errors.minAmount.replace('{{min}}', VALIDATION_RULES.MIN_AMOUNT.toString()),
         code: 'MIN_AMOUNT',
       };
     }
@@ -217,7 +230,7 @@ type ExchangeRequest = {
     if (numAmount > VALIDATION_RULES.MAX_AMOUNT) {
       return {
         field: 'send-amount',
-        message: `Maximum amount is ${VALIDATION_RULES.MAX_AMOUNT.toLocaleString()} AED`,
+        message: locale.errors.maxAmount.replace('{{max}}', VALIDATION_RULES.MAX_AMOUNT.toLocaleString()),
         code: 'MAX_AMOUNT',
       };
     }
@@ -227,12 +240,12 @@ type ExchangeRequest = {
 
   function validateCurrency(currency: string): ValidationError | null {
     if (!currency || currency.trim() === '') {
-      return { field: 'receive-currency-select', message: 'Please select a currency', code: 'REQUIRED' };
+      return { field: 'receive-currency-select', message: locale.errors.requiredCurrency, code: 'REQUIRED' };
     }
 
     // Check if currency is supported
     if (!availableCountries || Object.keys(availableCountries).length === 0) {
-      return { field: 'receive-currency-select', message: 'Currency data not available', code: 'DATA_UNAVAILABLE' };
+      return { field: 'receive-currency-select', message: locale.errors.dataUnavailable, code: 'DATA_UNAVAILABLE' };
     }
 
     return null;
@@ -240,15 +253,15 @@ type ExchangeRequest = {
 
   function validateApiResponse(data: any): ValidationError | null {
     if (!data) {
-      return { field: 'api', message: 'No response from server', code: 'NO_RESPONSE' };
+      return { field: 'api', message: locale.errors.noResponse, code: 'NO_RESPONSE' };
     }
 
     if (!data.receive || typeof data.receive.amount !== 'number') {
-      return { field: 'api', message: 'Invalid exchange rate data', code: 'INVALID_RESPONSE' };
+      return { field: 'api', message: locale.errors.invalidResponse, code: 'INVALID_RESPONSE' };
     }
 
     if (!data.quotations || !Array.isArray(data.quotations) || data.quotations.length === 0) {
-      return { field: 'api', message: 'No exchange rates available', code: 'NO_QUOTATIONS' };
+      return { field: 'api', message: locale.errors.noQuotations, code: 'NO_QUOTATIONS' };
     }
 
     return null;

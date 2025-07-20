@@ -23,7 +23,7 @@ const tocSections = sections && sections.length ? sections : defaultSections;
 const isRtl = lang === 'ar';
 ---
 
-<div class='min-h-screen py-10 mt-[10rem] bg-gray-50'>
+<div class='min-h-screen py-10 mt-[10rem] bg-gray-50 text-left'>
   <div class={`tac-container mx-auto max-w-7xl px-4 lg:px-8`}>
     <!-- Mobile Dropdown for Table of Contents -->
     <div class='mb-6 lg:hidden'>
@@ -57,27 +57,28 @@ const isRtl = lang === 'ar';
       <!-- Sidebar Navigation (Desktop) -->
       <aside class='flex-shrink-0 hidden w-64 tac-sidebar lg:block'>
         <div class='sticky top-24'>
-        <div
-          class='p-5 bg-white border border-indigo-100 rounded-lg shadow-sm overflow-y-auto max-h-[calc(100vh-6rem)]'
-        >
-          <h3 class='pb-2 mb-4 text-lg font-semibold text-indigo-900 border-b border-indigo-200'>In this document</h3>
-          <nav>
-            <ul class='space-y-3'>
-              {
-                tocSections.map((section: { id: string; number: string; title: string }) => (
-                  <li>
-                    <a href={`#${section.id}`} class='flex items-start text-sm hover:text-primary-600 group'>
-                      <span class='mr-2 font-medium text-indigo-800 whitespace-nowrap group-hover:text-primary-600'>
-                        {section.number}.
-                      </span>
-                      <span>{section.title}</span>
-                    </a>
-                  </li>
-                ))
-              }
-            </ul>
-          </nav>
-        </div>
+          <div
+            class='p-5 bg-white border border-indigo-100 rounded-lg shadow-sm overflow-y-auto max-h-[calc(100vh-6rem)]'
+            style='direction: ltr;'
+          >
+            <h3 class='pb-2 mb-4 text-lg font-semibold text-indigo-900 border-b border-indigo-200'>In this document</h3>
+            <nav>
+              <ul class='space-y-3'>
+                {
+                  tocSections.map((section: { id: string; number: string; title: string }) => (
+                    <li>
+                      <a href={`#${section.id}`} class='flex items-start text-sm hover:text-primary-600 group'>
+                        <span class='mr-2 font-medium text-indigo-800 whitespace-nowrap group-hover:text-primary-600'>
+                          {section.number}.
+                        </span>
+                        <span>{section.title}</span>
+                      </a>
+                    </li>
+                  ))
+                }
+              </ul>
+            </nav>
+          </div>
         </div>
       </aside>
 
