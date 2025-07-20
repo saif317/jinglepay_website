@@ -67,11 +67,11 @@ function getOffsetForIndex(index: number): number {
 >
   <div class='flex flex-col gap-[72px] mx-auto max-w-7xl xl:flex-row xl:items-center xl:justify-between'>
     <div
-      class='relative w-full max-w-[100%] sm:max-w-[400px] md:max-w-[500px] lg:max-w-[568px] translate-y-0 sm:translate-y-[-2rem] md:translate-y-[-4rem] lg:translate-y-[-8rem] scale-100 sm:scale-[0.8] md:scale-[0.9] lg:scale-[1.1] h-[420px] sm:h-[350px] md:h-[400px] lg:h-[500px] mx-auto xl:w-full'
+      class='relative w-full max-w-[320px] sm:max-w-[400px] md:max-w-[500px] lg:max-w-[568px] translate-y-0 sm:translate-y-[-2rem] md:translate-y-[-4rem] lg:translate-y-[-8rem] scale-100 sm:scale-[0.8] md:scale-[0.9] lg:scale-[1.1] h-[420px] sm:h-[350px] md:h-[400px] lg:h-[500px] mx-auto xl:w-full'
     >
       <!-- Circular background for phones -->
       <div
-        class='absolute top-1/2 xs:top-[12rem] sm:top-[14rem] md:top-[16rem] lg:top-[20rem] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90vw] xs:w-[80vw] sm:w-[440px] md:w-[520px] lg:w-[573px] aspect-square max-w-[573px] bg-[radial-gradient(ellipse_50%_50%_at_50%_50%,_#F3F5F6_0%,_#F3F5F6_100%)] rounded-full z-0'
+        class='absolute top-1/2 xs:top-[12rem] sm:top-[14rem] md:top-[16rem] lg:top-[20rem] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90vw] xs:w-[80vw] sm:w-[440px] md:w-[520px] lg:w-[573px] aspect-square max-w-[320px] sm:max-w-[573px] bg-[radial-gradient(ellipse_50%_50%_at_50%_50%,_#F3F5F6_0%,_#F3F5F6_100%)] rounded-full z-0'
       >
       </div>
 
@@ -102,7 +102,7 @@ function getOffsetForIndex(index: number): number {
       </div>
     </div>
 
-    <div class='text-left max-w-[600px] mx-auto xl:w-[45%] px-4 xl:px-0 text-start'>
+    <div class='max-w-[600px] mx-auto xl:w-[45%] px-4 xl:px-0 text-center xl:text-start'>
       <h2 class='mb-4 sm:mb-6 text-2xl sm:text-3xl md:text-4xl font-extrabold text-gray-900 font-["Hero_New"]'>
         {appShowcase?.heading.prefix}<br />
         {appShowcase?.heading.highlight}
@@ -120,7 +120,7 @@ function getOffsetForIndex(index: number): number {
               <p
                 class={`text-base sm:text-lg md:text-xl text-gray-900 font-["DM_Sans"] ${idx === 1 ? 'font-bold' : 'font-normal'}`}
                 set:html={feature}
-              ></p>
+              />
             );
           })
         }

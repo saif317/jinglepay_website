@@ -169,7 +169,7 @@ type ExchangeRequest = {
   <QRModalTriggerer>
     <button
       id='send-money-btn'
-      class="w-full bg-black text-white text-base md:text-lg font-medium font-['Hero_New'] leading-normal py-3 md:py-4 rounded-lg hover:bg-gray-800 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 disabled:bg-gray-400 disabled:cursor-not-allowed"
+      class="w-full bg-black cursor-pointer text-white text-base md:text-lg font-medium font-['Hero_New'] leading-normal py-3 md:py-4 rounded-lg hover:bg-gray-800 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 disabled:bg-gray-400 disabled:cursor-not-allowed"
     >
       <span id='btn-text'>{transferCalculator.button.sendNow}</span>
       <span id='btn-loading' class='hidden'>{transferCalculator.button.processing}</span>
@@ -940,7 +940,7 @@ type ExchangeRequest = {
     const sendAmountEl = document.getElementById('send-amount');
 
     if (sendAmountEl) {
-      sendAmountEl.addEventListener('input', handleAmountChange);
+      // Input validation is handled in the comprehensive event listeners below
 
       // Add blur validation for immediate feedback
       sendAmountEl.addEventListener('blur', () => {
@@ -953,13 +953,125 @@ type ExchangeRequest = {
         }
       });
 
-      // Prevent invalid characters
-      sendAmountEl.addEventListener('keypress', (e) => {
-        const char = String.fromCharCode(e.which);
-        if (!/[0-9.]/.test(char) && !['Backspace', 'Delete', 'Tab', 'Enter'].includes(e.key)) {
+      // Prevent invalid characters and enforce proper number format
+      sendAmountEl.addEventListener('keydown', (e) => {
+        const input = e.target as HTMLInputElement;
+        const currentValue = input.value;
+        const key = e.key;
+        
+        // Allow control keys
+        if (['Backspace', 'Delete', 'Tab', 'Enter', 'ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(key)) {
+          return;
+        }
+        
+        // Allow Ctrl+A, Ctrl+C, Ctrl+V, Ctrl+X
+        if (e.ctrlKey && ['a', 'c', 'v', 'x'].includes(key.toLowerCase())) {
+          return;
+        }
+        
+        // Prevent non-numeric characters except decimal point
+        if (!/[0-9.]/.test(key)) {
           e.preventDefault();
+          return;
+        }
+        
+        // Prevent multiple decimal points
+        if (key === '.' && currentValue.includes('.')) {
+          e.preventDefault();
+          return;
+        }
+        
+        // Prevent leading zeros (except for 0.)
+        if (key === '0' && currentValue === '' && input.selectionStart === 0) {
+          // Allow 0 only if next character will be a decimal point
+          return;
+        }
+        
+        // Prevent more than 2 decimal places
+        if (currentValue.includes('.')) {
+          const decimalIndex = currentValue.indexOf('.');
+          const afterDecimal = currentValue.substring(decimalIndex + 1);
+          if (afterDecimal.length >= 2 && input.selectionStart > decimalIndex) {
+            e.preventDefault();
+            return;
+          }
+        }
+        
+        // Prevent numbers larger than max amount
+        const newValue = currentValue.slice(0, input.selectionStart) + key + currentValue.slice(input.selectionEnd);
+        const numValue = parseFloat(newValue);
+        if (!isNaN(numValue) && numValue > VALIDATION_RULES.MAX_AMOUNT) {
+          e.preventDefault();
+          return;
         }
       });
+      
+      // Handle paste events
+      sendAmountEl.addEventListener('paste', (e) => {
+        e.preventDefault();
+        const paste = (e.clipboardData || (window as any).clipboardData).getData('text');
+        const input = e.target as HTMLInputElement;
+        
+        // Clean the pasted text
+        const cleanedPaste = paste.replace(/[^0-9.]/g, '');
+        
+        // Check for multiple decimal points
+        const decimalCount = (cleanedPaste.match(/\./g) || []).length;
+        if (decimalCount > 1) {
+          return; // Reject paste with multiple decimals
+        }
+        
+        // Limit to 2 decimal places
+        let finalValue = cleanedPaste;
+        if (cleanedPaste.includes('.')) {
+          const parts = cleanedPaste.split('.');
+          if (parts[1].length > 2) {
+            finalValue = parts[0] + '.' + parts[1].substring(0, 2);
+          }
+        }
+        
+        // Check if the value is within range
+        const numValue = parseFloat(finalValue);
+        if (!isNaN(numValue) && numValue >= VALIDATION_RULES.MIN_AMOUNT && numValue <= VALIDATION_RULES.MAX_AMOUNT) {
+          input.value = finalValue;
+          // Trigger input event to update calculations
+          input.dispatchEvent(new Event('input', { bubbles: true }));
+        }
+      });
+      
+      // Additional input validation to clean up any invalid values
+      sendAmountEl.addEventListener('input', (e) => {
+        const input = e.target as HTMLInputElement;
+        let value = input.value;
+        
+        // Remove any non-numeric characters except decimal point
+        value = value.replace(/[^0-9.]/g, '');
+        
+        // Handle multiple decimal points
+        const decimalIndex = value.indexOf('.');
+        if (decimalIndex !== -1) {
+          const beforeDecimal = value.substring(0, decimalIndex);
+          const afterDecimal = value.substring(decimalIndex + 1).replace(/\./g, '');
+          value = beforeDecimal + '.' + afterDecimal.substring(0, 2); // Limit to 2 decimal places
+        }
+        
+        // Remove leading zeros (except for 0. cases)
+        if (value.length > 1 && value[0] === '0' && value[1] !== '.') {
+          value = value.replace(/^0+/, '');
+          if (value === '') value = '0';
+        }
+        
+        // Update input value if it was cleaned
+        if (input.value !== value) {
+          input.value = value;
+        }
+        
+        // Call the original handler
+        handleAmountChange();
+      });
+      
+      // Remove the original input event listener since we're handling it above
+      // sendAmountEl.addEventListener('input', handleAmountChange);
     }
 
     // Initial load with validation
