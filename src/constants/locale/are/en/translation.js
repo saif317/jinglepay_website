@@ -16,9 +16,6 @@ import appShowcase from './appShowcase.js';
 import p2p from './p2p.js';
 import cardFeatures from './cardFeatures.js';
 import benefits from './benefits.js';
-import investors from './investors.js';
-import partners from './partners.js';
-import regulation from './regulation.js';
 
 export default {
   title: 'Jingle Pay UAE - Simplifying All Money!',
@@ -47,7 +44,4 @@ export default {
   p2p,
   cardFeatures,
   benefits,
-  investors,
-  partners,
-  regulation,
 };
