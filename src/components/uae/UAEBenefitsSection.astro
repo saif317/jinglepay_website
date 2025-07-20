@@ -24,7 +24,7 @@ const { benefits } = Astro.locals.translations;
         <h3 class='text-3xl xs:text-4xl sm:text-5xl md:text-6xl font-black leading-tight sm:leading-[60px] mb-2'>
           {benefits?.statistics?.trusted?.number || '+500,000'}
         </h3>
-        <p class='text-base font-medium sm:text-xl pl-0 xs:pl-8 sm:pl-[12rem]'>
+        <p class='text-base font-medium sm:text-xl pl-0 xs:pl-8 sm:pl-[12rem] text-center sm:text-start'>
           {benefits?.statistics?.trusted?.suffix || 'Users worldwide'}
         </p>
       </div>
@@ -37,10 +37,10 @@ const { benefits } = Astro.locals.translations;
         />
       </div>
       <div class='text-end'>
-        <p class='text-base sm:text-xl font-medium pr-[12rem] sm:pr-[16rem] md:pr-[20rem] lg:pr-[20rem]'>
+        <p class='text-base sm:text-xl font-medium pr-[10rem] sm:pr-[16rem] md:pr-[20rem] lg:pr-[20rem]'>
           {benefits?.statistics?.transactions?.prefix || 'With over'}
         </p>
-        <h3 class='text-3xl font-extrabold xs:text-4xl sm:text-5xl md:text-6xl lg:text-6xl'>
+        <h3 class='text-4xl font-extrabold xs:text-4xl sm:text-5xl md:text-6xl lg:text-6xl'>
           {benefits?.statistics?.transactions?.number || 'USD 2 Billion'}
         </h3>
         <p class='text-base font-medium sm:text-xl'>

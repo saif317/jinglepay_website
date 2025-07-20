@@ -51,12 +51,9 @@ const initialActiveIndex = 0;
 
 <section id='benefit-3' class='flex justify-center w-full py-12 sm:py-24'>
   <div class='relative w-full px-4 max-w-7xl'>
-    <!-- Carousel Container with Multiple Cards Visible -->
-    <div class='relative overflow-hidden carousel-wrapper'>
+    <!-- Carousel Container with Multiple Cards Visible (hidden on xl+) -->
+    <div class='relative overflow-hidden carousel-wrapper xl:hidden'>
       <div class='flex transition-all duration-500 carousel-track' id='cardFeatureSlides'>
-        <!-- Add spacer at the beginning to allow proper centering -->
-        <div class='carousel-spacer min-w-[calc(50%-150px)] sm:min-w-[calc(50%-250px)]'></div>
-
         {
           features.map((feature: CardFeature, index: number) => (
             <div
@@ -85,13 +82,37 @@ const initialActiveIndex = 0;
             </div>
           ))
         }
-
-        <!-- Add spacer at the end to allow proper centering -->
-        <div class='carousel-spacer min-w-[calc(50%-150px)] sm:min-w-[calc(50%-250px)]'></div>
       </div>
     </div>
 
-    <div class='flex items-center justify-center w-full'>
+    <!-- Static Grid Layout for xl screens and above -->
+    <div class='hidden xl:grid xl:grid-cols-3 xl:gap-8'>
+      {
+        features.map((feature: CardFeature, index: number) => (
+          <div class='flex flex-col items-center text-center'>
+            <article class='w-full py-4'>
+              <div class='flex items-center justify-center w-full h-48 mb-4 overflow-hidden sm:h-64 sm:mb-8'>
+                <Image
+                  src={feature.img}
+                  alt={feature.title}
+                  class='object-contain w-auto h-full transition-transform transform'
+                  width={400}
+                  height={250}
+                  loading='eager'
+                />
+              </div>
+              <h3 class='mb-2 text-xl font-semibold text-start sm:mb-3 sm:text-2xl text-slate-800'>
+                {feature.title}
+              </h3>
+              <p class='max-w-md text-sm leading-relaxed text-start sm:text-base text-slate-600'>{feature.desc}</p>
+            </article>
+          </div>
+        ))
+      }
+    </div>
+
+    <!-- Navigation controls (hidden on xl+) -->
+    <div class='flex items-center justify-center w-full xl:hidden'>
       <div class='flex items-center justify-between gap-3 px-3 mt-4 sm:gap-6 sm:px-6 sm:mt-8'>
         <!-- Left Arrow Button -->
         <button
@@ -243,10 +264,27 @@ const initialActiveIndex = 0;
     function updateTrackPosition() {
       if (!track) return;
 
-      // Calculate position to center the current slide
-      const offset = currentSlide * slideWidth;
+      // Get container width to calculate centering
+      const containerWidth = track.parentElement?.offsetWidth || 0;
+      
+      // Calculate position to center the current slide without empty spaces at edges
+      let offset;
+      
+      if (currentSlide === 0) {
+        // First slide: align to left edge (no empty space on left)
+        offset = 0;
+      } else if (currentSlide === slideCount - 1) {
+        // Last slide: align to show full slide without empty space on right
+        const totalWidth = slideCount * slideWidth;
+        offset = Math.max(0, totalWidth - containerWidth);
+      } else {
+        // Middle slides: center the current slide
+        offset = (currentSlide * slideWidth) - (containerWidth - slideWidth) / 2;
+        // Ensure we don't go beyond bounds
+        offset = Math.max(0, Math.min(offset, (slideCount * slideWidth) - containerWidth));
+      }
 
-      // Apply transform to center the active slide
+      // Apply transform
       currentTranslate = -offset;
       prevTranslate = -offset;
       setSliderPosition();

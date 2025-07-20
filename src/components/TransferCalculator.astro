@@ -177,10 +177,35 @@ type ExchangeRequest = {
   </QRModalTriggerer>
 </div>
 
-<script define:vars={{ transferCalculator }}>
+<script>
   // Define locale strings for client-side script
   // We need to define these separately from the component import because client scripts are processed differently
-  const locale = { errors: transferCalculator.errors };
+  const locale = {
+    errors: {
+      labels: {
+        youSend: 'You send:',
+        recipientReceives: 'Recipient receives:',
+        transferFee: 'Transfer fee',
+        exchangeRate: 'Exchange rate',
+      },
+      button: {
+        sendNow: 'Send money now',
+        processing: 'Processing...',
+      },
+      errors: {
+        requiredAmount: 'Amount is required',
+        invalidNumber: 'Please enter a valid number',
+        minAmount: 'Minimum amount is {{min}} AED',
+        maxAmount: 'Maximum amount is {{max}} AED',
+        requiredCurrency: 'Please select a currency',
+        dataUnavailable: 'Currency data not available',
+        noResponse: 'No response from server',
+        invalidResponse: 'Invalid exchange rate data',
+        noQuotations: 'No exchange rates available',
+        apiError: 'Failed to get exchange rate',
+      },
+    },
+  };
 
   // API integration for real-time exchange rates
   const API_URL = 'https://api.jinglepay.dev/api/v0/remittance/rates-review/';

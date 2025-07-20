@@ -82,9 +82,10 @@ const faqData: { question: string; answer: string }[] = [
 
 <section
   class='flex flex-col pt-[104px] pb-[80px] px-4 lg:px-[88px] lg:pt-[189px] lg:pb-[161px] gap-y-12 lg:gap-y-[65px]'
+  style='direction: ltr;'
   aria-labelledby='faq-heading'
 >
-  <div class='flex flex-row gap-x-4 items-center'>
+  <div class='flex flex-row items-center gap-x-4'>
     <button onclick='history.back(); return false;' role='button' style='cursor: pointer;'>
       <div class='w-8 h-8 p-1.5 flex items-center justify-center border rounded-full border-[#794EFF]'>
         <Arrow class='rotate-180' />
@@ -98,7 +99,7 @@ const faqData: { question: string; answer: string }[] = [
       faqData.map((item, index: number) => (
         <div class='border-b border-gray-200 faq-item'>
           <button
-            class='flex justify-between items-center px-2 py-5 w-full text-base font-bold text-left text-gray-800 faq-question focus:outline-none focus-visible:ring focus-visible:ring-indigo-300 focus-visible:ring-opacity-75 group'
+            class='flex items-center justify-between w-full px-2 py-5 text-base font-bold text-left text-gray-800 faq-question focus:outline-none focus-visible:ring focus-visible:ring-indigo-300 focus-visible:ring-opacity-75 group'
             aria-expanded='false'
             aria-controls={`faq-answer-${index}`}
             id={`faq-question-${index}`}
