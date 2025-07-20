@@ -228,14 +228,14 @@ const isUAE = country === 'are';
 ---
 
 <section
-  class='overflow-hidden relative flex flex-col gap-y-4 items-center px-4 pt-12 pb-16 mx-auto w-full text-center md:pt-16 bg-[#F6F6F6]'
+  class='overflow-hidden relative flex flex-col gap-y-4 items-center px-4 py-[22.5px] mx-auto w-full text-center md:pt-16 bg-[#F6F6F6]'
   id='featured-section'
 >
   {
     isUAE && (
       <>
-        <div class='absolute top-[1.5rem] right-[-3.5rem] w-40 h-40 rounded-full opacity-40 bg-gradient-to-r from-sky-500/40 to-green-300/40 blur-xl'></div>
-        <div class='absolute bottom-[1.5rem] left-[-1.5rem] w-32 h-32 rounded-full opacity-20 bg-gradient-to-r from-sky-500 to-violet-500 blur-xl'></div>
+        <div class='absolute top-[1.5rem] right-[-3.5rem] w-40 h-40 rounded-full opacity-40 bg-gradient-to-r from-sky-500/40 to-green-300/40 blur-xl' />
+        <div class='absolute bottom-[1.5rem] left-[-1.5rem] w-32 h-32 rounded-full opacity-20 bg-gradient-to-r from-sky-500 to-violet-500 blur-xl' />
       </>
     )
   }
