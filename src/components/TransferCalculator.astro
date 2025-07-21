@@ -224,7 +224,25 @@ type ExchangeRequest = {
           if (parts.length === 5) {
             // This is a JWE token format (header.encryptedKey.iv.ciphertext.tag)
             console.log('JWE token structure detected with 5 parts');
-
+            
+            try {
+              // Try to decode the header to get information about the encryption
+              const header = JSON.parse(atob(parts[0].replace(/-/g, '+').replace(/_/g, '/')));
+              console.log('JWE Header:', header);
+              
+              // Check if this is using the expected algorithm
+              if (header.alg === 'RSA-OAEP-256' && header.enc === 'A256CBC-HS512') {
+                console.log('Detected expected JWE encryption format');
+                
+                // Since we don't have the private key in the client environment,
+                // we need to gracefully handle this by falling back to mock data
+                // but first let's log that we detected a valid encrypted response
+                console.warn('Valid encrypted response detected but cannot decrypt without private key');
+              }
+            } catch (headerError) {
+              console.error('Failed to parse JWE header:', headerError);
+            }
+            
             // For now, since we don't have the private key in the client,
             // we'll need to handle this gracefully by throwing a specific error
             // that the calling code can catch and fall back to mock data
