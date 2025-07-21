@@ -100,6 +100,18 @@ type ExchangeRequest = {
         readonly
         class={`border-stone-300 bg-white w-full text-black text-lg md:text-xl font-normal font-['Hero_New'] leading-relaxed border rounded-lg px-3 py-3 md:py-4 pr-20 md:pr-24 focus:outline-none focus:ring-2 focus:ring-black ${lang === 'ar' ? 'text-end' : 'text-start'}`}
       />
+      <!-- Loading overlay for recipient amount -->
+      <div
+        id='receive-amount-loading'
+        class='absolute inset-0 hidden bg-white rounded-lg bg-opacity-90'
+      >
+        <div class='flex items-center justify-center h-full'>
+          <div class='flex items-center gap-2'>
+            <div class='w-4 h-4 border-2 border-gray-300 rounded-full border-t-black animate-spin'></div>
+            <span class='text-sm text-gray-600'>Calculating...</span>
+          </div>
+        </div>
+      </div>
       <div class='absolute flex items-center gap-1 transform -translate-y-1/2 right-2 md:right-3 top-1/2'>
         <div class='relative currency-selector'>
           <button
@@ -153,9 +165,17 @@ type ExchangeRequest = {
         {transferCalculator.labels.exchangeRate}
       </span>
       <div class='flex items-center gap-2 text-right'>
+        <!-- Exchange rate display -->
         <span class="text-black text-xs md:text-sm font-normal font-['Hero_New'] leading-tight" id='exchange-rate'>
           1.00 AED = 0.27 USD
         </span>
+        <!-- Loading animation for exchange rate (inline) -->
+        <div id='exchange-rate-loading' class='hidden'>
+          <div class='flex items-center gap-2'>
+            <div class='w-3 h-3 border-2 border-gray-300 rounded-full border-t-black animate-spin'></div>
+            <span class='text-xs text-gray-600'>Loading...</span>
+          </div>
+        </div>
         <InfoIcon class='w-4 h-4' />
       </div>
     </div>
@@ -225,7 +245,7 @@ type ExchangeRequest = {
     }
 
     const convertedAmount = aedAmount * currency.rate;
-    const fee = Math.max(2.99, aedAmount * 0.015); // Mock fee: $2.99 minimum or 1.5% of amount
+    const fee = 0; // Transfer fee set to 0 as requested
 
     return {
       id: 'mock-' + Date.now(),
@@ -443,8 +463,11 @@ type ExchangeRequest = {
   function showLoading(show) {
     const btnText = document.getElementById('btn-text');
     const btnLoading = document.getElementById('btn-loading');
-    const sendButton = document.getElementById('send-money-btn') as HTMLButtonElement;
+    const sendButton = document.getElementById('send-money-btn');
+    const receiveAmountLoading = document.getElementById('receive-amount-loading');
+    const exchangeRateLoading = document.getElementById('exchange-rate-loading');
 
+    // Control button loading state
     if (btnText && btnLoading && sendButton) {
       if (show) {
         btnText.classList.add('hidden');
@@ -454,6 +477,29 @@ type ExchangeRequest = {
         btnText.classList.remove('hidden');
         btnLoading.classList.add('hidden');
         sendButton.disabled = false;
+      }
+    }
+
+    // Control recipient amount loading animation
+    if (receiveAmountLoading) {
+      if (show) {
+        receiveAmountLoading.classList.remove('hidden');
+        receiveAmountLoading.classList.add('flex');
+      } else {
+        receiveAmountLoading.classList.add('hidden');
+        receiveAmountLoading.classList.remove('flex');
+      }
+    }
+
+    // Control exchange rate loading animation
+    const exchangeRateDisplay = document.getElementById('exchange-rate');
+    if (exchangeRateLoading && exchangeRateDisplay) {
+      if (show) {
+        exchangeRateDisplay.classList.add('hidden');
+        exchangeRateLoading.classList.remove('hidden');
+      } else {
+        exchangeRateDisplay.classList.remove('hidden');
+        exchangeRateLoading.classList.add('hidden');
       }
     }
   }
@@ -599,6 +645,9 @@ type ExchangeRequest = {
           country_code: 'AE',
         },
       };
+
+      // Simulate API delay for realistic loading experience
+      await new Promise((resolve) => setTimeout(resolve, 800 + Math.random() * 400)); // 800-1200ms delay
 
       // Use mock conversion instead of API call
       const mockData = calculateMockConversion(sendAmountNum, selectedCurrency);
