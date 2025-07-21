@@ -76,7 +76,10 @@ function getOffsetForIndex(index: number): number {
       </div>
 
       <!-- Phone screens arrangement - piano tile/staggered layout -->
-      <div class='relative z-10 flex items-end justify-center h-full gap-2 xs:gap-3 sm:gap-4 md:gap-5 lg:gap-6'>
+      <div
+        style='direction: ltr;'
+        class='relative z-10 flex items-end justify-center h-full gap-2 xs:gap-3 sm:gap-4 md:gap-5 lg:gap-6'
+      >
         <!-- Phones with staggered positioning like piano keys -->
         {
           phones.map((phone, index) => (
