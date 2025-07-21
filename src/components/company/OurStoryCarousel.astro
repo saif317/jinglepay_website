@@ -47,7 +47,7 @@ const {
       const { Autoplay, Navigation } = await import('swiper/modules');
 
       // After importing, check that the library is available
-      console.log('Swiper loaded:', !!Swiper);
+      // console.log('Swiper loaded:', !!Swiper);
 
       // Create the Swiper instance with proper options
       const swiper = new Swiper('.story-carousel', {
@@ -82,11 +82,11 @@ const {
         a11y: { enabled: true },
       });
 
-      console.log('Story Swiper initialized with autoplay and navigation', swiper);
+      // console.log('Story Swiper initialized with autoplay and navigation', swiper);
 
       // Add debugging event listeners
       swiper.on('slideChange', () => {
-        console.log('Slide changed to:', swiper.activeIndex);
+        // console.log('Slide changed to:', swiper.activeIndex);
       });
     } catch (error) {
       console.error('Error initializing Swiper:', error);

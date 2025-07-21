@@ -55,7 +55,7 @@ export const onRequest = defineMiddleware(async (ctx, next) => {
     const validLang = validCountry?.languages.find((l) => l.code === langCode);
 
     if (validCountry && validLang) {
-      console.log(`Valid localized path detected: /${countryCode}/${langCode}/`);
+      // console.log(`Valid localized path detected: /${countryCode}/${langCode}/`);
       const translations = await loadTranslations(countryCode, langCode);
 
       ctx.locals.lang = langCode;

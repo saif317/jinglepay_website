@@ -17,8 +17,11 @@ const clientTranslations = {
   validationMaxLength: contact.validationMaxLength || 'Maximum {num} characters allowed.',
   validationNameFormat: contact.validationNameFormat || 'Only letters and spaces are allowed.',
   validationNameLength: contact.validationNameLength || 'Name must be at least 2 characters.',
-  validationPhonePakistan: contact.validationPhonePakistan || 'Please enter a valid Pakistani phone number (e.g., +923XXXXXXXXX or 03XXXXXXXXX).',
-  validationPhoneUAE: contact.validationPhoneUAE || 'Please enter a valid UAE phone number (e.g., +9715XXXXXXXX or 05XXXXXXXX).',
+  validationPhonePakistan:
+    contact.validationPhonePakistan ||
+    'Please enter a valid Pakistani phone number (e.g., +923XXXXXXXXX or 03XXXXXXXXX).',
+  validationPhoneUAE:
+    contact.validationPhoneUAE || 'Please enter a valid UAE phone number (e.g., +9715XXXXXXXX or 05XXXXXXXX).',
   submitting: contact.submitting || 'Submitting...',
   submitButton: contact.submitButton || 'Submit',
   errorOops: contact.errorOops || 'Oops! Something went wrong. Please try again later.',
@@ -52,7 +55,13 @@ const clientTranslations = {
   <div class='relative p-5 lg:p-8 bg-white rounded-[20px] shadow-[0px_0px_60px_0px_rgba(121,78,255,0.12)] w-full'>
     <h3 class='mb-8 text-2xl font-extrabold text-slate-800'>{contact.formTitle}</h3>
 
-    <form id='contact-form' action={formEndpoint} method='POST' class='grid grid-cols-1 gap-4 lg:grid-cols-2' novalidate>
+    <form
+      id='contact-form'
+      action={formEndpoint}
+      method='POST'
+      class='grid grid-cols-1 gap-4 lg:grid-cols-2'
+      novalidate
+    >
       <div>
         <label for='first-name' class='block mb-1.5 text-base font-semibold'>
           {contact.firstName}<span class='text-red-500'>*</span>
@@ -133,7 +142,16 @@ const clientTranslations = {
           >{contact.reason}<span class='text-red-500'>*</span></label
         >
         <div class='relative' id='reason-dropdown'>
-          <input type='hidden' id='reason' name='reason' value='' required aria-required='true' aria-invalid='false' aria-describedby='reason-error' />
+          <input
+            type='hidden'
+            id='reason'
+            name='reason'
+            value=''
+            required
+            aria-required='true'
+            aria-invalid='false'
+            aria-describedby='reason-error'
+          />
           <button
             type='button'
             id='reason-button'
@@ -141,7 +159,11 @@ const clientTranslations = {
             aria-expanded='false'
             class='relative w-full p-4 pr-10 text-left bg-white rounded-lg shadow-sm cursor-default outline outline-neutral-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent'
           >
-            <span class='block truncate placeholder-text' id='reason-selected-text' data-placeholder={contact.reasonPlaceholder}>{contact.reasonPlaceholder}</span>
+            <span
+              class='block truncate placeholder-text'
+              id='reason-selected-text'
+              data-placeholder={contact.reasonPlaceholder}>{contact.reasonPlaceholder}</span
+            >
             <span class='absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none'>
               <svg
                 class='w-5 h-5 text-gray-400'
@@ -226,22 +248,32 @@ const clientTranslations = {
           class='w-full p-4 placeholder-[#797C8890] transition duration-150 ease-in-out rounded-lg shadow-sm outline outline-neutral-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent'
         ></textarea>
         <div id='message-error' class='text-red-500 text-sm mt-1 min-h-[1rem]' aria-live='polite'></div>
-        <div class='text-xs text-gray-500 mt-1 text-right pr-1'><span id='message-char-count'>0</span> / 1000</div>
+        <div class='pr-1 mt-1 text-xs text-right text-gray-500'><span id='message-char-count'>0</span> / 1000</div>
       </div>
 
       <div class='lg:col-span-2'>
         <div class='opacity-0 absolute left-[-5000px]' aria-hidden='true'>
           <input type='text' id='form-honeypot' name='form-honeypot' tabindex='-1' autocomplete='off' />
         </div>
-        
+
         <button
           type='submit'
           id='submit-button'
-          class='w-full p-4 text-lg font-semibold text-white bg-violet-600 rounded-lg shadow-md hover:bg-violet-700 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 transition duration-150 ease-in-out disabled:opacity-50 flex items-center justify-center'
+          class='flex items-center justify-center w-full p-4 text-lg font-semibold text-white transition duration-150 ease-in-out rounded-lg shadow-md bg-violet-600 hover:bg-violet-700 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 disabled:opacity-50'
         >
-          <svg class='animate-spin -ml-1 mr-3 h-5 w-5 text-white hidden' id='submit-spinner' xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24'>
+          <svg
+            class='hidden w-5 h-5 mr-3 -ml-1 text-white animate-spin'
+            id='submit-spinner'
+            xmlns='http://www.w3.org/2000/svg'
+            fill='none'
+            viewBox='0 0 24 24'
+          >
             <circle class='opacity-25' cx='12' cy='12' r='10' stroke='currentColor' stroke-width='4'></circle>
-            <path class='opacity-75' fill='currentColor' d='M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z'></path>
+            <path
+              class='opacity-75'
+              fill='currentColor'
+              d='M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z'
+            ></path>
           </svg>
           <span id='submit-button-text'>{contact.submitButton}</span>
         </button>
@@ -261,7 +293,9 @@ const clientTranslations = {
   [id$='-error']:empty {
     /* display: none; /* JS will handle display block/none */
   }
-  .min-h-\[1rem\] { min-height: 1rem; } /* Ensure error message divs maintain height */
+  .min-h-\[1rem\] {
+    min-height: 1rem;
+  } /* Ensure error message divs maintain height */
 </style>
 
 <script define:vars={{ clientTranslations }} is:inline>
@@ -291,13 +325,13 @@ const clientTranslations = {
   const submitSpinner = document.getElementById('submit-spinner');
   const submitButtonText = document.getElementById('submit-button-text');
   const formHoneypot = document.getElementById('form-honeypot');
-  
+
   // Get error elements for each input
   const formFields = ['first-name', 'last-name', 'email', 'phone', 'reason', 'message'];
-  formFields.forEach(field => {
+  formFields.forEach((field) => {
     errorElements[field] = document.getElementById(`${field}-error`);
   });
-  
+
   // Validation functions
   const validators = {
     // Check if field has a value
@@ -332,18 +366,18 @@ const clientTranslations = {
     // Check if text is at most maxLength characters
     maxLength: (value, maxLength) => {
       return value.trim().length <= maxLength;
-    }
+    },
   };
-  
+
   // Set field validity and error message
   function setFieldValidity(field, valid, message = '') {
     const input = document.getElementById(field);
     const errorElement = errorElements[field];
-    
+
     if (input && errorElement) {
       input.setAttribute('aria-invalid', !valid);
       errorElement.textContent = valid ? '' : message;
-      
+
       if (!valid) {
         input.classList.add('border-red-500');
         errorElement.classList.remove('hidden');
@@ -353,43 +387,44 @@ const clientTranslations = {
       }
     }
   }
-  
+
   // Validate field and show error if invalid
   function validateField(field) {
     const input = document.getElementById(field);
     if (!input) return true;
-    
+
     const value = input.value;
     let isValid = true;
     let errorMessage = '';
-    
+
     // Required field validation
     if (input.hasAttribute('required') && !validators.required(value)) {
       isValid = false;
       errorMessage = clientTranslations.validationRequired;
-    } 
+    }
     // First name and last name validation
     else if ((field === 'first-name' || field === 'last-name') && value.trim()) {
       // Check minimum length of 2 characters
       if (!validators.nameMinLength(value)) {
         isValid = false;
         errorMessage = clientTranslations.validationNameLength;
-      } 
+      }
       // Check for alphabetic characters and spaces only
       else if (!validators.nameFormat(value)) {
         isValid = false;
         errorMessage = clientTranslations.validationNameFormat;
       }
-    } 
+    }
     // Email validation with proper format
     else if (field === 'email' && value.trim() && !validators.email(value)) {
       isValid = false;
       errorMessage = clientTranslations.validationEmail;
-    } 
+    }
     // Pakistani phone number validation
     else if (field === 'phone' && value.trim() && !validators.phone(value)) {
       isValid = false;
-      errorMessage = region === 'pak' ? clientTranslations.validationPhonePakistan : clientTranslations.validationPhoneUAE;
+      errorMessage =
+        region === 'pak' ? clientTranslations.validationPhonePakistan : clientTranslations.validationPhoneUAE;
     }
     // Message minimum length validation (10 characters)
     else if (field === 'message' && !validators.minLength(value, 10)) {
@@ -397,52 +432,55 @@ const clientTranslations = {
       errorMessage = clientTranslations.validationMinLength.replace('{num}', '10');
     }
     // Max length validation
-    else if (input.hasAttribute('maxlength') && !validators.maxLength(value, parseInt(input.getAttribute('maxlength')))) {
+    else if (
+      input.hasAttribute('maxlength') &&
+      !validators.maxLength(value, parseInt(input.getAttribute('maxlength')))
+    ) {
       isValid = false;
       errorMessage = clientTranslations.validationMaxLength.replace('{num}', input.getAttribute('maxlength'));
     }
-    
+
     setFieldValidity(field, isValid, errorMessage);
     return isValid;
   }
-  
+
   // Validate all fields
   function validateForm() {
     let isValid = true;
-    
+
     // Validate each input
-    formFields.forEach(field => {
+    formFields.forEach((field) => {
       if (!validateField(field)) {
         isValid = false;
       }
     });
-    
+
     return isValid;
   }
-  
+
   // Character counter for message
   if (messageTextarea && messageCharCount) {
     messageTextarea.addEventListener('input', () => {
       const count = messageTextarea.value.length;
       messageCharCount.textContent = count;
-      
+
       // Update message validation
       validateField('message');
     });
   }
-  
+
   // Setup keyboard navigation and accessibility for dropdown
   if (reasonButton && reasonOptions && reasonHiddenInput && reasonSelectedText) {
     // Initialize dropdown
     reasonSelectedText.textContent = reasonSelectedText.textContent.trim() || clientTranslations.reasonPlaceholder;
     reasonSelectedText.classList.add('placeholder-text');
-    
+
     // Toggle dropdown
     reasonButton.addEventListener('click', () => {
       const isExpanded = reasonButton.getAttribute('aria-expanded') === 'true';
       reasonButton.setAttribute('aria-expanded', !isExpanded);
       reasonOptions.classList.toggle('hidden');
-      
+
       // Focus first item when opening
       if (!isExpanded) {
         const firstItem = reasonOptions.querySelector('li');
@@ -465,7 +503,7 @@ const clientTranslations = {
         reasonHiddenInput.value = selectedValue;
         reasonSelectedText.textContent = selectedText;
         reasonSelectedText.classList.remove('placeholder-text');
-        
+
         // Update validity
         validateField('reason');
 
@@ -478,12 +516,12 @@ const clientTranslations = {
         targetElement.classList.add('bg-violet-200');
       }
     });
-    
+
     // Keyboard navigation for dropdown
     reasonOptions.addEventListener('keydown', (event) => {
       const items = Array.from(reasonOptions.querySelectorAll('li[role="option"]'));
-      const currentIndex = items.findIndex(item => document.activeElement === item);
-      
+      const currentIndex = items.findIndex((item) => document.activeElement === item);
+
       switch (event.key) {
         case 'ArrowDown':
           event.preventDefault();
@@ -523,22 +561,23 @@ const clientTranslations = {
         reasonOptions.classList.add('hidden');
       }
     });
-    
+
     // Make options focusable
-    reasonOptions.querySelectorAll('li[role="option"]').forEach(option => {
+    reasonOptions.querySelectorAll('li[role="option"]').forEach((option) => {
       option.setAttribute('tabindex', '0');
     });
   }
 
   // Add input event listeners for real-time validation
-  formFields.forEach(field => {
+  formFields.forEach((field) => {
     const input = document.getElementById(field);
     if (input) {
       input.addEventListener('blur', () => {
         validateField(field);
       });
-      
-      if (field !== 'message') { // Message has its own input handler for character counting
+
+      if (field !== 'message') {
+        // Message has its own input handler for character counting
         input.addEventListener('input', () => {
           validateField(field);
         });
@@ -550,20 +589,20 @@ const clientTranslations = {
   if (form && successModal && modalConfirmButton && submitButton && formStatus) {
     form.addEventListener('submit', async (event) => {
       event.preventDefault();
-      
+
       // Check if the honeypot field is empty (not filled by bots)
       if (formHoneypot && formHoneypot.value !== '') {
-        console.log('Honeypot detection triggered');
+        // console.log('Honeypot detection triggered');
         return false; // Silently reject the submission
       }
-      
+
       // Validate all form fields before submission
       const isValid = validateForm();
-      
+
       if (!isValid) {
         formStatus.textContent = clientTranslations.errorCorrect;
         formStatus.classList.add('text-red-500');
-        
+
         // Find the first invalid field and focus it
         for (const field of formFields) {
           const input = document.getElementById(field);
@@ -572,10 +611,10 @@ const clientTranslations = {
             break;
           }
         }
-        
+
         return false;
       }
-      
+
       // Disable the button and show loading state
       submitButton.disabled = true;
       submitSpinner.classList.remove('hidden');
@@ -585,7 +624,7 @@ const clientTranslations = {
 
       const formData = new FormData(form);
       const formAction = form.action;
-      
+
       // Don't send the honeypot field
       if (formHoneypot) {
         formData.delete('form-honeypot');
@@ -605,19 +644,19 @@ const clientTranslations = {
           // Reset form and form state
           form.reset();
           formStatus.textContent = '';
-          
+
           // Reset character count
           if (messageCharCount) {
             messageCharCount.textContent = '0';
           }
-          
+
           // Reset the dropdown to placeholder state
           if (reasonSelectedText && reasonHiddenInput) {
             reasonSelectedText.textContent = clientTranslations.reasonPlaceholder;
             reasonSelectedText.classList.add('placeholder-text');
             reasonHiddenInput.value = '';
           }
-          
+
           // Show success modal
           successModal.classList.remove('hidden');
           successModal.classList.add('flex');

@@ -101,10 +101,7 @@ type ExchangeRequest = {
         class={`border-stone-300 bg-white w-full text-black text-lg md:text-xl font-normal font-['Hero_New'] leading-relaxed border rounded-lg px-3 py-3 md:py-4 pr-20 md:pr-24 focus:outline-none focus:ring-2 focus:ring-black ${lang === 'ar' ? 'text-end' : 'text-start'}`}
       />
       <!-- Loading overlay for recipient amount -->
-      <div
-        id='receive-amount-loading'
-        class='absolute inset-0 hidden bg-white rounded-lg bg-opacity-90'
-      >
+      <div id='receive-amount-loading' class='absolute inset-0 hidden bg-white rounded-lg bg-opacity-90'>
         <div class='flex items-center justify-center h-full'>
           <div class='flex items-center gap-2'>
             <div class='w-4 h-4 border-2 border-gray-300 rounded-full border-t-black animate-spin'></div>
@@ -508,7 +505,7 @@ type ExchangeRequest = {
 
   // Mock function to populate countries (no API call)
   function initializeMockCountries() {
-    console.log('Initializing mock currency data');
+    // console.log('Initializing mock currency data');
     populateCountryDropdown(availableCountries);
   }
 

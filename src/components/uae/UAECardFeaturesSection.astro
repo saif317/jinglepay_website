@@ -101,9 +101,7 @@ const initialActiveIndex = 0;
                   loading='eager'
                 />
               </div>
-              <h3 class='mb-2 text-xl font-semibold text-start sm:mb-3 sm:text-2xl text-slate-800'>
-                {feature.title}
-              </h3>
+              <h3 class='mb-2 text-xl font-semibold text-start sm:mb-3 sm:text-2xl text-slate-800'>{feature.title}</h3>
               <p class='max-w-md text-sm leading-relaxed text-start sm:text-base text-slate-600'>{feature.desc}</p>
             </article>
           </div>
@@ -208,7 +206,7 @@ const initialActiveIndex = 0;
       document.body.dir === 'rtl' ||
       getComputedStyle(document.documentElement).direction === 'rtl';
 
-    console.log('RTL mode detected:', isRTL);
+    // console.log('RTL mode detected:', isRTL);
 
     const slideCount = slides.length;
     let currentSlide = 0;
@@ -223,7 +221,7 @@ const initialActiveIndex = 0;
     let dragEndTime = 0;
 
     // Debug to console - helps troubleshoot
-    console.log('Carousel initialized with', slideCount, 'slides');
+    // console.log('Carousel initialized with', slideCount, 'slides');
 
     // Setup initial slide size - should match the CSS width (responsive)
     let slideWidth = 500; // Default width
@@ -266,10 +264,10 @@ const initialActiveIndex = 0;
 
       // Get container width to calculate centering
       const containerWidth = track.parentElement?.offsetWidth || 0;
-      
+
       // Calculate position to center the current slide without empty spaces at edges
       let offset;
-      
+
       if (currentSlide === 0) {
         // First slide: align to left edge (no empty space on left)
         offset = 0;
@@ -279,16 +277,16 @@ const initialActiveIndex = 0;
         offset = Math.max(0, totalWidth - containerWidth);
       } else {
         // Middle slides: center the current slide
-        offset = (currentSlide * slideWidth) - (containerWidth - slideWidth) / 2;
+        offset = currentSlide * slideWidth - (containerWidth - slideWidth) / 2;
         // Ensure we don't go beyond bounds
-        offset = Math.max(0, Math.min(offset, (slideCount * slideWidth) - containerWidth));
+        offset = Math.max(0, Math.min(offset, slideCount * slideWidth - containerWidth));
       }
 
       // Apply transform
       currentTranslate = -offset;
       prevTranslate = -offset;
       setSliderPosition();
-      console.log('Updated track position:', -offset, 'px');
+      // console.log('Updated track position:', -offset, 'px');
     }
 
     function setSliderPosition() {
@@ -324,7 +322,7 @@ const initialActiveIndex = 0;
         currentSlide = slideIndex;
       }
 
-      console.log('Going to slide', currentSlide);
+      // console.log('Going to slide', currentSlide);
       updateSlideVisibility();
       updateTrackPosition();
       updateDots();
@@ -459,18 +457,18 @@ const initialActiveIndex = 0;
 
     // Set up button event handlers with RTL support
     if (prevButton) {
-      console.log('Previous button found, attaching handler');
+      // console.log('Previous button found, attaching handler');
       prevButton.addEventListener('click', () => {
-        console.log('Previous button clicked');
+        // console.log('Previous button clicked');
         // In RTL, "previous" visually means next slide
         goToSlide(isRTL ? currentSlide + 1 : currentSlide - 1);
       });
     }
 
     if (nextButton) {
-      console.log('Next button found, attaching handler');
+      // console.log('Next button found, attaching handler');
       nextButton.addEventListener('click', () => {
-        console.log('Next button clicked');
+        // console.log('Next button clicked');
         // In RTL, "next" visually means previous slide
         goToSlide(isRTL ? currentSlide - 1 : currentSlide + 1);
       });
@@ -479,7 +477,7 @@ const initialActiveIndex = 0;
     // Pagination dots
     dots.forEach((dot, index) => {
       dot.addEventListener('click', () => {
-        console.log('Dot', index, 'clicked');
+        // console.log('Dot', index, 'clicked');
         goToSlide(index);
       });
     });
@@ -487,12 +485,12 @@ const initialActiveIndex = 0;
     // Keyboard navigation with RTL support
     document.addEventListener('keydown', (e) => {
       if (e.key === 'ArrowLeft') {
-        console.log('Left arrow pressed');
+        // console.log('Left arrow pressed');
         // In RTL, left arrow should go to next slide
         goToSlide(isRTL ? currentSlide + 1 : currentSlide - 1);
       }
       if (e.key === 'ArrowRight') {
-        console.log('Right arrow pressed');
+        // console.log('Right arrow pressed');
         // In RTL, right arrow should go to previous slide
         goToSlide(isRTL ? currentSlide - 1 : currentSlide + 1);
       }
