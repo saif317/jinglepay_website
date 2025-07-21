@@ -40,9 +40,13 @@ export default {
     {
       title: 'مدد',
       links: [
-        { href: '/terms-and-conditions-pk.pdf', text: 'شرائط و ضوابط' },
+        { href: '/terms-and-conditions-pk.pdf', text: 'شرائط و ضوابط', skip: true },
         { href: '/privacy-policy', text: 'پرائیویسی پالیسی' },
-        { href: '/Schedule-of-Charges-Branchless-Banking-January-till-March-2024.pdf', text: 'چارجز کا شیڈول' },
+        {
+          href: '/Schedule-of-Charges-Branchless-Banking-January-till-March-2024.pdf',
+          text: 'چارجز کا شیڈول',
+          skip: true,
+        },
         { href: '/faq', text: 'اکثر پوچھے گئے سوالات ' },
         { href: '/contact', text: 'ہم سے رابطہ کریں' },
       ],

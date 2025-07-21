@@ -39,9 +39,13 @@ export default {
     {
       title: 'Help',
       links: [
-        { href: '/terms-and-conditions-pk.pdf', text: 'Terms & Conditions' },
+        { href: '/terms-and-conditions-pk.pdf', text: 'Terms & Conditions', skip: true },
         { href: '/privacy-policy', text: 'Privacy Policy' },
-        { href: '/Schedule-of-Charges-Branchless-Banking-January-till-March-2024.pdf', text: 'Schedule of Charges' },
+        {
+          href: '/Schedule-of-Charges-Branchless-Banking-January-till-March-2024.pdf',
+          text: 'Schedule of Charges',
+          skip: true,
+        },
         { href: '/faq', text: 'FAQs' },
         { href: '/contact', text: 'Contact Us' },
       ],

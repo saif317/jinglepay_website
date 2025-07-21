@@ -33,14 +33,14 @@ const socialLinks = [
       <nav aria-label='Footer navigation'>
         <div class='grid grid-cols-2 gap-x-6 gap-y-8 lg:grid-cols-4 lg:gap-x-8 xl:gap-x-12'>
           {
-            footer.nav.map((section: { title: string; links: { href: string; text: string }[] }) => (
+            footer.nav.map((section: { title: string; links: { href: string; text: string; skip?: boolean }[] }) => (
               <div>
                 <h3 class='mb-3 text-base font-bold tracking-wider text-white sm:mb-4 sm:text-lg'>{section.title}</h3>
                 <ul class='space-y-2 list-none sm:space-y-3'>
                   {section.links.map((link) => {
                     return (
                       <li>
-                        {link.text !== 'Terms & Conditions' && link.text !== 'Schedule of Charges' && link.text !== 'شرائط و ضوابط' && link.text !== 'چارجز کا شیڈول' ? (
+                        {!link.skip ? (
                           <Link
                             href={link.href}
                             class='text-sm font-normal no-underline transition-colors duration-200 text-zinc-400 hover:text-white sm:text-base'
@@ -90,9 +90,11 @@ const socialLinks = [
       </div>
 
       <div class='pt-8 border-t border-neutral-700 sm:pt-10 lg:pt-12 lg:text-start'>
-        {country !== 'are' && (
-          <span class='block mb-4 text-xs font-normal text-neutral-500 sm:text-sm'>© Jingle Pay Ltd 2025</span>
-        )}
+        {
+          country !== 'are' && (
+            <span class='block mb-4 text-xs font-normal text-neutral-500 sm:text-sm'>© Jingle Pay Ltd 2025</span>
+          )
+        }
         <p class='text-xs font-normal text-neutral-500 sm:text-sm'>{footer.copyrights}</p>
       </div>
     </div>
