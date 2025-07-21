@@ -66,7 +66,10 @@ type ExchangeRequest = {
         class={`border-stone-300 bg-white w-full text-black text-lg md:text-xl font-normal font-['Hero_New'] leading-relaxed border rounded-lg px-3 py-3 md:py-4 pr-16 md:pr-20 focus:outline-none focus:ring-2 focus:ring-black ${lang === 'ar' ? 'text-end' : 'text-start'}`}
         aria-describedby='send-amount-error'
       />
-      <div class='absolute flex items-center gap-1 transform -translate-y-1/2 md:gap-2 right-2 md:right-3 top-1/2'>
+      <div
+        style='direction: ltr;'
+        class='absolute flex items-center gap-1 transform -translate-y-1/2 md:gap-2 right-2 md:right-3 top-1/2'
+      >
         <span class='text-lg font-normal rounded-full fi fi-ae fis md:text-xl'></span>
         <span class="text-black text-lg md:text-xl font-normal font-['Hero_New'] leading-relaxed">AED</span>
         <ChevronDownIcon class='w-4 h-4 opacity-0' />
@@ -102,6 +105,7 @@ type ExchangeRequest = {
           <button
             id='currency-button'
             type='button'
+            style='direction: ltr;'
             class="bg-transparent border-none outline-none text-black text-lg md:text-xl font-normal font-['Hero_New'] leading-relaxed cursor-pointer flex items-center gap-1 pr-1 hover:text-[#794eff] transition-colors duration-200"
             aria-describedby='currency-error'
           >
@@ -113,15 +117,7 @@ type ExchangeRequest = {
             class='hidden max-h-[180px] overflow-y-auto absolute right-0 z-20 mt-2 min-w-[120px] bg-white rounded-lg border border-gray-200 shadow-xl p-1.5 origin-top-right focus:outline-none transform transition-all duration-200 dropdown-menu'
           >
             <div class='py-1' role='menu' aria-orientation='vertical' aria-labelledby='currency-button'>
-              <button
-                type='button'
-                class='w-full flex items-center px-3 py-2 text-sm font-medium rounded-md transition-all duration-200 ease-in-out hover:bg-[#794eff25] hover:text-[#794eff] text-left text-gray-700'
-                data-currency='USD'
-                data-flag='🇺🇸'
-                role='menuitem'
-              >
-                <span class='flex-grow'>🇺🇸 USD</span>
-              </button>
+              <!-- Currency options will be populated by JavaScript -->
             </div>
           </div>
         </div>
@@ -207,88 +203,112 @@ type ExchangeRequest = {
     },
   };
 
-  // API integration for real-time exchange rates
-  const API_URL = 'https://api.jinglepay.dev/api/v0/remittance/rates-review/';
-  const COUNTRIES_API_URL = 'https://api.jinglepay.dev/api/v0/remittance/countries/';
+  // Mock data for currency conversion (no real API calls)
+  const MOCK_CURRENCIES = {
+    USD: { name: 'US Dollar', flag: 'us', rate: 0.27, country: 'United States' },
+    EUR: { name: 'Euro', flag: 'eu', rate: 0.25, country: 'European Union' },
+    GBP: { name: 'British Pound', flag: 'gb', rate: 0.22, country: 'United Kingdom' },
+    INR: { name: 'Indian Rupee', flag: 'in', rate: 22.5, country: 'India' },
+    PKR: { name: 'Pakistani Rupee', flag: 'pk', rate: 75.8, country: 'Pakistan' },
+    BDT: { name: 'Bangladeshi Taka', flag: 'bd', rate: 29.2, country: 'Bangladesh' },
+    PHP: { name: 'Philippine Peso', flag: 'ph', rate: 15.3, country: 'Philippines' },
+    LKR: { name: 'Sri Lankan Rupee', flag: 'lk', rate: 88.5, country: 'Sri Lanka' },
+    NPR: { name: 'Nepalese Rupee', flag: 'np', rate: 36.0, country: 'Nepal' },
+    THB: { name: 'Thai Baht', flag: 'th', rate: 9.8, country: 'Thailand' },
+  };
 
-  function decryptResponse(encryptedData) {
-    try {
-      // Check if the data is actually encrypted (JWE format)
-      if (typeof encryptedData === 'string' && encryptedData.startsWith('eyJ')) {
-        // This looks like a JWE token
-        console.log('Detected encrypted JWE token:', encryptedData.substring(0, 50) + '...');
-
-        try {
-          // Split the JWE token to get the parts
-          const parts = encryptedData.split('.');
-          if (parts.length === 5) {
-            // This is a JWE token format (header.encryptedKey.iv.ciphertext.tag)
-            console.log('JWE token structure detected with 5 parts');
-            
-            try {
-              // Try to decode the header to get information about the encryption
-              const header = JSON.parse(atob(parts[0].replace(/-/g, '+').replace(/_/g, '/')));
-              console.log('JWE Header:', header);
-              
-              // Check if this is using the expected algorithm
-              if (header.alg === 'RSA-OAEP-256' && header.enc === 'A256CBC-HS512') {
-                console.log('Detected expected JWE encryption format');
-                
-                // Since we don't have the private key in the client environment,
-                // we need to gracefully handle this by falling back to mock data
-                // but first let's log that we detected a valid encrypted response
-                console.warn('Valid encrypted response detected but cannot decrypt without private key');
-              }
-            } catch (headerError) {
-              console.error('Failed to parse JWE header:', headerError);
-            }
-            
-            // For now, since we don't have the private key in the client,
-            // we'll need to handle this gracefully by throwing a specific error
-            // that the calling code can catch and fall back to mock data
-            const error = new Error('ENCRYPTED_RESPONSE');
-            error.name = 'EncryptedResponseError';
-            throw error;
-          } else if (parts.length === 3) {
-            // This might be a JWT (not JWE), try to decode the payload
-            try {
-              const payload = parts[1];
-              // Add padding if needed for base64url decoding
-              const paddedPayload = payload + '='.repeat((4 - (payload.length % 4)) % 4);
-              const decodedPayload = atob(paddedPayload.replace(/-/g, '+').replace(/_/g, '/'));
-              return JSON.parse(decodedPayload);
-            } catch (jwtError) {
-              console.error('JWT decoding failed:', jwtError);
-              const error = new Error('ENCRYPTED_RESPONSE');
-              error.name = 'EncryptedResponseError';
-              throw error;
-            }
-          }
-        } catch (tokenError) {
-          if (tokenError instanceof Error && tokenError.name === 'EncryptedResponseError') {
-            throw tokenError;
-          }
-          console.error('Token parsing failed:', tokenError);
-          const error = new Error('ENCRYPTED_RESPONSE');
-          error.name = 'EncryptedResponseError';
-          throw error;
-        }
-      }
-
-      // If it's not encrypted or is already decrypted, return as-is
-      return encryptedData;
-    } catch (error) {
-      if (error instanceof Error && error.name === 'EncryptedResponseError') {
-        throw error;
-      }
-      console.error('Decryption error:', error);
-      throw error;
+  // Mock currency conversion function
+  function calculateMockConversion(aedAmount, targetCurrency) {
+    const currency = MOCK_CURRENCIES[targetCurrency];
+    if (!currency) {
+      return null;
     }
+
+    const convertedAmount = aedAmount * currency.rate;
+    const fee = Math.max(2.99, aedAmount * 0.015); // Mock fee: $2.99 minimum or 1.5% of amount
+
+    return {
+      id: 'mock-' + Date.now(),
+      quotation_mode: 'SEND_AMOUNT',
+      send: {
+        amount: aedAmount,
+        currency: 'AED',
+        country_code: 'AE',
+      },
+      receive: {
+        amount: parseFloat(convertedAmount.toFixed(2)),
+        currency: targetCurrency,
+        country_code: getCountryCodeForCurrency(targetCurrency),
+      },
+      fee: {
+        amount: parseFloat(fee.toFixed(2)),
+        currency: 'AED',
+      },
+      transfer_fx_rate: currency.rate,
+      quotations: [
+        {
+          id: 'mock-quotation-1',
+          provider: 'JinglePay',
+          transfer_type: 'BANK_TRANSFER',
+          transfer_fx_rate: currency.rate,
+          fee: { amount: parseFloat(fee.toFixed(2)), currency: 'AED' },
+          expire_at: new Date(Date.now() + 15 * 60 * 1000), // 15 minutes from now
+          best_offer: true,
+          receive: {
+            amount: parseFloat(convertedAmount.toFixed(2)),
+            currency: targetCurrency,
+            country_code: getCountryCodeForCurrency(targetCurrency),
+          },
+          operation: 'SEND',
+          transfer_channel_name: 'Bank Transfer',
+        },
+      ],
+      last_updated: new Date().toISOString(),
+      expired_at: new Date(Date.now() + 15 * 60 * 1000).toISOString(),
+    };
   }
 
-  let debounceTimer: ReturnType<typeof setTimeout> | undefined;
-  let availableCountries: Countries = {};
+  function getCountryCodeForCurrency(currency) {
+    const currencyToCountry = {
+      USD: 'US',
+      EUR: 'EU',
+      GBP: 'GB',
+      INR: 'IN',
+      PKR: 'PK',
+      BDT: 'BD',
+      PHP: 'PH',
+      LKR: 'LK',
+      NPR: 'NP',
+      THB: 'TH',
+    };
+    return currencyToCountry[currency] || 'US';
+  }
+
+  let debounceTimer;
+  let selectedCurrency = 'USD'; // Default selected currency
   let isValidating = false;
+
+  // Mock available countries data
+  const availableCountries = Object.keys(MOCK_CURRENCIES).reduce((acc, currency) => {
+    const currencyData = MOCK_CURRENCIES[currency];
+    acc[currency] = {
+      code: getCountryCodeForCurrency(currency),
+      currency: currency,
+      iso2_code: getCountryCodeForCurrency(currency).toLowerCase(),
+      name: currencyData.country,
+      unicode: currencyData.flag,
+    };
+    return acc;
+  }, {});
+
+  // Function to create flag icon elements using flag-icons CSS
+  function createFlagIcon(countryCode) {
+    const span = document.createElement('span');
+    span.className =
+      'text-lg font-normal rounded-full fi fis md:text-xl rounded-full fi fi-' + countryCode.toLowerCase() + ' mr-2';
+
+    return span;
+  }
 
   // Validation constants
   const VALIDATION_RULES = {
@@ -297,32 +317,25 @@ type ExchangeRequest = {
     DEBOUNCE_DELAY: 500,
   };
 
-  // Types for countries API
-  type CountryInfo = { code: string; currency: string; iso2_code: string; name: string; unicode: string };
-  type Countries = { [key: string]: CountryInfo };
+  // Mock currency data is already defined above
 
-  // Validation error types
-  type ValidationError = {
-    field: string;
-    message: string;
-    code: string;
-  };
+  // Validation error types (removed TypeScript interface)
 
   // Validation functions
-  function validateSendAmount(amount: string): ValidationError | null {
+  function validateSendAmount(amount) {
     if (!amount || amount.trim() === '') {
-      return { field: 'send-amount', message: locale.errors.requiredAmount, code: 'REQUIRED' };
+      return { field: 'send-amount', message: locale.errors.errors.requiredAmount, code: 'REQUIRED' };
     }
 
     const numAmount = parseFloat(amount);
     if (isNaN(numAmount)) {
-      return { field: 'send-amount', message: locale.errors.invalidNumber, code: 'INVALID_NUMBER' };
+      return { field: 'send-amount', message: locale.errors.errors.invalidNumber, code: 'INVALID_NUMBER' };
     }
 
     if (numAmount < VALIDATION_RULES.MIN_AMOUNT) {
       return {
         field: 'send-amount',
-        message: locale.errors.minAmount.replace('{{min}}', VALIDATION_RULES.MIN_AMOUNT.toString()),
+        message: locale.errors.errors.minAmount.replace('{{min}}', VALIDATION_RULES.MIN_AMOUNT.toString()),
         code: 'MIN_AMOUNT',
       };
     }
@@ -330,7 +343,7 @@ type ExchangeRequest = {
     if (numAmount > VALIDATION_RULES.MAX_AMOUNT) {
       return {
         field: 'send-amount',
-        message: locale.errors.maxAmount.replace('{{max}}', VALIDATION_RULES.MAX_AMOUNT.toLocaleString()),
+        message: locale.errors.errors.maxAmount.replace('{{max}}', VALIDATION_RULES.MAX_AMOUNT.toLocaleString()),
         code: 'MAX_AMOUNT',
       };
     }
@@ -338,36 +351,40 @@ type ExchangeRequest = {
     return null;
   }
 
-  function validateCurrency(currency: string): ValidationError | null {
+  function validateCurrency(currency) {
     if (!currency || currency.trim() === '') {
-      return { field: 'receive-currency-select', message: locale.errors.requiredCurrency, code: 'REQUIRED' };
+      return { field: 'receive-currency-select', message: locale.errors.errors.requiredCurrency, code: 'REQUIRED' };
     }
 
-    // Check if currency is supported
-    if (!availableCountries || Object.keys(availableCountries).length === 0) {
-      return { field: 'receive-currency-select', message: locale.errors.dataUnavailable, code: 'DATA_UNAVAILABLE' };
+    // Check if currency is supported in our mock data
+    if (!MOCK_CURRENCIES[currency]) {
+      return {
+        field: 'receive-currency-select',
+        message: locale.errors.errors.dataUnavailable,
+        code: 'DATA_UNAVAILABLE',
+      };
     }
 
     return null;
   }
 
-  function validateApiResponse(data: any): ValidationError | null {
+  function validateApiResponse(data) {
     if (!data) {
-      return { field: 'api', message: locale.errors.noResponse, code: 'NO_RESPONSE' };
+      return { field: 'api', message: locale.errors.errors.noResponse, code: 'NO_RESPONSE' };
     }
 
     if (!data.receive || typeof data.receive.amount !== 'number') {
-      return { field: 'api', message: locale.errors.invalidResponse, code: 'INVALID_RESPONSE' };
+      return { field: 'api', message: locale.errors.errors.invalidResponse, code: 'INVALID_RESPONSE' };
     }
 
     if (!data.quotations || !Array.isArray(data.quotations) || data.quotations.length === 0) {
-      return { field: 'api', message: locale.errors.noQuotations, code: 'NO_QUOTATIONS' };
+      return { field: 'api', message: locale.errors.errors.noQuotations, code: 'NO_QUOTATIONS' };
     }
 
     return null;
   }
 
-  function showError(error: ValidationError) {
+  function showError(error) {
     const fieldError = document.getElementById(`${error.field}-error`);
     const fieldErrorText = document.getElementById(`${error.field}-error-text`);
     const sendButton = document.getElementById('send-money-btn') as HTMLButtonElement;
@@ -380,7 +397,7 @@ type ExchangeRequest = {
     }
 
     // Add error styling to input
-    const inputElement = document.getElementById(error.field) as HTMLInputElement;
+    const inputElement = document.getElementById(error.field);
     if (inputElement) {
       inputElement.classList.add('border-red-500', 'focus:ring-red-500');
       inputElement.classList.remove('border-stone-300', 'focus:ring-black');
@@ -410,7 +427,7 @@ type ExchangeRequest = {
     // Remove error styling from inputs
     const inputs = ['send-amount', 'receive-currency-select'];
     inputs.forEach((inputId) => {
-      const inputElement = document.getElementById(inputId) as HTMLInputElement;
+      const inputElement = document.getElementById(inputId);
       if (inputElement) {
         inputElement.classList.remove('border-red-500', 'focus:ring-red-500');
         inputElement.classList.add('border-stone-300', 'focus:ring-black');
@@ -423,7 +440,7 @@ type ExchangeRequest = {
     }
   }
 
-  function showLoading(show: boolean) {
+  function showLoading(show) {
     const btnText = document.getElementById('btn-text');
     const btnLoading = document.getElementById('btn-loading');
     const sendButton = document.getElementById('send-money-btn') as HTMLButtonElement;
@@ -441,115 +458,16 @@ type ExchangeRequest = {
     }
   }
 
-  // Mock countries data for fallback
-  const MOCK_COUNTRIES: Countries = {
-    US: {
-      code: 'US',
-      currency: 'USD',
-      iso2_code: 'US',
-      name: 'United States',
-      unicode: '🇺🇸',
-    },
-    GB: {
-      code: 'GB',
-      currency: 'GBP',
-      iso2_code: 'GB',
-      name: 'United Kingdom',
-      unicode: '🇬🇧',
-    },
-    EU: {
-      code: 'EU',
-      currency: 'EUR',
-      iso2_code: 'EU',
-      name: 'European Union',
-      unicode: '🇪🇺',
-    },
-    CA: {
-      code: 'CA',
-      currency: 'CAD',
-      iso2_code: 'CA',
-      name: 'Canada',
-      unicode: '🇨🇦',
-    },
-    AU: {
-      code: 'AU',
-      currency: 'AUD',
-      iso2_code: 'AU',
-      name: 'Australia',
-      unicode: '🇦🇺',
-    },
-    IN: {
-      code: 'IN',
-      currency: 'INR',
-      iso2_code: 'IN',
-      name: 'India',
-      unicode: '🇮🇳',
-    },
-    PK: {
-      code: 'PK',
-      currency: 'PKR',
-      iso2_code: 'PK',
-      name: 'Pakistan',
-      unicode: '🇵🇰',
-    },
-    BD: {
-      code: 'BD',
-      currency: 'BDT',
-      iso2_code: 'BD',
-      name: 'Bangladesh',
-      unicode: '🇧🇩',
-    },
-    PH: {
-      code: 'PH',
-      currency: 'PHP',
-      iso2_code: 'PH',
-      name: 'Philippines',
-      unicode: '🇵🇭',
-    },
-    EG: {
-      code: 'EG',
-      currency: 'EGP',
-      iso2_code: 'EG',
-      name: 'Egypt',
-      unicode: '🇪🇬',
-    },
-  };
+  // Mock countries data for fallback (removed, using MOCK_CURRENCIES instead)
 
-  // Fetch available countries for the dropdown
-  async function fetchCountries() {
-    try {
-      const response = await fetch(COUNTRIES_API_URL);
-      if (!response.ok) {
-        throw new Error(`Countries API error: ${response.status}`);
-      }
-
-      // Get the response text first (it might be encrypted)
-      const responseText = await response.text();
-
-      // Decrypt the response if it's encrypted
-      const decryptedData = await decryptResponse(responseText);
-
-      // Parse the decrypted data as JSON
-      const data = typeof decryptedData === 'string' ? JSON.parse(decryptedData) : decryptedData;
-
-      // Validate countries data
-      if (!data || typeof data !== 'object') {
-        throw new Error('Invalid countries data format');
-      }
-
-      availableCountries = data;
-      populateCountryDropdown(data);
-    } catch (error) {
-      console.error('Failed to fetch countries:', error);
-      // Use mock data if API fails
-      console.log('Using mock countries data as fallback');
-      availableCountries = MOCK_COUNTRIES;
-      populateCountryDropdown(MOCK_COUNTRIES);
-    }
+  // Mock function to populate countries (no API call)
+  function initializeMockCountries() {
+    console.log('Initializing mock currency data');
+    populateCountryDropdown(availableCountries);
   }
 
-  // Populate the country dropdown with fetched data
-  function populateCountryDropdown(countries: Countries) {
+  // Populate the country dropdown with mock data
+  function populateCountryDropdown(countries) {
     const dropdownMenu = document.querySelector('#currency-dropdown .py-1');
     if (!dropdownMenu || !countries || typeof countries !== 'object') return;
 
@@ -557,7 +475,7 @@ type ExchangeRequest = {
     dropdownMenu.innerHTML = '';
 
     // Iterate through countries object
-    Object.values(countries).forEach((country: CountryInfo) => {
+    Object.values(countries).forEach((country) => {
       const currency = country.currency;
       const countryName = country.name;
       const countryCode = country.iso2_code || country.code;
@@ -614,34 +532,10 @@ type ExchangeRequest = {
     }
   }
 
-  // Helper function to get flag icon class from country code using flag-icons library
-  function getFlagIconClass(countryCode: string): string {
-    if (!countryCode || countryCode.length !== 2) return 'fi fi-xx rounded-full'; // Default flag for unknown countries
-
-    // Convert country code to lowercase for flag-icons CSS classes
-    const code = countryCode.toLowerCase();
-
-    // Map some special cases that might have different codes
-    const codeMap: { [key: string]: string } = {
-      eu: 'eu', // European Union
-      gb: 'gb', // Great Britain
-      uk: 'gb', // UK -> GB mapping
-    };
-
-    const finalCode = codeMap[code] || code;
-    return `fi fi-${finalCode} rounded-full`;
-  }
-
-  // Helper function to create flag icon element
-  function createFlagIcon(countryCode: string): HTMLSpanElement {
-    const flagClass = getFlagIconClass(countryCode);
-    const flagElement = document.createElement('span');
-    flagElement.className = `${flagClass} fis inline-block w-5 h-5 mr-2`;
-    return flagElement;
-  }
+  // Removed duplicate createFlagIcon function - using emoji-based version instead
 
   // Encryption utility - inline implementation for client-side use
-  async function encryptRequest(data: any): Promise<string> {
+  async function encryptRequest(data) {
     try {
       // Import jose dynamically for client-side use
       const { CompactEncrypt, importJWK } = await import('jose');
@@ -668,7 +562,7 @@ type ExchangeRequest = {
     }
   }
 
-  async function fetchExchangeRate(sendAmount: string): Promise<any> {
+  async function fetchExchangeRate(sendAmount) {
     try {
       // Validate input before making API call
       const amountError = validateSendAmount(sendAmount);
@@ -676,13 +570,7 @@ type ExchangeRequest = {
         throw new Error(amountError.message);
       }
 
-      // Get selected currency from dropdown
-      const currencySelect = document.getElementById('receive-currency-select') as HTMLSelectElement;
-      if (!currencySelect) {
-        throw new Error('Currency selector not found');
-      }
-
-      const selectedCurrency = currencySelect.value;
+      // Use global selectedCurrency variable (no need to get from DOM)
       const currencyError = validateCurrency(selectedCurrency);
       if (currencyError) {
         throw new Error(currencyError.message);
@@ -691,7 +579,7 @@ type ExchangeRequest = {
       // Find country code for selected currency
       let countryCode = 'US'; // default
       for (const [code, country] of Object.entries(availableCountries)) {
-        const countryInfo = country as CountryInfo;
+        const countryInfo = country;
         if (countryInfo.currency === selectedCurrency) {
           countryCode = countryInfo.iso2_code || code;
           break;
@@ -712,66 +600,23 @@ type ExchangeRequest = {
         },
       };
 
-      const encryptedPayload = await encryptRequest(requestData);
-
-      const response = await fetch(API_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'text/plain',
-        },
-        body: encryptedPayload,
-      });
-
-      if (!response.ok) {
-        throw new Error(`Server error: ${response.status} - ${response.statusText}`);
+      // Use mock conversion instead of API call
+      const mockData = calculateMockConversion(sendAmountNum, selectedCurrency);
+      if (mockData) {
+        return mockData;
       }
 
-      // Get the response text first (it might be encrypted)
-      const responseText = await response.text();
-
-      // Decrypt the response if it's encrypted
-      const decryptedData = await decryptResponse(responseText);
-
-      // Parse the decrypted data as JSON
-      const data = typeof decryptedData === 'string' ? JSON.parse(decryptedData) : decryptedData;
-
-      // Validate API response
-      const responseError = validateApiResponse(data);
-      if (responseError) {
-        throw new Error(responseError.message);
-      }
-
-      return data;
+      // Fallback if mock conversion fails
+      throw new Error('Currency not supported');
     } catch (error) {
-      console.error('Error fetching exchange rate:', error);
-      // Return proper mock data matching RemittanceExchangeResponse type
+      console.error('Error in mock conversion:', error);
+      // Fallback mock data
       const sendAmountNum = parseFloat(sendAmount) || 1000;
-
-      // Get selected currency and country from dropdown
-      const currencySelect = document.getElementById('receive-currency-select') as HTMLSelectElement;
-      const selectedCurrency = currencySelect?.value || 'USD';
-      const selectedOption = currencySelect?.selectedOptions[0];
-      const countryCode = selectedOption?.dataset.countryCode || 'US';
-
-      // Mock exchange rates for different currencies
-      const mockRates: { [key: string]: number } = {
-        USD: 0.27,
-        GBP: 0.21,
-        EUR: 0.25,
-        CAD: 0.37,
-        AUD: 0.41,
-        INR: 22.75,
-        PKR: 75.5,
-        BDT: 29.15,
-        PHP: 15.25,
-        EGP: 13.45,
-      };
-
-      const exchangeRate = mockRates[selectedCurrency] || 0.27;
-      const receiveAmountNum = sendAmountNum * exchangeRate;
+      const fallbackRate = 0.27; // USD rate as fallback
+      const receiveAmountNum = sendAmountNum * fallbackRate;
 
       return {
-        id: 'mock-quote-' + Date.now(),
+        id: 'mock-fallback-' + Date.now(),
         quotation_mode: 'SEND_AMOUNT',
         send: {
           amount: sendAmountNum,
@@ -779,47 +624,47 @@ type ExchangeRequest = {
           country_code: 'AE',
         },
         receive: {
-          amount: receiveAmountNum,
-          currency: selectedCurrency,
-          country_code: countryCode,
+          amount: parseFloat(receiveAmountNum.toFixed(2)),
+          currency: selectedCurrency || 'USD',
+          country_code: getCountryCodeForCurrency(selectedCurrency || 'USD'),
         },
         user_saves: {
           amount: 0,
           currency: 'AED',
         },
         last_updated: new Date().toISOString(),
-        expired_at: new Date(Date.now() + 300000).toISOString(), // 5 minutes from now
+        expired_at: new Date(Date.now() + 300000).toISOString(),
         fee: {
-          amount: 0,
+          amount: 2.99,
           currency: 'AED',
         },
         quotations: [
           {
-            id: 'mock-quotation-' + Date.now(),
-            provider: 'Mock Provider',
+            id: 'mock-fallback-quotation-' + Date.now(),
+            provider: 'JinglePay',
             transfer_type: 'BANK_TRANSFER',
-            transfer_fx_rate: exchangeRate,
+            transfer_fx_rate: fallbackRate,
             fee: {
-              amount: 0,
+              amount: 2.99,
               currency: 'AED',
             },
             expire_at: new Date(Date.now() + 300000),
             best_offer: true,
             receive: {
-              amount: receiveAmountNum,
-              currency: selectedCurrency,
-              country_code: countryCode,
+              amount: parseFloat(receiveAmountNum.toFixed(2)),
+              currency: selectedCurrency || 'USD',
+              country_code: getCountryCodeForCurrency(selectedCurrency || 'USD'),
             },
-            operation: 'ENCRYPT',
-            transfer_channel_name: 'Standard Transfer',
+            operation: 'SEND',
+            transfer_channel_name: 'Bank Transfer',
           },
         ],
       };
     }
   }
 
-  function updateCalculator(data: any) {
-    const receiveAmountEl = document.getElementById('receive-amount') as HTMLInputElement;
+  function updateCalculator(data) {
+    const receiveAmountEl = document.getElementById('receive-amount');
     const transferFeeEl = document.getElementById('transfer-fee');
     const exchangeRateEl = document.getElementById('exchange-rate');
 
@@ -833,8 +678,7 @@ type ExchangeRequest = {
 
     if (exchangeRateEl && data.quotations && data.quotations.length > 0) {
       const rate = data.quotations[0].transfer_fx_rate;
-      const currencySelect = document.getElementById('receive-currency-select') as HTMLSelectElement;
-      const selectedCurrency = currencySelect?.value || 'USD';
+      // Use the global selectedCurrency variable instead of trying to get from DOM
       exchangeRateEl.textContent = `1.00 AED = ${rate.toFixed(2)} ${selectedCurrency}`;
     }
   }
@@ -881,8 +725,7 @@ type ExchangeRequest = {
     }, VALIDATION_RULES.DEBOUNCE_DELAY);
   }
 
-  // Currency dropdown functionality
-  let selectedCurrency = 'USD';
+  // Currency dropdown functionality (selectedCurrency already declared above)
 
   // Initialize event listeners for currency dropdown options
   function initializeCurrencyDropdownOptions() {
@@ -890,7 +733,7 @@ type ExchangeRequest = {
     const currencyDropdown = document.getElementById('currency-dropdown');
 
     // Handle currency selection
-    function selectCurrency(currency: string, countryCode: string) {
+    function selectCurrency(currency, countryCode) {
       selectedCurrency = currency;
 
       // Update display with flag icon
@@ -924,6 +767,37 @@ type ExchangeRequest = {
       handleCurrencyChange();
     }
 
+    // Handle currency change - trigger conversion calculation
+    function handleCurrencyChange() {
+      const sendAmountEl = document.getElementById('send-amount');
+      if (sendAmountEl && sendAmountEl.value && sendAmountEl.value.trim() !== '') {
+        // Trigger conversion with current amount and new currency
+        const amount = sendAmountEl.value;
+
+        // Clear timeout and trigger immediate conversion
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(async () => {
+          try {
+            isValidating = true;
+            showLoading(true);
+            const data = await fetchExchangeRate(amount);
+            updateCalculator(data);
+            clearErrors();
+          } catch (error) {
+            console.error('Currency change conversion error:', error);
+            showError({
+              field: 'api',
+              message: locale.errors.errors.apiError,
+              code: 'API_ERROR',
+            });
+          } finally {
+            isValidating = false;
+            showLoading(false);
+          }
+        }, 100); // Short delay for currency change
+      }
+    }
+
     // Add click listeners to all currency options
     currencyOptions.forEach((option) => {
       // Remove any existing listeners to avoid duplicates
@@ -944,7 +818,7 @@ type ExchangeRequest = {
     const currencyDropdown = document.getElementById('currency-dropdown');
 
     // Toggle dropdown
-    function toggleCurrencyDropdown(e: Event) {
+    function toggleCurrencyDropdown(e) {
       e.stopPropagation();
       e.preventDefault();
       currencyDropdown?.classList.toggle('hidden');
@@ -958,7 +832,7 @@ type ExchangeRequest = {
 
     // Close dropdown when clicking outside
     document.addEventListener('click', (e) => {
-      const target = e.target as Element;
+      const target = e.target;
       if (!target.closest('.currency-selector')) {
         currencyDropdown?.classList.add('hidden');
       }
@@ -1021,8 +895,8 @@ type ExchangeRequest = {
 
   // Initialize on page load
   document.addEventListener('DOMContentLoaded', () => {
-    // Fetch available countries
-    fetchCountries();
+    // Initialize mock countries instead of fetching from API
+    initializeMockCountries();
 
     // Initialize currency dropdown
     initializeCurrencyDropdown();
@@ -1034,7 +908,7 @@ type ExchangeRequest = {
 
       // Add blur validation for immediate feedback
       sendAmountEl.addEventListener('blur', () => {
-        const amount = (sendAmountEl as HTMLInputElement).value;
+        const amount = sendAmountEl.value;
         const amountError = validateSendAmount(amount);
         if (amountError) {
           showError(amountError);
@@ -1045,7 +919,7 @@ type ExchangeRequest = {
 
       // Prevent invalid characters and enforce proper number format
       sendAmountEl.addEventListener('keydown', (e) => {
-        const input = e.target as HTMLInputElement;
+        const input = e.target;
         const currentValue = input.value;
         const key = e.key;
 
@@ -1099,8 +973,8 @@ type ExchangeRequest = {
       // Handle paste events
       sendAmountEl.addEventListener('paste', (e) => {
         e.preventDefault();
-        const paste = (e.clipboardData || (window as any).clipboardData).getData('text');
-        const input = e.target as HTMLInputElement;
+        const paste = (e.clipboardData || window.clipboardData).getData('text');
+        const input = e.target;
 
         // Clean the pasted text
         const cleanedPaste = paste.replace(/[^0-9.]/g, '');
@@ -1131,7 +1005,7 @@ type ExchangeRequest = {
 
       // Additional input validation to clean up any invalid values
       sendAmountEl.addEventListener('input', (e) => {
-        const input = e.target as HTMLInputElement;
+        const input = e.target;
         let value = input.value;
 
         // Remove any non-numeric characters except decimal point
