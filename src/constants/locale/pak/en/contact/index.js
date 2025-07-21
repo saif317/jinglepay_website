@@ -10,7 +10,7 @@ export default {
   reason: 'Reason for contacting us',
   reasonPlaceholder: 'Select a reason...',
   reasons: [
-    'Questions regarding my Jingle pay account',
+    'Questions regarding my Jingle Pay account',
     'Technical Support',
     'Billing Inquiry',
     'Feedback/Suggestion',

@@ -83,7 +83,10 @@ const isRtl = lang === 'ar';
       </aside>
 
       <!-- Main Content -->
-      <main class='flex-1 p-4 bg-white border border-gray-100 shadow-sm tac-content rounded-xl md:p-8'>
+      <main
+        class='flex-1 p-4 bg-white border border-gray-100 shadow-sm tac-content rounded-xl md:p-8'
+        style='direction: ltr;'
+      >
         <div class='prose max-w-none'>
           {Content && <Content />}
         </div>

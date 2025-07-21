@@ -78,8 +78,11 @@ const { benefits } = Astro.locals.translations;
           <h4 class='mb-2 text-base font-black xs:text-lg text-zinc-800 sm:text-xl xs:mb-3 sm:mb-6'>
             {benefits?.savings?.title || 'Savings generated for customers'}
           </h4>
-          <h3 class='mb-1 text-xl font-black xs:text-2xl text-zinc-800 sm:text-3xl xs:mb-2 sm:mb-4'>
-            {benefits?.savings?.amount || 'USD 5,000,000'}
+          <h3
+            class='mb-1 text-xl font-black xs:text-2xl text-zinc-800 sm:text-3xl xs:mb-2 sm:mb-4'
+            id='animated-savings-amount'
+          >
+            USD <span id='savings-counter'>5,000,000</span>
           </h3>
           <p class='text-sm leading-tight xs:text-base text-zinc-900 sm:text-lg xs:leading-normal sm:leading-relaxed'>
             {benefits?.savings?.description || 'Jingle Pay is democratizing access to financial services'}
@@ -90,3 +93,125 @@ const { benefits } = Astro.locals.translations;
     </div>
   </div>
 </section>
+
+<script>
+  // Animated counter for savings amount
+  function animateSavingsCounter() {
+    const counterElement = document.getElementById('savings-counter');
+    if (!counterElement) return;
+
+    let currentValue = 0;
+    const targetValue = 5000000; // 5 million
+    const initialDuration = 3000; // 1 second to reach 5 million
+    const slowIncrement = 10000; // 10,000 per second after reaching 5 million
+    const slowInterval = 1000; // 1 second interval for slow increment
+
+    let animationStarted = false;
+    let slowAnimationInterval;
+
+    // Format number with commas
+    function formatNumber(num) {
+      return num.toLocaleString();
+    }
+
+    // Fast animation from 0 to 5 million in 1 second
+    function fastAnimation() {
+      const startTime = Date.now();
+
+      function updateCounter() {
+        const elapsed = Date.now() - startTime;
+        const progress = Math.min(elapsed / initialDuration, 1);
+
+        // Use easeOutCubic for smooth animation
+        const easedProgress = 1 - Math.pow(1 - progress, 3);
+        currentValue = Math.floor(easedProgress * targetValue);
+
+        counterElement.textContent = formatNumber(currentValue);
+
+        if (progress < 1) {
+          requestAnimationFrame(updateCounter);
+        } else {
+          // Start slow animation after reaching 5 million
+          currentValue = targetValue;
+          counterElement.textContent = formatNumber(currentValue);
+          startSlowAnimation();
+        }
+      }
+
+      requestAnimationFrame(updateCounter);
+    }
+
+    // Slow animation: smoothly increase by 10,000 every second
+    function startSlowAnimation() {
+      function animateNextIncrement() {
+        const startValue = currentValue;
+        const targetValue = startValue + slowIncrement;
+        const startTime = Date.now();
+
+        function updateSlowCounter() {
+          const elapsed = Date.now() - startTime;
+          const progress = Math.min(elapsed / slowInterval, 1);
+
+          // Use linear progression for constant speed (no easing)
+          currentValue = Math.floor(startValue + progress * slowIncrement);
+
+          counterElement.textContent = formatNumber(currentValue);
+
+          if (progress < 1) {
+            requestAnimationFrame(updateSlowCounter);
+          } else {
+            // Set exact target value and schedule next increment
+            currentValue = targetValue;
+            counterElement.textContent = formatNumber(currentValue);
+            // Schedule next increment
+            slowAnimationInterval = setTimeout(animateNextIncrement, 0);
+          }
+        }
+
+        requestAnimationFrame(updateSlowCounter);
+      }
+
+      // Start the first increment
+      animateNextIncrement();
+    }
+
+    // Intersection Observer to trigger animation when element is in view
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !animationStarted) {
+            animationStarted = true;
+            fastAnimation();
+            // Stop observing once animation starts
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      {
+        threshold: 0.5, // Trigger when 50% of element is visible
+        rootMargin: '0px 0px -50px 0px', // Trigger slightly before element is fully visible
+      }
+    );
+
+    // Start observing the counter element
+    const targetElement = document.getElementById('animated-savings-amount');
+    if (targetElement) {
+      observer.observe(targetElement);
+    }
+
+    // Cleanup function for when component is destroyed
+    return () => {
+      if (slowAnimationInterval) {
+        clearInterval(slowAnimationInterval);
+      }
+      observer.disconnect();
+    };
+  }
+
+  // Initialize animation when DOM is loaded
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', animateSavingsCounter);
+  } else {
+    animateSavingsCounter();
+  }
+</script>
