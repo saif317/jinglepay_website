@@ -1,0 +1,765 @@
+---
+// ReKYC Page for Astro
+import KYCForm from '../components/KYCForm.astro';
+import { Image } from 'astro:assets';
+import Logo from '@assets/logos/jplogo.svg';
+import LogoWhite from '@assets/logos/jplogowhitesvg.svg';
+
+// Note: URL parameter parsing and data fetching moved to client-side
+// since Astro static pages can't access runtime query parameters
+
+const pageTitle = 'Update KYC Information - JinglePay';
+const pageDescription = 'Update your KYC information to continue using JinglePay services.';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" sizes="16x16 32x32" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" sizes="any" />
+    <link rel="apple-touch-icon" href="/favicon.png" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={pageDescription} />
+    <meta name="theme-color" content="#794eff" />
+    <title>{pageTitle}</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+  <div class="rekyc-container">
+    <!-- Loading State -->
+    <div id="loading-container" class="loading-container">
+      <div class="loading-spinner"></div>
+      <p class="loading-text">Loading your information...</p>
+    </div>
+
+    <!-- Error State -->
+    <div id="error-container" class="error-container" style="display: none;">
+      <div class="error-card">
+        <div class="error-icon">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="#dc2626">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+          </svg>
+        </div>
+        <h2 class="error-title">Unable to Load KYC Data</h2>
+        <p id="error-message" class="error-message"></p>
+        <button onclick="window.location.reload()" class="retry-btn">
+          Try Again
+        </button>
+      </div>
+    </div>
+
+    <!-- KYC Already Completed State -->
+    <div id="completed-container" class="completed-container" style="display: none;">
+      <div class="completed-card">
+        <div class="completed-icon">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="#4CAF50">
+            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" />
+          </svg>
+        </div>
+        <h2 class="completed-title">KYC Already Completed</h2>
+        <p class="completed-message">
+          Your KYC verification has already been completed. There's no need for any updates at this time.
+        </p>
+        <button onclick="window.location.href = '/'" class="home-btn">
+          Return Home
+        </button>
+      </div>
+    </div>
+
+    <!-- Main KYC Form -->
+    <div id="main-container" class="main-container" style="display: none;">
+      <!-- Header -->
+      <div class="header-container">
+        <div class="logo-container">
+          <Image 
+            src={Logo} 
+            alt="JinglePay Logo" 
+            class="logo"
+            width={107}
+            height={40}
+          />
+        </div>
+        <a href="mailto:support@jinglepay.com" class="help-button">
+          Help
+        </a>
+      </div>
+
+      <!-- KYC Form -->
+      <div class="form-container">
+        <KYCForm />
+      </div>
+
+      <!-- Footer -->
+      <div class="footer-container">
+        <Image 
+          src={LogoWhite} 
+          alt="JinglePay" 
+          class="footer-logo"
+          width={120}
+          height={38}
+        />
+        <p class="footer-text">
+          Jingle Pay Limited is a company incorporated in the Dubai International Financial Centre (the "DIFC") under
+          trade license number CL4904, with registered office at 908 Innovation One, DIFC, Dubai, United Arab
+          Emirates, registered as a category 3C Money Services Provider firm with the Dubai Financial Services
+          Authority (the "DFSA") (registration number F005329).
+        </p>
+      </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="success-modal" class="modal" style="display: none;">
+      <div class="modal-content">
+        <div class="success-icon">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="#4CAF50">
+            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" />
+          </svg>
+        </div>
+        <h3 class="modal-title">KYC Updated Successfully!</h3>
+        <p class="modal-message">Your KYC information has been updated successfully. You will be redirected to the home page.</p>
+        <button id="modal-close-btn" class="modal-btn">Continue</button>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .rekyc-container {
+    min-height: 100vh;
+    background-color: #f7fafc;
+    font-family: 'Hero New', sans-serif;
+  }
+
+  /* Loading State */
+  .loading-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    gap: 16px;
+  }
+
+  .loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid #e5e7eb;
+    border-top: 3px solid #794eff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+
+  .loading-text {
+    color: #6b7280;
+    font-size: 16px;
+    font-family: 'Hero New', sans-serif;
+    font-weight: 400;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  /* Error State */
+  .error-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+  }
+
+  .error-card {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    text-align: center;
+    max-width: 480px;
+  }
+
+  .error-icon {
+    background: #fef2f2;
+    border-radius: 50%;
+    padding: 16px;
+    margin: 0 auto 24px;
+    width: fit-content;
+  }
+
+  .error-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #dc2626;
+    margin-bottom: 12px;
+    font-family: 'Hero New', sans-serif;
+  }
+
+  .error-message {
+    color: #6b7280;
+    margin-bottom: 32px;
+    line-height: 1.6;
+    font-size: 16px;
+    font-family: 'Hero New', sans-serif;
+  }
+
+  .retry-btn {
+    background: #794eff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 14px 28px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: 'Hero New', sans-serif;
+    font-size: 16px;
+  }
+
+  .retry-btn:hover {
+    background: #6b46c1;
+    transform: translateY(-1px);
+  }
+
+  /* Completed State */
+  .completed-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+  }
+
+  .completed-card {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    text-align: center;
+    max-width: 480px;
+  }
+
+  .completed-icon {
+    background: #e8f5e9;
+    border-radius: 50%;
+    padding: 16px;
+    margin: 0 auto 24px;
+    width: fit-content;
+  }
+
+  .completed-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #2e7d32;
+    margin-bottom: 12px;
+    font-family: 'Hero New', sans-serif;
+  }
+
+  .completed-message {
+    color: #6b7280;
+    margin-bottom: 32px;
+    line-height: 1.6;
+    font-size: 16px;
+    font-family: 'Hero New', sans-serif;
+  }
+
+  .home-btn {
+    background: #2e7d32;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 14px 28px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: 'Hero New', sans-serif;
+    font-size: 16px;
+  }
+
+  .home-btn:hover {
+    background: #1b5e20;
+    transform: translateY(-1px);
+  }
+
+  /* Main Container */
+  .main-container {
+    max-width: 100%;
+    padding: 20px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    background: #f7fafc;
+  }
+
+  @media (min-width: 640px) {
+    .main-container {
+      padding: 40px 60px;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .main-container {
+      padding: 60px 120px;
+    }
+  }
+
+  /* Header */
+  .header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+    flex-shrink: 0;
+  }
+
+  .logo-container {
+    height: auto;
+  }
+
+  .logo {
+    height: 40px;
+    width: auto;
+    object-fit: contain;
+  }
+
+  @media (min-width: 768px) {
+    .logo {
+      height: 48px;
+    }
+  }
+
+  .help-button {
+    color: #794eff;
+    background: transparent;
+    border: 1px solid #794eff;
+    border-radius: 8px;
+    padding: 8px 20px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    font-family: 'Hero New', sans-serif;
+  }
+
+  .help-button:hover {
+    background: rgba(121, 78, 255, 0.1);
+    transform: translateY(-1px);
+  }
+
+  /* Form Container */
+  .form-container {
+    flex: 1;
+    overflow: auto;
+    margin-bottom: 120px;
+  }
+
+  /* Footer */
+  .footer-container {
+    background: #1a1a1a;
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    z-index: 10;
+  }
+
+  @media (min-width: 768px) {
+    .footer-container {
+      padding: 24px 60px;
+      gap: 40px;
+      flex-direction: row;
+    }
+  }
+
+  .footer-logo {
+    height: 32px;
+    object-fit: contain;
+  }
+
+  .footer-text {
+    color: #e5e7eb;
+    font-size: 11px;
+    line-height: 1.5;
+    text-align: center;
+    margin: 0;
+    font-family: 'Hero New', sans-serif;
+    font-weight: 300;
+  }
+
+  @media (min-width: 768px) {
+    .footer-text {
+      font-size: 12px;
+      text-align: left;
+    }
+  }
+
+  /* Success Modal */
+  .modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(4px);
+  }
+
+  .modal-content {
+    background: white;
+    border-radius: 16px;
+    padding: 40px;
+    text-align: center;
+    max-width: 480px;
+    margin: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  }
+
+  .success-icon {
+    background: #e8f5e9;
+    border-radius: 50%;
+    padding: 16px;
+    margin: 0 auto 24px;
+    width: fit-content;
+  }
+
+  .modal-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #2e7d32;
+    margin-bottom: 12px;
+    font-family: 'Hero New', sans-serif;
+  }
+
+  .modal-message {
+    color: #6b7280;
+    margin-bottom: 32px;
+    line-height: 1.6;
+    font-size: 16px;
+    font-family: 'Hero New', sans-serif;
+  }
+
+  .modal-btn {
+    background: #2e7d32;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 14px 28px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: 'Hero New', sans-serif;
+    font-size: 16px;
+  }
+
+  .modal-btn:hover {
+    background: #1b5e20;
+    transform: translateY(-1px);
+  }
+
+  /* Global font application */
+  * {
+    font-family: 'Hero New', sans-serif;
+  }
+</style>
+
+<script type="module">
+  // Client-side state management
+  let currentUserData = null;
+  let isLoading = true;
+  let hasError = false;
+  let isCompleted = false;
+
+  // Inline API functions to avoid import issues
+  const isSitEnvironment = typeof window !== 'undefined' && new URLSearchParams(window.location.search).has('sitenv');
+  const API_BASE_URL = isSitEnvironment ? 'https://sit.jinglepay.dev' : 'https://api.jinglepay.dev';
+
+  async function fetchUserKYCData(userId, token) {
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/v0/kyc/rekyc/eid/?u=${userId}&t=${token}`, {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          'Cache-Control': 'no-cache',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to fetch KYC data: ${response.status} ${response.statusText}`);
+      }
+
+      const data = await response.json();
+
+      if (!data || typeof data !== 'object') {
+        throw new Error('Invalid response format: Expected an object');
+      }
+
+      // Transform the API response to match ReKYC interface
+      return {
+        front_eid: null,
+        back_eid: null,
+        address_proof: null,
+        valid_from: data.eid_start_date ? new Date(data.eid_start_date).toISOString().split('T')[0] : null,
+        valid_until: data.eid_expiry_date ? new Date(data.eid_expiry_date).toISOString().split('T')[0] : null,
+        name: data.first_name || '',
+        surname: data.last_name || '',
+        number: data.eid || '',
+        address_country: data.address_country || '',
+        nationality: data.nationality || '',
+        place_of_birth: data.place_of_birth || '',
+        occupation: data.occupation || '',
+        address_city: data.address_city || '',
+        address_street: data.address_street || '',
+        address_building: data.address_building || '',
+        address_flat_no: data.address_flat_no || '',
+        address_postal_code: data.address_postal_code || '',
+        source_of_funds: data.source_of_funds || '',
+        transfer_to_jpl: data.transfer_to_jpl || '',
+        transfer_from_jpl: data.transfer_from_jpl || '',
+        money_transfer_countries: data.money_transfer_countries || '',
+        purpose_of_transfer: data.purpose_of_transfer || '',
+        rekyc_completed: data.rekyc_completed || false,
+      };
+    } catch (error) {
+      console.error('Error fetching KYC data:', error);
+      throw error;
+    }
+  }
+
+  async function submitReKYC(userId, token, data) {
+    try {
+      const formData = new FormData();
+      
+      // Add basic form fields
+      Object.keys(data).forEach(key => {
+        if (data[key] !== null && data[key] !== undefined) {
+          if (data[key] instanceof File) {
+            formData.append(key, data[key]);
+          } else {
+            formData.append(key, data[key]);
+          }
+        }
+      });
+      
+      // Add URL parameters
+      formData.append('u', userId);
+      formData.append('t', token);
+
+      const response = await fetch(`${API_BASE_URL}/api/v0/kyc/rekyc/eid/`, {
+        method: 'POST',
+        headers: {
+          Accept: '*/*',
+          'Cache-Control': 'no-cache',
+          Pragma: 'no-cache',
+        },
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Failed to submit KYC data: ${response.status} ${response.statusText}. ${errorText}`);
+      }
+
+      return response.json();
+    } catch (error) {
+      console.error('Error submitting KYC data:', error);
+      throw error;
+    }
+  }
+
+  // Initialize page state management
+  function initializePageState() {
+    const loadingContainer = document.getElementById('loading-container');
+    const errorContainer = document.getElementById('error-container');
+    const completedContainer = document.getElementById('completed-container');
+    const mainContainer = document.getElementById('main-container');
+    const successModal = document.getElementById('success-modal');
+
+    // Show error function
+    window.showError = function(message) {
+      if (loadingContainer) loadingContainer.style.display = 'none';
+      if (errorContainer) errorContainer.style.display = 'flex';
+      if (completedContainer) completedContainer.style.display = 'none';
+      if (mainContainer) mainContainer.style.display = 'none';
+      if (successModal) successModal.style.display = 'none';
+      
+      const errorMessageEl = document.getElementById('error-message');
+      if (errorMessageEl) errorMessageEl.textContent = message || 'An error occurred';
+    };
+
+    // Show completed function
+    window.showCompleted = function() {
+      if (loadingContainer) loadingContainer.style.display = 'none';
+      if (errorContainer) errorContainer.style.display = 'none';
+      if (completedContainer) completedContainer.style.display = 'flex';
+      if (mainContainer) mainContainer.style.display = 'none';
+      if (successModal) successModal.style.display = 'none';
+    };
+
+    // Show main form function
+    window.showMainForm = function() {
+      if (loadingContainer) loadingContainer.style.display = 'none';
+      if (errorContainer) errorContainer.style.display = 'none';
+      if (completedContainer) completedContainer.style.display = 'none';
+      if (mainContainer) mainContainer.style.display = 'flex';
+      if (successModal) successModal.style.display = 'none';
+    };
+
+    // Show success modal function
+    window.showSuccessModal = function() {
+      if (successModal) successModal.style.display = 'flex';
+    };
+
+    // Close success modal function
+    window.closeSuccessModal = function() {
+      if (successModal) successModal.style.display = 'none';
+    };
+  }
+
+  // Load user data from API
+  async function loadUserData() {
+    try {
+      const urlParams = new URLSearchParams(window.location.search);
+      const userId = urlParams.get('u');
+      const token = urlParams.get('t');
+
+      if (!userId || !token) {
+        if (window.showError) {
+          window.showError('Invalid URL parameters. Please check your link and try again.');
+        }
+        return;
+      }
+
+      // Call API function
+      currentUserData = await fetchUserKYCData(userId, token);
+      
+      // Check if KYC is already completed
+      if (currentUserData && currentUserData.rekyc_completed) {
+        if (window.showCompleted) {
+          window.showCompleted();
+        }
+      } else {
+        // Pass data to form and show it
+        window.kycInitialData = currentUserData;
+        
+        // Store data for form initialization
+        // Form will initialize itself when it loads
+        
+        if (window.showMainForm) {
+          window.showMainForm();
+        }
+      }
+    } catch (error) {
+      console.error('Error loading KYC data:', error);
+      const errorMessage = (error && error.message) || 'Failed to load KYC data. Please try again.';
+      if (window.showError) {
+        window.showError(errorMessage);
+      }
+    }
+  }
+
+  // Initialize page on load
+  document.addEventListener('DOMContentLoaded', async () => {
+    // Initialize page state
+    initializePageState();
+    
+    // Load user data
+    await loadUserData();
+
+    // Handle form submission
+    const form = document.getElementById('kyc-form');
+    if (form) {
+      form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        // Get URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const userId = urlParams.get('u');
+        const token = urlParams.get('t');
+
+        if (!userId || !token) {
+          alert('Missing required parameters. Please check your link.');
+          return;
+        }
+
+        // Show loading state
+        if (window.kycFormUtils && window.kycFormUtils.setLoading) {
+          window.kycFormUtils.setLoading(true);
+        }
+
+        try {
+          // Collect form data
+          const formData = new FormData(form);
+          const data = {};
+          
+          // Convert FormData to object
+          for (let [key, value] of formData.entries()) {
+            if (value instanceof File && value.size === 0) {
+              data[key] = null; // Don't send empty files
+            } else {
+              data[key] = value;
+            }
+          }
+
+          // Submit to API
+          await submitReKYC(userId, token, data);
+
+          // Show success modal
+          if (window.showSuccessModal) {
+            window.showSuccessModal();
+          }
+
+        } catch (error) {
+          console.error('Error submitting KYC:', error);
+          const errorMessage = (error && error.message) || 'Failed to submit KYC data. Please try again.';
+          alert('Error: ' + errorMessage);
+        } finally {
+          if (window.kycFormUtils && window.kycFormUtils.setLoading) {
+            window.kycFormUtils.setLoading(false);
+          }
+        }
+      });
+    }
+
+    // Handle retry button
+    const retryBtn = document.getElementById('retry-btn');
+    if (retryBtn) {
+      retryBtn.addEventListener('click', function() {
+        location.reload();
+      });
+    }
+
+    // Handle modal close
+    const modalCloseBtn = document.getElementById('modal-close-btn');
+    if (modalCloseBtn) {
+      modalCloseBtn.addEventListener('click', function() {
+        if (window.closeSuccessModal) {
+          window.closeSuccessModal();
+        }
+      });
+    }
+  });
+</script>
+<!-- User data will be loaded client-side -->
+  </body>
+</html>

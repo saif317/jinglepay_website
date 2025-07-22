@@ -1,0 +1,541 @@
+---
+// KYC Form Component for Astro
+export interface Props {
+  initialData?: any;
+}
+
+const { initialData } = Astro.props;
+---
+
+<div class="kyc-form-container">
+  <div class="form-card">
+    <h2 class="form-title">Update Your KYC Information</h2>
+    <p class="form-subtitle">Please provide the required information to complete your KYC update.</p>
+    
+    <form id="kyc-form" class="kyc-form" enctype="multipart/form-data">
+      <!-- Personal Information Section -->
+      <div class="form-section">
+        <h3 class="section-title">Personal Information</h3>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="name" class="form-label">First Name *</label>
+            <input type="text" id="name" name="name" class="form-input" required />
+          </div>
+          <div class="form-group">
+            <label for="surname" class="form-label">Last Name *</label>
+            <input type="text" id="surname" name="surname" class="form-input" required />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="number" class="form-label">Emirates ID Number *</label>
+            <input type="text" id="number" name="number" class="form-input" required />
+          </div>
+          <div class="form-group">
+            <label for="nationality" class="form-label">Nationality *</label>
+            <select id="nationality" name="nationality" class="form-select" required>
+              <option value="">Select Nationality</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="place_of_birth" class="form-label">Place of Birth *</label>
+            <input type="text" id="place_of_birth" name="place_of_birth" class="form-input" required />
+          </div>
+          <div class="form-group">
+            <label for="occupation" class="form-label">Occupation *</label>
+            <input type="text" id="occupation" name="occupation" class="form-input" required />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="valid_from" class="form-label">Emirates ID Valid From *</label>
+            <input type="date" id="valid_from" name="valid_from" class="form-input" required />
+          </div>
+          <div class="form-group">
+            <label for="valid_until" class="form-label">Emirates ID Valid Until *</label>
+            <input type="date" id="valid_until" name="valid_until" class="form-input" required />
+          </div>
+        </div>
+      </div>
+
+      <!-- Address Information Section -->
+      <div class="form-section">
+        <h3 class="section-title">Address Information</h3>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="address_country" class="form-label">Country *</label>
+            <select id="address_country" name="address_country" class="form-select" required>
+              <option value="">Select Country</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="address_city" class="form-label">City *</label>
+            <input type="text" id="address_city" name="address_city" class="form-input" required />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="address_street" class="form-label">Street Address *</label>
+            <input type="text" id="address_street" name="address_street" class="form-input" required />
+          </div>
+          <div class="form-group">
+            <label for="address_building" class="form-label">Building *</label>
+            <input type="text" id="address_building" name="address_building" class="form-input" required />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="address_flat_no" class="form-label">Flat Number</label>
+            <input type="text" id="address_flat_no" name="address_flat_no" class="form-input" />
+          </div>
+          <div class="form-group">
+            <label for="address_postal_code" class="form-label">Postal Code</label>
+            <input type="text" id="address_postal_code" name="address_postal_code" class="form-input" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Document Upload Section -->
+      <div class="form-section">
+        <h3 class="section-title">Document Upload</h3>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="front_eid" class="form-label">Emirates ID Front *</label>
+            <input type="file" id="front_eid" name="front_eid" class="form-file" accept="image/*,.pdf" required />
+            <div class="file-preview" id="front_eid_preview"></div>
+          </div>
+          <div class="form-group">
+            <label for="back_eid" class="form-label">Emirates ID Back *</label>
+            <input type="file" id="back_eid" name="back_eid" class="form-file" accept="image/*,.pdf" required />
+            <div class="file-preview" id="back_eid_preview"></div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="address_proof" class="form-label">Address Proof *</label>
+            <input type="file" id="address_proof" name="address_proof" class="form-file" accept="image/*,.pdf" required />
+            <div class="file-preview" id="address_proof_preview"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Additional Information Section -->
+      <div class="form-section">
+        <h3 class="section-title">Additional Information</h3>
+        
+        <div class="form-group">
+          <label for="source_of_funds" class="form-label">Source of Funds *</label>
+          <select id="source_of_funds" name="source_of_funds" class="form-select" required>
+            <option value="">Select Source of Funds</option>
+            <option value="Salary">Salary</option>
+            <option value="Business Income">Business Income</option>
+            <option value="Investment Returns">Investment Returns</option>
+            <option value="Inheritance">Inheritance</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="purpose_relationship" class="form-label">Purpose of Relationship *</label>
+          <select id="purpose_relationship" name="purpose_relationship" class="form-select" required>
+            <option value="">Select Purpose</option>
+            <option value="Personal Remittance">Personal Remittance</option>
+            <option value="Business Transaction">Business Transaction</option>
+            <option value="Family Support">Family Support</option>
+            <option value="Investment">Investment</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="transfer_to_jpl" class="form-label">Expected Monthly Transfer TO JinglePay *</label>
+            <select id="transfer_to_jpl" name="transfer_to_jpl" class="form-select" required>
+              <option value="">Select Range</option>
+              <option value="0-1000">0 - 1,000 AED</option>
+              <option value="1000-5000">1,000 - 5,000 AED</option>
+              <option value="5000-10000">5,000 - 10,000 AED</option>
+              <option value="10000+">10,000+ AED</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="transfer_from_jpl" class="form-label">Expected Monthly Transfer FROM JinglePay *</label>
+            <select id="transfer_from_jpl" name="transfer_from_jpl" class="form-select" required>
+              <option value="">Select Range</option>
+              <option value="0-1000">0 - 1,000 AED</option>
+              <option value="1000-5000">1,000 - 5,000 AED</option>
+              <option value="5000-10000">5,000 - 10,000 AED</option>
+              <option value="10000+">10,000+ AED</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="money_transfer_countries" class="form-label">Countries You Transfer Money To *</label>
+          <select id="money_transfer_countries" name="money_transfer_countries" class="form-select" required>
+            <option value="">Select Country</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="past_ten_years_living_country" class="form-label">Country You Lived in Past 10 Years *</label>
+          <input type="text" id="past_ten_years_living_country" name="past_ten_years_living_country" class="form-input" required />
+        </div>
+
+        <div class="form-group">
+          <label for="past_ten_years_income_source" class="form-label">Income Source in Past 10 Years *</label>
+          <select id="past_ten_years_income_source" name="past_ten_years_income_source" class="form-select" required>
+            <option value="">Select Income Source</option>
+            <option value="Employment">Employment</option>
+            <option value="Business">Business</option>
+            <option value="Investment">Investment</option>
+            <option value="Inheritance">Inheritance</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Error Display -->
+      <div id="error-container" class="error-container" style="display: none;">
+        <div class="error-message" id="error-message"></div>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="form-actions">
+        <button type="submit" id="submit-btn" class="submit-btn">
+          <span id="submit-text">Update KYC Information</span>
+          <div id="submit-loading" class="loading-spinner" style="display: none;"></div>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<style>
+  .kyc-form-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+
+  .form-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    padding: 32px;
+  }
+
+  .form-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #1f2937;
+    margin-bottom: 8px;
+  }
+
+  .form-subtitle {
+    color: #6b7280;
+    margin-bottom: 32px;
+  }
+
+  .form-section {
+    margin-bottom: 32px;
+  }
+
+  .section-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1f2937;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #e5e7eb;
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  @media (max-width: 768px) {
+    .form-row {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .form-label {
+    font-weight: 500;
+    color: #374151;
+    margin-bottom: 4px;
+    font-size: 14px;
+  }
+
+  .form-input,
+  .form-select {
+    padding: 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: border-color 0.2s;
+  }
+
+  .form-input:focus,
+  .form-select:focus {
+    outline: none;
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+  }
+
+  .form-file {
+    padding: 8px;
+    border: 2px dashed #d1d5db;
+    border-radius: 6px;
+    background: #f9fafb;
+    cursor: pointer;
+    transition: border-color 0.2s;
+  }
+
+  .form-file:hover {
+    border-color: #6366f1;
+  }
+
+  .file-preview {
+    margin-top: 8px;
+    min-height: 40px;
+    padding: 8px;
+    border: 1px solid #e5e7eb;
+    border-radius: 4px;
+    background: #f9fafb;
+    display: none;
+  }
+
+  .file-preview.active {
+    display: block;
+  }
+
+  .error-container {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 6px;
+    padding: 12px;
+    margin-bottom: 16px;
+  }
+
+  .error-message {
+    color: #dc2626;
+    font-size: 14px;
+  }
+
+  .form-actions {
+    display: flex;
+    justify-content: center;
+    margin-top: 32px;
+  }
+
+  .submit-btn {
+    background: #6366f1;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 12px 32px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .submit-btn:hover {
+    background: #4f46e5;
+  }
+
+  .submit-btn:disabled {
+    background: #9ca3af;
+    cursor: not-allowed;
+  }
+
+  .loading-spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid transparent;
+    border-top: 2px solid currentColor;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+</style>
+
+<script type="module">
+  // Initialize form with data
+  function initializeForm(initialData) {
+    if (!initialData) return;
+
+    Object.keys(initialData).forEach(key => {
+      const element = document.getElementById(key);
+      if (element && initialData[key]) {
+        element.value = initialData[key];
+      }
+    });
+  }
+
+  // Inline API function to avoid import issues
+  async function fetchCountries() {
+    const isSitEnvironment = new URLSearchParams(window.location.search).has('sitenv');
+    const API_BASE_URL = isSitEnvironment ? 'https://sit.jinglepay.dev' : 'https://api.jinglepay.dev';
+    
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/v0/kyc/countries/`, {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          'Cache-Control': 'no-cache',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to fetch countries: ${response.status} ${response.statusText}`);
+      }
+
+      return response.json();
+    } catch (error) {
+      console.error('Error fetching countries:', error);
+      throw error;
+    }
+  }
+
+  // Load countries for dropdowns
+  async function loadCountries() {
+    try {
+      const countries = await fetchCountries();
+      const nationalitySelect = document.getElementById('nationality');
+      const addressCountrySelect = document.getElementById('address_country');
+      const transferCountriesSelect = document.getElementById('money_transfer_countries');
+
+      if (countries && Array.isArray(countries)) {
+        countries.forEach(country => {
+          const option = new Option(country.name, country.iso2_code);
+          if (nationalitySelect) nationalitySelect.add(option.cloneNode(true));
+          if (addressCountrySelect) addressCountrySelect.add(option.cloneNode(true));
+          if (transferCountriesSelect) transferCountriesSelect.add(option.cloneNode(true));
+        });
+      }
+    } catch (error) {
+      console.error('Failed to load countries:', error);
+      // Fallback: add some basic countries if API fails
+      const fallbackCountries = [
+        { name: 'United Arab Emirates', iso2_code: 'AE' },
+        { name: 'United States', iso2_code: 'US' },
+        { name: 'United Kingdom', iso2_code: 'GB' },
+        { name: 'India', iso2_code: 'IN' },
+        { name: 'Pakistan', iso2_code: 'PK' }
+      ];
+      
+      const nationalitySelect = document.getElementById('nationality');
+      const addressCountrySelect = document.getElementById('address_country');
+      const transferCountriesSelect = document.getElementById('money_transfer_countries');
+      
+      fallbackCountries.forEach(country => {
+        const option = new Option(country.name, country.iso2_code);
+        if (nationalitySelect) nationalitySelect.add(option.cloneNode(true));
+        if (addressCountrySelect) addressCountrySelect.add(option.cloneNode(true));
+        if (transferCountriesSelect) transferCountriesSelect.add(option.cloneNode(true));
+      });
+    }
+  }
+
+  // File preview functionality
+  function setupFilePreview() {
+    const fileInputs = document.querySelectorAll('.form-file');
+    
+    fileInputs.forEach(input => {
+      input.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        const previewId = this.id + '_preview';
+        const preview = document.getElementById(previewId);
+        
+        if (file && preview) {
+          preview.classList.add('active');
+          preview.innerHTML = `
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M4 0h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2zm0 1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H4z"/>
+              </svg>
+              <span>${file.name}</span>
+              <span style="color: #6b7280; font-size: 12px;">(${(file.size / 1024 / 1024).toFixed(2)} MB)</span>
+            </div>
+          `;
+        }
+      });
+    });
+  }
+
+  // Show error message
+  function showError(message) {
+    const errorContainer = document.getElementById('error-container');
+    const errorMessage = document.getElementById('error-message');
+    
+    errorMessage.textContent = message;
+    errorContainer.style.display = 'block';
+    errorContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  // Hide error message
+  function hideError() {
+    const errorContainer = document.getElementById('error-container');
+    errorContainer.style.display = 'none';
+  }
+
+  // Set loading state
+  function setLoading(loading) {
+    const submitBtn = document.getElementById('submit-btn');
+    const submitText = document.getElementById('submit-text');
+    const submitLoading = document.getElementById('submit-loading');
+    
+    submitBtn.disabled = loading;
+    submitText.style.display = loading ? 'none' : 'inline';
+    submitLoading.style.display = loading ? 'block' : 'none';
+  }
+
+  // Initialize on page load
+  document.addEventListener('DOMContentLoaded', async () => {
+    await loadCountries();
+    setupFilePreview();
+    
+    // Initialize with passed data if available
+    if (window.kycInitialData) {
+      initializeForm(window.kycInitialData);
+    }
+  });
+
+  // Export functions for external use
+  window.kycFormUtils = {
+    initializeForm,
+    showError,
+    hideError,
+    setLoading
+  };
+</script>
